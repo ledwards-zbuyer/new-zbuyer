@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zBuyer.com — Redesign Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;background:#0E1116;color:#E7ECF2;-webkit-font-smoothing:antialiased;line-height:1.5}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+  header{padding:64px 0 28px;text-align:center}
+  .eyebrow{color:#8AA0FF;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+  h1{font-size:42px;font-weight:800;letter-spacing:-.03em;margin-top:10px}
+  header p{color:#9AA7B6;font-size:17px;margin:14px auto 0;max-width:620px}
+  .note{color:#7B8696;font-size:13px;margin-top:16px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;padding:24px 0 70px}
+  .card{background:#161B22;border:1px solid #232B36;border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+  .thumb{display:block;aspect-ratio:3/4;overflow:hidden;background:#0b0e13;border-bottom:1px solid #232B36}
+  .thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .4s ease}
+  .card:hover .thumb img{transform:scale(1.03)}
+  .body{padding:20px 22px 22px}
+  .tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8AA0FF}
+  .tag.clay{color:#E0905E}.tag.cyan{color:#5FD6EE}
+  .body h2{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-top:6px}
+  .body .desc{color:#9AA7B6;font-size:14px;margin-top:6px}
+  .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .links a{font-size:13px;font-weight:600;padding:7px 12px;border:1px solid #2C3744;border-radius:999px;color:#C8D2DE}
+  .links a:hover{border-color:#3E80FF;color:#fff}
+  .links a.primary{background:#3E80FF;border-color:#3E80FF;color:#fff}
+  footer{border-top:1px solid #232B36;padding:26px 0 50px;text-align:center;color:#6F7B8A;font-size:13px}
+  @media (max-width:860px){.grid{grid-template-columns:1fr}h1{font-size:32px}}
+</style>
+</head>
+<body>
+  <header><div class="wrap">
+    <div class="eyebrow">Concept Mockups</div>
+    <h1>zBuyer.com — Redesign Directions</h1>
+    <p>Three design directions for the new consumer-facing zBuyer.com, each with a seller homepage, a matching Agents &amp; Investors area, and Solutions / Reviews / Support pages. Click any thumbnail to open the live mockup.</p>
+    <div class="note">Internal preview — concept only. Stats, reviews &amp; imagery are placeholders.</div>
+  </div></header>
+
+  <div class="wrap"><div class="grid">
+
+    <div class="card">
+      <a class="thumb" href="mockups/option-1-classic.html"><img src="mockups/shots/option-1-classic-full.png" alt="Classic / Blue homepage"></a>
+      <div class="body">
+        <div class="tag">Option 1 · Classic</div>
+        <h2>Trust Blue</h2>
+        <div class="desc">Zillow-style photo hero, royal blue with a coral CTA.</div>
+        <div class="links">
+          <a class="primary" href="mockups/option-1-classic.html">Homepage</a>
+          <a href="mockups/agents-classic-blue.html">Agents</a>
+          <a href="mockups/solutions-classic-blue.html">Solutions</a>
+          <a href="mockups/reviews-classic-blue.html">Reviews</a>
+          <a href="mockups/support-classic-blue.html">Support</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <a class="thumb" href="mockups/option-2-apple-minimal.html"><img src="mockups/shots/option-2-apple-minimal-full.png" alt="Apple Minimal / Terracotta homepage"></a>
+      <div class="body">
+        <div class="tag clay">Option 2 · Apple Minimal</div>
+        <h2>Terracotta</h2>
+        <div class="desc">Airy, editorial whitespace with a warm clay accent.</div>
+        <div class="links">
+          <a class="primary" href="mockups/option-2-apple-minimal.html">Homepage</a>
+          <a href="mockups/agents-apple-gold.html">Agents</a>
+          <a href="mockups/solutions-apple-gold.html">Solutions</a>
+          <a href="mockups/reviews-apple-gold.html">Reviews</a>
+          <a href="mockups/support-apple-gold.html">Support</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <a class="thumb" href="mockups/option-5-dark.html"><img src="mockups/shots/option-5-dark-full.png" alt="Dark Premium / Cyan homepage"></a>
+      <div class="body">
+        <div class="tag cyan">Option 5 · Dark Premium</div>
+        <h2>Midnight Cyan</h2>
+        <div class="desc">Dark glassmorphism with an electric cyan glow.</div>
+        <div class="links">
+          <a class="primary" href="mockups/option-5-dark.html">Homepage</a>
+          <a href="mockups/agents-dark-cyan.html">Agents</a>
+          <a href="mockups/solutions-dark-cyan.html">Solutions</a>
+          <a href="mockups/reviews-dark-cyan.html">Reviews</a>
+          <a href="mockups/support-dark-cyan.html">Support</a>
+        </div>
+      </div>
+    </div>
+
+  </div></div>
+
+  <footer>© 2026 zBuyer · Concept mockups</footer>
+</body>
+</html>
