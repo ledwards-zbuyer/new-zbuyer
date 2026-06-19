@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zBuyer — Option 3 · Split</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0E1726;--muted:#5B6B7C}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;background:rgba(255,255,255,.86);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.05)}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;letter-spacing:-.02em}
+  .logo .pin{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#10B981,#0B6E4F);display:grid;place-items:center}
+  .navlinks{display:flex;gap:30px;font-weight:500;font-size:15px;color:var(--ink);opacity:.8}
+  .nav-right{display:flex;align-items:center;gap:18px;font-size:14px}
+  .pro-link{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1.5px solid #0E1726;border-radius:999px;font-weight:700}
+  .signin{font-weight:600}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;padding-top:73px}
+  .pane{position:relative;display:flex;flex-direction:column;justify-content:center;padding:0 64px;overflow:hidden}
+  .pane.sell{background:linear-gradient(160deg,#0B6E4F 0%,#063b2a 100%);color:#fff}
+  .pane.buy{background:linear-gradient(160deg,#13327a 0%,#0a1c4d 100%);color:#fff}
+  .pane .bg{position:absolute;inset:0;opacity:.16;background-size:cover;background-position:center;mix-blend-mode:overlay}
+  .pane.sell .bg{background-image:url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1400&q=80')}
+  .pane.buy .bg{background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1400&q=80')}
+  .pane-inner{position:relative;z-index:5;max-width:480px}
+  .tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;border-radius:999px;margin-bottom:22px}
+  .sell .tag{background:rgba(255,255,255,.14);color:#9EF5CB}
+  .buy .tag{background:rgba(255,255,255,.14);color:#A9C6FF}
+  .pane h1{font-size:48px;line-height:1.04;font-weight:800;letter-spacing:-.03em}
+  .pane p{font-size:17px;opacity:.85;margin-top:16px;line-height:1.5;max-width:420px}
+
+  .search{margin-top:30px;background:#fff;border-radius:14px;padding:6px 6px 6px 18px;display:flex;align-items:center;gap:10px;box-shadow:0 24px 50px -20px rgba(0,0,0,.5)}
+  .search input{flex:1;border:none;outline:none;font-size:15.5px;font-family:inherit;padding:14px 0;color:var(--ink)}
+  .search input::placeholder{color:#9AA8B4}
+  .search button{flex:none;border:none;color:#fff;font-family:inherit;font-weight:700;font-size:14.5px;padding:14px 22px;border-radius:10px;cursor:pointer}
+  .sell .search button{background:linear-gradient(135deg,#10B981,#0B6E4F)}
+  .buy .search button{background:linear-gradient(135deg,#3B82F6,#1E40AF)}
+  .feat{margin-top:24px;display:flex;flex-direction:column;gap:11px}
+  .feat div{display:flex;align-items:center;gap:10px;font-size:14.5px;opacity:.92}
+  .feat .ck{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;flex:none}
+  .sell .ck{background:rgba(158,245,203,.2);color:#9EF5CB}
+  .buy .ck{background:rgba(169,198,255,.2);color:#A9C6FF}
+
+  /* center divider badge */
+  .divider{position:absolute;top:calc(50% + 36px);left:50%;transform:translate(-50%,-50%);z-index:20;width:64px;height:64px;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:800;color:var(--ink);box-shadow:0 12px 30px rgba(0,0,0,.25);font-size:13px}
+
+  .pro{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:25;background:rgba(14,23,38,.9);backdrop-filter:blur(10px);color:#fff;padding:14px 24px;border-radius:999px;display:flex;align-items:center;gap:16px;font-size:14px;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+  .pro a{font-weight:700;color:#9EF5CB}
+</style>
+</head>
+<body>
+  <nav>
+    <div class="logo"><span class="pin"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>zBuyer</div>
+    <div class="navlinks"><a>Sell</a><a>Buy</a><a>How it works</a><a>About</a></div>
+    <div class="nav-right"><a class="pro-link">For Agents &amp; Investors →</a><a class="signin">Sign in</a></div>
+  </nav>
+
+  <main class="split">
+    <section class="pane sell">
+      <div class="bg"></div>
+      <div class="pane-inner">
+        <span class="tag">● Sell your home</span>
+        <h1>Get a cash<br>offer on your<br>home.</h1>
+        <p>Enter your address and we'll connect you with a local expert and a real, no-obligation cash offer.</p>
+        <form class="search" onsubmit="return false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" stroke="#0B6E4F" stroke-width="2"/><circle cx="12" cy="10" r="2.6" stroke="#0B6E4F" stroke-width="2"/></svg>
+          <input placeholder="Enter your home address" value="1401 Camdlewood Dr, Pittsburgh, PA">
+          <button>Get my offer</button>
+        </form>
+        <div class="feat"><div><span class="ck">✓</span>No fees, no obligation</div><div><span class="ck">✓</span>Offer in as little as 48 hours</div></div>
+      </div>
+    </section>
+
+    <section class="pane buy">
+      <div class="bg"></div>
+      <div class="pane-inner">
+        <span class="tag">● Buy a home</span>
+        <h1>Find the<br>home that's<br>right for you.</h1>
+        <p>Search homes for sale and get matched with an agent who works for you — wherever you're looking.</p>
+        <form class="search" onsubmit="return false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1E40AF" stroke-width="2"/><path d="m20 20-3.2-3.2" stroke="#1E40AF" stroke-width="2" stroke-linecap="round"/></svg>
+          <input placeholder="City, ZIP, or neighborhood" value="Simi Valley, CA 93065">
+          <button>Search homes</button>
+        </form>
+        <div class="feat"><div><span class="ck">✓</span>Browse thousands of listings</div><div><span class="ck">✓</span>Connect with a local agent</div></div>
+      </div>
+    </section>
+
+    <div class="divider">zB</div>
+    <div class="pro">Agent or investor? <a href="https://welcome.zbuyer.com/">Get buyer &amp; seller leads →</a></div>
+  </main>
+  <script>
+    document.querySelector('.pane.sell form').addEventListener('submit',()=>location.href='https://pulse.zbuyer.com/index.html?landing=selling&autostart=1');
+    document.querySelector('.pane.buy form').addEventListener('submit',()=>location.href='https://pulse.zbuyer.com/index.html?CTID=13972283&landing=buying-hn&autostart=1&MID=56&affid=testing&zzipcode=93065');
+  </script>
+</body>
+</html>

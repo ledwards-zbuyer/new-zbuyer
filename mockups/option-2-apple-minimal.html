@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zBuyer — Your home's worth, in cash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--charcoal:#1A1A1F;--gold:#C2613E;--gold-br:#D97A52;--gold-d:#9E4A2C;--ink:#1A1A1F;--muted:#6B6B73;--line:#ECECEF;--soft:#F4EBE3}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  img{display:block}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 40px}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;font-size:14px;position:sticky;top:0;background:rgba(255,255,255,.72);backdrop-filter:blur(18px);z-index:30;border-bottom:1px solid rgba(0,0,0,.04)}
+  .logo{height:28px;width:auto}
+  .navlinks{display:flex;gap:32px;color:var(--ink);font-weight:500;opacity:.75}
+  .nav-right{display:flex;align-items:center;gap:22px}
+  .pro-link{font-weight:600}
+  .btn-dark{background:var(--charcoal);color:#fff;padding:9px 18px;border-radius:999px;font-weight:600}
+  .hamburger{display:none;width:40px;height:40px;border-radius:10px;border:1.5px solid var(--line);align-items:center;justify-content:center;font-size:19px;color:var(--charcoal)}
+
+  .hero{min-height:720px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:70px 24px 80px;background:#fff}
+  .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.6;z-index:0}
+  .b1{width:540px;height:540px;background:#EEC4AA;top:-150px;left:-90px}
+  .b2{width:520px;height:520px;background:#F1D2BD;bottom:-160px;right:-70px}
+  .b3{width:340px;height:340px;background:#F6DEC9;top:26%;right:14%}
+  .hero-inner{position:relative;z-index:5;max-width:900px}
+  .pill-tag{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;color:var(--muted);box-shadow:0 6px 20px -10px rgba(0,0,0,.15);margin-bottom:30px}
+  .pill-tag b{color:var(--gold-d)}
+  h1{font-size:84px;line-height:.98;font-weight:800;letter-spacing:-.045em;color:var(--charcoal)}
+  h1 .g{background:linear-gradient(120deg,#DD7A54,#A8492A);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{font-size:21px;color:var(--muted);margin-top:26px;font-weight:400;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.5}
+  .searchwrap{margin:42px auto 0;max-width:620px}
+  .search{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 8px 8px 26px;box-shadow:0 24px 50px -22px rgba(0,0,0,.3)}
+  .search input{flex:1;border:none;outline:none;font-size:17px;font-family:inherit;padding:16px 0;color:var(--ink)}
+  .search input::placeholder{color:#A8A8AE}
+  .search button{flex:none;background:var(--gold);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:16px;padding:16px 30px;border-radius:999px;cursor:pointer}
+  .micro{margin-top:18px;color:var(--muted);font-size:13.5px;display:flex;gap:24px;justify-content:center}
+  .micro span{display:flex;gap:7px;align-items:center}
+  .buyline{margin-top:30px;font-size:15.5px;color:var(--muted)}
+  .buyline a{color:var(--charcoal);font-weight:700;border-bottom:2px solid var(--gold);padding-bottom:1px}
+
+  .logos{display:flex;align-items:center;justify-content:center;gap:46px;padding:30px;opacity:.55;font-weight:700;font-size:14px;letter-spacing:.02em;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;z-index:5;background:#fff;flex-wrap:wrap;color:var(--charcoal)}
+
+  .section{padding:100px 0}
+  .center{text-align:center}
+  h2{font-size:52px;font-weight:800;letter-spacing:-.035em;line-height:1.05;color:var(--charcoal)}
+  .lede{color:var(--muted);font-size:19px;max-width:560px;margin:18px auto 0;line-height:1.5}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:64px}
+  .step{text-align:center}
+  .step .n{width:54px;height:54px;border-radius:50%;border:1.5px solid var(--charcoal);display:grid;place-items:center;font-weight:800;font-size:20px;margin:0 auto 20px;color:var(--charcoal)}
+  .step h3{font-size:21px;font-weight:700;margin-bottom:10px;letter-spacing:-.01em;color:var(--charcoal)}
+  .step p{color:var(--muted);font-size:15.5px;line-height:1.55;max-width:260px;margin:0 auto}
+
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;padding:70px 0}
+  .frow:nth-child(even) .fcopy{order:2}
+  .fart{height:380px;border-radius:28px;position:relative;overflow:hidden;box-shadow:0 40px 80px -40px rgba(0,0,0,.3)}
+  .fa1{background:linear-gradient(150deg,#2A2620,#141109)}
+  .fa2{background:linear-gradient(150deg,#D99A3C,#9E4A2C)}
+  .fart .big{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:800;letter-spacing:-.02em}
+  .fa1 .big{font-size:64px;color:#E69468}
+  .fa2 .big{font-size:30px;text-align:center;padding:0 30px;line-height:1.2;color:#fff}
+  .fkick{color:var(--gold-d);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+  .fcopy h3{font-size:40px;font-weight:800;letter-spacing:-.03em;margin-top:12px;line-height:1.06;color:var(--charcoal)}
+  .fcopy p{color:var(--muted);font-size:18px;margin-top:18px;line-height:1.55;max-width:440px}
+
+  .quote{text-align:center;max-width:860px;margin:0 auto}
+  .quote .stars{color:#D99A3C;font-size:18px;letter-spacing:3px}
+  .quote blockquote{font-size:38px;font-weight:700;letter-spacing:-.025em;line-height:1.25;margin:24px 0 26px;color:var(--charcoal)}
+  .quote .who{color:var(--muted);font-size:16px;font-weight:600}
+
+  .pro-inner{position:relative;overflow:hidden;background:var(--charcoal);color:#fff;border-radius:32px;padding:72px 64px;text-align:center}
+  .pro-inner .pglow{position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:680px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(194,97,62,.24),transparent 70%);pointer-events:none}
+  .pro-eyebrow{position:relative;color:var(--gold-br);font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase}
+  .pro-inner h3{position:relative;font-size:46px;font-weight:800;letter-spacing:-.035em;margin-top:14px}
+  .pro-inner .psub{position:relative;color:#B8B8C0;margin:16px auto 0;max-width:560px;font-size:17px;line-height:1.5}
+  .pfeats{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin:52px auto 0;max-width:880px;text-align:left}
+  .pfeat{border-top:1px solid rgba(255,255,255,.16);padding-top:18px}
+  .pfeat .num{font-size:13px;font-weight:800;color:var(--gold-br);letter-spacing:.05em}
+  .pfeat b{display:block;margin-top:12px;font-size:16px}
+  .pfeat span{display:block;color:#9A9AA6;font-size:13.5px;line-height:1.5;margin-top:6px}
+  .pro-cta-row{position:relative;display:flex;gap:14px;justify-content:center;margin-top:48px;flex-wrap:wrap}
+  .pro-inner .cta{display:inline-block;background:var(--gold);color:#fff;padding:16px 30px;border-radius:999px;font-weight:800;font-size:16px}
+  .pro-inner .ghost{display:inline-block;padding:16px 28px;border-radius:999px;font-weight:700;font-size:16px;border:1.5px solid rgba(255,255,255,.35);color:#fff}
+
+  footer{border-top:1px solid var(--line);padding:56px 0 40px}
+  .fgrid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:40px}
+  .flogo{height:26px;width:auto}
+  footer .blurb{color:var(--muted);margin-top:14px;font-size:14px;line-height:1.6;max-width:280px}
+  footer h5{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  footer ul{list-style:none;display:flex;flex-direction:column;gap:10px;font-size:14px}
+  .fbottom{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--muted);font-size:13px;flex-wrap:wrap;gap:10px}
+
+  @media (max-width:768px){
+    .wrap{padding:0 22px}
+    nav{padding:14px 22px}
+    .navlinks,.nav-right{display:none}
+    .hamburger{display:flex}
+    .hero{min-height:560px;padding:50px 22px 60px}
+    h1{font-size:46px}
+    .sub{font-size:17px;margin-top:18px}
+    .search{flex-direction:column;align-items:stretch;gap:10px;border-radius:20px;padding:14px}
+    .search svg{display:none}
+    .search input{text-align:center;padding:6px 4px;font-size:16px}
+    .search button{width:100%;padding:16px;border-radius:14px}
+    .micro{flex-direction:column;gap:8px;margin-top:16px}
+    .logos{gap:14px 26px;font-size:12px;padding:24px}
+    .section{padding:60px 0}
+    h2{font-size:34px}
+    .lede{font-size:16px}
+    .steps{grid-template-columns:1fr;gap:38px;margin-top:42px}
+    .frow{grid-template-columns:1fr;gap:28px;padding:36px 0}
+    .frow:nth-child(even) .fcopy{order:0}
+    .fart{height:240px;order:-1}
+    .fa1 .big{font-size:48px}
+    .fcopy h3{font-size:30px}
+    .fcopy p{font-size:16px}
+    .quote blockquote{font-size:26px}
+    .pro-inner{padding:46px 26px}
+    .pro-inner h3{font-size:32px}
+    .pro-inner .psub{font-size:15.5px}
+    .pfeats{grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+    .pro-cta-row{flex-direction:column}
+    .pro-inner .cta,.pro-inner .ghost{text-align:center}
+    .fgrid{grid-template-columns:1fr 1fr;gap:30px}
+    .fbottom{flex-direction:column;gap:8px}
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <img class="logo" src="assets/logo-clay-light.png" alt="zBuyer">
+    <div class="navlinks"><a>Sell</a><a>Buy</a><a>How it works</a></div>
+    <div class="nav-right"><a class="pro-link" href="agents-apple-gold.html">For Agents &amp; Investors</a><a class="btn-dark">Sign in</a></div>
+    <div class="hamburger">☰</div>
+  </nav>
+
+  <header class="hero">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div class="hero-inner">
+      <div class="pill-tag">⚡ A real cash offer in <b>&nbsp;48 hours</b></div>
+      <h1>Your home's worth,<br><span class="g">in cash.</span></h1>
+      <p class="sub">One address is all it takes. We'll connect you with a trusted local expert and a no-obligation cash offer.</p>
+      <div class="searchwrap">
+        <form class="search" onsubmit="return false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" stroke="#9E4A2C" stroke-width="2"/><circle cx="12" cy="10" r="2.6" stroke="#9E4A2C" stroke-width="2"/></svg>
+          <input placeholder="Enter your home address" value="1401 Camdlewood Dr, Pittsburgh, PA">
+          <button>Get offer</button>
+        </form>
+        <div class="micro"><span>★★★★★ 4.8 rating</span><span>✓ No fees</span><span>✓ No obligation</span></div>
+      </div>
+      <div class="buyline">Here to buy a home? <a href="https://pulse.zbuyer.com/index.html?CTID=13972283&landing=buying-hn&autostart=1&MID=56&affid=testing&zzipcode=93065">Start your home search →</a></div>
+    </div>
+  </header>
+
+  <div class="logos"><span>12,000+ HOMEOWNERS</span><span>·</span><span>ALL 50 STATES</span><span>·</span><span>$3.4B+ EVALUATED</span><span>·</span><span>VETTED LOCAL EXPERTS</span></div>
+
+  <section class="section"><div class="wrap center">
+    <h2>Three steps. That's it.</h2>
+    <p class="lede">From your address to a real cash offer, with zero pressure along the way.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Enter your address</h3><p>Tell us about your home in about a minute. No paperwork, no showings.</p></div>
+      <div class="step"><div class="n">2</div><h3>Meet a local expert</h3><p>We match you with a vetted professional who knows your market.</p></div>
+      <div class="step"><div class="n">3</div><h3>Get your cash offer</h3><p>Review a real, no-obligation cash value and decide on your terms.</p></div>
+    </div>
+  </div></section>
+
+  <section style="background:var(--soft)"><div class="wrap">
+    <div class="frow">
+      <div class="fcopy"><div class="fkick">A fair cash offer</div><h3>Sell as-is. Skip the rest.</h3><p>No listing, no staging, no repairs, no open houses. Get a competitive cash value for your home exactly as it is today.</p></div>
+      <div class="fart fa1"><div class="big"><svg width="210" height="210" viewBox="0 0 120 120" fill="none"><path d="M20 57 60 25 100 57" stroke="#F0DAC9" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 50v42h60V50" stroke="#F0DAC9" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M51 92V70h18v22" stroke="#F0DAC9" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="90" cy="86" r="19" fill="#C2613E"/><text x="90" y="94" text-anchor="middle" font-size="23" font-weight="800" fill="#fff" font-family="Inter, sans-serif">$</text></svg></div></div>
+    </div>
+    <div class="frow">
+      <div class="fcopy"><div class="fkick">On your timeline</div><h3>Fast when you want it. Patient when you don't.</h3><p>Offers in as little as 48 hours, and you pick the closing date that fits your life — not the other way around.</p></div>
+      <div class="fart fa2"><div class="big"><svg width="210" height="210" viewBox="0 0 120 120" fill="none"><rect x="20" y="30" width="80" height="70" rx="9" stroke="#FBEFE6" stroke-width="4.5"/><path d="M20 48h80" stroke="#FBEFE6" stroke-width="4.5"/><path d="M40 22v14M80 22v14" stroke="#FBEFE6" stroke-width="4.5" stroke-linecap="round"/><path d="M37 72l10 10 20-22" stroke="#FBEFE6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="88" cy="88" r="16" fill="#1A1A1F"/><path d="M88 80v9l6 4" stroke="#FBEFE6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    </div>
+  </div></section>
+
+  <section class="section"><div class="wrap">
+    <div class="quote">
+      <div class="stars">★★★★★</div>
+      <blockquote>"I had a fair cash offer in two days — no repairs, no open houses. zBuyer made the whole thing feel effortless."</blockquote>
+      <div class="who">Maria G. · Sold in Phoenix, AZ</div>
+    </div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap">
+    <div class="pro-inner">
+      <div class="pglow"></div>
+      <div class="pro-eyebrow">zBuyer for Professionals</div>
+      <h3>Leads. Simplified.</h3>
+      <p class="psub">A turn-key way for agents and investors to meet motivated buyers and sellers — and grow without the busywork.</p>
+      <div class="pfeats">
+        <div class="pfeat"><div class="num">01</div><b>Real-time leads</b><span>Delivered instantly to your inbox, app, and CRM.</span></div>
+        <div class="pfeat"><div class="num">02</div><b>No long-term contracts</b><span>Come and go as you please — no commitments.</span></div>
+        <div class="pfeat"><div class="num">03</div><b>Opt-in &amp; compliant</b><span>Every lead has expressly opted in for contact.</span></div>
+        <div class="pfeat"><div class="num">04</div><b>Custom packages</b><span>Choose the amount, type, and location you want.</span></div>
+      </div>
+      <div class="pro-cta-row">
+        <a class="cta" href="agents-apple-gold.html">Explore zBuyer Pro →</a>
+        <a class="ghost" href="agents-apple-gold.html">Request a demo</a>
+      </div>
+    </div>
+  </div></section>
+
+  <footer><div class="wrap">
+    <div class="fgrid">
+      <div>
+        <img class="flogo" src="assets/logo-clay-light.png" alt="zBuyer">
+        <p class="blurb">Connecting homeowners with trusted local experts and real cash offers — and connecting real-estate professionals with motivated buyers and sellers.</p>
+      </div>
+      <div><h5>Sellers</h5><ul><li><a>Get a cash offer</a></li><li><a>How it works</a></li><li><a>FAQ</a></li></ul></div>
+      <div><h5>Buyers</h5><ul><li><a>Search homes</a></li><li><a>Find an agent</a></li></ul></div>
+      <div><h5>Professionals</h5><ul><li><a href="agents-apple-gold.html">For Agents &amp; Investors</a></li><li><a>zBuyer Pro</a></li><li><a>Sign in</a></li></ul></div>
+    </div>
+    <div class="fbottom"><span>© 2026 zBuyer. All rights reserved.</span><span>Terms of Service · Privacy Policy</span></div>
+  </div></footer>
+</body>
+</html>

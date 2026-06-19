@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zBuyer — Know your home's cash value</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#E8F1F5;--muted:#94A7B3;--acc:#22D3EE;--acc-br:#7DD3FC;--sky:#38BDF8;--card:rgba(255,255,255,.05);--cardline:rgba(255,255,255,.12);--bg:#070C12}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{text-decoration:none;color:inherit}
+  img{display:block}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 40px}
+
+  .mesh{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .mesh .o{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+  .o1{width:600px;height:600px;background:#0E7490;top:-160px;left:-120px}
+  .o2{width:560px;height:560px;background:#1D4ED8;top:38%;right:-160px}
+  .o3{width:480px;height:480px;background:#0369A1;top:75%;left:30%;opacity:.42}
+  .o4{width:520px;height:520px;background:#155E75;top:120%;right:10%;opacity:.34}
+  .grain{position:fixed;inset:0;z-index:1;opacity:.5;pointer-events:none;background:radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 0);background-size:24px 24px}
+  .page{position:relative;z-index:10}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:24px 52px}
+  .logo{height:30px;width:auto}
+  .navlinks{display:flex;gap:32px;font-weight:500;font-size:15px;color:var(--muted)}
+  .nav-right{display:flex;align-items:center;gap:18px}
+  .pro-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid rgba(255,255,255,.18);border-radius:999px;font-weight:600;font-size:14px;background:rgba(255,255,255,.04);backdrop-filter:blur(8px)}
+  .signin{font-weight:600;font-size:15px;color:var(--ink)}
+  .hamburger{display:none;width:42px;height:42px;border-radius:11px;border:1px solid rgba(255,255,255,.2);align-items:center;justify-content:center;font-size:20px;color:#fff;background:rgba(255,255,255,.04)}
+
+  .hero{text-align:center;padding:78px 24px 40px;max-width:920px;margin:0 auto}
+  .chip{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border-radius:999px;border:1px solid rgba(34,211,238,.42);background:rgba(34,211,238,.1);font-size:13px;font-weight:600;color:var(--acc-br);margin-bottom:26px}
+  .chip .d{width:7px;height:7px;border-radius:50%;background:var(--acc);box-shadow:0 0 10px var(--acc)}
+  h1{font-size:80px;line-height:1.0;font-weight:800;letter-spacing:-.045em}
+  h1 .g{background:linear-gradient(110deg,#67E3FF,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);font-size:20px;margin-top:24px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.5}
+  .glass{margin:40px auto 0;max-width:600px;background:var(--card);border:1px solid var(--cardline);border-radius:22px;padding:10px;backdrop-filter:blur(22px);box-shadow:0 30px 80px -30px rgba(0,0,0,.8)}
+  .search{display:flex;align-items:center;gap:12px;padding:6px 6px 6px 22px}
+  .search input{flex:1;background:transparent;border:none;outline:none;font-size:17px;font-family:inherit;color:#fff;padding:16px 0}
+  .search input::placeholder{color:#7E93A0}
+  .search button{flex:none;background:var(--acc);color:#042530;border:none;font-family:inherit;font-weight:800;font-size:16px;padding:16px 28px;border-radius:14px;cursor:pointer}
+  .micro{margin-top:20px;color:var(--muted);font-size:14px;display:flex;gap:24px;justify-content:center}
+  .micro span{display:flex;gap:7px;align-items:center}
+  .micro b{color:var(--acc-br)}
+  .buyline{text-align:center;margin-top:30px;color:var(--muted);font-size:15.5px}
+  .buyline a{color:#fff;font-weight:700;border-bottom:2px solid var(--acc);padding-bottom:2px}
+
+  .strip{display:flex;justify-content:center;gap:48px;margin:62px auto 0;flex-wrap:wrap}
+  .strip .s{text-align:center}
+  .strip .n{font-size:30px;font-weight:800;background:linear-gradient(110deg,#67E3FF,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.02em}
+  .strip .l{color:var(--muted);font-size:13px;margin-top:2px}
+
+  .section{padding:96px 0}
+  .kicker{text-align:center;color:var(--acc-br);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+  h2{text-align:center;font-size:46px;font-weight:800;letter-spacing:-.03em;margin-top:10px;line-height:1.06}
+  .lede{text-align:center;color:var(--muted);font-size:18px;max-width:560px;margin:16px auto 0;line-height:1.55}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+  .step{background:var(--card);border:1px solid var(--cardline);border-radius:20px;padding:32px 28px;backdrop-filter:blur(16px)}
+  .step .n{width:46px;height:46px;border-radius:13px;background:rgba(34,211,238,.16);color:var(--acc-br);display:grid;place-items:center;font-weight:800;font-size:18px;margin-bottom:18px}
+  .step h3{font-size:20px;font-weight:700;margin-bottom:8px}
+  .step p{color:var(--muted);font-size:15px;line-height:1.55}
+
+  .bento{display:grid;grid-template-columns:1.3fr 1fr;gap:22px;margin-top:56px}
+  .feat{background:var(--card);border:1px solid var(--cardline);border-radius:22px;padding:38px;backdrop-filter:blur(16px);position:relative;overflow:hidden}
+  .feat.big{grid-row:span 2;display:flex;flex-direction:column;justify-content:space-between;min-height:340px}
+  .feat .glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.4),transparent 70%);top:-100px;right:-80px}
+  .feat h3{font-size:24px;font-weight:800;letter-spacing:-.01em;position:relative}
+  .feat p{color:var(--muted);margin-top:10px;font-size:15px;line-height:1.55;position:relative;max-width:360px}
+  .feat .amount{font-size:52px;font-weight:800;letter-spacing:-.03em;background:linear-gradient(110deg,#67E3FF,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent;position:relative}
+  .feat .amount small{display:block;font-size:14px;font-weight:600;color:var(--muted);-webkit-text-fill-color:var(--muted);margin-top:6px}
+
+  .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+  .tcard{background:var(--card);border:1px solid var(--cardline);border-radius:20px;padding:28px;backdrop-filter:blur(16px)}
+  .stars{color:#E0A21A;font-size:15px;letter-spacing:2px}
+  .tcard p{font-size:15.5px;line-height:1.55;margin:14px 0 18px;color:#D6E2E8}
+  .who{display:flex;align-items:center;gap:12px}
+  .who .av{width:40px;height:40px;border-radius:50%;background:var(--acc);color:#042530;display:grid;place-items:center;font-weight:800}
+  .who b{font-size:14.5px;color:#fff}
+  .who span{display:block;color:var(--muted);font-size:13px}
+
+  .pro-inner{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(56,189,248,.08));border:1px solid var(--cardline);border-radius:28px;padding:56px;text-align:center;backdrop-filter:blur(16px)}
+  .pro-eyebrow{color:var(--acc-br);font-weight:700;font-size:12.5px;letter-spacing:.11em;text-transform:uppercase}
+  .pro-inner h3{font-size:42px;font-weight:800;letter-spacing:-.03em;margin-top:12px}
+  .pro-inner .psub{color:var(--muted);margin:14px auto 0;max-width:540px;font-size:16.5px;line-height:1.5}
+  .pfeats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:42px 0 0;text-align:left}
+  .pfeat{background:rgba(255,255,255,.05);border:1px solid var(--cardline);border-radius:16px;padding:22px;backdrop-filter:blur(8px)}
+  .pfeat .ic{width:38px;height:38px;border-radius:11px;background:rgba(34,211,238,.22);display:grid;place-items:center;margin-bottom:14px}
+  .pfeat b{font-size:15px}
+  .pfeat span{display:block;color:var(--muted);font-size:12.5px;line-height:1.5;margin-top:6px}
+  .pro-cta-row{display:flex;gap:14px;justify-content:center;margin-top:38px;flex-wrap:wrap}
+  .pro-inner .cta{display:inline-block;background:var(--acc);color:#042530;padding:16px 30px;border-radius:14px;font-weight:800;font-size:16px}
+  .pro-inner .ghost{display:inline-block;padding:16px 28px;border-radius:14px;font-weight:700;font-size:16px;border:1px solid rgba(255,255,255,.28);color:#fff}
+
+  footer{border-top:1px solid var(--cardline);padding:60px 0 36px;margin-top:40px}
+  .fgrid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:40px}
+  .flogo{height:30px;width:auto}
+  footer .blurb{color:var(--muted);margin-top:14px;font-size:14px;line-height:1.6;max-width:290px}
+  footer h5{color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+  footer ul{list-style:none;display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--muted)}
+  .fbottom{margin-top:44px;padding-top:22px;border-top:1px solid var(--cardline);display:flex;justify-content:space-between;color:var(--muted);font-size:13px;flex-wrap:wrap;gap:10px}
+
+  @media (max-width:768px){
+    .wrap{padding:0 22px}
+    nav{padding:18px 22px}
+    .navlinks,.nav-right{display:none}
+    .hamburger{display:flex}
+    .hero{padding:50px 22px 30px}
+    h1{font-size:44px}
+    .sub{font-size:17px}
+    .glass{padding:14px}
+    .search{flex-direction:column;align-items:stretch;gap:10px;padding:0}
+    .search svg{display:none}
+    .search input{text-align:center;padding:8px 4px;font-size:16px}
+    .search button{width:100%;padding:16px;border-radius:12px}
+    .micro{flex-direction:column;gap:8px}
+    .strip{gap:24px 36px;margin-top:44px}
+    .strip .n{font-size:26px}
+    .section{padding:60px 0}
+    h2{font-size:32px}
+    .lede{font-size:16px}
+    .steps,.tgrid{grid-template-columns:1fr;gap:16px;margin-top:36px}
+    .bento{grid-template-columns:1fr;gap:16px;margin-top:36px}
+    .feat.big{grid-row:auto;min-height:0}
+    .feat .amount{font-size:42px}
+    .pro-inner{padding:40px 24px}
+    .pro-inner h3{font-size:30px}
+    .pro-inner .psub{font-size:15.5px}
+    .pfeats{grid-template-columns:1fr 1fr;gap:14px;margin-top:34px}
+    .pro-cta-row{flex-direction:column}
+    .pro-inner .cta,.pro-inner .ghost{text-align:center}
+    .fgrid{grid-template-columns:1fr 1fr;gap:30px}
+    .fbottom{flex-direction:column;gap:8px}
+  }
+</style>
+</head>
+<body>
+  <div class="mesh"><div class="o o1"></div><div class="o o2"></div><div class="o o3"></div><div class="o o4"></div></div>
+  <div class="grain"></div>
+
+  <div class="page">
+  <nav>
+    <img class="logo" src="assets/logo-cyan-dark.png" alt="zBuyer">
+    <div class="navlinks"><a>Sell</a><a>Buy</a><a>How it works</a><a>About</a></div>
+    <div class="nav-right"><a class="pro-link" href="agents-dark-cyan.html">For Agents &amp; Investors →</a><a class="signin">Sign in</a></div>
+    <div class="hamburger">☰</div>
+  </nav>
+
+  <header class="hero">
+    <div class="chip"><span class="d"></span>A real cash offer in 48 hours</div>
+    <h1>Know your home's<br><span class="g">cash value.</span></h1>
+    <p class="sub">Enter your address. We'll match you with a trusted local expert and a no-obligation cash offer — fast.</p>
+    <div class="glass">
+      <form class="search" onsubmit="return false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" stroke="#38BDF8" stroke-width="2"/><circle cx="12" cy="10" r="2.6" stroke="#38BDF8" stroke-width="2"/></svg>
+        <input placeholder="Enter your home address" value="1401 Camdlewood Dr, Pittsburgh, PA">
+        <button>Get my offer</button>
+      </form>
+    </div>
+    <div class="micro"><span>★★★★★ <b>4.8</b> rating</span><span>✓ No fees</span><span>✓ No obligation</span></div>
+    <div class="buyline">Here to buy a home instead? <a href="https://pulse.zbuyer.com/index.html?CTID=13972283&landing=buying-hn&autostart=1&MID=56&affid=testing&zzipcode=93065">Start your home search →</a></div>
+    <div class="strip">
+      <div class="s"><div class="n">$3.4B+</div><div class="l">Home value evaluated</div></div>
+      <div class="s"><div class="n">12,000+</div><div class="l">Homeowners helped</div></div>
+      <div class="s"><div class="n">48 hrs</div><div class="l">Avg. time to an offer</div></div>
+      <div class="s"><div class="n">All 50</div><div class="l">States covered</div></div>
+    </div>
+  </header>
+
+  <section class="section"><div class="wrap">
+    <div class="kicker">Simple &amp; free</div>
+    <h2>How zBuyer works</h2>
+    <p class="lede">Three steps between you and a real cash offer on your home.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Enter your address</h3><p>Tell us about your home in 60 seconds. No paperwork, no showings, no pressure.</p></div>
+      <div class="step"><div class="n">2</div><h3>Meet a local expert</h3><p>We match you with a vetted real-estate pro who knows your market.</p></div>
+      <div class="step"><div class="n">3</div><h3>Get your cash offer</h3><p>Review a real, no-obligation cash value and decide on your terms.</p></div>
+    </div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap">
+    <div class="kicker">Why zBuyer</div>
+    <h2>Selling, reimagined.</h2>
+    <div class="bento">
+      <div class="feat big"><div class="glow"></div><div><h3>A fair cash offer, as-is</h3><p>Skip listing, staging, and repairs. Get a competitive cash value for your home exactly as it is today.</p></div><div class="amount">$284,000<small>Estimated cash value · 1401 Camdlewood Dr</small></div></div>
+      <div class="feat"><h3>Fast &amp; flexible</h3><p>Offers in as little as 48 hours, and you choose the closing timeline.</p></div>
+      <div class="feat"><h3>Vetted local experts</h3><p>Work with a professional who actually knows your neighborhood.</p></div>
+    </div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap">
+    <div class="kicker">Loved by homeowners</div>
+    <h2>Real sellers, real results</h2>
+    <div class="tgrid">
+      <div class="tcard"><div class="stars">★★★★★</div><p>"I had a fair cash offer in two days — no repairs, no open houses, no stress at all."</p><div class="who"><span class="av">MG</span><div><b>Maria G.</b><span>Phoenix, AZ</span></div></div></div>
+      <div class="tcard"><div class="stars">★★★★★</div><p>"zBuyer connected me with an agent who actually knew my neighborhood and my market."</p><div class="who"><span class="av">DR</span><div><b>David R.</b><span>Pittsburgh, PA</span></div></div></div>
+      <div class="tcard"><div class="stars">★★★★★</div><p>"Simple, fast, and zero pressure. Exactly what I needed to move on quickly."</p><div class="who"><span class="av">LK</span><div><b>Lena K.</b><span>Tampa, FL</span></div></div></div>
+    </div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap">
+    <div class="pro-inner">
+      <div class="pro-eyebrow">zBuyer for Professionals</div>
+      <h3>Leads. Simplified.</h3>
+      <p class="psub">Built for agents and investors — motivated buyer &amp; seller leads, delivered the moment they're ready.</p>
+      <div class="pfeats">
+        <div class="pfeat"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2 5 13h5l-1 9 9-12h-5l1-8Z" stroke="#7DD3FC" stroke-width="1.8" stroke-linejoin="round"/></svg></span><b>Real-time leads</b><span>Instantly to your inbox, app &amp; CRM.</span></div>
+        <div class="pfeat"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="18" rx="2" stroke="#7DD3FC" stroke-width="1.8"/><path d="M9 9h6M9 13h6M9 17h3" stroke="#7DD3FC" stroke-width="1.8" stroke-linecap="round"/></svg></span><b>No long-term contracts</b><span>Come and go as you please.</span></div>
+        <div class="pfeat"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3 5 6v5c0 4 3 6.6 7 8 4-1.4 7-4 7-8V6l-7-3Z" stroke="#7DD3FC" stroke-width="1.8" stroke-linejoin="round"/><path d="m9.3 11.4 1.8 1.8 3.4-3.7" stroke="#7DD3FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Opt-in &amp; compliant</b><span>Every lead has opted in for contact.</span></div>
+        <div class="pfeat"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h8M16 7h4M4 17h4M12 17h8" stroke="#7DD3FC" stroke-width="1.8" stroke-linecap="round"/><circle cx="14" cy="7" r="2.2" stroke="#7DD3FC" stroke-width="1.8"/><circle cx="10" cy="17" r="2.2" stroke="#7DD3FC" stroke-width="1.8"/></svg></span><b>Custom packages</b><span>Choose amount, type &amp; location.</span></div>
+      </div>
+      <div class="pro-cta-row">
+        <a class="cta" href="agents-dark-cyan.html">Explore zBuyer Pro →</a>
+        <a class="ghost" href="agents-dark-cyan.html">Request a demo</a>
+      </div>
+    </div>
+  </div></section>
+
+  <footer><div class="wrap">
+    <div class="fgrid">
+      <div>
+        <img class="flogo" src="assets/logo-cyan-dark.png" alt="zBuyer">
+        <p class="blurb">Connecting homeowners with trusted local experts and real cash offers — and connecting real-estate professionals with motivated buyers and sellers.</p>
+      </div>
+      <div><h5>Sellers</h5><ul><li><a>Get a cash offer</a></li><li><a>How it works</a></li><li><a>FAQ</a></li></ul></div>
+      <div><h5>Buyers</h5><ul><li><a>Search homes</a></li><li><a>Find an agent</a></li></ul></div>
+      <div><h5>Professionals</h5><ul><li><a href="agents-dark-cyan.html">For Agents &amp; Investors</a></li><li><a href="agents-dark-cyan.html">zBuyer Pro</a></li><li><a>Sign in</a></li></ul></div>
+    </div>
+    <div class="fbottom"><span>© 2026 zBuyer. All rights reserved.</span><span>Terms of Service · Privacy Policy</span></div>
+  </div></footer>
+  </div>
+</body>
+</html>

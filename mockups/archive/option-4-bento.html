@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zBuyer — Option 4 · Bento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0B1220;--muted:#64748B;--line:#E8EDF3;--brand:#1FA67A;--brand-d:#0B6E4F;--blue:#2563EB}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:#F4F7FA;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;max-width:1280px;margin:0 auto}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;letter-spacing:-.02em}
+  .logo .pin{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-d));display:grid;place-items:center}
+  .navlinks{display:flex;gap:28px;font-weight:500;font-size:14.5px;opacity:.78}
+  .nav-right{display:flex;align-items:center;gap:16px;font-size:14px}
+  .pro-link{font-weight:700}
+  .btn-dark{background:var(--ink);color:#fff;padding:9px 18px;border-radius:10px;font-weight:600}
+
+  .wrap{max-width:1280px;margin:0 auto;padding:16px 40px 60px}
+  .grid{display:grid;grid-template-columns:1.55fr 1fr;grid-auto-rows:minmax(0,auto);gap:18px}
+
+  /* HERO CARD */
+  .hero{grid-row:span 2;background:linear-gradient(155deg,#0B6E4F,#063b2a);border-radius:26px;padding:48px;color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;min-height:480px}
+  .hero .glow{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(31,166,122,.6),transparent 70%);top:-120px;right:-100px}
+  .hero .eyebrow{font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#9EF5CB;position:relative}
+  .hero h1{font-size:52px;line-height:1.04;font-weight:800;letter-spacing:-.03em;margin-top:14px;position:relative}
+  .hero p{margin-top:16px;font-size:16.5px;opacity:.88;max-width:430px;line-height:1.5;position:relative}
+  .search{margin-top:28px;background:#fff;border-radius:14px;padding:6px 6px 6px 18px;display:flex;align-items:center;gap:10px;position:relative;box-shadow:0 24px 50px -22px rgba(0,0,0,.5);max-width:480px}
+  .search input{flex:1;border:none;outline:none;font-size:15.5px;font-family:inherit;padding:14px 0;color:var(--ink)}
+  .search input::placeholder{color:#9AA8B4}
+  .search button{flex:none;background:linear-gradient(135deg,var(--brand),var(--brand-d));color:#fff;border:none;font-family:inherit;font-weight:700;font-size:14.5px;padding:14px 24px;border-radius:10px;cursor:pointer}
+  .hero .mini{margin-top:18px;display:flex;gap:20px;font-size:13.5px;opacity:.9;position:relative}
+  .hero .mini span{display:flex;gap:7px;align-items:center}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px}
+
+  /* VALUE WIDGET */
+  .val .top{display:flex;align-items:center;justify-content:space-between}
+  .val .top b{font-size:14px}
+  .val .badge{font-size:11px;font-weight:700;color:var(--brand-d);background:#E6F7EF;padding:4px 9px;border-radius:999px}
+  .val .amount{font-size:40px;font-weight:800;letter-spacing:-.02em;margin-top:14px}
+  .val .range{color:var(--muted);font-size:13.5px;margin-top:4px}
+  .spark{margin-top:16px;height:64px;width:100%}
+  .val .addr{margin-top:14px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:7px}
+
+  /* BUY CARD */
+  .buy{background:linear-gradient(155deg,#1E3A8A,#0f1f4d);color:#fff;border:none;display:flex;flex-direction:column;justify-content:space-between;min-height:170px}
+  .buy h3{font-size:22px;font-weight:800;letter-spacing:-.01em}
+  .buy p{opacity:.82;font-size:14px;margin-top:6px;max-width:280px}
+  .buy .go{margin-top:18px;display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14.5px;background:rgba(255,255,255,.14);padding:11px 16px;border-radius:10px;width:max-content}
+
+  /* small stat cards row */
+  .stats{grid-column:1 / -1;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 24px}
+  .stat .n{font-size:26px;font-weight:800;color:var(--brand-d);letter-spacing:-.02em}
+  .stat .l{color:var(--muted);font-size:13px;margin-top:3px;font-weight:500}
+
+  /* PRO banner */
+  .pro{grid-column:1 / -1;background:var(--ink);color:#fff;border-radius:22px;padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .pro h3{font-size:24px;font-weight:800;letter-spacing:-.02em}
+  .pro p{color:#9FB0C0;margin-top:6px;font-size:14.5px;max-width:560px}
+  .pro .cta{flex:none;background:#fff;color:var(--ink);padding:13px 22px;border-radius:11px;font-weight:700}
+
+  .howcard h4{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .howcard ol{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:14px}
+  .howcard li{display:flex;gap:13px;align-items:flex-start}
+  .howcard .n{flex:none;width:30px;height:30px;border-radius:9px;background:#E6F7EF;color:var(--brand-d);display:grid;place-items:center;font-weight:800;font-size:14px}
+  .howcard .t b{font-size:15px}
+  .howcard .t p{color:var(--muted);font-size:13px;margin-top:1px}
+</style>
+</head>
+<body>
+  <nav>
+    <div class="logo"><span class="pin"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>zBuyer</div>
+    <div class="navlinks"><a>Sell</a><a>Buy</a><a>How it works</a><a>About</a></div>
+    <div class="nav-right"><a class="pro-link">For Agents &amp; Investors</a><a class="btn-dark">Sign in</a></div>
+  </nav>
+
+  <div class="wrap">
+    <div class="grid">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="glow"></div>
+        <div class="eyebrow">Free · No obligation</div>
+        <h1>What's your home worth in cash?</h1>
+        <p>Enter your address to see your home's cash value and get connected with a trusted local expert.</p>
+        <form class="search" onsubmit="return false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" stroke="#0B6E4F" stroke-width="2"/><circle cx="12" cy="10" r="2.6" stroke="#0B6E4F" stroke-width="2"/></svg>
+          <input placeholder="Enter your home address" value="1401 Camdlewood Dr, Pittsburgh, PA">
+          <button>Get my cash offer</button>
+        </form>
+        <div class="mini"><span>★★★★★ 4.8 / 5</span><span>✓ 12,000+ sellers</span></div>
+      </section>
+
+      <!-- VALUE WIDGET -->
+      <section class="card val">
+        <div class="top"><b>Estimated cash value</b><span class="badge">LIVE ESTIMATE</span></div>
+        <div class="amount">$284,000</div>
+        <div class="range">Likely range $271K – $298K</div>
+        <svg class="spark" viewBox="0 0 320 64" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1FA67A" stop-opacity=".25"/><stop offset="1" stop-color="#1FA67A" stop-opacity="0"/></linearGradient></defs><path d="M0 50 L40 46 L80 48 L120 38 L160 40 L200 28 L240 30 L280 18 L320 12 L320 64 L0 64 Z" fill="url(#g)"/><path d="M0 50 L40 46 L80 48 L120 38 L160 40 L200 28 L240 30 L280 18 L320 12" fill="none" stroke="#0B6E4F" stroke-width="2.5"/></svg>
+        <div class="addr"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" stroke="#64748B" stroke-width="2"/></svg>1401 Camdlewood Dr, Pittsburgh, PA</div>
+      </section>
+
+      <!-- BUY -->
+      <a class="card buy" href="https://pulse.zbuyer.com/index.html?CTID=13972283&landing=buying-hn&autostart=1&MID=56&affid=testing&zzipcode=93065">
+        <div><h3>Looking to buy?</h3><p>Browse homes for sale and connect with a local agent.</p></div>
+        <span class="go">Start your home search →</span>
+      </a>
+
+      <!-- STATS ROW -->
+      <div class="stats">
+        <div class="stat"><div class="n">$3.4B+</div><div class="l">Home value evaluated</div></div>
+        <div class="stat"><div class="n">48 hrs</div><div class="l">Avg. time to an offer</div></div>
+        <div class="stat"><div class="n">12,000+</div><div class="l">Homeowners helped</div></div>
+        <div class="stat"><div class="n">All 50</div><div class="l">States covered</div></div>
+      </div>
+
+      <!-- PRO -->
+      <section class="pro">
+        <div><h3>Are you an agent or investor?</h3><p>Real-time, opt-in buyer &amp; seller connections delivered to your inbox, app, and CRM — no long-term contracts.</p></div>
+        <a class="cta" href="https://welcome.zbuyer.com/">Explore zBuyer Pro →</a>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
