@@ -24,9 +24,9 @@
   .grain{position:fixed;inset:0;z-index:1;opacity:.5;pointer-events:none;background:radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 0);background-size:24px 24px}
   .page{position:relative;z-index:10}
 
-  nav{display:flex;align-items:center;justify-content:space-between;padding:24px 52px}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:24px 52px;position:relative}
   .logo{height:30px;width:auto}
-  .navlinks{display:flex;gap:32px;font-weight:500;font-size:15px;color:var(--muted)}
+  .navlinks{display:flex;gap:32px;font-weight:500;font-size:15px;color:var(--muted);position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
   .nav-right{display:flex;align-items:center;gap:18px}
   .pro-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid rgba(255,255,255,.18);border-radius:999px;font-weight:600;font-size:14px;background:rgba(255,255,255,.04);backdrop-filter:blur(8px)}
   .signin{font-weight:600;font-size:15px;color:var(--ink)}
