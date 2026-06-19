@@ -36,7 +36,7 @@
   .chip{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border-radius:999px;border:1px solid rgba(34,211,238,.42);background:rgba(34,211,238,.1);font-size:13px;font-weight:600;color:var(--acc-br);margin-bottom:26px}
   .chip .d{width:7px;height:7px;border-radius:50%;background:var(--acc);box-shadow:0 0 10px var(--acc)}
   h1{font-size:80px;line-height:1.0;font-weight:800;letter-spacing:-.045em}
-  h1 .g{background:linear-gradient(110deg,#67E3FF,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent}
+  h1 .g{background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.88) 50%,transparent 62%),linear-gradient(110deg,#67E3FF,#38BDF8);background-size:250% 100%,100% 100%;background-position:130% 0,0 0;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cvshine 4s ease-in-out infinite}@keyframes cvshine{0%{background-position:130% 0,0 0}32%,100%{background-position:-45% 0,0 0}}@media (prefers-reduced-motion:reduce){h1 .g{animation:none;background-position:-45% 0,0 0}}
   .sub{color:var(--muted);font-size:20px;margin-top:24px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.5}
   .glass{margin:40px auto 0;max-width:600px;background:var(--card);border:1px solid var(--cardline);border-radius:22px;padding:10px;backdrop-filter:blur(22px);box-shadow:0 30px 80px -30px rgba(0,0,0,.8)}
   .search{display:flex;align-items:center;gap:12px;padding:6px 6px 6px 22px}
@@ -66,7 +66,7 @@
   .step p{color:var(--muted);font-size:15px;line-height:1.55}
 
   .bento{display:grid;grid-template-columns:1.3fr 1fr;gap:22px;margin-top:56px}
-  .feat{background:var(--card);border:1px solid var(--cardline);border-radius:22px;padding:38px;backdrop-filter:blur(16px);position:relative;overflow:hidden}
+  .feat{background:var(--card);border:1px solid var(--cardline);border-radius:22px;padding:38px;backdrop-filter:blur(16px);position:relative;overflow:hidden}.feat .fic{width:44px;height:44px;border-radius:12px;background:rgba(34,211,238,.16);display:grid;place-items:center;margin-bottom:16px;position:relative}
   .feat.big{grid-row:span 2;display:flex;flex-direction:column;justify-content:space-between;min-height:340px}
   .feat .glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.4),transparent 70%);top:-100px;right:-80px}
   .feat h3{font-size:24px;font-weight:800;letter-spacing:-.01em;position:relative}
@@ -186,9 +186,9 @@
     <div class="kicker">Why zBuyer</div>
     <h2>Selling, reimagined.</h2>
     <div class="bento">
-      <div class="feat big"><div class="glow"></div><div><h3>A fair cash offer, as-is</h3><p>Skip listing, staging, and repairs. Get a competitive cash value for your home exactly as it is today.</p></div><div class="amount">$284,000<small>Estimated cash value · 1401 Camdlewood Dr</small></div></div>
-      <div class="feat"><h3>Fast &amp; flexible</h3><p>Offers in as little as 48 hours, and you choose the closing timeline.</p></div>
-      <div class="feat"><h3>Vetted local experts</h3><p>Work with a professional who actually knows your neighborhood.</p></div>
+      <div class="feat big"><div class="glow"></div><div class="fic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/></svg></div><div><h3>A fair cash offer, as-is</h3><p>Skip listing, staging, and repairs. Get a competitive cash value for your home exactly as it is today.</p></div><div class="amount">$284,000<small>Estimated cash value · 1401 Camdlewood Dr</small></div></div>
+      <div class="feat"><div class="fic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div><h3>Fast &amp; flexible</h3><p>Offers in as little as 48 hours, and you choose the closing timeline.</p></div>
+      <div class="feat"><div class="fic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4 3 6.6 7 8 4-1.4 7-4 7-8V6l-7-3Z"/><path d="m9.3 11.4 1.8 1.8 3.4-3.7"/></svg></div><h3>Vetted local experts</h3><p>Work with a professional who actually knows your neighborhood.</p></div>
     </div>
   </div></section>
 
