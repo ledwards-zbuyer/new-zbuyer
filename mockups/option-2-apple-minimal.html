@@ -74,17 +74,17 @@
   .quote blockquote{font-size:38px;font-weight:700;letter-spacing:-.025em;line-height:1.25;margin:24px 0 26px;color:var(--charcoal)}
   .quote .who{color:var(--muted);font-size:16px;font-weight:600}
 
-  .pro-inner{position:relative;overflow:hidden;background:var(--charcoal);color:#fff;border-radius:32px;padding:72px 64px;text-align:center}
+  .pro-inner{position:relative;overflow:hidden;background:var(--charcoal);color:#fff;border-radius:32px;padding:58px;display:grid;grid-template-columns:1.04fr .96fr;gap:46px;align-items:center}
   .pro-inner .pglow{position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:680px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(194,97,62,.24),transparent 70%);pointer-events:none}
   .pro-eyebrow{position:relative;color:var(--gold-br);font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase}
-  .pro-inner h3{position:relative;font-size:46px;font-weight:800;letter-spacing:-.035em;margin-top:14px}
-  .pro-inner .psub{position:relative;color:#B8B8C0;margin:16px auto 0;max-width:560px;font-size:17px;line-height:1.5}
-  .pfeats{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin:52px auto 0;max-width:880px;text-align:left}
+  .pro-inner h3{position:relative;font-size:36px;font-weight:800;letter-spacing:-.03em;margin-top:12px}
+  .pro-inner .psub{position:relative;color:#B8B8C0;margin:14px 0 0;max-width:440px;font-size:16px;line-height:1.55}
+  .pfeats{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:22px 28px;margin:26px 0 0;text-align:left}
   .pfeat{border-top:1px solid rgba(255,255,255,.16);padding-top:18px}
   .pfeat .num{font-size:13px;font-weight:800;color:var(--gold-br);letter-spacing:.05em}
   .pfeat b{display:block;margin-top:12px;font-size:16px}
   .pfeat span{display:block;color:#9A9AA6;font-size:13.5px;line-height:1.5;margin-top:6px}
-  .pro-cta-row{position:relative;display:flex;gap:14px;justify-content:center;margin-top:48px;flex-wrap:wrap}
+  .pro-cta-row{position:relative;display:flex;gap:14px;justify-content:flex-start;margin-top:30px;flex-wrap:wrap}.pcopy{position:relative}.leadstack{position:relative;display:flex;flex-direction:column;gap:13px}.leadcard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:15px 17px;display:flex;align-items:flex-start;gap:13px}.leadcard.featured{background:rgba(255,255,255,.1);border-color:rgba(194,97,62,.5)}.leadcard .pin{flex:none;width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#C2613E,#9E4A2C);display:grid;place-items:center}.leadcard .lc-body{flex:1}.leadcard .lc-top{display:flex;justify-content:space-between;align-items:center}.leadcard .lc-top b{font-size:14px}.leadcard .lc-top .t{color:#9A9AA6;font-size:11.5px}.leadcard .addr{color:#C8C8CE;font-size:12.5px;margin-top:2px}.leadcard .tag{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:700;color:#EBA374;background:rgba(194,97,62,.22);padding:3px 9px;border-radius:999px}
   .pro-inner .cta{display:inline-block;background:var(--gold);color:#fff;padding:16px 30px;border-radius:999px;font-weight:800;font-size:16px}
   .pro-inner .ghost{display:inline-block;padding:16px 28px;border-radius:999px;font-weight:700;font-size:16px;border:1.5px solid rgba(255,255,255,.35);color:#fff}
 
@@ -121,7 +121,7 @@
     .fcopy h3{font-size:30px}
     .fcopy p{font-size:16px}
     .quote blockquote{font-size:26px}
-    .pro-inner{padding:46px 26px}
+    .pro-inner{padding:42px 26px;grid-template-columns:1fr;gap:30px}
     .pro-inner h3{font-size:32px}
     .pro-inner .psub{font-size:15.5px}
     .pfeats{grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
@@ -212,7 +212,8 @@
   <section class="section" style="padding-top:0"><div class="wrap">
     <div class="pro-inner">
       <div class="pglow"></div>
-      <div class="pro-eyebrow">zBuyer for Professionals</div>
+      <div class="pcopy">
+        <div class="pro-eyebrow">zBuyer for Professionals</div>
       <h3>Leads. Simplified.</h3>
       <p class="psub">A turn-key way for agents and investors to meet motivated buyers and sellers — and grow without the busywork.</p>
       <div class="pfeats">
@@ -225,6 +226,8 @@
         <a class="cta" href="agents-apple-gold.html">Explore zBuyer Pro →</a>
         <a class="ghost" href="agents-apple-gold.html">Request a demo</a>
       </div>
+      </div>
+      <div class="leadstack"><div class="leadcard featured"><div class="pin"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="lc-body"><div class="lc-top"><b>New seller lead</b><span class="t">Just now</span></div><div class="addr">1401 Candlewood Dr, Pittsburgh, PA</div><span class="tag">CASH OFFER REQUESTED</span></div></div><div class="leadcard"><div class="pin"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="8" r="3.4" stroke="#fff" stroke-width="2"/><path d="M5 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div><div class="lc-body"><div class="lc-top"><b>New buyer lead</b><span class="t">4m ago</span></div><div class="addr">Simi Valley, CA 93065</div><span class="tag">PRE-APPROVED</span></div></div><div class="leadcard"><div class="pin"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="lc-body"><div class="lc-top"><b>New seller lead</b><span class="t">12m ago</span></div><div class="addr">Tampa, FL 33602</div><span class="tag">MOTIVATED · 30 DAYS</span></div></div></div>
     </div>
   </div></section>
 
