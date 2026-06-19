@@ -24,9 +24,9 @@
   .grain{position:fixed;inset:0;z-index:1;opacity:.5;pointer-events:none;background:radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 0);background-size:24px 24px}
   .page{position:relative;z-index:10}
 
-  nav{display:flex;align-items:center;justify-content:space-between;padding:22px 52px}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:22px 52px;position:relative}
   .logo{height:30px;width:auto}
-  .navlinks{display:flex;gap:30px;font-weight:500;font-size:15px;color:var(--muted)}
+  .navlinks{display:flex;gap:30px;font-weight:500;font-size:15px;color:var(--muted);position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
   .nav-right{display:flex;align-items:center;gap:16px}
   .back{color:var(--muted);font-weight:600;font-size:14px}
   .signin{font-weight:600;font-size:15px;color:var(--ink)}
@@ -168,8 +168,8 @@
 
   <div class="page">
   <nav>
-    <img class="logo" src="assets/logo-cyan-dark.png" alt="zBuyer">
-    <div class="navlinks"><a href="agents-dark-cyan.html">Home</a><a href="solutions-dark-cyan.html">Solutions</a><a href="reviews-dark-cyan.html">Reviews</a><a href="support-dark-cyan.html">Support</a></div>
+    <a href="agents-dark-cyan.html"><img class="logo" src="assets/logo-cyan-dark.png" alt="zBuyer"></a>
+    <div class="navlinks"><a href="solutions-dark-cyan.html">Solutions</a><a href="reviews-dark-cyan.html">Reviews</a><a href="support-dark-cyan.html">Support</a></div>
     <div class="nav-right"><a class="back" href="option-5-dark.html">← For home sellers</a><a class="signin">Sign in</a><a class="navcta" href="https://welcome.zbuyer.com/">Check availability</a></div>
     <div class="hamburger">☰</div>
   </nav>
@@ -259,7 +259,7 @@
   <footer><div class="wrap">
     <div class="fgrid">
       <div>
-        <img class="flogo" src="assets/logo-cyan-dark.png" alt="zBuyer">
+        <a href="agents-dark-cyan.html"><img class="flogo" src="assets/logo-cyan-dark.png" alt="zBuyer"></a>
         <p class="blurb">Connecting real-estate professionals with motivated buyers and sellers — and connecting homeowners with trusted local experts and real cash offers.</p>
       </div>
       <div><h5>Professionals</h5><ul><li><a>Check availability</a></li><li><a>Request a demo</a></li><li><a>zBuyer Mastermind</a></li><li><a>Sign in</a></li></ul></div>

@@ -47,9 +47,9 @@ img{display:block}
 
 /* ---------- NAV ---------- */
 .topbar{position:sticky;top:0;z-index:40;background:var(--navbg);border-bottom:1px solid var(--navline);backdrop-filter:blur(16px)}
-.bar{max-width:1140px;margin:0 auto;padding:15px 40px;display:flex;align-items:center;justify-content:space-between}
+.bar{max-width:1140px;margin:0 auto;padding:15px 40px;display:flex;align-items:center;justify-content:space-between;position:relative}
 .brand{height:28px;width:auto}
-.navlinks{display:flex;align-items:center;gap:28px;font-size:15px;font-weight:500;color:var(--navtext)}
+.navlinks{display:flex;align-items:center;gap:28px;font-size:15px;font-weight:500;color:var(--navtext);position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
 .navlinks a.active{color:var(--accent-ink);font-weight:700}
 .nav-actions{display:flex;align-items:center;gap:16px;font-size:14px}
 .nav-actions .sellers{color:var(--navtext);font-weight:600}

@@ -17,7 +17,7 @@
 
   nav{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;font-size:14px;position:sticky;top:0;background:rgba(255,255,255,.74);backdrop-filter:blur(18px);z-index:30;border-bottom:1px solid rgba(0,0,0,.04)}
   .logo{height:28px;width:auto}
-  .navlinks{display:flex;gap:30px;color:var(--ink);font-weight:500;opacity:.75}
+  .navlinks{display:flex;gap:30px;color:var(--ink);font-weight:500;opacity:.75;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
   .nav-right{display:flex;align-items:center;gap:20px}
   .back{font-weight:600;color:var(--muted)}
   .navcta{background:var(--charcoal);color:#fff;padding:10px 20px;border-radius:999px;font-weight:700}
@@ -139,8 +139,8 @@
 </head>
 <body>
   <nav>
-    <img class="logo" src="assets/logo-clay-light.png" alt="zBuyer">
-    <div class="navlinks"><a href="agents-apple-gold.html">Home</a><a href="solutions-apple-gold.html">Solutions</a><a href="reviews-apple-gold.html">Reviews</a><a href="support-apple-gold.html">Support</a></div>
+    <a href="agents-apple-gold.html"><img class="logo" src="assets/logo-clay-light.png" alt="zBuyer"></a>
+    <div class="navlinks"><a href="solutions-apple-gold.html">Solutions</a><a href="reviews-apple-gold.html">Reviews</a><a href="support-apple-gold.html">Support</a></div>
     <div class="nav-right"><a class="back" href="option-2-apple-minimal.html">For home sellers</a><a class="navcta" href="https://welcome.zbuyer.com/">Check availability</a></div>
     <div class="hamburger">☰</div>
   </nav>
@@ -210,7 +210,7 @@
   <footer><div class="wrap">
     <div class="fgrid">
       <div>
-        <img class="flogo" src="assets/logo-clay-light.png" alt="zBuyer">
+        <a href="agents-apple-gold.html"><img class="flogo" src="assets/logo-clay-light.png" alt="zBuyer"></a>
         <p class="blurb">Connecting real-estate professionals with motivated buyers and sellers — and connecting homeowners with trusted local experts and real cash offers.</p>
       </div>
       <div><h5>Professionals</h5><ul><li><a>Check availability</a></li><li><a>Request a demo</a></li><li><a>zBuyer Mastermind</a></li><li><a>Sign in</a></li></ul></div>
