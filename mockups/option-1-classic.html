@@ -49,6 +49,36 @@
   .ac-list li.active,.ac-list li:hover{background:var(--tint)}
   .ac-list .ac-street{font-size:15.5px;font-weight:600;color:var(--ink)}
   .ac-list .ac-sec{font-size:13px;color:var(--muted)}
+
+  .lead-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+  .lead-modal[hidden]{display:none}
+  .lm-backdrop{position:absolute;inset:0;background:rgba(8,14,26,.62);backdrop-filter:blur(4px)}
+  .lm-card{position:relative;width:100%;max-width:440px;background:#fff;border-radius:20px;padding:30px 30px 24px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);animation:lmIn .22s ease}
+  @keyframes lmIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.lm-card{animation:none}}
+  .lm-x{position:absolute;top:13px;right:15px;border:none;background:none;font-size:26px;line-height:1;color:#9aa7bd;cursor:pointer}
+  .lm-screen[hidden]{display:none}
+  .lm-prog{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--c1)}
+  .lm-card h3{font-size:23px;font-weight:800;color:var(--ink);margin-top:7px;letter-spacing:-.02em}
+  .lm-sub{font-size:14.5px;color:var(--muted);margin-top:7px;line-height:1.45}
+  .lm-opts{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+  .lm-opt{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;padding:13px 16px;border:1.5px solid var(--line);border-radius:13px;background:#fff;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s}
+  .lm-opt span{font-size:16px;font-weight:700;color:var(--ink)}
+  .lm-opt em{font-size:12.5px;font-style:normal;color:var(--muted)}
+  .lm-opt:hover,.lm-opt.sel{border-color:var(--c1);background:var(--tint)}
+  .lm-back{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:0;margin-bottom:8px}
+  .lm-form{margin-top:18px;display:flex;flex-direction:column;gap:11px}
+  .lm-form input{width:100%;font-family:inherit;font-size:16px;color:var(--ink);padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;outline:none}
+  .lm-form input:focus{border-color:var(--c1)}
+  .lm-form input::placeholder{color:#98A6BC}
+  .lm-err{color:#D8442B;font-size:13.5px;font-weight:600}
+  .lm-err[hidden]{display:none}
+  .lm-consent{font-size:11px;line-height:1.5;color:#8a97ab;margin:2px 0 0}
+  .lm-consent a{color:var(--c1);font-weight:600;text-decoration:underline}
+  .lm-cta{margin-top:4px;background:var(--cta);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:16.5px;padding:16px;border-radius:12px;cursor:pointer}
+  .lm-cta:hover{background:var(--cta-d)}
+  .lm-cancel{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;padding:4px;align-self:center}
+  @media (max-width:560px){.lm-card{padding:26px 20px 20px;border-radius:18px}.lm-card h3{font-size:20px}}
   .search input{flex:1;border:none;outline:none;font-size:17px;font-family:inherit;color:var(--ink);padding:16px 0}
   .search input::placeholder{color:#98A6BC}
   .search button{flex:none;background:var(--cta);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:16px;padding:16px 30px;border-radius:11px;cursor:pointer}
@@ -323,7 +353,43 @@
     <div class="fbottom"><span>© 2026 zBuyer. All rights reserved.</span><span><a href="terms-classic-blue.html">Terms of Service</a> · <a href="privacy-classic-blue.html">Privacy Policy</a></span></div>
   </div></footer>
 
+  <div class="lead-modal" id="leadModal" hidden>
+    <div class="lm-backdrop" data-close></div>
+    <div class="lm-card" role="dialog" aria-modal="true" aria-labelledby="lm-title">
+      <button class="lm-x" type="button" data-close aria-label="Close">&times;</button>
+
+      <div class="lm-screen" data-screen="1">
+        <div class="lm-prog">Step 1 of 2</div>
+        <h3 id="lm-title">When are you hoping to sell?</h3>
+        <p class="lm-sub">No pressure — this just helps us tailor your free cash value report.</p>
+        <div class="lm-opts">
+          <button type="button" class="lm-opt" data-tf="asap"><span>As soon as possible</span><em>I'm ready to move</em></button>
+          <button type="button" class="lm-opt" data-tf="soon"><span>In the next few months</span><em>Getting things lined up</em></button>
+          <button type="button" class="lm-opt" data-tf="eventually"><span>Sometime down the road</span><em>No rush at all</em></button>
+          <button type="button" class="lm-opt" data-tf="curious"><span>Just curious about my value</span><em>Not planning to sell</em></button>
+        </div>
+      </div>
+
+      <div class="lm-screen" data-screen="2" hidden>
+        <button type="button" class="lm-back" data-back>&larr; Back</button>
+        <div class="lm-prog">Step 2 of 2</div>
+        <h3>Where should we send your cash value?</h3>
+        <p class="lm-sub">Your free, no-obligation report is ready — tell us where to send it.</p>
+        <form class="lm-form" id="leadForm" novalidate>
+          <input name="name" type="text" placeholder="Full name" autocomplete="name">
+          <input name="phone" type="tel" placeholder="Phone number" autocomplete="tel">
+          <input name="email" type="email" placeholder="Email address" autocomplete="email">
+          <p class="lm-err" id="leadErr" hidden></p>
+          <p class="lm-consent">By clicking &ldquo;Get my cash value,&rdquo; you give zBuyer and its real-estate partners your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase. Msg &amp; data rates may apply. See our <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp; <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+          <button type="submit" class="lm-cta">Get my cash value &rarr;</button>
+          <button type="button" class="lm-cancel" data-close>Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/smarty-config.js"></script>
   <script src="assets/address-autocomplete.js"></script>
+  <script src="assets/lead-modal.js"></script>
 </body>
 </html>

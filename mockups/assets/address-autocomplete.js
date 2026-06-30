@@ -87,6 +87,7 @@
       lookup(input.value, selectedString(s));
     } else {
       input.value = fullAddress(s);
+      window.zbSelectedAddress = s; // expose structured pick for the lead modal
       close();
     }
   }
@@ -104,6 +105,7 @@
   function close() { list.hidden = true; active = -1; input.setAttribute("aria-expanded", "false"); }
 
   input.addEventListener("input", function () {
+    window.zbSelectedAddress = null; // typing invalidates the last structured pick
     var q = input.value.trim();
     clearTimeout(debounce);
     if (q.length < 3) { close(); return; }
