@@ -21,6 +21,7 @@
   var phoneEl = form.querySelector('[name="phone"]');
   var emailEl = form.querySelector('[name="email"]');
   var tfEl = form.querySelector('[name="timeframe"]');
+  var tfWrap = tfEl.closest(".lm-selectwrap"); // border lives on the wrapper, not the select
   var lastFocus = null;
 
   function open() {
@@ -55,7 +56,7 @@
   [nameEl, phoneEl, emailEl].forEach(function (el) {
     el.addEventListener("input", function () { el.classList.remove("invalid"); });
   });
-  tfEl.addEventListener("change", function () { tfEl.classList.remove("invalid"); });
+  tfEl.addEventListener("change", function () { tfWrap.classList.remove("invalid"); });
 
   // Validate + forward to the funnel.
   form.addEventListener("submit", function (e) {
@@ -65,7 +66,7 @@
     var email = emailEl.value.trim();
     var digits = phone.replace(/\D/g, "");
 
-    [nameEl, phoneEl, emailEl, tfEl].forEach(function (el) { el.classList.remove("invalid"); });
+    [nameEl, phoneEl, emailEl, tfWrap].forEach(function (el) { el.classList.remove("invalid"); });
 
     var err = "";
     var bad = null;
@@ -75,7 +76,7 @@
     else if (!tfEl.value) { err = "Please choose your selling timeframe."; bad = tfEl; }
 
     if (err) {
-      bad.classList.add("invalid");
+      (bad === tfEl ? tfWrap : bad).classList.add("invalid");
       errEl.textContent = err;
       errEl.hidden = false;
       bad.focus();

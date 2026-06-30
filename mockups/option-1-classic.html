@@ -63,14 +63,14 @@
   .lm-form input{width:100%;font-family:inherit;font-size:16px;color:var(--ink);padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;outline:none}
   .lm-form input:focus{border-color:var(--c1)}
   .lm-form input::placeholder{color:#98A6BC}
-  .lm-group{display:flex;flex-direction:column;gap:6px}
-  .lm-label{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-  .lm-selectwrap{position:relative}
-  .lm-selectwrap::after{content:"";position:absolute;right:17px;top:50%;width:9px;height:9px;border-right:2px solid #98A6BC;border-bottom:2px solid #98A6BC;transform:translateY(-70%) rotate(45deg);pointer-events:none}
-  .lm-select{appearance:none;-webkit-appearance:none;width:100%;font-family:inherit;font-size:16px;color:var(--ink);padding:14px 40px 14px 16px;border:1.5px solid var(--line);border-radius:12px;background:#fff;outline:none;cursor:pointer}
-  .lm-select:focus{border-color:var(--c1)}
+  .lm-selectwrap{position:relative;border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:9px 16px}
+  .lm-selectwrap:focus-within{border-color:var(--c1)}
+  .lm-selectwrap.invalid{border-color:#D8442B;background:#FEF6F4}
+  .lm-label{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .lm-selectwrap::after{content:"";position:absolute;right:17px;top:calc(50% + 3px);width:9px;height:9px;border-right:2px solid #98A6BC;border-bottom:2px solid #98A6BC;transform:translateY(-50%) rotate(45deg);pointer-events:none}
+  .lm-select{appearance:none;-webkit-appearance:none;width:100%;font-family:inherit;font-size:16px;color:var(--ink);border:none;background:transparent;outline:none;cursor:pointer;padding:2px 24px 0 0}
   .lm-select:invalid{color:#98A6BC}
-  .lm-form input.invalid,.lm-select.invalid{border-color:#D8442B;background:#FEF6F4}
+  .lm-form input.invalid{border-color:#D8442B;background:#FEF6F4}
   .lm-err{color:#D8442B;font-size:13.5px;font-weight:600}
   .lm-err[hidden]{display:none}
   .lm-consent{font-size:11px;line-height:1.5;color:#8a97ab;margin:2px 0 0}
@@ -365,17 +365,15 @@
           <input name="name" type="text" placeholder="Full name" autocomplete="name">
           <input name="phone" type="tel" placeholder="Phone number" autocomplete="tel">
           <input name="email" type="email" placeholder="Email address" autocomplete="email">
-          <div class="lm-group">
+          <div class="lm-selectwrap">
             <label class="lm-label" for="leadTimeframe">Selling Timeframe</label>
-            <div class="lm-selectwrap">
-              <select name="timeframe" id="leadTimeframe" class="lm-select" required>
-                <option value="" disabled selected hidden>Select</option>
-                <option value="asap">As soon as possible</option>
-                <option value="soon">In the next few months</option>
-                <option value="eventually">Sometime down the road</option>
-                <option value="curious">Just curious about my value</option>
-              </select>
-            </div>
+            <select name="timeframe" id="leadTimeframe" class="lm-select" required>
+              <option value="" disabled selected hidden>Select</option>
+              <option value="asap">As soon as possible</option>
+              <option value="soon">In the next few months</option>
+              <option value="eventually">Sometime down the road</option>
+              <option value="curious">Just curious about my value</option>
+            </select>
           </div>
           <p class="lm-err" id="leadErr" hidden></p>
           <p class="lm-consent">By clicking &ldquo;Get my cash value,&rdquo; you give zBuyer and its real-estate partners your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase. Msg &amp; data rates may apply. See our <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp; <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
