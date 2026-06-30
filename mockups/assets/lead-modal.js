@@ -75,7 +75,10 @@
   // ---- custom dropdown ----
   function openMenu() { tfMenu.hidden = false; tfWrap.classList.add("open"); tfButton.setAttribute("aria-expanded", "true"); }
   function closeMenu() { tfMenu.hidden = true; tfWrap.classList.remove("open"); tfButton.setAttribute("aria-expanded", "false"); }
-  tfButton.addEventListener("click", function (e) {
+  // Toggle from the whole field (label, value, chevron, padding) — not just
+  // the small button — so taps near the arrow don't miss on mobile.
+  tfWrap.addEventListener("click", function (e) {
+    if (tfMenu.contains(e.target)) return; // option taps handled below
     e.stopPropagation();
     if (tfMenu.hidden) openMenu(); else closeMenu();
   });
