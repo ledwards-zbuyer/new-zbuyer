@@ -59,18 +59,29 @@
   .lm-x{position:absolute;top:13px;right:15px;border:none;background:none;font-size:26px;line-height:1;color:#9aa7bd;cursor:pointer}
   .lm-card h3{font-size:23px;font-weight:800;color:var(--ink);margin-top:2px;letter-spacing:-.02em}
   .lm-sub{font-size:14.5px;color:var(--muted);margin-top:7px;line-height:1.45}
+  .lm-screen[hidden]{display:none}
+  .lm-back{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:0;margin-bottom:8px}
   .lm-form{margin-top:20px;display:flex;flex-direction:column;gap:12px}
-  .lm-form input{width:100%;font-family:inherit;font-size:16px;color:var(--ink);padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;outline:none}
-  .lm-form input:focus{border-color:var(--c1)}
-  .lm-form input::placeholder{color:#98A6BC}
+  .lm-form input,.lm-sms input{width:100%;font-family:inherit;font-size:16px;color:var(--ink);padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;outline:none;background:#fff}
+  .lm-form input:focus,.lm-sms input:focus{border-color:var(--c1)}
+  .lm-form input::placeholder,.lm-sms input::placeholder{color:#98A6BC}
+  .lm-form input.invalid,.lm-sms input.invalid,.lm-selectwrap.invalid{border-color:#D8442B;background:#FEF6F4}
   .lm-selectwrap{position:relative;border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:9px 16px 10px}
-  .lm-selectwrap:focus-within{border-color:var(--c1)}
-  .lm-selectwrap.invalid{border-color:#D8442B;background:#FEF6F4}
+  .lm-selectwrap.open,.lm-selectwrap:focus-within{border-color:var(--c1)}
   .lm-label{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
-  .lm-selectwrap::after{content:"";position:absolute;right:17px;bottom:18px;width:9px;height:9px;border-right:2px solid #98A6BC;border-bottom:2px solid #98A6BC;transform:rotate(45deg);pointer-events:none}
-  .lm-select{appearance:none;-webkit-appearance:none;width:100%;font-family:inherit;font-size:16px;line-height:1.25;color:var(--ink);border:none;background:transparent;outline:none;cursor:pointer;padding:0 24px 0 0}
-  .lm-select:invalid{color:#98A6BC}
-  .lm-form input.invalid{border-color:#D8442B;background:#FEF6F4}
+  .lm-selectwrap::after{content:"";position:absolute;right:17px;bottom:18px;width:9px;height:9px;border-right:2px solid #98A6BC;border-bottom:2px solid #98A6BC;transform:rotate(45deg);transition:transform .15s,bottom .15s;pointer-events:none}
+  .lm-selectwrap.open::after{transform:rotate(225deg);bottom:15px}
+  .lm-select{display:block;width:100%;font-family:inherit;font-size:16px;line-height:1.25;color:var(--ink);border:none;background:transparent;outline:none;cursor:pointer;padding:0 24px 0 0;text-align:left}
+  .lm-value[data-placeholder]{color:#98A6BC}
+  .lm-menu{position:absolute;left:0;right:0;top:calc(100% + 7px);z-index:20;list-style:none;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 20px 44px -16px rgba(0,0,0,.4);padding:6px}
+  .lm-menu[hidden]{display:none}
+  .lm-menu li{padding:11px 14px;border-radius:8px;font-size:15.5px;color:var(--ink);cursor:pointer}
+  .lm-menu li:hover,.lm-menu li.active{background:var(--tint)}
+  .lm-boxes{display:flex;gap:8px;margin:18px 0 6px}
+  .lm-boxes img{flex:1;min-width:0;width:100%;height:auto;border-radius:10px}
+  .lm-sms{display:flex;flex-direction:column;gap:11px;margin-top:8px}
+  .lm-sms-lead{font-size:15px;font-weight:600;color:var(--ink);line-height:1.45}
+  .lm-nothanks{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;padding:4px;align-self:center;text-decoration:underline}
   .lm-err{color:#D8442B;font-size:13.5px;font-weight:600}
   .lm-err[hidden]{display:none}
   .lm-consent{font-size:11px;line-height:1.5;color:#8a97ab;margin:2px 0 0}
@@ -358,28 +369,48 @@
     <div class="lm-card" role="dialog" aria-modal="true" aria-labelledby="lm-title">
       <button class="lm-x" type="button" data-close aria-label="Close">&times;</button>
 
-      <div class="lm-screen">
+      <div class="lm-screen" data-screen="contact">
         <h3 id="lm-title">Where should we send your cash value?</h3>
         <p class="lm-sub">Your free, no-obligation report is ready — tell us where to send it.</p>
         <form class="lm-form" id="leadForm" novalidate>
           <input name="name" type="text" placeholder="Full name" autocomplete="name">
-          <input name="phone" type="tel" placeholder="Phone number" autocomplete="tel">
+          <input name="phone" id="leadPhone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel">
           <input name="email" type="email" placeholder="Email address" autocomplete="email">
-          <div class="lm-selectwrap">
-            <label class="lm-label" for="leadTimeframe">Selling Timeframe</label>
-            <select name="timeframe" id="leadTimeframe" class="lm-select" required>
-              <option value="" disabled selected hidden>Select</option>
-              <option value="asap">As soon as possible</option>
-              <option value="soon">In the next few months</option>
-              <option value="eventually">Sometime down the road</option>
-              <option value="curious">Just curious about my value</option>
-            </select>
+          <div class="lm-selectwrap" id="tfWrap">
+            <span class="lm-label" id="tfLabel">Selling Timeframe</span>
+            <button type="button" class="lm-select" id="tfButton" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="tfLabel tfValue">
+              <span class="lm-value" id="tfValue" data-placeholder="true">Select</span>
+            </button>
+            <ul class="lm-menu" id="tfMenu" role="listbox" aria-label="Selling Timeframe" hidden>
+              <li role="option" data-val="asap">As soon as possible</li>
+              <li role="option" data-val="soon">In the next few months</li>
+              <li role="option" data-val="eventually">Sometime down the road</li>
+              <li role="option" data-val="curious">Just curious about my value</li>
+            </ul>
           </div>
           <p class="lm-err" id="leadErr" hidden></p>
-          <p class="lm-consent">By clicking &ldquo;Get my cash value,&rdquo; you give zBuyer and its real-estate partners your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase. Msg &amp; data rates may apply. See our <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp; <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
-          <button type="submit" class="lm-cta">Get my cash value &rarr;</button>
+          <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give zBuyer and its real-estate partners your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase. Msg &amp; data rates may apply. See our <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp; <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+          <button type="submit" class="lm-cta">Continue &rarr;</button>
           <button type="button" class="lm-cancel" data-close>Cancel</button>
         </form>
+      </div>
+
+      <div class="lm-screen" data-screen="report" hidden>
+        <button type="button" class="lm-back" data-back>&larr; Back</button>
+        <h3>Let&rsquo;s unlock your cash value</h3>
+        <p class="lm-sub">Cash offers depend on details that aren&rsquo;t visible online. A local expert verifies your home&rsquo;s value to get you a faster, more accurate offer.</p>
+        <div class="lm-boxes">
+          <img src="assets/box_expert_review.webp" alt="Expert review — verify upgrades & condition">
+          <img src="assets/box_reliable_offer.webp" alt="Reliable offer — protect your equity">
+          <img src="assets/box_local_knowledge.webp" alt="Local knowledge — identify recent nearby sales">
+        </div>
+        <div class="lm-sms">
+          <p class="lm-sms-lead">We&rsquo;ll text you a link to access your report. Is this your mobile number?</p>
+          <input id="leadMobile" type="tel" inputmode="tel" placeholder="(555) 555-5555" autocomplete="tel">
+          <p class="lm-err" id="mobileErr" hidden></p>
+          <button type="button" class="lm-cta" id="viewReport">View Report Now &rarr;</button>
+          <button type="button" class="lm-nothanks" id="noThanks">No Thanks</button>
+        </div>
       </div>
     </div>
   </div>

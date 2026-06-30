@@ -1,8 +1,10 @@
 /* zBuyer lead-capture modal — opens after the hero address step.
  *
- * Single step: name / phone / email + a required "Selling Timeframe"
- * dropdown, plus TCPA consent. On submit, forwards the captured lead to
- * the Sell funnel. Vanilla JS, no dependencies.
+ * Step 2 (contact): name / phone / email + required "Selling Timeframe"
+ *   custom dropdown + TCPA consent.
+ * Step 3 (report): value explanation + graphic, then a mobile number to
+ *   text the report link.
+ * The final button navigates to the demo report page. Vanilla JS, no deps.
  */
 (function () {
   var modal = document.getElementById("leadModal");
@@ -10,95 +12,136 @@
   var addr = document.getElementById("addr");
   if (!modal || !heroForm || !addr) return;
 
-  // Sell funnel destination. NOTE: the lead fields below are appended with
-  // z-prefixed parameter names (zfirstname/zlastname/zemail/zphone/zzipcode/
-  // ...) — confirm these match what the pulse funnel expects before launch.
-  var SELL_FUNNEL = "https://pulse.zbuyer.com/index.html?landing=selling&autostart=1";
+  var REPORT_PAGE = "report-classic-blue.html"; // demo report (dashboard screenshot)
 
+  var screens = modal.querySelectorAll(".lm-screen");
   var form = document.getElementById("leadForm");
   var errEl = document.getElementById("leadErr");
   var nameEl = form.querySelector('[name="name"]');
-  var phoneEl = form.querySelector('[name="phone"]');
+  var phoneEl = document.getElementById("leadPhone");
   var emailEl = form.querySelector('[name="email"]');
-  var tfEl = form.querySelector('[name="timeframe"]');
-  var tfWrap = tfEl.closest(".lm-selectwrap"); // border lives on the wrapper, not the select
+  var mobileEl = document.getElementById("leadMobile");
+  var mobileErr = document.getElementById("mobileErr");
+
+  // Custom dropdown (native <select> can't pad its open option list).
+  var tfWrap = document.getElementById("tfWrap");
+  var tfButton = document.getElementById("tfButton");
+  var tfMenu = document.getElementById("tfMenu");
+  var tfValueEl = document.getElementById("tfValue");
+  var tfValue = "";
+
   var lastFocus = null;
 
+  function show(name) {
+    screens.forEach(function (s) { s.hidden = s.getAttribute("data-screen") !== name; });
+  }
   function open() {
     lastFocus = document.activeElement;
     modal.hidden = false;
     document.body.style.overflow = "hidden";
+    show("contact");
     if (nameEl) nameEl.focus();
   }
-
   function close() {
     modal.hidden = true;
     document.body.style.overflow = "";
+    closeMenu();
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
-  // Open on hero submit — require an address first.
+  // ---- progressive phone formatting: (123) 456-7890 ----
+  function formatPhone(v) {
+    var d = v.replace(/\D/g, "").slice(0, 10);
+    var a = d.slice(0, 3), b = d.slice(3, 6), c = d.slice(6, 10);
+    if (d.length > 6) return "(" + a + ") " + b + "-" + c;
+    if (d.length > 3) return "(" + a + ") " + b;
+    if (d.length > 0) return "(" + a;
+    return "";
+  }
+  [phoneEl, mobileEl].forEach(function (el) {
+    el.addEventListener("input", function () {
+      el.value = formatPhone(el.value);
+      el.classList.remove("invalid");
+    });
+  });
+
+  // ---- custom dropdown ----
+  function openMenu() { tfMenu.hidden = false; tfWrap.classList.add("open"); tfButton.setAttribute("aria-expanded", "true"); }
+  function closeMenu() { tfMenu.hidden = true; tfWrap.classList.remove("open"); tfButton.setAttribute("aria-expanded", "false"); }
+  tfButton.addEventListener("click", function (e) {
+    e.stopPropagation();
+    if (tfMenu.hidden) openMenu(); else closeMenu();
+  });
+  tfMenu.querySelectorAll("li").forEach(function (li) {
+    li.addEventListener("click", function () {
+      tfValue = li.getAttribute("data-val");
+      tfValueEl.textContent = li.textContent;
+      tfValueEl.removeAttribute("data-placeholder");
+      tfWrap.classList.remove("invalid");
+      closeMenu();
+    });
+  });
+  document.addEventListener("click", function (e) {
+    if (!tfWrap.contains(e.target)) closeMenu();
+  });
+
+  // ---- open on hero submit (require an address first) ----
   heroForm.addEventListener("submit", function (e) {
     e.preventDefault();
     if (!addr.value.trim()) { addr.focus(); return; }
     open();
   });
 
-  // Close handlers.
-  modal.querySelectorAll("[data-close]").forEach(function (el) {
-    el.addEventListener("click", close);
-  });
+  // ---- close / back ----
+  modal.querySelectorAll("[data-close]").forEach(function (el) { el.addEventListener("click", close); });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && !modal.hidden) close();
+    if (e.key === "Escape" && !modal.hidden) { if (!tfMenu.hidden) closeMenu(); else close(); }
   });
+  var backBtn = modal.querySelector("[data-back]");
+  if (backBtn) backBtn.addEventListener("click", function () { show("contact"); });
 
-  // Clear a field's invalid highlight as soon as the user fixes it.
-  [nameEl, phoneEl, emailEl].forEach(function (el) {
-    el.addEventListener("input", function () { el.classList.remove("invalid"); });
-  });
-  tfEl.addEventListener("change", function () { tfWrap.classList.remove("invalid"); });
-
-  // Validate + forward to the funnel.
+  // ---- contact step -> advance to report step ----
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var name = nameEl.value.trim();
-    var phone = phoneEl.value.trim();
+    var digits = phoneEl.value.replace(/\D/g, "");
     var email = emailEl.value.trim();
-    var digits = phone.replace(/\D/g, "");
 
     [nameEl, phoneEl, emailEl, tfWrap].forEach(function (el) { el.classList.remove("invalid"); });
 
-    var err = "";
-    var bad = null;
+    var err = "", bad = null;
     if (!name) { err = "Please enter your name."; bad = nameEl; }
     else if (digits.length < 10) { err = "Please enter a valid phone number."; bad = phoneEl; }
     else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err = "Please enter a valid email address."; bad = emailEl; }
-    else if (!tfEl.value) { err = "Please choose your selling timeframe."; bad = tfEl; }
+    else if (!tfValue) { err = "Please choose your selling timeframe."; bad = tfWrap; }
 
     if (err) {
-      (bad === tfEl ? tfWrap : bad).classList.add("invalid");
-      errEl.textContent = err;
-      errEl.hidden = false;
-      bad.focus();
+      bad.classList.add("invalid");
+      errEl.textContent = err; errEl.hidden = false;
+      (bad === tfWrap ? tfButton : bad).focus();
       return;
     }
     errEl.hidden = true;
 
-    var sel = window.zbSelectedAddress || null;
-    var parts = name.split(/\s+/);
-    var params = new URLSearchParams();
-    params.set("zfirstname", parts.shift() || "");
-    params.set("zlastname", parts.join(" "));
-    params.set("zemail", email);
-    params.set("zphone", digits);
-    params.set("zaddress", sel ? sel.street_line : addr.value.trim());
-    if (sel) {
-      params.set("zcity", sel.city);
-      params.set("zstate", sel.state);
-      params.set("zzipcode", sel.zipcode);
-    }
-    params.set("ztimeframe", tfEl.value);
-
-    window.location.href = SELL_FUNNEL + "&" + params.toString();
+    mobileEl.value = formatPhone(phoneEl.value); // carry phone into the SMS step
+    show("report");
+    mobileEl.focus();
   });
+
+  // ---- report step ----
+  function goToReport() { window.location.href = REPORT_PAGE; }
+
+  document.getElementById("viewReport").addEventListener("click", function () {
+    var d = mobileEl.value.replace(/\D/g, "");
+    if (d.length < 10) {
+      mobileEl.classList.add("invalid");
+      mobileErr.textContent = "Please enter a valid mobile number.";
+      mobileErr.hidden = false;
+      mobileEl.focus();
+      return;
+    }
+    mobileErr.hidden = true;
+    goToReport();
+  });
+  document.getElementById("noThanks").addEventListener("click", goToReport);
 })();
