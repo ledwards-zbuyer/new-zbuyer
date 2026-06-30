@@ -83,11 +83,14 @@
   .lm-menu[hidden]{display:none}
   .lm-menu li{padding:11px 14px;border-radius:8px;font-size:15.5px;color:var(--ink);cursor:pointer}
   .lm-menu li:hover,.lm-menu li.active{background:var(--tint)}
-  .lm-boxes{display:flex;gap:8px;margin:18px 0 6px}
+  .lm-boxes{display:flex;gap:8px;margin:18px 0 16px}
   .lm-boxes img{flex:1;min-width:0;width:100%;height:auto;border-radius:10px}
   .lm-sms{display:flex;flex-direction:column;gap:12px;margin-top:10px}
-  .lm-sms-card{align-self:center;width:100%;max-width:300px;text-align:center;display:flex;flex-direction:column;gap:10px;padding:16px 16px 18px;background:var(--soft);border:1px solid var(--line);border-radius:14px}
-  .lm-sms-note{font-size:14.5px;color:var(--muted);line-height:1.45}
+  .lm-sms-card{align-self:center;width:100%;max-width:330px;text-align:center;display:flex;flex-direction:column;gap:10px;padding:16px 16px 18px;background:var(--soft);border:1px solid var(--line);border-radius:14px}
+  .lm-sms-head{display:flex;align-items:center;justify-content:center;gap:11px;text-align:left}
+  .lm-sms-icon{flex:none;width:30px;height:30px;color:var(--c1)}
+  .lm-sms-text{display:flex;flex-direction:column;gap:2px}
+  .lm-sms-note{font-size:14.5px;color:var(--muted);line-height:1.4}
   .lm-sms-q{font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
   .lm-sms-card input{text-align:center}
   .lm-nothanks{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;padding:4px;align-self:center;text-decoration:underline}
@@ -116,7 +119,7 @@
     .lm-cta{padding:14px;font-size:16px}
     .lm-cancel,.lm-nothanks{padding:2px}
     .lm-back{margin-bottom:4px}
-    .lm-boxes{margin:12px 0 4px;gap:7px}
+    .lm-boxes{margin:12px 0 14px;gap:7px}
     .lm-sms{gap:10px;margin-top:6px}
     .lm-sms-card{padding:13px 14px 15px;gap:8px}
     .lm-sms-q{font-size:17px}
@@ -448,8 +451,13 @@
         </div>
         <div class="lm-sms">
           <div class="lm-sms-card">
-            <p class="lm-sms-note">We&rsquo;ll text you a link to access your report.</p>
-            <p class="lm-sms-q">Is this your mobile number?</p>
+            <div class="lm-sms-head">
+              <svg class="lm-sms-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.3" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.6h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <div class="lm-sms-text">
+                <p class="lm-sms-note">We&rsquo;ll text you a link to access your report.</p>
+                <p class="lm-sms-q">Is this your mobile number?</p>
+              </div>
+            </div>
             <input id="leadMobile" type="tel" inputmode="tel" placeholder="(555) 555-5555" autocomplete="tel">
             <p class="lm-err" id="mobileErr" hidden></p>
           </div>
