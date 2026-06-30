@@ -1,8 +1,8 @@
 /* zBuyer lead-capture modal — opens after the hero address step.
  *
- * Two screens: (1) soft selling-timeframe question (one-tap cards), then
- * (2) name / phone / email + TCPA consent. On submit, forwards the captured
- * lead to the Sell funnel. Vanilla JS, no dependencies.
+ * Single step: name / phone / email + a required "Selling Timeframe"
+ * dropdown, plus TCPA consent. On submit, forwards the captured lead to
+ * the Sell funnel. Vanilla JS, no dependencies.
  */
 (function () {
   var modal = document.getElementById("leadModal");
@@ -15,28 +15,19 @@
   // expects (firstname/lastname/email/phone/zzipcode/...) before launch.
   var SELL_FUNNEL = "https://pulse.zbuyer.com/index.html?landing=selling&autostart=1";
 
-  var screens = modal.querySelectorAll(".lm-screen");
   var form = document.getElementById("leadForm");
   var errEl = document.getElementById("leadErr");
   var nameEl = form.querySelector('[name="name"]');
   var phoneEl = form.querySelector('[name="phone"]');
   var emailEl = form.querySelector('[name="email"]');
-  var timeframe = "";
+  var tfEl = form.querySelector('[name="timeframe"]');
   var lastFocus = null;
-
-  function show(n) {
-    screens.forEach(function (s) {
-      s.hidden = s.getAttribute("data-screen") !== String(n);
-    });
-  }
 
   function open() {
     lastFocus = document.activeElement;
     modal.hidden = false;
     document.body.style.overflow = "hidden";
-    show(1);
-    var first = modal.querySelector(".lm-opt");
-    if (first) first.focus();
+    if (nameEl) nameEl.focus();
   }
 
   function close() {
@@ -52,20 +43,7 @@
     open();
   });
 
-  // Screen 1: pick a timeframe, then advance.
-  modal.querySelectorAll(".lm-opt").forEach(function (opt) {
-    opt.addEventListener("click", function () {
-      timeframe = opt.getAttribute("data-tf");
-      modal.querySelectorAll(".lm-opt").forEach(function (o) { o.classList.remove("sel"); });
-      opt.classList.add("sel");
-      show(2);
-      if (nameEl) nameEl.focus();
-    });
-  });
-
-  var back = modal.querySelector("[data-back]");
-  if (back) back.addEventListener("click", function () { show(1); });
-
+  // Close handlers.
   modal.querySelectorAll("[data-close]").forEach(function (el) {
     el.addEventListener("click", close);
   });
@@ -73,7 +51,13 @@
     if (e.key === "Escape" && !modal.hidden) close();
   });
 
-  // Screen 2: validate + forward to the funnel.
+  // Clear a field's invalid highlight as soon as the user fixes it.
+  [nameEl, phoneEl, emailEl].forEach(function (el) {
+    el.addEventListener("input", function () { el.classList.remove("invalid"); });
+  });
+  tfEl.addEventListener("change", function () { tfEl.classList.remove("invalid"); });
+
+  // Validate + forward to the funnel.
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var name = nameEl.value.trim();
@@ -81,11 +65,22 @@
     var email = emailEl.value.trim();
     var digits = phone.replace(/\D/g, "");
 
+    [nameEl, phoneEl, emailEl, tfEl].forEach(function (el) { el.classList.remove("invalid"); });
+
     var err = "";
-    if (!name) err = "Please enter your name.";
-    else if (digits.length < 10) err = "Please enter a valid phone number.";
-    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) err = "Please enter a valid email address.";
-    if (err) { errEl.textContent = err; errEl.hidden = false; return; }
+    var bad = null;
+    if (!name) { err = "Please enter your name."; bad = nameEl; }
+    else if (digits.length < 10) { err = "Please enter a valid phone number."; bad = phoneEl; }
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err = "Please enter a valid email address."; bad = emailEl; }
+    else if (!tfEl.value) { err = "Please choose your selling timeframe."; bad = tfEl; }
+
+    if (err) {
+      bad.classList.add("invalid");
+      errEl.textContent = err;
+      errEl.hidden = false;
+      bad.focus();
+      return;
+    }
     errEl.hidden = true;
 
     var sel = window.zbSelectedAddress || null;
@@ -101,7 +96,7 @@
       params.set("state", sel.state);
       params.set("zzipcode", sel.zipcode);
     }
-    params.set("timeframe", timeframe);
+    params.set("timeframe", tfEl.value);
 
     window.location.href = SELL_FUNNEL + "&" + params.toString();
   });
