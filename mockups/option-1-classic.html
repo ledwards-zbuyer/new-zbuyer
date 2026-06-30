@@ -41,7 +41,14 @@
   h1{color:#fff;font-size:60px;line-height:1.05;font-weight:800;letter-spacing:-.03em}
   h1 span{background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.88) 50%,transparent 62%),linear-gradient(90deg,#7FC4FF,#3BA4F4);background-size:250% 100%,100% 100%;background-position:130% 0,0 0;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cvshine 4s ease-in-out infinite}@keyframes cvshine{0%{background-position:130% 0,0 0}32%,100%{background-position:-45% 0,0 0}}@media (prefers-reduced-motion:reduce){h1 span{animation:none;background-position:-45% 0,0 0}}
   .sub{color:#E4ECF6;font-size:19px;margin-top:18px;font-weight:400;opacity:.95}
-  .search{margin:34px auto 0;max-width:680px;background:#fff;border-radius:16px;padding:8px 8px 8px 22px;display:flex;align-items:center;gap:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.45)}
+  .search{position:relative;margin:34px auto 0;max-width:680px;background:#fff;border-radius:16px;padding:8px 8px 8px 22px;display:flex;align-items:center;gap:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.45)}
+  .ac-list{position:absolute;top:calc(100% + 10px);left:0;right:0;z-index:40;list-style:none;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 26px 54px -18px rgba(0,0,0,.45);overflow:hidden;text-align:left}
+  .ac-list[hidden]{display:none}
+  .ac-list li{display:flex;flex-direction:column;gap:2px;padding:12px 20px;cursor:pointer}
+  .ac-list li:not(:last-child){border-bottom:1px solid var(--soft)}
+  .ac-list li.active,.ac-list li:hover{background:var(--tint)}
+  .ac-list .ac-street{font-size:15.5px;font-weight:600;color:var(--ink)}
+  .ac-list .ac-sec{font-size:13px;color:var(--muted)}
   .search input{flex:1;border:none;outline:none;font-size:17px;font-family:inherit;color:var(--ink);padding:16px 0}
   .search input::placeholder{color:#98A6BC}
   .search button{flex:none;background:var(--cta);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:16px;padding:16px 30px;border-radius:11px;cursor:pointer}
@@ -209,8 +216,9 @@
       <p class="sub">Enter your address and get connected with a local expert who'll give you a real cash offer — in minutes, not weeks.</p>
       <form class="search" onsubmit="return false">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" stroke="#1D4FD7" stroke-width="2"/><circle cx="12" cy="10" r="2.6" stroke="#1D4FD7" stroke-width="2"/></svg>
-        <input placeholder="Enter your home address">
+        <input id="addr" placeholder="Enter your home address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="addr-suggestions">
         <button>Get my cash offer</button>
+        <ul id="addr-suggestions" class="ac-list" role="listbox" hidden></ul>
       </form>
       <div class="reassure"><span>★★★★★ 4.8 from 12,000+ sellers</span><span>✓ Connect with a vetted local expert</span></div>
       <div class="buystrip">Looking to buy instead? <a href="https://pulse.zbuyer.com/index.html?CTID=13972283&landing=buying-hn&autostart=1&MID=56&affid=testing&zzipcode=93065">Browse homes for sale →</a></div>
@@ -314,5 +322,8 @@
     </div>
     <div class="fbottom"><span>© 2026 zBuyer. All rights reserved.</span><span><a href="terms-classic-blue.html">Terms of Service</a> · <a href="privacy-classic-blue.html">Privacy Policy</a></span></div>
   </div></footer>
+
+  <script src="assets/smarty-config.js"></script>
+  <script src="assets/address-autocomplete.js"></script>
 </body>
 </html>
