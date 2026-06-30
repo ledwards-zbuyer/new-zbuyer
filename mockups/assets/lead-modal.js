@@ -11,8 +11,8 @@
   if (!modal || !heroForm || !addr) return;
 
   // Sell funnel destination. NOTE: the lead fields below are appended with
-  // best-guess parameter names — confirm the exact names the pulse funnel
-  // expects (firstname/lastname/email/phone/zzipcode/...) before launch.
+  // z-prefixed parameter names (zfirstname/zlastname/zemail/zphone/zzipcode/
+  // ...) — confirm these match what the pulse funnel expects before launch.
   var SELL_FUNNEL = "https://pulse.zbuyer.com/index.html?landing=selling&autostart=1";
 
   var form = document.getElementById("leadForm");
@@ -86,17 +86,17 @@
     var sel = window.zbSelectedAddress || null;
     var parts = name.split(/\s+/);
     var params = new URLSearchParams();
-    params.set("firstname", parts.shift() || "");
-    params.set("lastname", parts.join(" "));
-    params.set("email", email);
-    params.set("phone", digits);
-    params.set("address", sel ? sel.street_line : addr.value.trim());
+    params.set("zfirstname", parts.shift() || "");
+    params.set("zlastname", parts.join(" "));
+    params.set("zemail", email);
+    params.set("zphone", digits);
+    params.set("zaddress", sel ? sel.street_line : addr.value.trim());
     if (sel) {
-      params.set("city", sel.city);
-      params.set("state", sel.state);
+      params.set("zcity", sel.city);
+      params.set("zstate", sel.state);
       params.set("zzipcode", sel.zipcode);
     }
-    params.set("timeframe", tfEl.value);
+    params.set("ztimeframe", tfEl.value);
 
     window.location.href = SELL_FUNNEL + "&" + params.toString();
   });
