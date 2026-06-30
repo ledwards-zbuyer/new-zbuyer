@@ -64,7 +64,12 @@
     el.addEventListener("input", function () {
       el.value = formatPhone(el.value);
       el.classList.remove("invalid");
+      errEl.hidden = true;
+      if (mobileErr) mobileErr.hidden = true;
     });
+  });
+  [nameEl, emailEl].forEach(function (el) {
+    el.addEventListener("input", function () { el.classList.remove("invalid"); errEl.hidden = true; });
   });
 
   // ---- custom dropdown ----
@@ -80,6 +85,7 @@
       tfValueEl.textContent = li.textContent;
       tfValueEl.removeAttribute("data-placeholder");
       tfWrap.classList.remove("invalid");
+      errEl.hidden = true;
       closeMenu();
     });
   });
