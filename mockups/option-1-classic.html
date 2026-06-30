@@ -79,8 +79,11 @@
   .lm-menu li:hover,.lm-menu li.active{background:var(--tint)}
   .lm-boxes{display:flex;gap:8px;margin:18px 0 6px}
   .lm-boxes img{flex:1;min-width:0;width:100%;height:auto;border-radius:10px}
-  .lm-sms{display:flex;flex-direction:column;gap:11px;margin-top:8px}
-  .lm-sms-lead{font-size:15px;font-weight:600;color:var(--ink);line-height:1.45}
+  .lm-sms{display:flex;flex-direction:column;gap:12px;margin-top:10px}
+  .lm-sms-card{align-self:center;width:100%;max-width:300px;text-align:center;display:flex;flex-direction:column;gap:10px;padding:16px 16px 18px;background:var(--soft);border:1px solid var(--line);border-radius:14px}
+  .lm-sms-note{font-size:13px;color:var(--muted);line-height:1.4}
+  .lm-sms-q{font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+  .lm-sms-card input{text-align:center}
   .lm-nothanks{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;padding:4px;align-self:center;text-decoration:underline}
   .lm-err{color:#D8442B;font-size:13.5px;font-weight:600}
   .lm-err[hidden]{display:none}
@@ -393,7 +396,7 @@
           </div>
           <p class="lm-err" id="leadErr" hidden></p>
           <div class="lm-disclosure">
-            <p class="lm-matched"><b>Matched real estate pros:</b> Jason Dalbey (BHHS The Preferred Realty)</p>
+            <p class="lm-matched"><b>Matched real estate pro:</b> Jason Dalbey (BHHS The Preferred Realty)</p>
             <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give zBuyer and its real-estate partners your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase. Msg &amp; data rates may apply. See our <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp; <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
           </div>
           <button type="submit" class="lm-cta">Continue &rarr;</button>
@@ -411,9 +414,12 @@
           <img src="assets/box_local_knowledge.webp" alt="Local knowledge — identify recent nearby sales">
         </div>
         <div class="lm-sms">
-          <p class="lm-sms-lead">We&rsquo;ll text you a link to access your report. Is this your mobile number?</p>
-          <input id="leadMobile" type="tel" inputmode="tel" placeholder="(555) 555-5555" autocomplete="tel">
-          <p class="lm-err" id="mobileErr" hidden></p>
+          <div class="lm-sms-card">
+            <p class="lm-sms-note">We&rsquo;ll text you a link to access your report.</p>
+            <p class="lm-sms-q">Is this your mobile number?</p>
+            <input id="leadMobile" type="tel" inputmode="tel" placeholder="(555) 555-5555" autocomplete="tel">
+            <p class="lm-err" id="mobileErr" hidden></p>
+          </div>
           <button type="button" class="lm-cta" id="viewReport">View Report Now &rarr;</button>
           <button type="button" class="lm-nothanks" id="noThanks">No Thanks</button>
         </div>
