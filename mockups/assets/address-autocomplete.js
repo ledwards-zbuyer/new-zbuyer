@@ -89,6 +89,7 @@
       input.value = fullAddress(s);
       window.zbSelectedAddress = s; // expose structured pick for the lead modal
       close();
+      input.blur(); // dismiss the mobile keyboard once an address is chosen
     }
   }
 
