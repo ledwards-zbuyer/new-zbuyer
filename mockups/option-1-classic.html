@@ -56,6 +56,7 @@
   .lm-card{position:relative;width:100%;max-width:440px;background:#fff;border-radius:20px;padding:30px 30px 24px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);animation:lmIn .22s ease}
   @keyframes lmIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){.lm-card{animation:none}}
+  .lm-card:focus{outline:none}
   .lm-x{position:absolute;top:13px;right:15px;border:none;background:none;font-size:26px;line-height:1;color:#9aa7bd;cursor:pointer}
   .lm-card h3{font-size:23px;font-weight:800;color:var(--ink);margin-top:2px;letter-spacing:-.02em}
   .lm-sub{font-size:14.5px;color:var(--muted);margin-top:7px;line-height:1.45}
@@ -377,7 +378,7 @@
 
   <div class="lead-modal" id="leadModal" hidden>
     <div class="lm-backdrop" data-close></div>
-    <div class="lm-card" role="dialog" aria-modal="true" aria-labelledby="lm-title">
+    <div class="lm-card" role="dialog" aria-modal="true" aria-labelledby="lm-title" tabindex="-1">
       <button class="lm-x" type="button" data-close aria-label="Close">&times;</button>
 
       <div class="lm-screen" data-screen="contact">

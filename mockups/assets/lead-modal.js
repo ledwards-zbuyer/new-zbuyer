@@ -14,6 +14,7 @@
 
   var REPORT_PAGE = "report-classic-blue.html"; // demo report (dashboard screenshot)
 
+  var card = modal.querySelector(".lm-card");
   var screens = modal.querySelectorAll(".lm-screen");
   var form = document.getElementById("leadForm");
   var errEl = document.getElementById("leadErr");
@@ -40,7 +41,8 @@
     modal.hidden = false;
     document.body.style.overflow = "hidden";
     show("contact");
-    if (nameEl) nameEl.focus();
+    // Focus the dialog (not an input) so the mobile keyboard doesn't pop up.
+    if (card) card.focus();
   }
   function close() {
     modal.hidden = true;
@@ -118,14 +120,16 @@
     if (err) {
       bad.classList.add("invalid");
       errEl.textContent = err; errEl.hidden = false;
-      (bad === tfWrap ? tfButton : bad).focus();
+      // Only move focus to the dropdown button (no keyboard); leave text
+      // inputs unfocused so the mobile keyboard doesn't cover the screen.
+      if (bad === tfWrap) tfButton.focus();
       return;
     }
     errEl.hidden = true;
 
     mobileEl.value = formatPhone(phoneEl.value); // carry phone into the SMS step
     show("report");
-    mobileEl.focus();
+    if (card) card.focus();
   });
 
   // ---- report step ----
@@ -137,7 +141,6 @@
       mobileEl.classList.add("invalid");
       mobileErr.textContent = "Please enter a valid mobile number.";
       mobileErr.hidden = false;
-      mobileEl.focus();
       return;
     }
     mobileErr.hidden = true;
