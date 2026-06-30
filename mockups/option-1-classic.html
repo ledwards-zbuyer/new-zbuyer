@@ -52,7 +52,7 @@
 
   .lead-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
   .lead-modal[hidden]{display:none}
-  .lm-backdrop{position:absolute;inset:0;background:rgba(8,14,26,.62);backdrop-filter:blur(4px)}
+  .lm-backdrop{position:fixed;inset:0;background:rgba(8,14,26,.62);backdrop-filter:blur(4px)}
   .lm-card{position:relative;width:100%;max-width:440px;background:#fff;border-radius:20px;padding:30px 30px 24px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);animation:lmIn .22s ease}
   @keyframes lmIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){.lm-card{animation:none}}
@@ -97,8 +97,8 @@
   .lm-cta:hover{background:var(--cta-d)}
   .lm-cancel{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;padding:4px;align-self:center}
   @media (max-width:560px){
-    .lead-modal{padding:14px}
-    .lm-card{max-width:none;padding:24px 18px 18px;border-radius:18px;max-height:calc(100vh - 28px);overflow-y:auto}
+    .lead-modal{padding:14px;align-items:flex-start;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch}
+    .lm-card{max-width:none;max-height:none;padding:24px 18px 18px;border-radius:18px}
     .lm-card h3{font-size:20px}
   }
   .search input{flex:1;border:none;outline:none;font-size:17px;font-family:inherit;color:var(--ink);padding:16px 0}
