@@ -27,7 +27,12 @@
   .nav-right{display:flex;align-items:center;gap:18px}
   .pro-link{display:flex;align-items:center;gap:8px;padding:10px 18px;border:1.5px solid rgba(255,255,255,.55);border-radius:999px;color:#fff;font-weight:600;font-size:14px}
   .signin{color:#fff;font-weight:600;font-size:15px}
-  .hamburger{display:none;width:42px;height:42px;border-radius:11px;border:1.5px solid rgba(255,255,255,.5);color:#fff;align-items:center;justify-content:center;font-size:20px}
+  .hamburger{display:none;width:42px;height:42px;border-radius:11px;border:1.5px solid rgba(255,255,255,.5);color:#fff;align-items:center;justify-content:center;font-size:20px;cursor:pointer;user-select:none}
+  .mnav{position:fixed;top:66px;left:16px;right:16px;z-index:30;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 26px 54px -18px rgba(0,0,0,.5);padding:8px}
+  .mnav[hidden]{display:none}
+  .mnav:not([hidden]){display:flex}
+  .mnav a{padding:14px 16px;font-size:16px;font-weight:600;color:var(--ink);border-radius:10px}
+  .mnav a:active,.mnav a:hover{background:var(--tint)}
 
   .hero{position:relative;min-height:680px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
   .hero .bgimg{position:absolute;inset:0;background:
@@ -258,8 +263,15 @@
     <a href="option-1-classic.html"><img class="logo" src="assets/logo-blue-dark.png" alt="zBuyer"></a>
     <div class="navlinks"><a href="https://pulse.zbuyer.com/index.html?landing=selling&autostart=1">Sell</a><a href="https://pulse.zbuyer.com/index.html?CTID=13972283&landing=buying-hn&autostart=1&MID=56&affid=testing&zzipcode=93065">Buy</a><a href="contact-classic-blue.html">Contact</a></div>
     <div class="nav-right"><a class="pro-link" href="agents-classic-blue.html">For Agents &amp; Investors →</a><a class="signin">Sign in</a></div>
-    <div class="hamburger">☰</div>
+    <div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="Menu" aria-expanded="false">☰</div>
   </nav>
+  <div class="mnav" id="mnav" hidden>
+    <a href="https://pulse.zbuyer.com/index.html?landing=selling&autostart=1">Sell</a>
+    <a href="https://pulse.zbuyer.com/index.html?CTID=13972283&landing=buying-hn&autostart=1&MID=56&affid=testing&zzipcode=93065">Buy</a>
+    <a href="contact-classic-blue.html">Contact</a>
+    <a href="agents-classic-blue.html">For Agents &amp; Investors</a>
+    <a class="signin-m">Sign in</a>
+  </div>
 
   <header class="hero">
     <div class="bgimg"></div>
@@ -433,6 +445,7 @@
     </div>
   </div>
 
+  <script src="assets/nav.js"></script>
   <script src="assets/smarty-config.js"></script>
   <script src="assets/address-autocomplete.js"></script>
   <script src="assets/lead-modal.js"></script>
