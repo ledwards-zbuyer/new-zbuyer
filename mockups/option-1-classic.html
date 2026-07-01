@@ -34,7 +34,9 @@
   .mnav a{padding:14px 16px;font-size:16px;font-weight:600;color:var(--ink);border-radius:10px}
   .mnav a:active,.mnav a:hover{background:var(--tint)}
 
-  .hero{position:relative;min-height:680px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+  /* No overflow:hidden — it clipped the address-autocomplete list where the
+     hero meets the trust strip. The bg image is inset:0 so nothing escapes. */
+  .hero{position:relative;min-height:680px;display:flex;align-items:center;justify-content:center;text-align:center}
   .hero .bgimg{position:absolute;inset:0;background:
       linear-gradient(180deg,rgba(10,18,33,.72),rgba(13,27,51,.45) 38%,rgba(8,14,26,.86)),
       url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=2000&q=80'),
@@ -115,12 +117,10 @@
     .lm-cta{padding:14px;font-size:16px}
     .lm-cancel,.lm-nothanks{padding:2px}
     .lm-back{margin-bottom:4px}
-    /* Final steps: fill the viewport and anchor content low for thumb reach.
-       58px = overlay padding (24) + card padding (34). :not([hidden]) so the
-       flex display can't override the hidden attribute. */
-    .lm-final:not([hidden]){display:flex;flex-direction:column;min-height:calc(100vh - 58px);min-height:calc(100dvh - 58px)}
-    .lm-final .lm-spacer{flex:1}
-    .lm-final .lm-back{align-self:flex-start}
+    /* Final steps: natural-height card pinned to the bottom (bottom sheet)
+       so the buttons stay in thumb reach without internal whitespace.
+       .lm-sheet is toggled by lead-modal.js on the non-contact screens. */
+    .lead-modal.lm-sheet{align-items:flex-end}
     .lm-gfx{margin:14px 0 2px}
   }
   .search input{flex:1;border:none;outline:none;font-size:17px;font-family:inherit;color:var(--ink);padding:16px 0}
@@ -441,7 +441,6 @@
 
       <div class="lm-screen lm-final" data-screen="allset" hidden>
         <button type="button" class="lm-back" data-back>&larr; Back</button>
-        <div class="lm-spacer"></div>
         <h3>You&rsquo;re all set!</h3>
         <div class="lm-gfx">
           <svg width="170" height="118" viewBox="0 0 170 118" fill="none" aria-hidden="true">
@@ -462,7 +461,6 @@
       </div>
 
       <div class="lm-screen lm-final" data-screen="sms" hidden>
-        <div class="lm-spacer"></div>
         <h3>One last thing</h3>
         <div class="lm-gfx">
           <svg width="150" height="104" viewBox="0 0 150 104" fill="none" stroke="#0E1B33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

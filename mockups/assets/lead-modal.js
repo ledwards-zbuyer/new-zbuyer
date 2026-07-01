@@ -35,6 +35,8 @@
 
   function show(name) {
     screens.forEach(function (s) { s.hidden = s.getAttribute("data-screen") !== name; });
+    // Bottom-sheet the short final steps on mobile (CSS applies ≤560px).
+    modal.classList.toggle("lm-sheet", name !== "contact");
   }
   function open() {
     lastFocus = document.activeElement;
