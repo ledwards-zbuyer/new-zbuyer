@@ -1,7 +1,7 @@
 /* zBuyer lead-capture modal — opens after the hero address step.
  *
- * Step 2 (contact): name / phone / email + required "Selling Timeframe"
- *   custom dropdown + TCPA consent.
+ * Step 2 (contact): name / phone / email + required "Open to selling?"
+ *   intent chips (Now / Soon / Someday / Never) + TCPA consent.
  * Step 3 (allset): confirmation — a local expert will be in touch. No ask.
  * Step 4 (sms): optional — text the report link to their mobile.
  * The final buttons navigate to the demo report page. Vanilla JS, no deps.
@@ -24,12 +24,10 @@
   var mobileEl = document.getElementById("leadMobile");
   var mobileErr = document.getElementById("mobileErr");
 
-  // Custom dropdown (native <select> can't pad its open option list).
-  var tfWrap = document.getElementById("tfWrap");
-  var tfButton = document.getElementById("tfButton");
-  var tfMenu = document.getElementById("tfMenu");
-  var tfValueEl = document.getElementById("tfValue");
-  var tfValue = "";
+  // "Open to selling?" intent chips — one-word continuum, one tap to answer.
+  var chipsWrap = document.getElementById("intentChips");
+  var chips = chipsWrap.querySelectorAll(".lm-chip");
+  var intentValue = "";
 
   var lastFocus = null;
 
@@ -49,7 +47,6 @@
   function close() {
     modal.hidden = true;
     document.body.style.overflow = "";
-    closeMenu();
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
@@ -74,28 +71,17 @@
     el.addEventListener("input", function () { el.classList.remove("invalid"); errEl.hidden = true; });
   });
 
-  // ---- custom dropdown ----
-  function openMenu() { tfMenu.hidden = false; tfWrap.classList.add("open"); tfButton.setAttribute("aria-expanded", "true"); }
-  function closeMenu() { tfMenu.hidden = true; tfWrap.classList.remove("open"); tfButton.setAttribute("aria-expanded", "false"); }
-  // Toggle from the whole field (label, value, chevron, padding) — not just
-  // the small button — so taps near the arrow don't miss on mobile.
-  tfWrap.addEventListener("click", function (e) {
-    if (tfMenu.contains(e.target)) return; // option taps handled below
-    e.stopPropagation();
-    if (tfMenu.hidden) openMenu(); else closeMenu();
-  });
-  tfMenu.querySelectorAll("li").forEach(function (li) {
-    li.addEventListener("click", function () {
-      tfValue = li.getAttribute("data-val");
-      tfValueEl.textContent = li.textContent;
-      tfValueEl.removeAttribute("data-placeholder");
-      tfWrap.classList.remove("invalid");
+  // ---- intent chips ----
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      intentValue = chip.getAttribute("data-val");
+      chips.forEach(function (c) {
+        c.classList.toggle("sel", c === chip);
+        c.setAttribute("aria-checked", c === chip ? "true" : "false");
+      });
+      chipsWrap.classList.remove("invalid");
       errEl.hidden = true;
-      closeMenu();
     });
-  });
-  document.addEventListener("click", function (e) {
-    if (!tfWrap.contains(e.target)) closeMenu();
   });
 
   // ---- open on hero submit (require an address first) ----
@@ -108,7 +94,7 @@
   // ---- close / back ----
   modal.querySelectorAll("[data-close]").forEach(function (el) { el.addEventListener("click", close); });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && !modal.hidden) { if (!tfMenu.hidden) closeMenu(); else close(); }
+    if (e.key === "Escape" && !modal.hidden) close();
   });
   var backBtn = modal.querySelector("[data-back]");
   if (backBtn) backBtn.addEventListener("click", function () { show("contact"); });
@@ -120,20 +106,17 @@
     var digits = phoneEl.value.replace(/\D/g, "");
     var email = emailEl.value.trim();
 
-    [nameEl, phoneEl, emailEl, tfWrap].forEach(function (el) { el.classList.remove("invalid"); });
+    [nameEl, phoneEl, emailEl, chipsWrap].forEach(function (el) { el.classList.remove("invalid"); });
 
     var err = "", bad = null;
     if (!name) { err = "Please enter your name."; bad = nameEl; }
     else if (digits.length < 10) { err = "Please enter a valid phone number."; bad = phoneEl; }
     else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err = "Please enter a valid email address."; bad = emailEl; }
-    else if (!tfValue) { err = "Please choose your selling timeframe."; bad = tfWrap; }
+    else if (!intentValue) { err = "Please tell us if you’re open to selling."; bad = chipsWrap; }
 
     if (err) {
       bad.classList.add("invalid");
       errEl.textContent = err; errEl.hidden = false;
-      // Only move focus to the dropdown button (no keyboard); leave text
-      // inputs unfocused so the mobile keyboard doesn't cover the screen.
-      if (bad === tfWrap) tfButton.focus();
       return;
     }
     errEl.hidden = true;
