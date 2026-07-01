@@ -68,10 +68,10 @@
   .lm-screen[hidden]{display:none}
   .lm-back{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:0;margin-bottom:8px}
   .lm-form{margin-top:20px;display:flex;flex-direction:column;gap:12px}
-  .lm-form input,.lm-sms input{width:100%;font-family:inherit;font-size:16px;color:var(--ink);padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;outline:none;background:#fff}
-  .lm-form input:focus,.lm-sms input:focus{border-color:var(--c1)}
-  .lm-form input::placeholder,.lm-sms input::placeholder{color:#98A6BC}
-  .lm-form input.invalid,.lm-sms input.invalid,.lm-selectwrap.invalid{border-color:#D8442B;background:#FEF6F4}
+  .lm-form input,.lm-final input{width:100%;font-family:inherit;font-size:16px;color:var(--ink);padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;outline:none;background:#fff}
+  .lm-form input:focus,.lm-final input:focus{border-color:var(--c1)}
+  .lm-form input::placeholder,.lm-final input::placeholder{color:#98A6BC}
+  .lm-form input.invalid,.lm-final input.invalid,.lm-selectwrap.invalid{border-color:#D8442B;background:#FEF6F4}
   .lm-selectwrap{position:relative;border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:9px 16px 10px;cursor:pointer}
   .lm-selectwrap.open,.lm-selectwrap:focus-within{border-color:var(--c1)}
   .lm-label{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
@@ -83,16 +83,12 @@
   .lm-menu[hidden]{display:none}
   .lm-menu li{padding:11px 14px;border-radius:8px;font-size:15.5px;color:var(--ink);cursor:pointer}
   .lm-menu li:hover,.lm-menu li.active{background:var(--tint)}
-  .lm-boxes{display:flex;gap:8px;margin:18px 0 16px}
-  .lm-boxes img{flex:1;min-width:0;width:100%;height:auto;border-radius:10px}
-  .lm-sms{display:flex;flex-direction:column;gap:12px;margin-top:10px}
-  .lm-sms-card{align-self:center;width:100%;max-width:330px;text-align:center;display:flex;flex-direction:column;gap:10px;padding:16px 16px 18px;background:var(--soft);border:1px solid var(--line);border-radius:14px}
-  .lm-sms-head{display:flex;align-items:center;justify-content:center;gap:11px;text-align:left}
-  .lm-sms-icon{flex:none;width:44px;height:44px;color:var(--c1)}
-  .lm-sms-text{display:flex;flex-direction:column;gap:2px}
-  .lm-sms-note{font-size:14.5px;color:var(--muted);line-height:1.4}
-  .lm-sms-q{font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
-  .lm-sms-card input{text-align:center}
+  .lm-final h3,.lm-final .lm-sub{text-align:center}
+  .lm-gfx{display:flex;justify-content:center;margin:16px 0 4px}
+  .lm-final input{text-align:center;margin-top:14px}
+  .lm-final .lm-cta{display:block;width:100%;margin-top:18px}
+  .lm-final .lm-nothanks{display:block;margin:12px auto 0}
+  .lm-final .lm-err{margin-top:8px}
   .lm-nothanks{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;padding:4px;align-self:center;text-decoration:underline}
   .lm-err{color:#D8442B;font-size:13.5px;font-weight:600;text-align:center}
   .lm-err[hidden]{display:none}
@@ -110,7 +106,7 @@
     .lm-card h3{font-size:19px}
     .lm-sub{font-size:13.5px;margin-top:5px;line-height:1.4}
     .lm-form{margin-top:13px;gap:9px}
-    .lm-form input,.lm-sms input{padding:12px 14px}
+    .lm-form input,.lm-final input{padding:12px 14px}
     .lm-selectwrap{padding:7px 14px 8px}
     .lm-label{margin-bottom:2px}
     .lm-disclosure{padding:10px 12px;gap:5px}
@@ -119,10 +115,13 @@
     .lm-cta{padding:14px;font-size:16px}
     .lm-cancel,.lm-nothanks{padding:2px}
     .lm-back{margin-bottom:4px}
-    .lm-boxes{margin:12px 0 14px;gap:7px}
-    .lm-sms{gap:10px;margin-top:6px}
-    .lm-sms-card{padding:13px 14px 15px;gap:8px}
-    .lm-sms-q{font-size:17px}
+    /* Final steps: fill the viewport and anchor content low for thumb reach.
+       58px = overlay padding (24) + card padding (34). :not([hidden]) so the
+       flex display can't override the hidden attribute. */
+    .lm-final:not([hidden]){display:flex;flex-direction:column;min-height:calc(100vh - 58px);min-height:calc(100dvh - 58px)}
+    .lm-final .lm-spacer{flex:1}
+    .lm-final .lm-back{align-self:flex-start}
+    .lm-gfx{margin:14px 0 2px}
   }
   .search input{flex:1;border:none;outline:none;font-size:17px;font-family:inherit;color:var(--ink);padding:16px 0}
   .search input::placeholder{color:#98A6BC}
@@ -440,30 +439,47 @@
         </form>
       </div>
 
-      <div class="lm-screen" data-screen="report" hidden>
+      <div class="lm-screen lm-final" data-screen="allset" hidden>
         <button type="button" class="lm-back" data-back>&larr; Back</button>
-        <h3>Let&rsquo;s unlock your cash value</h3>
-        <p class="lm-sub">Cash offers depend on details that aren&rsquo;t visible online. A local expert verifies your home&rsquo;s value to get you a faster, more accurate offer.</p>
-        <div class="lm-boxes">
-          <img src="assets/box_expert_review.webp" alt="Expert review — verify upgrades & condition">
-          <img src="assets/box_reliable_offer.webp" alt="Reliable offer — protect your equity">
-          <img src="assets/box_local_knowledge.webp" alt="Local knowledge — identify recent nearby sales">
+        <div class="lm-spacer"></div>
+        <h3>You&rsquo;re all set!</h3>
+        <div class="lm-gfx">
+          <svg width="170" height="118" viewBox="0 0 170 118" fill="none" aria-hidden="true">
+            <circle cx="85" cy="59" r="46" fill="#EDF9F1"/>
+            <circle cx="85" cy="59" r="31" fill="#128A46"/>
+            <path d="M71.5 59.5l9.5 9.5 18-19" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M27 34v12M21 40h12" stroke="#3BA4F4" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M142 22v9M137.5 26.5h9" stroke="#3BA4F4" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M150 78v10M145 83h10" stroke="#CDEBD8" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="38" cy="86" r="3.4" fill="#E7EEFC"/>
+            <circle cx="132" cy="52" r="2.6" fill="#E7EEFC"/>
+            <circle cx="52" cy="18" r="2.8" fill="#CDEBD8"/>
+          </svg>
         </div>
-        <div class="lm-sms">
-          <div class="lm-sms-card">
-            <div class="lm-sms-head">
-              <svg class="lm-sms-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.3" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.6h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-              <div class="lm-sms-text">
-                <p class="lm-sms-note">So you can come back to it later, we&rsquo;ll text a link straight to your phone.</p>
-                <p class="lm-sms-q">Send my report link by text?</p>
-              </div>
-            </div>
-            <input id="leadMobile" type="tel" inputmode="tel" placeholder="(555) 555-5555" autocomplete="tel">
-            <p class="lm-err" id="mobileErr" hidden></p>
-          </div>
-          <button type="button" class="lm-cta" id="viewReport">Yes, Text Me the Link &rarr;</button>
-          <button type="button" class="lm-nothanks" id="noThanks">Skip &mdash; I&rsquo;ll view it here</button>
+        <p class="lm-sub">A local zBuyer expert will be in touch shortly to discuss your cash value and your best selling options.</p>
+        <button type="button" class="lm-cta" id="toSms">View Cash Value Report &rarr;</button>
+        <button type="button" class="lm-nothanks" id="noContact">Do not contact me</button>
+      </div>
+
+      <div class="lm-screen lm-final" data-screen="sms" hidden>
+        <div class="lm-spacer"></div>
+        <h3>One last thing</h3>
+        <div class="lm-gfx">
+          <svg width="150" height="104" viewBox="0 0 150 104" fill="none" stroke="#0E1B33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="52" y="8" width="44" height="88" rx="9"/>
+            <line x1="67" y1="15.5" x2="81" y2="15.5"/>
+            <line x1="60" y1="30" x2="88" y2="30"/><line x1="60" y1="39" x2="82" y2="39"/>
+            <rect x="60" y="52" width="28" height="10" rx="3" fill="#E7EEFC" stroke="none"/>
+            <path d="M60 85h28" stroke="#1D4FD7"/>
+            <path d="M100 36h30a6 6 0 0 1 6 6v13a6 6 0 0 1-6 6h-15l-8 8v-8h-7a6 6 0 0 1-6-6V42a6 6 0 0 1 6-6Z" fill="#fff" stroke="#1D4FD7"/>
+            <path d="M112 47.5h17" stroke="#1D4FD7" stroke-width="1.8"/>
+          </svg>
         </div>
+        <p class="lm-sub">Want your report link texted to you so you can open it anytime?</p>
+        <input id="leadMobile" type="tel" inputmode="tel" placeholder="(555) 555-5555" autocomplete="tel">
+        <p class="lm-err" id="mobileErr" hidden></p>
+        <button type="button" class="lm-cta" id="viewReport">Text Me the Link &rarr;</button>
+        <button type="button" class="lm-nothanks" id="noThanks">No thanks, just show my report</button>
       </div>
     </div>
   </div>

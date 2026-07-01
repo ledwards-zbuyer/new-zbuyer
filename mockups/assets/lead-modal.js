@@ -2,9 +2,9 @@
  *
  * Step 2 (contact): name / phone / email + required "Selling Timeframe"
  *   custom dropdown + TCPA consent.
- * Step 3 (report): value explanation + graphic, then a mobile number to
- *   text the report link.
- * The final button navigates to the demo report page. Vanilla JS, no deps.
+ * Step 3 (allset): confirmation — a local expert will be in touch. No ask.
+ * Step 4 (sms): optional — text the report link to their mobile.
+ * The final buttons navigate to the demo report page. Vanilla JS, no deps.
  */
 (function () {
   var modal = document.getElementById("leadModal");
@@ -137,11 +137,17 @@
     errEl.hidden = true;
 
     mobileEl.value = formatPhone(phoneEl.value); // carry phone into the SMS step
-    show("report");
+    show("allset");
     if (card) card.focus();
   });
 
-  // ---- report step ----
+  // ---- all-set step -> SMS step ----
+  function toSmsStep() { show("sms"); if (card) card.focus(); }
+  document.getElementById("toSms").addEventListener("click", toSmsStep);
+  // "Do not contact me": for now it continues to the SMS step like the CTA.
+  document.getElementById("noContact").addEventListener("click", toSmsStep);
+
+  // ---- SMS step ----
   function goToReport() { window.location.href = REPORT_PAGE; }
 
   document.getElementById("viewReport").addEventListener("click", function () {
