@@ -47,9 +47,8 @@
   .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 4px rgba(59,164,244,.3)}
   h1{color:#fff;font-size:60px;line-height:1.05;font-weight:800;letter-spacing:-.03em}
   h1 span{background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.88) 50%,transparent 62%),linear-gradient(90deg,#7FC4FF,#3BA4F4);background-size:250% 100%,100% 100%;background-position:130% 0,0 0;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cvshine 4s ease-in-out infinite}@keyframes cvshine{0%{background-position:130% 0,0 0}32%,100%{background-position:-45% 0,0 0}}@media (prefers-reduced-motion:reduce){h1 span{animation:none;background-position:-45% 0,0 0}}
-  /* B2 title variant (?title=b2, via compare-title.html): lowercase 2-line
-     lockup — "cash value home report" stays on one line at a uniform size
-     (nowrap; the <br> still breaks after "claim your"). */
+  /* B2 title variant (?title=b2, via compare-title.html): a single lowercase
+     line — "cash value home report" — uniform size, never wraps. */
   h1.h1-alt{font-size:56px;white-space:nowrap}
   .sub{color:#E4ECF6;font-size:19px;margin-top:18px;font-weight:400;opacity:.95}
   .search{position:relative;margin:34px auto 0;max-width:680px;background:#fff;border-radius:16px;padding:8px 8px 8px 22px;display:flex;align-items:center;gap:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.45)}
@@ -483,7 +482,7 @@
     // Hero title variant for side-by-side comparison (see compare-title.html).
     if (/[?&]title=b2\b/.test(location.search)) {
       var h1 = document.querySelector(".hero h1");
-      if (h1) { h1.classList.add("h1-alt"); h1.innerHTML = "claim your<br><span>cash value</span> home report"; }
+      if (h1) { h1.classList.add("h1-alt"); h1.innerHTML = "<span>cash value</span> home report"; }
     }
   </script>
   <script src="assets/nav.js"></script>
