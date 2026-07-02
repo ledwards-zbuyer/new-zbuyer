@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compare lead terms — zBuyer</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --c1:#1D4FD7;--acc:#3BA4F4;--cta:#FF6B4A;--cta-d:#F0572F;
+    --ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;--tint:#E7EEFC;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;color:#fff;background:
+      linear-gradient(180deg,#0E1B33,#0A1426);min-height:100vh;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:48px 22px;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .logo{height:32px;width:auto;margin-bottom:30px}
+  h1{font-size:34px;font-weight:800;letter-spacing:-.025em;text-align:center}
+  .sub{color:#BBD7FB;font-size:15.5px;margin-top:10px;text-align:center;max-width:520px;line-height:1.5}
+  .cards{display:flex;gap:22px;margin-top:38px;flex-wrap:wrap;justify-content:center}
+  .card{width:340px;background:#fff;color:var(--ink);border-radius:18px;padding:26px 26px 24px;display:flex;flex-direction:column;box-shadow:0 40px 90px -24px rgba(0,0,0,.6)}
+  .card .kicker{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--c1)}
+  .card h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-top:6px}
+  .card p{font-size:13.5px;color:var(--muted);line-height:1.5;margin-top:8px}
+  .card ul{list-style:none;margin:16px 0 20px;display:flex;flex-direction:column;gap:9px}
+  .card li{display:flex;gap:9px;font-size:13.5px;color:var(--ink);line-height:1.4}
+  .card li svg{flex:none;width:16px;height:16px;margin-top:1px;color:var(--c1)}
+  .card .go{margin-top:auto;display:block;text-align:center;background:var(--cta);color:#fff;font-weight:800;font-size:15.5px;padding:14px;border-radius:12px}
+  .card .go:hover{background:var(--cta-d)}
+  .note{margin-top:26px;color:#7d90b5;font-size:12.5px;text-align:center;max-width:460px;line-height:1.5}
+</style>
+</head>
+<body>
+  <img class="logo" src="assets/zbuyer-white.png" alt="zBuyer">
+  <h1>Compare lead terms</h1>
+  <p class="sub">Preview the seller funnel under each sale model — the difference shows up in the matched-pro disclosure and consent language on the contact step.</p>
+
+  <div class="cards">
+    <div class="card">
+      <span class="kicker">One buyer</span>
+      <h2>Exclusive Lead</h2>
+      <p>The lead is sold to a single real estate pro.</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>One matched pro, named in the form</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Consent covers zBuyer + your matched pro</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Shortest disclosure — smallest form</li>
+      </ul>
+      <a class="go" href="option-1-classic.html?terms=exclusive">Preview Exclusive &rarr;</a>
+    </div>
+
+    <div class="card">
+      <span class="kicker">Up to six buyers</span>
+      <h2>Max Sold</h2>
+      <p>The lead can be sold to up to six real estate pros.</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Every buyer named in the form (compliance)</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Consent covers zBuyer + its partners</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Worst-case disclosure — six names shown</li>
+      </ul>
+      <a class="go" href="option-1-classic.html?terms=maxsold">Preview Max Sold &rarr;</a>
+    </div>
+  </div>
+
+  <p class="note">Both open the same funnel — enter an address and continue to the contact step to see the disclosure differences. Demo copy is placeholder pending final legal language.</p>
+</body>
+</html>
