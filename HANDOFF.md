@@ -172,7 +172,7 @@ changing the funnel.
 
 ## Testing
 
-- **Harness:** `mockups/shots/harness.html` (untracked scratch dir) iframes the real page
+- **Harness:** `mockups/shots/harness.html` (now tracked) iframes the real page
   and drives it: `?step=contact | err | allset | sms | ac | acfocus`, plus
   `&terms=exclusive`. Serve the repo root first (`python -m http.server 8741`).
 - **Headless screenshots:** Chrome `--headless --screenshot --window-size=... --virtual-time-budget=4000`

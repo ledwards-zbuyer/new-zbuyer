@@ -1,0 +1,119 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;height:100%}iframe{border:0;width:100%;height:100%;display:block}</style>
+<iframe id="f" src="/mockups/option-1-classic.html"></iframe>
+<script>
+// Drives the page for screenshots: ?step=allset|sms|ac
+var f = document.getElementById("f");
+var hp = new URLSearchParams(location.search);
+if (hp.get("src")) f.src = hp.get("src"); // full override (encodeURIComponent it)
+else if (hp.get("terms")) f.src = "/mockups/option-1-classic.html?terms=" + hp.get("terms");
+f.onload = function () {
+  var d = f.contentDocument, w = f.contentWindow;
+  var step = new URLSearchParams(location.search).get("step");
+  if (step === "acfocus") {
+    // Focus the address input (mobile): the page should scroll the search
+    // box to the top, leaving the space below for suggestions.
+    var ul2 = d.getElementById("addr-suggestions");
+    for (var j = 1; j <= 5; j++) {
+      var li2 = d.createElement("li");
+      li2.innerHTML = '<span class="ac-street">' + j + '23 Main St</span><span class="ac-sec">Springfield, MO 65807</span>';
+      ul2.appendChild(li2);
+    }
+    ul2.hidden = false;
+    var addrEl = d.getElementById("addr");
+    addrEl.focus();
+    // Headless doesn't dispatch focus events to a background iframe even
+    // though focus lands — fire it explicitly to exercise the handler.
+    addrEl.dispatchEvent(new w.Event("focus"));
+    setTimeout(function () {
+      var dbg = document.createElement("div");
+      dbg.style.cssText = "position:fixed;top:0;right:0;background:#c00;color:#fff;z-index:9999;font:13px monospace;padding:4px 8px";
+      dbg.textContent = "scrollY=" + f.contentWindow.pageYOffset +
+        " active=" + (f.contentDocument.activeElement && f.contentDocument.activeElement.id);
+      document.body.appendChild(dbg);
+    }, 800);
+    return;
+  }
+  if (step === "acpick") {
+    // Full real flow: focus (scrolls box to top), type, wait for real
+    // Smarty suggestions, pick one (should scroll the CTA to the bottom).
+    var t0 = w.performance.now(), calls = [];
+    var origScrollTo = w.scrollTo.bind(w);
+    w.scrollTo = function (x, y) { calls.push(Math.round(w.performance.now() - t0) + "ms->" + y); origScrollTo(x, y); };
+    var inp = d.getElementById("addr");
+    inp.focus();
+    inp.dispatchEvent(new w.Event("focus"));
+    inp.value = "1600 Pennsylvania Ave";
+    inp.dispatchEvent(new w.Event("input", { bubbles: true }));
+    var tries = 0;
+    var poll = setInterval(function () {
+      var li = d.querySelector("#addr-suggestions li");
+      if (li) {
+        clearInterval(poll);
+        li.dispatchEvent(new w.MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+        var samples = [];
+        [300, 700, 1200].forEach(function (ms) {
+          setTimeout(function () { samples.push(ms + ":" + f.contentWindow.pageYOffset); }, ms);
+        });
+        setTimeout(function () {
+          // Probe: does a direct scrollTop write stick where scrollTo(0,0) didn't?
+          f.contentDocument.documentElement.scrollTop = 0;
+          samples.push("probeSet");
+        }, 1500);
+        setTimeout(function () {
+          var cs = f.contentWindow.getComputedStyle(f.contentDocument.body);
+          samples.push("1800:" + f.contentWindow.pageYOffset + " bodyOv=" + cs.overflow +
+            " sb=" + f.contentWindow.getComputedStyle(f.contentDocument.documentElement).scrollBehavior);
+        }, 1800);
+        setTimeout(function () {
+          var dbg = document.createElement("div");
+          dbg.style.cssText = "position:fixed;top:0;right:0;background:#c00;color:#fff;z-index:9999;font:12px monospace;padding:4px 8px;max-width:480px";
+          dbg.textContent = "y[" + samples.join(" ") + "] calls[" + calls.join("|") + "]";
+          document.body.appendChild(dbg);
+        }, 2600);
+      } else if (++tries > 40) { clearInterval(poll); }
+    }, 100);
+    return;
+  }
+  if (step === "ac") {
+    // Fake-populate the autocomplete list to check clipping at the hero edge.
+    var ul = d.getElementById("addr-suggestions");
+    for (var i = 1; i <= 8; i++) {
+      var li = d.createElement("li");
+      li.innerHTML = '<span class="ac-street">' + i + '23 Main St</span><span class="ac-sec">Springfield, MO 65807</span>';
+      ul.appendChild(li);
+    }
+    ul.hidden = false;
+    return;
+  }
+  if (step === "dr") {
+    // DR assertions: backdrop click must not close; X hidden past contact;
+    // no back buttons anywhere.
+    d.getElementById("addr").value = d.getElementById("addr").value || "123 Main St, Springfield, MO 65807";
+    d.querySelector(".hero .search").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+    d.querySelector(".lm-backdrop").click();
+    var openAfterBackdrop = !d.getElementById("leadModal").hidden;
+    var xOnContact = !d.querySelector(".lm-x").hidden;
+    d.querySelectorAll("#intentChips .lm-chip")[1].click();
+    d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+    setTimeout(function () {
+      var dbg = document.createElement("div");
+      dbg.style.cssText = "position:fixed;top:0;left:0;background:#060;color:#fff;z-index:9999;font:12px monospace;padding:4px 8px";
+      dbg.textContent = "openAfterBackdropClick=" + openAfterBackdrop +
+        " xVisibleOnContact=" + xOnContact +
+        " xHiddenNow=" + d.querySelector(".lm-x").hidden +
+        " backBtns=" + d.querySelectorAll("[data-back]").length;
+      document.body.appendChild(dbg);
+    }, 400);
+    return;
+  }
+  d.getElementById("addr").value = "123 Main St, Springfield, MO 65807";
+  d.querySelector(".hero .search").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+  if (step === "contact") { d.querySelectorAll("#intentChips .lm-chip")[1].click(); return; }
+  if (step === "err") { d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true })); return; }
+  d.querySelectorAll("#intentChips .lm-chip")[1].click(); // pick "Soon" so validation passes
+  d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+  if (step === "sms") d.getElementById("toSms").click();
+};
+</script>

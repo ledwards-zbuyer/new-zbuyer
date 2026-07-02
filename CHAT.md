@@ -494,6 +494,8 @@ Commit `5531ee7`.
 
 **Claude:** Audited every tracked asset against actual references: removed the three
 long-flagged `box_*.webp` illustrations and the unreferenced `logo-gold-light.png`
-(everything else is in use). Cleared ~125 local scratch screenshots/mock pages from
-`mockups/shots/` (untracked), keeping `harness.html` — the documented test driver.
-Closed the "prune box_*.webp" open item in HANDOFF.
+(everything else is in use). Cleared ~125 scratch screenshots/mock pages plus 34
+tracked concept-era screenshots from `mockups/shots/` — keeping the three thumbnails
+the root `index.html` gallery displays, and `harness.html` (the test driver, now
+committed so the testing recipe is reproducible). Closed the "prune box_*.webp" open
+item in HANDOFF.
