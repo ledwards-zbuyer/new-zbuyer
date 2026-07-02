@@ -135,11 +135,14 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
   Street View image of that address** (clear photo, same dark overlay). A free metadata
   call gates the swap: no imagery → default photo stays, Google's gray placeholder is
   never shown, and nothing is billed. The key slot is `window.GMAPS_STREETVIEW_KEY` in
-  `streetview-config.js` — **currently the placeholder**: the original key was exposed
-  and was scrubbed from git history (rotate it in Google Cloud console; paste the NEW key
-  only after it's referrer-restricted to `ledwards-zbuyer.github.io/*`, `localhost:8741/*`,
-  `zbuyer.com/*` and API-restricted to *Street View Static API*). The feature was verified
-  working end to end before removal. Caveats: image maxes at 640×640
+  `streetview-config.js` — **currently the placeholder**: the original key was exposed,
+  scrubbed from git history, and **deleted in Google Cloud console (2026-07-02) — the
+  incident is fully closed**. To re-enable: create a fresh key, apply restrictions
+  BEFORE first use (HTTP referrers `ledwards-zbuyer.github.io/*`, `localhost:8741/*`,
+  `zbuyer.com/*`; API-restrict to *Street View Static API*), paste it into
+  `streetview-config.js`, and uncomment the two script includes at the bottom of
+  `landing-classic-blue.html`. The feature was verified working end to end before
+  removal. Caveats: image maxes at 640×640
   (soft full-bleed on desktop, fine on mobile) and renders bill ~$7/1,000. Lander-only —
   the homepage never loads these scripts.
 
@@ -180,7 +183,7 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
    route to a no-contact path).
 7. **Hero title** — original kept for now; B2 lockup (`?title=b2`) pending team review,
    possible lander variant.
-8. **Street View background** — built, verified, then switched OFF (script includes
-   commented out in the lander). To re-enable: uncomment, and confirm the key's
-   referrer/API restrictions in Google Cloud console. Revisit desktop softness (640px
-   cap) if it bothers anyone.
+8. **Street View background** — built, verified, then switched OFF; the exposed key was
+   scrubbed and deleted. To re-enable: new restricted key + uncomment the two script
+   includes (see the DR-lander section). Revisit desktop softness (640px cap) if it
+   bothers anyone.

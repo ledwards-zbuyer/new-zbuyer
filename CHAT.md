@@ -435,3 +435,10 @@ verified the key string exists nowhere in any commit. NOTE: scrubbing git can't 
 what GitHub Pages already served publicly — the key must be **rotated** in Google Cloud
 console; restrict the replacement before pasting it in. (Commit hashes from the Street
 View work changed in the rewrite; references above updated.)
+
+**Lucas:** key has been deleted via google cloud services
+
+**Claude:** Incident closed — the exposed key is dead server-side, so any copies grabbed
+from the live page or old commits are useless. Re-enable path documented in HANDOFF:
+fresh key, restrictions applied BEFORE first use, paste into `streetview-config.js`,
+uncomment the two script includes in the lander.
