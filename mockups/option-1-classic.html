@@ -49,7 +49,7 @@
   h1 span{background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.88) 50%,transparent 62%),linear-gradient(90deg,#7FC4FF,#3BA4F4);background-size:250% 100%,100% 100%;background-position:130% 0,0 0;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cvshine 4s ease-in-out infinite}@keyframes cvshine{0%{background-position:130% 0,0 0}32%,100%{background-position:-45% 0,0 0}}@media (prefers-reduced-motion:reduce){h1 span{animation:none;background-position:-45% 0,0 0}}
   /* B2 title variant (?title=b2, via compare-title.html): a single lowercase
      line — "cash value home report" — uniform size, never wraps. */
-  h1.h1-alt{font-size:56px;white-space:nowrap}
+  h1.h1-alt{font-size:64px;white-space:nowrap}
   .sub{color:#E4ECF6;font-size:19px;margin-top:18px;font-weight:400;opacity:.95}
   .search{position:relative;margin:34px auto 0;max-width:680px;background:#fff;border-radius:16px;padding:8px 8px 8px 22px;display:flex;align-items:center;gap:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.45)}
   .ac-list{position:absolute;top:calc(100% + 10px);left:0;right:0;z-index:40;list-style:none;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 26px 54px -18px rgba(0,0,0,.45);overflow:hidden;text-align:left}
@@ -222,9 +222,9 @@
     .hero{min-height:600px}
     .hero-inner{margin-top:60px;padding:0 18px}
     h1{font-size:clamp(42px,11vw,50px)}
-    /* alt lockup is wider (nowrap line) — scale with viewport so
-       "cash value home report" always fits on one line */
-    h1.h1-alt{font-size:6.8vw}
+    /* alt lockup: fill the available width edge to edge — sized so the
+       nowrap line spans (100vw - hero padding) at any phone width */
+    h1.h1-alt{font-size:calc(8.4vw - 4px)}
     .sub{font-size:16.5px;margin-top:14px}
     .search{flex-direction:column;align-items:stretch;gap:10px;padding:14px;border-radius:18px}
     .search svg{display:block;position:absolute;top:30px;left:30px;width:22px;height:22px;z-index:2}
