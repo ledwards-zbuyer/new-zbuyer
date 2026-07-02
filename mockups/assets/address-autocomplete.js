@@ -90,6 +90,11 @@
       window.zbSelectedAddress = s; // expose structured pick for the lead modal
       close();
       input.blur(); // dismiss the mobile keyboard once an address is chosen
+      // Reverse the focus scroll so the CTA lands by the thumb. Runs twice:
+      // once right away, once after the keyboard finishes closing (the
+      // viewport resize changes innerHeight under us).
+      setTimeout(scrollSearchToBottom, 120);
+      setTimeout(scrollSearchToBottom, 450);
     }
   }
 
@@ -111,17 +116,27 @@
   // browser's own scroll-into-view jump, once after the keyboard settles
   // (opening it resizes the viewport and can undo the first scroll).
   var searchBox = input.closest(".search") || input;
-  function scrollSearchToTop() {
-    if (!window.matchMedia("(max-width: 768px)").matches) return;
-    var y = searchBox.getBoundingClientRect().top + window.pageYOffset - 10;
-    // Force an instant jump: the page sets html{scroll-behavior:smooth},
-    // which would animate this and lose the race against the keyboard
-    // opening/resizing the viewport.
+  // Instant jump: the page sets html{scroll-behavior:smooth}, which would
+  // animate these scrolls and lose the race against the keyboard
+  // opening/closing and resizing the viewport.
+  function jump(y) {
     var root = document.documentElement;
     var prev = root.style.scrollBehavior;
     root.style.scrollBehavior = "auto";
-    window.scrollTo(0, y);
+    window.scrollTo(0, Math.max(0, y));
     root.style.scrollBehavior = prev;
+  }
+  function scrollSearchToTop() {
+    if (!window.matchMedia("(max-width: 768px)").matches) return;
+    jump(searchBox.getBoundingClientRect().top + window.pageYOffset - 10);
+  }
+  // Reverse of scrollSearchToTop: once an address is picked and the
+  // keyboard dismissed, align the search box's bottom (the CTA button on
+  // mobile) near the bottom of the viewport for an easy thumb tap.
+  function scrollSearchToBottom() {
+    if (!window.matchMedia("(max-width: 768px)").matches) return;
+    var r = searchBox.getBoundingClientRect();
+    jump(r.bottom + window.pageYOffset - window.innerHeight + 14);
   }
   input.addEventListener("focus", function () {
     setTimeout(scrollSearchToTop, 60);
