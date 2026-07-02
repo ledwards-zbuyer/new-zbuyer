@@ -163,4 +163,34 @@
   document.addEventListener("click", function (e) {
     if (!list.contains(e.target) && e.target !== input) close();
   });
+
+  // ---- z-param address prefill (email/SMS landing links) ----
+  // zstreet/zcity/zstate/zzipcode arrive on paid-traffic links. Fill the box
+  // with the composed address immediately, then run a silent Smarty lookup
+  // (no dropdown) and upgrade to the top suggestion's canonical address so
+  // the box holds the same verified value a manual pick would produce.
+  var qp = new URLSearchParams(window.location.search);
+  var zstreet = (qp.get("zstreet") || "").trim();
+  if (zstreet) {
+    var zcity = (qp.get("zcity") || "").trim();
+    var zstate = (qp.get("zstate") || "").trim();
+    var zzip = (qp.get("zzipcode") || "").trim();
+    input.value = zstreet + (zcity ? ", " + zcity : "") + (zstate ? ", " + zstate : "") + (zzip ? " " + zzip : "");
+    if (!keyMissing()) {
+      var url = ENDPOINT +
+        "?key=" + encodeURIComponent(window.SMARTY_EMBEDDED_KEY) +
+        "&search=" + encodeURIComponent([zstreet, zcity, zstate, zzip].join(" ").replace(/\s+/g, " ").trim()) +
+        "&max_results=1";
+      fetch(url)
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        .then(function (data) {
+          var s = (data.suggestions || [])[0];
+          if (s && !(s.entries > 1)) { // skip multi-unit umbrellas — keep the composed string
+            input.value = fullAddress(s);
+            window.zbSelectedAddress = s;
+          }
+        })
+        .catch(function (err) { console.warn("[Smarty] prefill lookup failed:", err); });
+    }
+  }
 })();

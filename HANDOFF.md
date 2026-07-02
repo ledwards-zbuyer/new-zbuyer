@@ -93,6 +93,22 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
   demo of the hero-title comparison.) **Consent wording differences are placeholders**
   pending final legal language.
 
+### 6. Direct-response landing page (`mockups/landing-classic-blue.html`)
+- Stripped funnel for paid traffic (email/SMS): logo-only header, hero + address box, then
+  nothing but "© zBuyer · Terms · Privacy" at the bottom. `noindex`. Content sits high (not
+  centered) so the short page still leaves keyboard room for suggestions on mobile.
+- **Modal lock-in** via `<body data-dr>` (behavior in `lead-modal.js`): backdrop has no
+  `data-close` (click-off can't dismiss), X + Escape close ONLY on the contact step (the one
+  with the consent terms), no back buttons anywhere.
+- **z-param pre-pop** (the real email/SMS link convention):
+  `?zfname=Alex&zlastname=Smith&zphone=6238805511&zemail=alex@gmail.com&zstreet=1401+Candlewood+Dr&zcity=Pittsburg&zstate=PA&zzipcode=15240`
+  - Address: composed string fills the box instantly; a silent Smarty lookup then upgrades it
+    to the top suggestion's canonical address (sets `window.zbSelectedAddress`). Multi-unit
+    umbrella results are skipped. (`address-autocomplete.js`)
+  - Contact: name/phone/email prefill (phone through `formatPhone`). (`lead-modal.js`)
+  - Landing markup ships empty inputs — no John Doe demo data. `zcredit` currently ignored.
+  - Prefill code runs on any page carrying the params; the homepage without params is unchanged.
+
 ## Testing
 
 - **Harness:** `mockups/shots/harness.html` (untracked scratch dir) iframes the real page

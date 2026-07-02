@@ -31,8 +31,17 @@
 
   var lastFocus = null;
 
+  // Direct-response landing pages set <body data-dr>: the backdrop there has
+  // no data-close (click-off can't dismiss), and the X / Escape only work on
+  // the contact step — the one carrying the consent terms.
+  var DR = document.body.hasAttribute("data-dr");
+  var xBtn = modal.querySelector(".lm-x");
+  var current = "";
+
   function show(name) {
+    current = name;
     screens.forEach(function (s) { s.hidden = s.getAttribute("data-screen") !== name; });
+    if (DR && xBtn) xBtn.hidden = name !== "contact";
   }
   function open() {
     lastFocus = document.activeElement;
@@ -82,6 +91,15 @@
       .replace("your matched real-estate professional", "its real-estate partners");
   }
 
+  // ---- z-param contact prefill (email/SMS landing links) ----
+  // e.g. ?zfname=Alex&zlastname=Smith&zphone=6238805511&zemail=alex@gmail.com
+  var qp = new URLSearchParams(window.location.search);
+  if (qp.get("zfname") || qp.get("zlastname")) {
+    nameEl.value = ((qp.get("zfname") || "") + " " + (qp.get("zlastname") || "")).trim();
+  }
+  if (qp.get("zphone")) phoneEl.value = formatPhone(qp.get("zphone"));
+  if (qp.get("zemail")) emailEl.value = qp.get("zemail");
+
   // ---- intent chips ----
   chips.forEach(function (chip) {
     chip.addEventListener("click", function () {
@@ -105,7 +123,7 @@
   // ---- close / back ----
   modal.querySelectorAll("[data-close]").forEach(function (el) { el.addEventListener("click", close); });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && !modal.hidden) close();
+    if (e.key === "Escape" && !modal.hidden && (!DR || current === "contact")) close();
   });
   var backBtn = modal.querySelector("[data-back]");
   if (backBtn) backBtn.addEventListener("click", function () { show("contact"); });
