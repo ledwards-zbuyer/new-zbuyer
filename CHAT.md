@@ -414,4 +414,13 @@ wouldn't it have been corrected if thats the case?
 zero suggestions) rather than correcting it, so the composed fallback (with the bad zip)
 stayed in the box. Fix: the silent prefill search now sends street+city+state only and
 lets Smarty supply the canonical zip. Verified: pre-pop with 65806 now shows
-"…Springfield, MO 65802" in the box.
+"…Springfield, MO 65802" in the box. Commit `e33b301`.
+
+---
+
+**Lucas:** let's turn off the streetview for the time being. but obviously keep the
+smarty changes
+
+**Claude:** Commented out the two Street View script includes in the lander (code, key
+config, and radius fix all stay in the repo — uncomment two lines to re-enable). The
+Smarty zip-correction fix is untouched.

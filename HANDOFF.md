@@ -128,7 +128,9 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
   - Prefill code runs on any page carrying the params; the homepage without params is unchanged.
 - Lander logo = `assets/logo-blue-dark.png`, same file as the homepage nav (was briefly
   `zbuyer-white.png` — corrected to match).
-- **Street View hero background** (`assets/streetview-bg.js` + `assets/streetview-config.js`):
+- **Street View hero background — currently OFF** (the two `<script>` includes are
+  commented out at the bottom of `landing-classic-blue.html`; uncomment to re-enable).
+  How it works when on (`assets/streetview-bg.js` + `assets/streetview-config.js`):
   when z-params carry an address, the hero swaps the stock house photo for the **Google
   Street View image of that address** (clear photo, same dark overlay). A free metadata
   call gates the swap: no imagery → default photo stays, Google's gray placeholder is
@@ -177,6 +179,7 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
    route to a no-contact path).
 7. **Hero title** — original kept for now; B2 lockup (`?title=b2`) pending team review,
    possible lander variant.
-8. **Street View background** — live and verified; confirm the key's referrer/API
-   restrictions in Google Cloud console, and revisit desktop softness (640px cap) if it
-   bothers anyone.
+8. **Street View background** — built, verified, then switched OFF (script includes
+   commented out in the lander). To re-enable: uncomment, and confirm the key's
+   referrer/API restrictions in Google Cloud console. Revisit desktop softness (640px
+   cap) if it bothers anyone.
