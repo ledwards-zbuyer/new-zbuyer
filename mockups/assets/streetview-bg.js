@@ -24,7 +24,11 @@
 
   var addr = [zstreet, (qp.get("zcity") || "").trim(), (qp.get("zstate") || "").trim(),
     (qp.get("zzipcode") || "").trim()].join(" ").replace(/\s+/g, " ").trim();
-  var params = "location=" + encodeURIComponent(addr) + "&source=outdoor&key=" + encodeURIComponent(key);
+  // radius=100 (default 50m): geocodes land on the rooftop, and on deep lots
+  // the nearest panorama sits farther away than 50m — e.g. 1336 E Walnut St
+  // Springfield MO returned ZERO_RESULTS until widened. 100m stays close
+  // enough that the auto-aimed camera can't land on the wrong street.
+  var params = "location=" + encodeURIComponent(addr) + "&source=outdoor&radius=100&key=" + encodeURIComponent(key);
 
   fetch(META_ENDPOINT + "?" + params)
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
