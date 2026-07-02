@@ -71,36 +71,6 @@
     el.addEventListener("input", function () { el.classList.remove("invalid"); errEl.hidden = true; });
   });
 
-  // ---- matched pros: collapse the buyer list to one line ----
-  // A lead can be sold to up to 6 pros; listing all of them (name +
-  // brokerage) costs ~6 lines and pushes the form below the fold.
-  // Collapsed: first name + "+N more" toggle. Expanded: the full list.
-  var prosEl = document.getElementById("lmPros");
-  if (prosEl) {
-    var pros = (prosEl.getAttribute("data-pros") || "").split(";")
-      .map(function (s) { return s.trim(); }).filter(Boolean);
-    var prosLabel = "Matched real estate pro" + (pros.length > 1 ? "s" : "") + ":";
-    function renderPros(expanded) {
-      prosEl.innerHTML = "";
-      var b = document.createElement("b");
-      b.textContent = prosLabel;
-      prosEl.appendChild(b);
-      var text = expanded || pros.length === 1
-        ? " " + pros.join("; ") + " "
-        : " " + pros[0].replace(/\s*\([^)]*\)$/, "") + " "; // name only
-      prosEl.appendChild(document.createTextNode(text));
-      if (pros.length > 1) {
-        var t = document.createElement("button");
-        t.type = "button";
-        t.className = "lm-morelink";
-        t.textContent = expanded ? "show less" : "+" + (pros.length - 1) + " more";
-        t.addEventListener("click", function () { renderPros(!expanded); });
-        prosEl.appendChild(t);
-      }
-    }
-    if (pros.length) renderPros(false);
-  }
-
   // ---- intent chips ----
   chips.forEach(function (chip) {
     chip.addEventListener("click", function () {

@@ -74,10 +74,10 @@
   .lm-form input:focus,.lm-final input:focus{border-color:var(--c1)}
   .lm-form input::placeholder,.lm-final input::placeholder{color:#98A6BC}
   .lm-form input.invalid,.lm-final input.invalid{border-color:#D8442B;background:#FEF6F4}
-  .lm-intent{display:flex;flex-direction:column;gap:9px;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px}
-  .lm-intent-label{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.01em;text-align:center}
+  .lm-intent{display:flex;flex-direction:column;gap:8px;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:11px 14px 13px}
+  .lm-intent-label{font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em;text-align:center}
   .lm-chips{display:flex;gap:8px}
-  .lm-chip{flex:1;font-family:inherit;font-size:15px;font-weight:600;color:var(--muted);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:11px 0;cursor:pointer;text-align:center}
+  .lm-chip{flex:1;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--muted);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:9px 0;cursor:pointer;text-align:center}
   .lm-chip.sel{background:var(--tint);border-color:var(--c1);color:var(--c1)}
   .lm-chips.invalid .lm-chip{border-color:#D8442B;background:#FEF6F4}
   .lm-final h3,.lm-final .lm-sub{text-align:center}
@@ -92,28 +92,26 @@
   .lm-err{color:#D8442B;font-size:13.5px;font-weight:600;text-align:center}
   .lm-err[hidden]{display:none}
   .lm-disclosure{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:8px}
-  .lm-matched{font-size:12.5px;line-height:1.45;color:var(--muted)}
+  .lm-matched{font-size:12px;line-height:1.35;color:var(--muted)}
   .lm-matched b{color:var(--ink);font-weight:700}
-  .lm-morelink{border:none;background:none;font-family:inherit;font-size:12px;font-weight:700;color:var(--c1);cursor:pointer;padding:0;text-decoration:underline;white-space:nowrap}
   .lm-consent{font-size:11px;line-height:1.5;color:#8a97ab;margin:0}
   .lm-consent a{color:var(--c1);font-weight:600;text-decoration:underline}
   .lm-cta{margin-top:4px;background:var(--cta);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:16.5px;padding:16px;border-radius:12px;cursor:pointer}
   .lm-cta:hover{background:var(--cta-d)}
-  .lm-cancel{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;padding:4px;align-self:center}
   @media (max-width:560px){
     .lead-modal{padding:12px;align-items:flex-start;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch}
     .lm-card{max-width:none;max-height:none;padding:18px 16px 16px;border-radius:18px}
     .lm-card h3{font-size:19px}
     .lm-sub{font-size:13.5px;margin-top:5px;line-height:1.4}
-    .lm-form{margin-top:13px;gap:9px}
+    .lm-form{margin-top:12px;gap:8px}
     .lm-form input,.lm-final input{padding:12px 14px}
-    .lm-intent{padding:10px 12px 12px;gap:7px}
-    .lm-chip{font-size:14px;padding:10px 0}
+    .lm-intent{padding:9px 12px 11px;gap:7px}
+    .lm-chip{font-size:14px;padding:8px 0}
     .lm-disclosure{padding:10px 12px;gap:5px}
     .lm-matched{font-size:12px;line-height:1.4}
     .lm-consent{font-size:10.5px;line-height:1.42}
     .lm-cta{padding:14px;font-size:16px}
-    .lm-cancel,.lm-nothanks{padding:2px}
+    .lm-nothanks{padding:2px}
     .lm-back{margin-bottom:4px}
     /* Final steps: natural-height card pinned to the bottom (bottom sheet)
        so the buttons stay in thumb reach without internal whitespace.
@@ -410,7 +408,7 @@
 
       <div class="lm-screen" data-screen="contact">
         <h3 id="lm-title">View Cash Value Report</h3>
-        <p class="lm-sub">We use the combined power of automated valuation models and the knowledge of local real estate agents and investors to estimate your home&rsquo;s cash value.</p>
+        <p class="lm-sub">We combine automated valuation models with local expert knowledge to estimate your home&rsquo;s cash value.</p>
         <form class="lm-form" id="leadForm" novalidate>
           <input name="name" type="text" placeholder="Full name" autocomplete="name" value="John Doe">
           <input name="phone" id="leadPhone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel" value="(417) 880-9688">
@@ -425,11 +423,10 @@
           </div>
           <p class="lm-err" id="leadErr" hidden></p>
           <div class="lm-disclosure">
-            <p class="lm-matched" id="lmPros" data-pros="Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)"><b>Matched real estate pros:</b> Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)</p>
+            <p class="lm-matched"><b>Matched real estate pros:</b> Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)</p>
             <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give zBuyer and its real-estate partners your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase. Msg &amp; data rates may apply. See our <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp; <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
           </div>
           <button type="submit" class="lm-cta">Continue &rarr;</button>
-          <button type="button" class="lm-cancel" data-close>Cancel</button>
         </form>
       </div>
 
