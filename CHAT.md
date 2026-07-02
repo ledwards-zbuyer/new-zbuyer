@@ -442,3 +442,27 @@ View work changed in the rewrite; references above updated.)
 from the live page or old commits are useless. Re-enable path documented in HANDOFF:
 fresh key, restrictions applied BEFORE first use, paste into `streetview-config.js`,
 uncomment the two script includes in the lander.
+
+---
+
+**Lucas:** On the Expert step increase the font size of "A local zBuyer expert will be in
+touch shortly…" to the same as "Want your report link texted to you…" on the SMS step
+
+**Claude:** Added the existing `lm-q` class (16.5px) to the expert line on both pages —
+no new CSS. Commit `9d30c94`.
+
+**Lucas:** i cannot see the change on mobile.
+
+**Claude:** Verified the live github.io HTML already carried the change — the phone was
+serving GitHub Pages' 10-minute browser cache. Workaround for rapid iterations: open with
+a throwaway `?v=N` param or wait out the cache. **Lucas: that worked.**
+
+**Lucas:** also italicize "this will update your primary contact phone"
+
+**Claude:** `.lm-note` is now italic on both pages. Commit `c695d66`.
+
+**Lucas:** always do the HANDOFF & CHAT when you commit in the future (on this and any
+other project)
+
+**Claude:** Standing rule adopted (and saved to persistent memory): every commit updates
+HANDOFF.md & CHAT.md in the same push.

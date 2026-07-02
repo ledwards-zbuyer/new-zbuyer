@@ -38,8 +38,11 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
 - **Fix:** split into two screens. The all-set screen is pure confirmation (no ask, nothing
   to decline); the SMS screen is the only live question. Both of its buttons still reach the
   report, so skipping the text clearly skips *only* the text.
-- SMS copy: bigger question line + small centered note "This will update your primary
-  contact phone."
+- SMS copy: bigger question line + small centered italic note "This will update your
+  primary contact phone."
+- The all-set step's expert line ("A local zBuyer expert will be in touch shortly…")
+  carries the same `lm-q` size (16.5px) as the SMS question, so the two closing steps
+  read at equal weight.
 - The step's 3 illustration boxes (`assets/box_*.webp`) were dropped as visually busy;
   each screen got one calm inline-SVG graphic instead (success check / phone + text bubble).
   The `.webp` files are now unused (prune later).
