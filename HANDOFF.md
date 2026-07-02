@@ -9,6 +9,8 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
 - **DR landing page:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/landing-classic-blue.html
 - **Homepage vs lander comparison:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/compare-pages.html
   (three cards: homepage, empty lander, lander pre-popped via the Alex Smith example link)
+- **Report comparison tool:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/compare-report.html
+  (three value-display strategies × Exclusive/Max Sold on the rebuilt report page)
 - GitHub Pages serves `main`; every push is live in ~1 minute. A `.nojekyll` file at the
   repo root makes Pages deploy the raw files (the default Jekyll build started failing
   flakily 2026-07-02 with no content cause; we never needed it). Browsers cache pages for
@@ -28,7 +30,8 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
    CTA **View Cash Value Report →**, quiet **Do not contact me** link.
 4. **SMS step** — "One last thing": opt in to get the report link texted
    (number prefilled from contact step). CTA and "No thanks" both land on
-   `report-classic-blue.html` (demo dashboard screenshot).
+   `report-classic-blue.html` — now a real Cash Value Report page (see §8),
+   no longer a dashboard screenshot.
 
 Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
 
@@ -170,6 +173,43 @@ changing the funnel.
 - **Form-step title:** "View Cash Value Report" → **"Request Cash Value Estimate"**
   (both pages). The all-set step's CTA still says "View Cash Value Report →".
 
+### 8. Cash Value Report v2 (2026-07-02)
+
+`report-classic-blue.html` rebuilt from a static Zoodealio-dashboard screenshot into a
+real page (classic-blue tokens, vanilla JS, no deps). Still "Powered by Zoodealio"
+(quiet, header right). The old `report-dashboard*.png` assets are deleted.
+
+- **Why:** the funnel's promised object ("Get my cash value report → … → View Cash
+  Value Report →") finally lands on a page that looks like the funnel — and the page
+  exists to **test the value-display dilemma** instead of arguing it: the untested
+  2003-era assumption that showing numbers sets expectations agents must overcome,
+  plus the investor wrinkle (an investor's real offer shouldn't sit beside a bigger
+  Zoodealio number).
+- **Structure:** masthead (title, address, facts, photo) → expert slot **above the
+  fold** → value module → property details + net-equity cards → value-history chart
+  (inline SVG, 5y/10y toggle) → minimal footer.
+- **`?values=` param — three value-display strategies** (default `combined`):
+  - `combined` — one wide range ($312K–$371K demo), endpoints labeled as *choices*
+    ("Fastest cash sale" ↔ "Top market value"). Most member-protective: no
+    individual offer shown.
+  - `options` — a range per path (Cash / Cash+ featured / List), expert as
+    tie-breaker CTA. Exposes the Cash+ number.
+  - `spectrum` — all paths as interval bars on one Speed ⟷ Price axis; the geometry
+    teaches the tradeoff.
+  - **Anchoring rule (all three):** no number is ever labeled "your home's value" —
+    every figure is the outcome of a way to sell.
+- **`?terms=` param** (default exclusive, matching the funnel): `exclusive` = Jason
+  Dalbey concierge card; `maxsold` = the 6-buyer roster (same names as the funnel
+  disclosure) cycling through the same card slot as a **scroll-snap carousel**
+  (1-up mobile / 3-up desktop, dots + arrows). Value-module CTAs swap "Jason" →
+  "your pros" via `.xName` spans.
+- **CSS gotcha:** `main>.wrap>*{min-width:0}` is load-bearing — without it the
+  carousel's min-content width (6 unshrinkable cards) propagates up the flex column
+  and widens the whole page past the mobile viewport.
+- All values are demo numbers; wiring real Zoodealio / RealEstateAPI data is out of
+  scope for the mockup. Contact CTAs are demo `tel:` links; net-equity button is
+  not live.
+
 ## Testing
 
 - **Harness:** `mockups/shots/harness.html` (now tracked) iframes the real page
@@ -197,3 +237,9 @@ changing the funnel.
    scrubbed and deleted. To re-enable: new restricted key + uncomment the two script
    includes (see the DR-lander section). Revisit desktop softness (640px cap) if it
    bothers anyone.
+8. **Report value-display strategy** — which `?values=` variant ships (and per which
+   terms model) is a data/team decision; the param matrix on `compare-report.html`
+   exists so it can be tested. Working hypothesis: Max Sold (investors in the mix)
+   wants `combined`, Exclusive can afford `options`.
+9. **Report carousel behavior** — no autoplay for now; revisit swipe affordance after
+   the phone thumb test.

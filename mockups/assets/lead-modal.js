@@ -12,7 +12,7 @@
   var addr = document.getElementById("addr");
   if (!modal || !heroForm || !addr) return;
 
-  var REPORT_PAGE = "report-classic-blue.html"; // demo report (dashboard screenshot)
+  var REPORT_PAGE = "report-classic-blue.html"; // demo Cash Value Report page
 
   var card = modal.querySelector(".lm-card");
   var screens = modal.querySelectorAll(".lm-screen");

@@ -6,18 +6,451 @@
 <title>Your Cash Value Report — zBuyer</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="assets/logo-blue-dark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+  /* Cash Value Report v2 — real page (was a static dashboard screenshot).
+   * Zoodealio-powered, classic-blue funnel styling. Variants:
+   *   ?values=combined|options|spectrum  — value-display strategy (default combined)
+   *   ?terms=exclusive|maxsold           — one expert vs 6-buyer carousel (default exclusive)
+   * Demo data throughout; compare-report.html is the team jump page. */
+  :root{
+    --c1:#1D4FD7;--c1d:#1640A8;--navy:#0E1B33;--navy-dd:#0A1426;
+    --acc:#3BA4F4;--cta:#FF6B4A;--cta-d:#F0572F;
+    --ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;--bg:#FFFFFF;
+    --tint:#E7EEFC;--tintink:#1D4FD7;
+  }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#F3F4F8;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
-  /* Demo only: the homeowner dashboard rendered as a static image so the
-     concept flow ends on a realistic "report" screen. Controls aren't live. */
-  .report{display:block;width:100%;max-width:1920px;height:auto;margin:0 auto}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);
+       background:var(--soft);-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  img{display:block}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+  header{background:#fff;border-bottom:1px solid var(--line)}
+  .hbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+  .hbar .logo{height:26px;width:auto}
+  .powered{font-size:12px;color:var(--muted)}
+  .powered b{color:var(--c1);font-weight:700}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;
+        box-shadow:0 14px 34px -22px rgba(14,27,51,.18)}
+  main{padding:22px 0 40px}
+  main>.wrap{display:flex;flex-direction:column;gap:16px}
+  /* min-width:0 — without it the 6-card carousel's min-content width
+     propagates up the flex column and widens the whole page on mobile */
+  main>.wrap>*{min-width:0}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--c1);font-weight:800;
+           font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--acc);
+                box-shadow:0 0 0 4px rgba(59,164,244,.22)}
+
+  /* ---- masthead ---- */
+  .mast{display:flex;align-items:center;gap:18px;justify-content:space-between}
+  .mast h1{font-size:27px;font-weight:800;letter-spacing:-.025em;margin-top:6px}
+  .mast .addr{font-size:15px;font-weight:600;color:var(--ink);margin-top:8px}
+  .mast .facts{font-size:13px;color:var(--muted);margin-top:4px}
+  .mast .facts b{color:var(--ink);font-weight:700}
+  .mast .photo{flex:none;width:300px;height:170px;object-fit:cover;border-radius:14px}
+
+  /* ---- expert concierge (above the fold) ---- */
+  .xslot .eyebrow{color:var(--muted)}
+  .xhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+  .xhead .xcount{font-size:12.5px;color:var(--muted)}
+  .xcard{display:flex;align-items:center;gap:16px}
+  .avatar{flex:none;width:58px;height:58px;border-radius:50%;background:var(--tint);color:var(--c1);
+          display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;letter-spacing:.02em}
+  .xwho{min-width:0;flex:1}
+  .xname{font-size:17.5px;font-weight:800;letter-spacing:-.01em}
+  .xbrok{font-size:13px;color:var(--muted);margin-top:2px}
+  .xline{font-size:13.5px;color:var(--muted);line-height:1.45;margin-top:12px}
+  .xbtns{display:flex;gap:10px;margin-top:14px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;
+       font-weight:800;font-size:15px;padding:13px 18px;border-radius:12px;cursor:pointer;border:none}
+  .btn-cta{background:var(--cta);color:#fff;flex:1}
+  .btn-cta:hover{background:var(--cta-d)}
+  .btn-line{background:#fff;color:var(--c1);border:1.5px solid var(--line);flex:1}
+  .btn-line:hover{border-color:var(--c1)}
+
+  /* maxsold carousel: scroll-snap pages, dots synced by JS */
+  .xtrack{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
+          scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+  .xtrack::-webkit-scrollbar{display:none}
+  .xpro{flex:0 0 100%;scroll-snap-align:start;background:var(--soft);border:1px solid var(--line);
+        border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px}
+  .xpro .avatar{width:48px;height:48px;font-size:16px}
+  .xpro .xname{font-size:15.5px}
+  .xpro .xtag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.06em;
+              text-transform:uppercase;color:var(--muted);background:#fff;border:1px solid var(--line);
+              border-radius:999px;padding:3px 9px;margin-top:6px}
+  .xnav{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
+  .xdots{display:flex;gap:7px}
+  .xdot{width:8px;height:8px;border-radius:50%;border:none;background:var(--line);cursor:pointer;padding:0}
+  .xdot.on{background:var(--c1)}
+  .xarrow{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--line);background:#fff;
+          color:var(--muted);font-size:15px;cursor:pointer;display:none;align-items:center;justify-content:center}
+  .xarrow:hover{border-color:var(--c1);color:var(--c1)}
+
+  /* ---- value modules ---- */
+  .vmod[hidden]{display:none}
+  .vhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .vnote{font-size:12.5px;font-style:italic;color:var(--muted);line-height:1.5;margin-top:14px;text-align:center}
+  .vask{display:block;text-align:center;font-size:14.5px;font-weight:700;color:var(--c1);margin-top:12px}
+  .vask:hover{text-decoration:underline}
+
+  /* combined: one wide range */
+  .vrange{font-size:38px;font-weight:800;letter-spacing:-.03em;margin-top:10px;text-align:center}
+  .vtrack{position:relative;height:12px;border-radius:999px;margin:22px 6px 10px;
+          background:linear-gradient(90deg,var(--acc),var(--c1) 55%,var(--navy))}
+  .vpoles{display:flex;justify-content:space-between;gap:14px;margin-top:12px}
+  .vpole{max-width:46%}
+  .vpole b{display:block;font-size:13.5px;font-weight:800;color:var(--ink)}
+  .vpole span{display:block;font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4}
+  .vpole.right{text-align:right}
+
+  /* options: a range per path */
+  .vcards{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+  .vcard{position:relative;border:1.5px solid var(--line);border-radius:14px;padding:16px 16px 14px;background:#fff}
+  .vcard.feat{border-color:var(--c1);background:var(--tint)}
+  .vchip{position:absolute;top:-9px;left:14px;font-size:10px;font-weight:800;letter-spacing:.07em;
+         text-transform:uppercase;color:#fff;background:var(--c1);border-radius:999px;padding:3px 9px}
+  .vkick{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--c1)}
+  .vnum{font-size:23px;font-weight:800;letter-spacing:-.02em;margin-top:5px}
+  .vmeta{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .vmeta b{color:var(--ink);font-weight:700}
+  .vdesc{font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:7px}
+
+  /* spectrum: every path on one speed<->price line */
+  .spec{margin-top:20px}
+  .srow{position:relative;height:44px}
+  .sbar{position:absolute;top:22px;height:12px;border-radius:999px}
+  .slab{position:absolute;top:0;font-size:12px;color:var(--muted);white-space:nowrap}
+  .slab b{color:var(--ink);font-weight:800}
+  .saxis{position:relative;height:4px;border-radius:999px;margin-top:8px;
+         background:linear-gradient(90deg,var(--acc),var(--c1) 55%,var(--navy))}
+
+  /* ---- lower modules ---- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  h2.sec{font-size:18px;font-weight:800;letter-spacing:-.02em}
+  .facts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  .fact{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .fact span{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .fact b{display:block;font-size:15.5px;font-weight:800;margin-top:4px}
+  .hint{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.45}
+  .hint a{color:var(--c1);font-weight:700}
+
+  .equity p{font-size:13.5px;color:var(--muted);line-height:1.5;margin-top:8px}
+  .equity .btn{width:100%;margin-top:16px}
+
+  .htoggle{display:flex;gap:8px}
+  .htoggle button{font-family:inherit;font-size:12.5px;font-weight:700;color:var(--muted);background:#fff;
+                  border:1.5px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer}
+  .htoggle button.on{background:var(--tint);border-color:var(--c1);color:var(--c1)}
+  .chart{margin-top:16px}
+  .chart svg{width:100%;height:auto;display:block}
+  .chart .gl{stroke:var(--line);stroke-width:1}
+  .chart .yl,.chart .xl{font-size:11px;fill:var(--muted);font-family:'Inter',sans-serif}
+
+  footer{padding:26px 20px 34px;text-align:center;font-size:13px;color:var(--muted)}
+  footer a{color:var(--muted);text-decoration:underline}
+
+  @media (min-width:761px){
+    .xarrow{display:flex}
+    .xpro{flex-basis:calc((100% - 24px)/3)}
+    .xcard-x .xbtns{margin-top:0;flex:none;width:340px}
+    .xcard-x{display:flex;align-items:center;gap:18px}
+    .xcard-x .xline{margin-top:6px}
+  }
+  @media (max-width:760px){
+    .wrap{padding:0 14px}
+    main{padding:14px 0 28px}
+    main>.wrap{gap:12px}
+    .card{padding:16px;border-radius:16px}
+    .mast{gap:12px}
+    .mast h1{font-size:21.5px;margin-top:5px}
+    .mast .addr{font-size:14px;margin-top:6px}
+    .mast .facts{font-size:12px}
+    .mast .photo{width:86px;height:86px;border-radius:12px}
+    .vrange{font-size:29px}
+    .vnum{font-size:20px}
+    .grid2{grid-template-columns:1fr}
+    .facts-grid{grid-template-columns:repeat(2,1fr)}
+    .slab{font-size:11px}
+  }
 </style>
 </head>
 <body>
-  <picture>
-    <source media="(max-width:760px)" srcset="assets/report-dashboard-mobile.png">
-    <img class="report" src="assets/report-dashboard.png" alt="Your cash value report — homeowner dashboard">
-  </picture>
+
+<header><div class="wrap hbar">
+  <a href="option-1-classic.html"><img class="logo" src="assets/logo-blue-dark.png" alt="zBuyer"></a>
+  <span class="powered">Powered by <b>Zoodealio</b></span>
+</div></header>
+
+<main><div class="wrap">
+
+  <!-- masthead: deliver the promised object -->
+  <section class="card mast">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>Report ready</span>
+      <h1>Your Cash Value Report</h1>
+      <p class="addr">123 Main St, Springfield, MO 65802</p>
+      <p class="facts"><b>3</b> beds &nbsp;·&nbsp; <b>2</b> baths &nbsp;·&nbsp; <b>1,752</b> sqft &nbsp;·&nbsp; Built <b>1965</b></p>
+    </div>
+    <img class="photo" src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=70" alt="123 Main St">
+  </section>
+
+  <!-- expert concierge: one card-sized slot; exclusive = one expert,
+       maxsold = the 6-buyer roster cycling through the same slot -->
+  <section class="card xslot" id="xExclusive">
+    <div class="xcard-x">
+      <div class="xcard" style="flex:1">
+        <div class="avatar">JD</div>
+        <div class="xwho">
+          <span class="eyebrow">Your local expert</span>
+          <p class="xname">Jason Dalbey</p>
+          <p class="xbrok">BHHS The Preferred Realty</p>
+        </div>
+      </div>
+      <div style="flex:1;min-width:0">
+        <p class="xline">Jason has your report and knows your local market — he can walk you through your numbers and what they mean for your options.</p>
+        <div class="xbtns">
+          <a class="btn btn-cta" href="tel:1234567890">Call Jason</a>
+          <a class="btn btn-line" href="tel:1234567890">Schedule a call</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card xslot" id="xMaxsold" hidden>
+    <div class="xhead">
+      <span class="eyebrow">Your matched pros</span>
+      <span class="xcount">6 local pros are reviewing your property</span>
+    </div>
+    <div class="xtrack" id="xTrack">
+      <div class="xpro"><div class="avatar">BA</div><div class="xwho"><p class="xname">Betty Alexander</p><p class="xbrok">Sotheby's Realty</p><span class="xtag">Agent</span></div></div>
+      <div class="xpro"><div class="avatar">MC</div><div class="xwho"><p class="xname">Mariam Chesterfield</p><p class="xbrok">Berkshire Hathaway</p><span class="xtag">Agent</span></div></div>
+      <div class="xpro"><div class="avatar">DJ</div><div class="xwho"><p class="xname">Denall Johnson</p><p class="xbrok">Fave Realty</p><span class="xtag">Agent</span></div></div>
+      <div class="xpro"><div class="avatar">BT</div><div class="xwho"><p class="xname">Bradley Thompson</p><p class="xbrok">eXp Realty</p><span class="xtag">Agent</span></div></div>
+      <div class="xpro"><div class="avatar">EG</div><div class="xwho"><p class="xname">Ester Grant</p><p class="xbrok">Luxury King Realty</p><span class="xtag">Agent</span></div></div>
+      <div class="xpro"><div class="avatar">JT</div><div class="xwho"><p class="xname">John Taylor Tent</p><p class="xbrok">Next Level Acquisitions LLC</p><span class="xtag">Investor</span></div></div>
+    </div>
+    <div class="xnav">
+      <button class="xarrow" id="xPrev" aria-label="Previous pros">&#8592;</button>
+      <div class="xdots" id="xDots" role="tablist"></div>
+      <button class="xarrow" id="xNext" aria-label="Next pros">&#8594;</button>
+    </div>
+  </section>
+
+  <!-- value module: ?values=combined | options | spectrum.
+       Anchoring rule (all three): no number is labeled "your home's value" —
+       every number is the outcome of a way to sell. -->
+
+  <section class="card vmod" id="vCombined" hidden>
+    <div class="vhead"><span class="eyebrow">Your selling range</span></div>
+    <p class="vrange">$312,000 &ndash; $371,000</p>
+    <div class="vtrack"></div>
+    <div class="vpoles">
+      <div class="vpole"><b>Fastest cash sale</b><span>Close in as little as ~2 weeks</span></div>
+      <div class="vpole right"><b>Top market value</b><span>Listed with an agent, on your timeline</span></div>
+    </div>
+    <p class="vnote">This range reflects different ways to sell — it isn't an appraisal of your home. Where you land depends on the path you choose.</p>
+    <a class="vask" href="tel:1234567890">Talk through your range with <span class="xName">Jason</span> &rarr;</a>
+  </section>
+
+  <section class="card vmod" id="vOptions" hidden>
+    <div class="vhead"><span class="eyebrow">Your ways to sell</span></div>
+    <div class="vcards">
+      <div class="vcard">
+        <span class="vkick">Cash offer</span>
+        <p class="vnum">$312,000 &ndash; $334,000</p>
+        <p class="vmeta">Est. closing <b>~2 weeks</b></p>
+        <p class="vdesc">A straight cash sale — no showings, no repairs, pick your close date.</p>
+      </div>
+      <div class="vcard feat">
+        <span class="vchip">Most popular</span>
+        <span class="vkick">Cash+</span>
+        <p class="vnum">$341,000 &ndash; $362,000</p>
+        <p class="vmeta">Est. closing <b>~1 month</b></p>
+        <p class="vdesc">Cash certainty with more room on price — a hybrid of speed and value.</p>
+      </div>
+      <div class="vcard">
+        <span class="vkick">List with an agent</span>
+        <p class="vnum">$348,000 &ndash; $371,000</p>
+        <p class="vmeta">Timing <b>set with your agent</b></p>
+        <p class="vdesc">Full market exposure for the strongest price, on the market's schedule.</p>
+      </div>
+    </div>
+    <p class="vnote">Each range reflects that way to sell — none of them is an appraisal of your home.</p>
+    <a class="vask" href="tel:1234567890">Which is right for you? Ask <span class="xName">Jason</span> &rarr;</a>
+  </section>
+
+  <section class="card vmod" id="vSpectrum" hidden>
+    <div class="vhead"><span class="eyebrow">Speed &#8596; price</span></div>
+    <div class="spec">
+      <div class="srow">
+        <span class="slab" style="left:0"><b>Cash offer</b> · $312K&ndash;$334K · ~2 wks</span>
+        <span class="sbar" style="left:0;width:37%;background:var(--acc)"></span>
+      </div>
+      <div class="srow">
+        <span class="slab" style="left:49%"><b>Cash+</b> · $341K&ndash;$362K · ~1 mo</span>
+        <span class="sbar" style="left:49%;width:36%;background:var(--c1)"></span>
+      </div>
+      <div class="srow">
+        <span class="slab" style="right:0;left:auto;text-align:right"><b>List with an agent</b> · $348K&ndash;$371K</span>
+        <span class="sbar" style="left:61%;width:39%;background:var(--navy)"></span>
+      </div>
+      <div class="saxis"></div>
+      <div class="vpoles">
+        <div class="vpole"><b>Fastest sale</b><span>from $312,000</span></div>
+        <div class="vpole right"><b>Top market value</b><span>up to $371,000</span></div>
+      </div>
+    </div>
+    <p class="vnote">Every way to sell, on one line — the trade is speed for price, and where you land is your call.</p>
+    <a class="vask" href="tel:1234567890">Find your spot on the line with <span class="xName">Jason</span> &rarr;</a>
+  </section>
+
+  <!-- supporting modules -->
+  <div class="grid2">
+    <section class="card">
+      <h2 class="sec">Property details</h2>
+      <div class="facts-grid">
+        <div class="fact"><span>Beds</span><b>3</b></div>
+        <div class="fact"><span>Baths</span><b>2</b></div>
+        <div class="fact"><span>Square feet</span><b>1,752</b></div>
+        <div class="fact"><span>Year built</span><b>1965</b></div>
+        <div class="fact"><span>Lot size</span><b>0.28 ac</b></div>
+        <div class="fact"><span>Type</span><b>Single family</b></div>
+      </div>
+      <p class="hint">Something look off? <a href="tel:1234567890">Your expert can correct it</a> — better facts mean better numbers.</p>
+    </section>
+
+    <section class="card equity">
+      <h2 class="sec">Estimate your net equity</h2>
+      <p>See what you'd walk away with after your payoff and selling costs — your expert can run it with you in a minute.</p>
+      <button class="btn btn-line" type="button">Enter information</button>
+    </section>
+  </div>
+
+  <section class="card">
+    <div class="vhead">
+      <h2 class="sec">Home value history</h2>
+      <div class="htoggle">
+        <button id="h5" class="on" type="button">Last 5 years</button>
+        <button id="h10" type="button">Last 10 years</button>
+      </div>
+    </div>
+    <div class="chart">
+      <svg viewBox="0 0 620 232" aria-label="Home value history chart">
+        <line class="gl" x1="40" y1="20"  x2="580" y2="20"/>
+        <line class="gl" x1="40" y1="110" x2="580" y2="110"/>
+        <line class="gl" x1="40" y1="200" x2="580" y2="200"/>
+        <text class="yl" id="y0" x="34" y="204" text-anchor="end">$240K</text>
+        <text class="yl" id="y1" x="34" y="114" text-anchor="end">$300K</text>
+        <text class="yl" id="y2" x="34" y="24"  text-anchor="end">$360K</text>
+        <path id="hArea" fill="rgba(29,79,215,.10)" d=""/>
+        <path id="hLine" fill="none" stroke="var(--c1)" stroke-width="2.5" stroke-linejoin="round" d=""/>
+        <g id="xLabs">
+          <text class="xl" x="40"  y="222">2021</text>
+          <text class="xl" x="148" y="222" text-anchor="middle">2022</text>
+          <text class="xl" x="256" y="222" text-anchor="middle">2023</text>
+          <text class="xl" x="364" y="222" text-anchor="middle">2024</text>
+          <text class="xl" x="472" y="222" text-anchor="middle">2025</text>
+          <text class="xl" x="580" y="222" text-anchor="end">2026</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+</div></main>
+
+<footer>&copy; 2026 zBuyer &nbsp;·&nbsp; <a href="terms-classic-blue.html">Terms of Service</a> &nbsp;·&nbsp; <a href="privacy-classic-blue.html">Privacy Policy</a></footer>
+
+<script>
+(function () {
+  var qp = new URLSearchParams(window.location.search);
+
+  // ---- value-display variant ----
+  var values = qp.get("values");
+  var mods = { combined: "vCombined", options: "vOptions", spectrum: "vSpectrum" };
+  document.getElementById(mods[values] || mods.combined).hidden = false;
+
+  // ---- terms variant: exclusive expert vs maxsold carousel ----
+  var maxsold = qp.get("terms") === "maxsold";
+  document.getElementById("xExclusive").hidden = maxsold;
+  document.getElementById("xMaxsold").hidden = !maxsold;
+  if (maxsold) {
+    document.querySelectorAll(".xName").forEach(function (el) { el.textContent = "your pros"; });
+  }
+
+  // ---- carousel: scroll-snap pages + dots (mobile 1-up, desktop 3-up) ----
+  var track = document.getElementById("xTrack");
+  var dotsWrap = document.getElementById("xDots");
+  if (maxsold && track) {
+    var dots = [];
+    function pageCount() { return Math.max(1, Math.round(track.scrollWidth / track.clientWidth)); }
+    function page() { return Math.round(track.scrollLeft / track.clientWidth); }
+    function buildDots() {
+      dotsWrap.innerHTML = ""; dots = [];
+      for (var i = 0; i < pageCount(); i++) {
+        var d = document.createElement("button");
+        d.className = "xdot"; d.setAttribute("aria-label", "Page " + (i + 1));
+        (function (n) {
+          d.addEventListener("click", function () {
+            track.scrollTo({ left: n * track.clientWidth, behavior: "smooth" });
+          });
+        })(i);
+        dotsWrap.appendChild(d); dots.push(d);
+      }
+      sync();
+    }
+    function sync() {
+      var p = page();
+      dots.forEach(function (d, i) { d.classList.toggle("on", i === p); });
+    }
+    var raf = 0;
+    track.addEventListener("scroll", function () {
+      cancelAnimationFrame(raf); raf = requestAnimationFrame(sync);
+    });
+    window.addEventListener("resize", buildDots);
+    document.getElementById("xPrev").addEventListener("click", function () {
+      track.scrollBy({ left: -track.clientWidth, behavior: "smooth" });
+    });
+    document.getElementById("xNext").addEventListener("click", function () {
+      track.scrollBy({ left: track.clientWidth, behavior: "smooth" });
+    });
+    buildDots();
+  }
+
+  // ---- value history chart: two datasets, same SVG ----
+  var D = {
+    y5: {
+      line: "M40,158 L148,143 L256,123.5 L364,102.5 L472,77 L580,47",
+      y: ["$240K", "$300K", "$360K"],
+      x: ["2021", "2022", "2023", "2024", "2025", "2026"]
+    },
+    y10: {
+      line: "M40,197.5 L94,187 L148,172.3 L202,153.4 L256,136.6 L310,115.6 L364,105.1 L418,91.5 L472,76.8 L526,58.9 L580,37.9",
+      y: ["$180K", "$270K", "$360K"],
+      x: ["2016", "2018", "2020", "2022", "2024", "2026"]
+    }
+  };
+  var hLine = document.getElementById("hLine"), hArea = document.getElementById("hArea");
+  var b5 = document.getElementById("h5"), b10 = document.getElementById("h10");
+  var xLabs = document.getElementById("xLabs").querySelectorAll("text");
+  function draw(key) {
+    var d = D[key];
+    hLine.setAttribute("d", d.line);
+    hArea.setAttribute("d", d.line + " L580,200 L40,200 Z");
+    ["y0", "y1", "y2"].forEach(function (id, i) { document.getElementById(id).textContent = d.y[i]; });
+    xLabs.forEach(function (t, i) { t.textContent = d.x[i]; });
+    b5.classList.toggle("on", key === "y5");
+    b10.classList.toggle("on", key === "y10");
+  }
+  b5.addEventListener("click", function () { draw("y5"); });
+  b10.addEventListener("click", function () { draw("y10"); });
+  draw("y5");
+})();
+</script>
 </body>
 </html>
