@@ -1,7 +1,7 @@
 /* zBuyer lead-capture modal — opens after the hero address step.
  *
  * Step 2 (contact): name / phone / email + required "Open to selling?"
- *   intent chips (Now / Soon / Someday / Never) + TCPA consent.
+ *   intent chips (Now / Soon / Eventually) + TCPA consent.
  * Step 3 (allset): confirmation — a local expert will be in touch. No ask.
  * Step 4 (sms): optional — text the report link to their mobile.
  * The final buttons navigate to the demo report page. Vanilla JS, no deps.
