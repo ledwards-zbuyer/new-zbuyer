@@ -488,3 +488,12 @@ validation that nudges toward the answers you want, compliance as a layout const
 bottom-sheet thumb ergonomics and keyboard scroll choreography, prefill-then-silently-
 verify data hygiene, homepage-vs-DR-lander variant strategy, and the workshop process
 itself (render options → pick → thumb test → park variants behind query params).
+Commit `5531ee7`.
+
+**Lucas:** after that you can clean up any unused or unnecessary artifacts or assets
+
+**Claude:** Audited every tracked asset against actual references: removed the three
+long-flagged `box_*.webp` illustrations and the unreferenced `logo-gold-light.png`
+(everything else is in use). Cleared ~125 local scratch screenshots/mock pages from
+`mockups/shots/` (untracked), keeping `harness.html` — the documented test driver.
+Closed the "prune box_*.webp" open item in HANDOFF.

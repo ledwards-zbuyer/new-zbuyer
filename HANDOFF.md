@@ -187,14 +187,13 @@ changing the funnel.
 2. **Exclusive vs Max Sold consent language** — replace placeholders with final legal copy.
 3. **pulse.zbuyer.com prefill params** — `firstname/lastname/email/phone/address/city/state/zzipcode`
    + intent value are best guesses except `zzipcode`; confirm exact names before launch.
-4. **Prune** unused `mockups/assets/box_*.webp`.
-5. **Stats/testimonials** on the homepage are placeholders pending real data.
-6. **"No" chip rollout** — currently on both pages; decide lander-only vs both once
+4. **Stats/testimonials** on the homepage are placeholders pending real data.
+5. **"No" chip rollout** — currently on both pages; decide lander-only vs both once
    conversion-rate data exists. Pairs naturally with open item 1 (a "No" answer could
    route to a no-contact path).
-7. **Hero title** — original kept for now; B2 lockup (`?title=b2`) pending team review,
+6. **Hero title** — original kept for now; B2 lockup (`?title=b2`) pending team review,
    possible lander variant.
-8. **Street View background** — built, verified, then switched OFF; the exposed key was
+7. **Street View background** — built, verified, then switched OFF; the exposed key was
    scrubbed and deleted. To re-enable: new restricted key + uncomment the two script
    includes (see the DR-lander section). Revisit desktop softness (640px cap) if it
    bothers anyone.
