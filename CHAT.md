@@ -224,3 +224,101 @@ items). Commit `25f75bb`.
 **Lucas:** can you document our chat text in CHAT.md?
 
 **Claude:** This file.
+
+---
+
+**Lucas:** lets work on the main title on the address page. I want suggestions. i want to
+integrate the "report" language… i feel like it adds legitimacy for our default home page
+version of this new form path. we will also test it on paid traffic (email/sms) but the
+form will change because the address is pre-popped… more on that after we nail down this
+main title.
+
+**Claude:** Offered report-language titles; Lucas asked for a fresh batch ("something
+completely different (5 options) then 5 more options with cash value home report").
+
+**Lucas:** I think i still like the active title the best, but lets workshop B2 and compare
+the two… *(iterated: shrink "claim your" / "home report" white / lowercase, no period /
+"home report" on its own line / bump "cash value" / build a jump page for mobile
+comparison)*
+
+**Claude:** Built the `?title=b2` variant + `mockups/compare-title.html` jump page.
+Commit `a165633`.
+
+**Lucas:** just default the form to the exclusive version for both these examples… im going
+to show this to my team
+
+**Claude:** Flipped the terms default to Exclusive; `?terms=maxsold` now opts into the
+6-buyer variant. Commit `c95d0a2`.
+
+**Lucas:** also… on the address form (after we scrolled the address textbox to the top on
+select) can you re-scroll the other direction (when an address is selected from the drop
+down list) so that the button is as close to the bottom as possible
+
+**Claude:** Added the reverse scroll after a final pick (keyboard dismissed first; runs at
+120ms + 450ms to survive the viewport resize). Headless made it look frozen — proven to be
+a virtual-time artifact via instrumented scroll calls. Commit `da1b0ae`.
+**Lucas: the thumb test worked perfectly again.**
+
+**Lucas:** on all versions we need to change the sub-line… *(workshopped from "We use the
+combined power of automated valuation models…" down to)* Your report blends pricing models
+with local agent and investor insight to provide your home's cash value — any additions or
+ideas?
+
+**Claude:** Suggested "pinpoint" over "provide"; Lucas picked it. Commit `a957d35`.
+
+**Lucas:** also change the B2 version to one line cash value home report (with home report
+in white) → cash value home report is the same sized font (also) → i wanted to remove
+"claim your" → font should be as large as possible on mobile and a little larger on desktop
+(just B2)
+
+**Claude:** B2 became a single-line lowercase lockup, uniform size, edge-to-edge on mobile /
+64px desktop. Commits `2eaafe4`, `94bcffc`, `b1f6963`.
+
+**Lucas:** lets stick with the original title for now
+
+**Claude:** Original title stays; B2 parked behind `?title=b2` for the team review.
+
+---
+
+**Lucas:** Think of this as less of a variant and more like we have currently been working
+on our zbuyer.com homepage with the prettiest version of our user experience. this next
+thing will be our direct response marketing landing page: no header info other than the
+zbuyer logo (maybe), content after the address textbox all removed except the copyright
+line and terms/PP at the very bottom, remove the ability to click off the modal to close
+it, only the x on the step with the terms on it, and remove the back buttons on all steps.
+
+**Lucas:** Here is an example of how the address will be pre-popped… can you auto select
+the proper address from smartystreets and just paste it into the address textbox?
+`&zemail=alex%40gmail.com&zphone=6238805511&zfname=Alex&zlastname=Smith&zcredit=&zstreet=1401+Candlewood+Dr&zcity=Pittsburg&zstate=PA&zzipcode=15240`
+
+**Claude:** Built `mockups/landing-classic-blue.html` (logo-only header, hero + address,
+minimal footer, noindex) with `<body data-dr>` modal lock-in in the shared `lead-modal.js`
+(backdrop can't dismiss; X/Escape only on the consent step; no back buttons). z-param
+pre-pop: contact fields fill directly; the address box fills with the composed string, then
+a silent Smarty lookup upgrades it to the canonical top suggestion. Commit `972b6c3`.
+
+**Lucas:** the logo you used on the lander is not the same as the logo on option-1-classic.
+i want the same one
+
+**Claude:** Swapped to the homepage's `logo-blue-dark.png`. Commit `556bfe6`.
+
+---
+
+**Lucas:** on the form step change the title from "view cash value report" to "Request
+Cash Value Estimate"
+
+**Claude:** Retitled the contact step on both pages (all-set CTA button unchanged).
+Commit `1ae7f26`.
+
+**Lucas:** also, lets try adding the option "No" to "Open to Selling" and make the option
+at the far right with a smaller (width) container — just wide enough for the word — keeping
+the other three options the same size. all four in one line.
+
+**Claude:** Added a compact `.lm-chip-no` chip (value `no`) on both pages; verified the
+one-line fit at mobile + desktop widths. Commit `72a61a1`.
+
+**Lucas:** This could be an option we add just to the lander version… or both… depending on
+the conversion rate (CR). lets update the HANDOFF and CHAT mds
+
+**Claude:** Documented everything above; the "No" chip's rollout (lander-only vs both) is
+now an open item pending CR data.

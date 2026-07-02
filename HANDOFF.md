@@ -5,6 +5,8 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
 
 - **Live preview:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/option-1-classic.html
 - **Terms comparison tool:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/compare-terms.html
+- **Title comparison tool:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/compare-title.html
+- **DR landing page:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/landing-classic-blue.html
 - GitHub Pages serves `main`; every push is live in ~1 minute.
 
 ## Current funnel
@@ -12,8 +14,9 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
 1. **Hero address step** — Smarty US Autocomplete Pro on `#addr`
    (`mockups/assets/address-autocomplete.js`, embedded key in `assets/smarty-config.js`,
    host-locked to github.io / zbuyer.com / localhost — `file://` can't test it).
-2. **Contact step (modal)** — name / phone / email + required **"Open to selling?"**
-   intent chips (Now / Soon / Eventually) + matched-pros disclosure + TCPA consent.
+2. **Contact step (modal)** — titled **"Request Cash Value Estimate"** — name / phone /
+   email + required **"Open to selling?"** intent chips (Now / Soon / Eventually / No)
+   + matched-pros disclosure + TCPA consent.
 3. **"You're all set!" step** — confirmation only: success graphic, "a local expert will
    be in touch to discuss your cash value and best selling options",
    CTA **View Cash Value Report →**, quiet **Do not contact me** link.
@@ -50,7 +53,13 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
 - "Eventually" beat "Someday" for when-not-if framing. A **"Never"** chip existed briefly
   as a quality valve and was removed for conversion; restore it by adding one
   `<button ... data-val="never">Never</button>` back — nothing else references it.
-- Values submit as `now / soon / eventually`.
+- Values submit as `now / soon / eventually / no`.
+- **"No" chip added 2026-07-01** (softer heir to "Never"): sits at the far right, sized to
+  its word (`.lm-chip-no` — `flex:0 0 auto` + horizontal padding) while the other three
+  keep equal widths; all four on one line. Currently on **both** the homepage and the DR
+  lander; the plan is to keep it lander-only, homepage-only, or both **depending on
+  conversion rate** once traffic data comes in — removing it anywhere is deleting one
+  `<button>` line.
 - The question sits in a soft container matching the disclosure box, title centered,
   header-sized but muted in color (it was drawing too much eye).
 
@@ -108,6 +117,21 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
   - Contact: name/phone/email prefill (phone through `formatPhone`). (`lead-modal.js`)
   - Landing markup ships empty inputs — no John Doe demo data. `zcredit` currently ignored.
   - Prefill code runs on any page carrying the params; the homepage without params is unchanged.
+- Lander logo = `assets/logo-blue-dark.png`, same file as the homepage nav (was briefly
+  `zbuyer-white.png` — corrected to match).
+
+### 7. Hero copy workshop (2026-07-01)
+- **Title:** report-language alternatives were workshopped; decision was to **keep the
+  original** ("See your home's cash value today."). The runner-up — a single-line lowercase
+  lockup **"cash value home report"** (blue "cash value" + white "home report", maximized
+  size) — is parked behind `?title=b2`, with `mockups/compare-title.html` as the phone-
+  friendly jump page for team review. It's a candidate for the paid-traffic lander title.
+- **Sub-line** (all versions): "Your report blends pricing models with local agent and
+  investor insight to pinpoint your home's cash value." Replaced the old expert/cash-offer
+  line to center the *report*. NOTE: the modal contact-step sub now reads nearly the same —
+  flagged, unresolved.
+- **Form-step title:** "View Cash Value Report" → **"Request Cash Value Estimate"**
+  (both pages). The all-set step's CTA still says "View Cash Value Report →".
 
 ## Testing
 
@@ -128,3 +152,8 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
    + intent value are best guesses except `zzipcode`; confirm exact names before launch.
 4. **Prune** unused `mockups/assets/box_*.webp`.
 5. **Stats/testimonials** on the homepage are placeholders pending real data.
+6. **"No" chip rollout** — currently on both pages; decide lander-only vs both once
+   conversion-rate data exists. Pairs naturally with open item 1 (a "No" answer could
+   route to a no-contact path).
+7. **Hero title** — original kept for now; B2 lockup (`?title=b2`) pending team review,
+   possible lander variant.
