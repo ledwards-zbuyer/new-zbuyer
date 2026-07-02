@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compare hero titles — zBuyer</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--cta:#FF6B4A;--cta-d:#F0572F;--acc:#3BA4F4}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;color:#fff;background:linear-gradient(180deg,#0E1B33,#0A1426);
+       min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+       padding:40px 22px;-webkit-font-smoothing:antialiased;text-align:center}
+  a{text-decoration:none;color:inherit}
+  .logo{height:30px;width:auto;margin-bottom:26px}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .sub{color:#BBD7FB;font-size:14px;margin-top:8px;max-width:420px;line-height:1.5}
+  .opts{display:flex;flex-direction:column;gap:16px;margin-top:30px;width:100%;max-width:420px}
+  .opt{display:block;background:#fff;color:#14233D;border-radius:16px;padding:20px 22px;text-align:left;box-shadow:0 30px 70px -24px rgba(0,0,0,.6)}
+  .opt .k{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1D4FD7}
+  .opt .t{display:block;font-size:19px;font-weight:800;letter-spacing:-.02em;margin-top:5px;line-height:1.25}
+  .opt .t .blue{background:linear-gradient(90deg,#1D4FD7,#3BA4F4);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .opt .go{display:block;margin-top:12px;background:var(--cta);color:#fff;font-weight:800;font-size:14.5px;padding:12px;border-radius:10px;text-align:center}
+  .note{margin-top:24px;color:#7d90b5;font-size:12px;max-width:380px;line-height:1.5}
+</style>
+</head>
+<body>
+  <img class="logo" src="assets/zbuyer-white.png" alt="zBuyer">
+  <h1>Compare hero titles</h1>
+  <p class="sub">Open each on your phone — same live page, only the headline differs.</p>
+
+  <div class="opts">
+    <a class="opt" href="option-1-classic.html">
+      <span class="k">Current — active title</span>
+      <span class="t">See your home's <span class="blue">cash value</span> today.</span>
+      <span class="go">View live &rarr;</span>
+    </a>
+    <a class="opt" href="option-1-classic.html?title=b2">
+      <span class="k">B2 — report lockup</span>
+      <span class="t">claim your <span class="blue">cash value</span> home report</span>
+      <span class="go">View live &rarr;</span>
+    </a>
+  </div>
+
+  <p class="note">Use your browser back button to return here and jump to the other one.</p>
+</body>
+</html>
