@@ -74,6 +74,7 @@
   .lm-intent-label{font-size:14.5px;font-weight:800;color:var(--muted);letter-spacing:-.01em;text-align:center}
   .lm-chips{display:flex;gap:8px}
   .lm-chip{flex:1;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--muted);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:9px 0;cursor:pointer;text-align:center}
+  .lm-chip-no{flex:0 0 auto;padding:9px 15px}
   .lm-chip.sel{background:var(--tint);border-color:var(--c1);color:var(--c1)}
   .lm-chips.invalid .lm-chip{border-color:#D8442B;background:#FEF6F4}
   .lm-final h3,.lm-final .lm-sub{text-align:center}
@@ -105,6 +106,7 @@
     .lm-form input,.lm-final input{padding:12px 14px}
     .lm-intent{padding:9px 12px 11px;gap:7px}
     .lm-chip{font-size:14px;padding:8px 0}
+    .lm-chip-no{padding:8px 13px}
     .lm-disclosure{padding:10px 12px;gap:5px}
     .lm-matched,.lm-consent{font-size:10.5px;line-height:1.42}
     .lm-cta{padding:14px;font-size:16px}
@@ -163,6 +165,7 @@
               <button type="button" class="lm-chip" role="radio" aria-checked="false" data-val="now">Now</button>
               <button type="button" class="lm-chip" role="radio" aria-checked="false" data-val="soon">Soon</button>
               <button type="button" class="lm-chip" role="radio" aria-checked="false" data-val="eventually">Eventually</button>
+              <button type="button" class="lm-chip lm-chip-no" role="radio" aria-checked="false" data-val="no">No</button>
             </div>
           </div>
           <p class="lm-err" id="leadErr" hidden></p>
