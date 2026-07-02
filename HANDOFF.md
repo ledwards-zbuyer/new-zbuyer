@@ -9,7 +9,10 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
 - **DR landing page:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/landing-classic-blue.html
 - **Homepage vs lander comparison:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/compare-pages.html
   (three cards: homepage, empty lander, lander pre-popped via the Alex Smith example link)
-- GitHub Pages serves `main`; every push is live in ~1 minute.
+- GitHub Pages serves `main`; every push is live in ~1 minute. A `.nojekyll` file at the
+  repo root makes Pages deploy the raw files (the default Jekyll build started failing
+  flakily 2026-07-02 with no content cause; we never needed it). Browsers cache pages for
+  10 min — during rapid iterations, test with a throwaway `?v=N` param.
 
 ## Current funnel
 

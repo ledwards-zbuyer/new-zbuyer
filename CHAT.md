@@ -466,3 +466,12 @@ other project)
 
 **Claude:** Standing rule adopted (and saved to persistent memory): every commit updates
 HANDOFF.md & CHAT.md in the same push.
+
+---
+
+**Lucas:** that line is not italic
+
+**Claude:** The italic commit never deployed: GitHub Pages' Jekyll build started erroring
+(generic "Page build failed" — no Liquid/content cause; even a previously-green commit
+failed on rebuild). Fix: added `.nojekyll` so Pages ships the raw static files without
+Jekyll, which we never used anyway.
