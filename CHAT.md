@@ -360,3 +360,30 @@ the validation to highlight each option except the No option
 **Claude:** Invalid-state selector now excludes the No chip
 (`.lm-chips.invalid .lm-chip:not(.lm-chip-no)`) on both pages — only Now / Soon /
 Eventually turn red; the error styling nudges toward the continuum, not the exit.
+Commit `bb28073`.
+
+---
+
+**Lucas:** on b2 can you make the cash value shimmer continue across to home report, but
+invert in color so the shimmer is the cash-value-blue as it goes across the words "home
+report"
+
+**Claude:** Wrapped "home report" in its own span with inverted shimmer layers (white text
+base + blue streak) on the same 4s animation, phase-delayed 0.3s so the streak hands off
+from "cash value" and reads as one continuous left-to-right pass. Verified with headless
+frames at three moments of the sweep. Commit `1e38b07`.
+
+---
+
+**Lucas:** just planning here… is it possible to use the streetview image of an address as
+the background image for the pre-popped lander. it may not render perfectly, but im
+curious if you think its feasible
+
+**Claude:** Feasible — Google Street View Static API returns a plain JPEG by address URL
+(auto-aims the camera at the house), with a free metadata endpoint to detect coverage.
+Caveats: 640×640 max (soft on desktop, fine on mobile), ~$7/1,000 renders, referrer-locked
+browser key (same trust model as Smarty). Lucas chose: clear photo under the existing dark
+overlay (no blur), and he'll supply a key. Built `assets/streetview-config.js` (key
+placeholder + setup instructions) and `assets/streetview-bg.js` (z-param address →
+metadata gate → hero background swap; any failure keeps the stock photo). Lander-only.
+Pending: paste the real key, then verify live imagery.

@@ -125,6 +125,16 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
   - Prefill code runs on any page carrying the params; the homepage without params is unchanged.
 - Lander logo = `assets/logo-blue-dark.png`, same file as the homepage nav (was briefly
   `zbuyer-white.png` — corrected to match).
+- **Street View hero background** (`assets/streetview-bg.js` + `assets/streetview-config.js`):
+  when z-params carry an address, the hero swaps the stock house photo for the **Google
+  Street View image of that address** (clear photo, same dark overlay). A free metadata
+  call gates the swap: no imagery → default photo stays, Google's gray placeholder is
+  never shown, and nothing is billed. **Key not yet pasted** — set
+  `window.GMAPS_STREETVIEW_KEY` in `streetview-config.js` (enable *Street View Static
+  API*; referrer-restrict to `ledwards-zbuyer.github.io/*`, `localhost:8741/*`,
+  `zbuyer.com/*`; API-restrict to Street View Static). Caveats: image maxes at 640×640
+  (soft full-bleed on desktop, fine on mobile) and renders bill ~$7/1,000. Lander-only —
+  the homepage never loads these scripts.
 
 ### 7. Hero copy workshop (2026-07-01)
 - **Title:** report-language alternatives were workshopped; decision was to **keep the
@@ -163,3 +173,6 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
    route to a no-contact path).
 7. **Hero title** — original kept for now; B2 lockup (`?title=b2`) pending team review,
    possible lander variant.
+8. **Street View background** — paste the Google key into `assets/streetview-config.js`,
+   then verify live imagery + a no-coverage fallback address; revisit desktop softness
+   (640px cap) if it bothers anyone.
