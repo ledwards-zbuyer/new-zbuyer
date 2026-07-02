@@ -558,3 +558,7 @@ propagated up the flex column and widened the page — `main>.wrap>*{min-width:0
 a fresh empty-commit push both failed the same way. Fix: request a rebuild directly via
 `gh api -X POST .../pages/builds` — site went to `built`, all six report states + the
 compare page verified live (200s, new markup). Recovery recipe added to HANDOFF.
+
+*(The wedge recurred on the very next docs commit; poking a rebuild for a commit whose
+build was already stuck did nothing. Refined recipe: fresh commit first, then the POST.
+The mockup pages themselves stayed live and current throughout.)*
