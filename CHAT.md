@@ -404,7 +404,7 @@ work when i correct the zip to 65802
 geocodes to the rooftop and only searches for panoramas within a 50m default radius; on
 that deep lot the nearest pano sits outside it. Added `radius=100` to the metadata + image
 requests (still too tight to grab a wrong street); all variants now return a Feb 2026
-pano and the E Walnut streetscape renders. Commit `55259ce`.
+pano and the E Walnut streetscape renders. Commit `d2b100a`.
 
 **Lucas:** i was under the impression that you were selecting the address presented by
 smarty streets, but the wrong zip was still in the address textbox on the pre-pop.
@@ -414,7 +414,7 @@ wouldn't it have been corrected if thats the case?
 zero suggestions) rather than correcting it, so the composed fallback (with the bad zip)
 stayed in the box. Fix: the silent prefill search now sends street+city+state only and
 lets Smarty supply the canonical zip. Verified: pre-pop with 65806 now shows
-"…Springfield, MO 65802" in the box. Commit `e33b301`.
+"…Springfield, MO 65802" in the box. Commit `6e07306`.
 
 ---
 
@@ -424,3 +424,14 @@ smarty changes
 **Claude:** Commented out the two Street View script includes in the lander (code, key
 config, and radius fix all stay in the repo — uncomment two lines to re-enable). The
 Smarty zip-correction fix is untouched.
+
+---
+
+**Lucas:** remove that google API key from git. it is exposed
+
+**Claude:** Replaced the key with the placeholder, rewrote the five history commits that
+carried it (`git filter-branch`), purged local backup refs/reflog, force-pushed, and
+verified the key string exists nowhere in any commit. NOTE: scrubbing git can't un-expose
+what GitHub Pages already served publicly — the key must be **rotated** in Google Cloud
+console; restrict the replacement before pasting it in. (Commit hashes from the Street
+View work changed in the rewrite; references above updated.)

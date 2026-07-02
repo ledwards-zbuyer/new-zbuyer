@@ -134,11 +134,12 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
   when z-params carry an address, the hero swaps the stock house photo for the **Google
   Street View image of that address** (clear photo, same dark overlay). A free metadata
   call gates the swap: no imagery → default photo stays, Google's gray placeholder is
-  never shown, and nothing is billed. Key lives in `streetview-config.js`
-  (`window.GMAPS_STREETVIEW_KEY`) — working live, verified against the Alex Smith example
-  (real house renders behind the overlay). Make sure the key is referrer-restricted
-  (`ledwards-zbuyer.github.io/*`, `localhost:8741/*`, `zbuyer.com/*`) and API-restricted
-  to *Street View Static API*. Caveats: image maxes at 640×640
+  never shown, and nothing is billed. The key slot is `window.GMAPS_STREETVIEW_KEY` in
+  `streetview-config.js` — **currently the placeholder**: the original key was exposed
+  and was scrubbed from git history (rotate it in Google Cloud console; paste the NEW key
+  only after it's referrer-restricted to `ledwards-zbuyer.github.io/*`, `localhost:8741/*`,
+  `zbuyer.com/*` and API-restricted to *Street View Static API*). The feature was verified
+  working end to end before removal. Caveats: image maxes at 640×640
   (soft full-bleed on desktop, fine on mobile) and renders bill ~$7/1,000. Lander-only —
   the homepage never loads these scripts.
 
