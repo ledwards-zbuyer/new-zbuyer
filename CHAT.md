@@ -322,3 +322,32 @@ the conversion rate (CR). lets update the HANDOFF and CHAT mds
 
 **Claude:** Documented everything above; the "No" chip's rollout (lander-only vs both) is
 now an open item pending CR data.
+
+---
+
+**Lucas:** eventually looks too smashed in the option list. no could be a little less wide
+or tinker with the padding/spacing. see if you can make it look better… otherwise we will
+need to rethink the NO option. *(mid-work:)* maybe make the NO a little lighter font too
+→ make NO even a touch lighter
+
+**Claude:** Tightened chip gaps 8→6px, trimmed the container's side padding, narrowed the
+"No" chip's padding — the reclaimed space goes to the three equal-width chips, giving
+"Eventually" clear air. "No" also de-emphasized: weight 600→500, color stepped down twice
+(final `#9ba8bb`, lighter than the legal text) so it reads as an escape hatch, not a fourth
+peer; selected state still goes full blue. Commits `1f91f5b`, `b91ec97`.
+
+---
+
+**Lucas:** lets change the button text on the address form to "Get my cash value report"
+with the arrow we use on the other steps
+
+**Claude:** Hero CTA is now "Get my cash value report →" on both pages — funnel language
+lines up end to end (hero promises the report → form "requests the estimate" → all-set
+"views the report"). Verified one-line fit at mobile + desktop. Commit `4d1f2e6`.
+
+**Lucas:** then create a jump page for me to compare the homepage and the lander, then
+update HANDOFF & CHAT
+
+**Claude:** Built `mockups/compare-pages.html` (noindex, same style as compare-title):
+homepage / empty lander / lander pre-popped through the Alex Smith example link, so the
+paid-traffic experience is one tap away. Updated both docs.

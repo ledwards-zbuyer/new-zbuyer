@@ -7,11 +7,14 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
 - **Terms comparison tool:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/compare-terms.html
 - **Title comparison tool:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/compare-title.html
 - **DR landing page:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/landing-classic-blue.html
+- **Homepage vs lander comparison:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/compare-pages.html
+  (three cards: homepage, empty lander, lander pre-popped via the Alex Smith example link)
 - GitHub Pages serves `main`; every push is live in ~1 minute.
 
 ## Current funnel
 
-1. **Hero address step** — Smarty US Autocomplete Pro on `#addr`
+1. **Hero address step** — CTA **"Get my cash value report →"** — Smarty US Autocomplete
+   Pro on `#addr`
    (`mockups/assets/address-autocomplete.js`, embedded key in `assets/smarty-config.js`,
    host-locked to github.io / zbuyer.com / localhost — `file://` can't test it).
 2. **Contact step (modal)** — titled **"Request Cash Value Estimate"** — name / phone /
