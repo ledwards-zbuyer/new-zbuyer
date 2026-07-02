@@ -350,4 +350,13 @@ update HANDOFF & CHAT
 
 **Claude:** Built `mockups/compare-pages.html` (noindex, same style as compare-title):
 homepage / empty lander / lander pre-popped through the Alex Smith example link, so the
-paid-traffic experience is one tap away. Updated both docs.
+paid-traffic experience is one tap away. Updated both docs. Commit `6af2cfe`.
+
+---
+
+**Lucas:** also, when the user submits before selecting an open to selling option, i want
+the validation to highlight each option except the No option
+
+**Claude:** Invalid-state selector now excludes the No chip
+(`.lm-chips.invalid .lm-chip:not(.lm-chip-no)`) on both pages — only Now / Soon /
+Eventually turn red; the error styling nudges toward the continuum, not the exit.

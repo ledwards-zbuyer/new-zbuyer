@@ -59,10 +59,13 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
 - Values submit as `now / soon / eventually / no`.
 - **"No" chip added 2026-07-01** (softer heir to "Never"): sits at the far right, sized to
   its word (`.lm-chip-no` — `flex:0 0 auto` + horizontal padding) while the other three
-  keep equal widths; all four on one line. Currently on **both** the homepage and the DR
-  lander; the plan is to keep it lander-only, homepage-only, or both **depending on
-  conversion rate** once traffic data comes in — removing it anywhere is deleting one
-  `<button>` line.
+  keep equal widths; all four on one line. Styled quieter than its peers (weight 500,
+  `#9ba8bb`) so it reads as an escape hatch, not a fourth peer — full blue when selected.
+  The submit-without-answer validation highlight skips it too
+  (`.lm-chips.invalid .lm-chip:not(.lm-chip-no)`): only Now / Soon / Eventually turn red.
+  Currently on **both** the homepage and the DR lander; the plan is to keep it lander-only,
+  homepage-only, or both **depending on conversion rate** once traffic data comes in —
+  removing it anywhere is deleting one `<button>` line.
 - The question sits in a soft container matching the disclosure box, title centered,
   header-sized but muted in color (it was drawing too much eye).
 
