@@ -105,6 +105,29 @@
   function open() { list.hidden = false; input.setAttribute("aria-expanded", "true"); }
   function close() { list.hidden = true; active = -1; input.setAttribute("aria-expanded", "false"); }
 
+  // On phones the keyboard leaves room for barely one suggestion below the
+  // mid-hero search box. On focus, scroll the box to the top of the page so
+  // the list gets the space instead. Runs twice: once right after the
+  // browser's own scroll-into-view jump, once after the keyboard settles
+  // (opening it resizes the viewport and can undo the first scroll).
+  var searchBox = input.closest(".search") || input;
+  function scrollSearchToTop() {
+    if (!window.matchMedia("(max-width: 768px)").matches) return;
+    var y = searchBox.getBoundingClientRect().top + window.pageYOffset - 10;
+    // Force an instant jump: the page sets html{scroll-behavior:smooth},
+    // which would animate this and lose the race against the keyboard
+    // opening/resizing the viewport.
+    var root = document.documentElement;
+    var prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, y);
+    root.style.scrollBehavior = prev;
+  }
+  input.addEventListener("focus", function () {
+    setTimeout(scrollSearchToTop, 60);
+    setTimeout(scrollSearchToTop, 350);
+  });
+
   input.addEventListener("input", function () {
     window.zbSelectedAddress = null; // typing invalidates the last structured pick
     var q = input.value.trim();
