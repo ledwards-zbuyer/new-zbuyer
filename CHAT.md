@@ -474,4 +474,17 @@ HANDOFF.md & CHAT.md in the same push.
 **Claude:** The italic commit never deployed: GitHub Pages' Jekyll build started erroring
 (generic "Page build failed" — no Liquid/content cause; even a previously-green commit
 failed on rebuild). Fix: added `.nojekyll` so Pages ships the raw static files without
-Jekyll, which we never used anyway.
+Jekyll, which we never used anyway. **Lucas: it's working properly now.**
+
+---
+
+**Lucas:** take all of the form design lessons we have learned within this project (even
+before this session if possible) and apply them to a FORM_DESIGNER.md
+
+**Claude:** Wrote `FORM_DESIGNER.md` — a playbook distilled from the whole project
+(including pre-session git history): present-state questions over predictions, one-word
+self-ordering continuums, one live ask per screen, de-emphasized exit options and
+validation that nudges toward the answers you want, compliance as a layout constraint,
+bottom-sheet thumb ergonomics and keyboard scroll choreography, prefill-then-silently-
+verify data hygiene, homepage-vs-DR-lander variant strategy, and the workshop process
+itself (render options → pick → thumb test → park variants behind query params).

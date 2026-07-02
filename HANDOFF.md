@@ -32,6 +32,11 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
 
 Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
 
+**`FORM_DESIGNER.md`** distills every form/funnel design principle learned across the
+project (question framing, choice UI, step architecture, consent layout, mobile
+ergonomics, prefill hygiene, traffic-source variants, process) — read it before
+changing the funnel.
+
 ## Changes made & why
 
 ### 1. SMS step reframed, then the final step split in two
