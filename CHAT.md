@@ -393,3 +393,25 @@ Pending: paste the real key, then verify live imagery.
 **Claude:** Key wired into `streetview-config.js`; verified live — the Alex Smith
 pre-popped link renders the actual house at 1401 Candlewood Dr behind the dark overlay.
 (Mobile headless shots hit screenshot-timing artifacts; desktop proved the full chain.)
+
+---
+
+**Lucas:** what does google api send back with that latest url, because the streetview
+isnt showing up for that one *(1336 E Walnut St Springfield MO)*. also… it does not even
+work when i correct the zip to 65802
+
+**Claude:** Google returned `ZERO_RESULTS` for both zips — not an address problem: Google
+geocodes to the rooftop and only searches for panoramas within a 50m default radius; on
+that deep lot the nearest pano sits outside it. Added `radius=100` to the metadata + image
+requests (still too tight to grab a wrong street); all variants now return a Feb 2026
+pano and the E Walnut streetscape renders. Commit `55259ce`.
+
+**Lucas:** i was under the impression that you were selecting the address presented by
+smarty streets, but the wrong zip was still in the address textbox on the pre-pop.
+wouldn't it have been corrected if thats the case?
+
+**Claude:** It should have — but Smarty's autocomplete *filters* on a wrong zip (returns
+zero suggestions) rather than correcting it, so the composed fallback (with the bad zip)
+stayed in the box. Fix: the silent prefill search now sends street+city+state only and
+lets Smarty supply the canonical zip. Verified: pre-pop with 65806 now shows
+"…Springfield, MO 65802" in the box.

@@ -177,9 +177,13 @@
     var zzip = (qp.get("zzipcode") || "").trim();
     input.value = zstreet + (zcity ? ", " + zcity : "") + (zstate ? ", " + zstate : "") + (zzip ? " " + zzip : "");
     if (!keyMissing()) {
+      // Search WITHOUT the zip: Smarty returns zero suggestions when the
+      // search string carries a wrong zip (it filters, not corrects), which
+      // left bad z-param zips uncorrected in the box. Street+city+state is
+      // unambiguous and lets Smarty supply the canonical zip itself.
       var url = ENDPOINT +
         "?key=" + encodeURIComponent(window.SMARTY_EMBEDDED_KEY) +
-        "&search=" + encodeURIComponent([zstreet, zcity, zstate, zzip].join(" ").replace(/\s+/g, " ").trim()) +
+        "&search=" + encodeURIComponent([zstreet, zcity, zstate].join(" ").replace(/\s+/g, " ").trim()) +
         "&max_results=1";
       fetch(url)
         .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })

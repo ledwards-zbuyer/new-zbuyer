@@ -119,7 +119,10 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
   `?zfname=Alex&zlastname=Smith&zphone=6238805511&zemail=alex@gmail.com&zstreet=1401+Candlewood+Dr&zcity=Pittsburg&zstate=PA&zzipcode=15240`
   - Address: composed string fills the box instantly; a silent Smarty lookup then upgrades it
     to the top suggestion's canonical address (sets `window.zbSelectedAddress`). Multi-unit
-    umbrella results are skipped. (`address-autocomplete.js`)
+    umbrella results are skipped. The Smarty search deliberately **omits the z-param zip**:
+    Smarty filters (returns nothing) on a wrong zip instead of correcting it, so we send
+    street+city+state and let Smarty supply the canonical zip — bad zips in email links get
+    fixed in the box. (`address-autocomplete.js`)
   - Contact: name/phone/email prefill (phone through `formatPhone`). (`lead-modal.js`)
   - Landing markup ships empty inputs — no John Doe demo data. `zcredit` currently ignored.
   - Prefill code runs on any page carrying the params; the homepage without params is unchanged.
