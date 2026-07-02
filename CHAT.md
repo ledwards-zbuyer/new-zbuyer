@@ -387,3 +387,9 @@ overlay (no blur), and he'll supply a key. Built `assets/streetview-config.js` (
 placeholder + setup instructions) and `assets/streetview-bg.js` (z-param address →
 metadata gate → hero background swap; any failure keeps the stock photo). Lander-only.
 Pending: paste the real key, then verify live imagery.
+
+**Lucas:** *(supplied the Google key)*
+
+**Claude:** Key wired into `streetview-config.js`; verified live — the Alex Smith
+pre-popped link renders the actual house at 1401 Candlewood Dr behind the dark overlay.
+(Mobile headless shots hit screenshot-timing artifacts; desktop proved the full chain.)
