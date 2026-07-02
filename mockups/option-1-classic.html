@@ -100,7 +100,10 @@
   .lm-cta:hover{background:var(--cta-d)}
   @media (max-width:560px){
     .lead-modal{padding:12px;align-items:flex-start;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch}
-    .lm-card{max-width:none;max-height:none;padding:18px 16px 16px;border-radius:18px}
+    /* margin-top:auto bottom-anchors every step (thumb reach) but, unlike
+       align-items:flex-end, collapses to 0 when the card is taller than
+       the viewport so the top stays scrollable. */
+    .lm-card{max-width:none;max-height:none;padding:18px 16px 16px;border-radius:18px;margin-top:auto}
     .lm-card h3{font-size:19px}
     .lm-sub{font-size:13.5px;margin-top:5px;line-height:1.4}
     .lm-form{margin-top:12px;gap:8px}
@@ -113,10 +116,6 @@
     .lm-cta{padding:14px;font-size:16px}
     .lm-nothanks{padding:2px}
     .lm-back{margin-bottom:4px}
-    /* Final steps: natural-height card pinned to the bottom (bottom sheet)
-       so the buttons stay in thumb reach without internal whitespace.
-       .lm-sheet is toggled by lead-modal.js on the non-contact screens. */
-    .lead-modal.lm-sheet{align-items:flex-end}
     .lm-gfx{margin:14px 0 2px}
   }
   .search input{flex:1;border:none;outline:none;font-size:17px;font-family:inherit;color:var(--ink);padding:16px 0}
