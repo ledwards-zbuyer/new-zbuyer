@@ -85,13 +85,13 @@ Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
 
 ### 5. Terms comparison tool (`mockups/compare-terms.html`)
 - Internal chooser (noindex) to preview the funnel under each sale model:
-  - **Exclusive Lead** → `?terms=exclusive`: single named pro + consent says
-    "your matched real-estate professional".
-  - **Max Sold** → `?terms=maxsold` (= default, no param): 6-buyer list + "its
-    real-estate partners".
-- Markup carries the Max Sold worst case; `lead-modal.js` swaps in the exclusive variant
-  when the param is present. **Consent wording differences are placeholders** pending
-  final legal language.
+  - **Exclusive Lead** → default (no param, also `?terms=exclusive`): single named pro +
+    consent says "your matched real-estate professional".
+  - **Max Sold** → `?terms=maxsold`: 6-buyer list + "its real-estate partners".
+- Markup carries the Exclusive default; `lead-modal.js` swaps in the Max Sold worst case
+  when `?terms=maxsold` is present. (Default flipped to Exclusive 2026-07-01 for a team
+  demo of the hero-title comparison.) **Consent wording differences are placeholders**
+  pending final legal language.
 
 ## Testing
 

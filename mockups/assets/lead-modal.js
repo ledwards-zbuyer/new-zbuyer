@@ -69,17 +69,17 @@
     el.addEventListener("input", function () { el.classList.remove("invalid"); errEl.hidden = true; });
   });
 
-  // ---- terms variant (?terms=exclusive | maxsold; default maxsold) ----
+  // ---- terms variant (?terms=maxsold; default exclusive) ----
   // compare-terms.html links here with either variant so the disclosure
-  // can be previewed under each sale model. Markup carries the Max Sold
-  // (6-buyer worst case); exclusive swaps in a single pro + singular
-  // consent language. Placeholder copy pending final legal language.
-  if (/[?&]terms=exclusive\b/.test(window.location.search)) {
+  // can be previewed under each sale model. Markup carries the Exclusive
+  // default (single pro); maxsold swaps in the 6-buyer worst case +
+  // plural consent language. Placeholder copy pending final legal language.
+  if (/[?&]terms=maxsold\b/.test(window.location.search)) {
     var matchedEl = modal.querySelector(".lm-matched");
-    if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pro:</b> Jason Dalbey (BHHS The Preferred Realty)";
+    if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)";
     var consentEl = modal.querySelector(".lm-consent");
     if (consentEl) consentEl.innerHTML = consentEl.innerHTML
-      .replace("its real-estate partners", "your matched real-estate professional");
+      .replace("your matched real-estate professional", "its real-estate partners");
   }
 
   // ---- intent chips ----
