@@ -549,3 +549,12 @@ net equity + inline-SVG value-history chart. Built `compare-report.html` (jump p
 states). Deleted the old `report-dashboard*.png` screenshots. Screenshot-verified all six
 combos at mobile + desktop; fixed a real mobile bug (the carousel's min-content width
 propagated up the flex column and widened the page — `main>.wrap>*{min-width:0}`).
+
+**Lucas:** 404 from that url *(compare-report on github.io)*
+
+**Claude:** The push was fine — GitHub Pages' deploy backend had wedged itself at 14:25
+(every deploy since failed with a generic "Deployment failed, try again later"; site API
+`status: errored`; the site kept serving the last good 14:14 deploy). Workflow re-run and
+a fresh empty-commit push both failed the same way. Fix: request a rebuild directly via
+`gh api -X POST .../pages/builds` — site went to `built`, all six report states + the
+compare page verified live (200s, new markup). Recovery recipe added to HANDOFF.

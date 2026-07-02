@@ -15,6 +15,13 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
   repo root makes Pages deploy the raw files (the default Jekyll build started failing
   flakily 2026-07-02 with no content cause; we never needed it). Browsers cache pages for
   10 min — during rapid iterations, test with a throwaway `?v=N` param.
+- **If pushes stop going live:** the Pages backend can wedge itself (2026-07-02 PM: every
+  deploy after 14:25 failed with a generic "Deployment failed, try again later"; the site
+  API reported `status: errored` and kept serving the last good deploy). Re-running the
+  failed workflow and pushing fresh commits did NOT fix it. What did:
+  `gh api -X POST repos/ledwards-zbuyer/new-zbuyer/pages/builds` (request a rebuild
+  directly), then confirm `gh api repos/ledwards-zbuyer/new-zbuyer/pages --jq .status`
+  returns `built`.
 
 ## Current funnel
 
