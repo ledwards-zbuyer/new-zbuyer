@@ -642,3 +642,11 @@ new harness `?step=pulse` E2E on the pre-popped lander: every canonical field sa
 200s, FinalizeLead fired, TrustedForm cert captured, pixel stored + injected on the
 report page. Flagged for confirmation: SellingTimeFrame mapping, SMS-step field name,
 RealtorOpt on "Do not contact me".
+
+**Lucas:** If the user selects Do not contact me fire FieldName "DNC" FieldValue "true"
+and DO NOT fire the RealtorOpt fieldname. SellingTimeFrame should just use the text on
+the option (Now, Soon, Eventually, No) as the FieldValue. Use SMSOptIn for the SMS Step.
+
+**Claude:** All three applied: "Do not contact me" → `DNC=true`, RealtorOpt untouched on
+that path; SellingTimeFrame now carries the chip's visible text verbatim; the SMS-step
+field is `SMSOptIn` (yes/no).

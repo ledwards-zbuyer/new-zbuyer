@@ -266,12 +266,10 @@ fully static, no backend needed).
   (`trustedform.com_TCPATerms` = the exact disclosure+consent text displayed;
   `trustedform.com_CertURL` from the TrustedForm script now on the lander),
   `ListedQuestion` (defaults "No" until OnboardAPI is ready), `RealtorOpt` = "ok" on the
-  all-set CTA, `SellingTimeFrame` from the intent chips.
-- **Still to confirm with Lucas/API team:** SellingTimeFrame mapping is inferred from
-  one example ("Yes - soon") — now/eventually/no map to "Yes - now"/"Yes - eventually"/
-  "No"; the SMS step has no canonical field (custom `smsOptIn` yes/no sent meanwhile);
-  RealtorOpt value for "Do not contact me" is undecided (nothing fired on that path);
-  `WhySelling` / `SomethingSpecial` are reserved for possible future steps.
+  all-set CTA (its "Do not contact me" link instead fires `DNC` = "true" and NO
+  RealtorOpt), `SellingTimeFrame` = the chip's visible text (Now/Soon/Eventually/No),
+  `SMSOptIn` yes/no on the SMS step (a yes also updates `phone` to the texted number).
+- `WhySelling` / `SomethingSpecial` are reserved for possible future steps (not sent).
 - **Doc deviations observed live:** dead submissionID → HTTP **403** (docs say 400) —
   client re-inits and replays the field snapshot on either; ContactOptIn responses carry
   an undocumented `showOnMeetTheExpertsPage` flag; live response had

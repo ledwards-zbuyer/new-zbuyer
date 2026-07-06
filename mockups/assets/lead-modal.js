@@ -48,9 +48,8 @@
     var d = v.replace(/\D/g, "").slice(0, 10);
     return d.length === 10 ? d : "";
   }
-  // "Open to selling?" chip values -> canonical SellingTimeFrame strings.
-  // "Yes - soon" confirmed by example; the other three are inferred from it.
-  var SELLING_MAP = { now: "Yes - now", soon: "Yes - soon", eventually: "Yes - eventually", no: "No" };
+  // SellingTimeFrame carries the chip's visible text (Now/Soon/Eventually/No).
+  var intentLabel = "";
 
   function show(name) {
     current = name;
@@ -161,7 +160,8 @@
   chips.forEach(function (chip) {
     chip.addEventListener("click", function () {
       intentValue = chip.getAttribute("data-val");
-      if (P) psave(P.F.sellingTimeFrame, SELLING_MAP[intentValue] || intentValue);
+      intentLabel = chip.textContent.trim();
+      if (P) psave(P.F.sellingTimeFrame, intentLabel);
       chips.forEach(function (c) {
         c.classList.toggle("sel", c === chip);
         c.setAttribute("aria-checked", c === chip ? "true" : "false");
@@ -221,7 +221,7 @@
       psave(P.F.name, name);
       psave(P.F.phone, phoneDigits(phoneEl.value));
       psave(P.F.email, email);
-      psave(P.F.sellingTimeFrame, SELLING_MAP[intentValue] || intentValue);
+      psave(P.F.sellingTimeFrame, intentLabel || intentValue);
       psave(P.F.contactFormSubmit, "true");
       psave(P.F.listedQuestion, "No"); // from OnboardAPI once that's ready
       var mEl = modal.querySelector(".lm-matched"), cEl = modal.querySelector(".lm-consent");
@@ -254,9 +254,12 @@
     if (P) psave(P.F.realtorOpt, "ok");
     toSmsStep();
   });
-  // "Do not contact me": for now it continues to the SMS step like the CTA.
-  // (No RealtorOpt fired — its value for this path is undecided.)
-  document.getElementById("noContact").addEventListener("click", toSmsStep);
+  // "Do not contact me": continues to the SMS step like the CTA, but records
+  // DNC=true and deliberately fires NO RealtorOpt.
+  document.getElementById("noContact").addEventListener("click", function () {
+    if (P) psave(P.F.dnc, "true");
+    toSmsStep();
+  });
 
   // ---- SMS step ----
   // FinalizeLead posts every collected field and returns pixel-tracking HTML

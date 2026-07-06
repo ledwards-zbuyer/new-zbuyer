@@ -56,9 +56,10 @@
     optInContact: "OptInContactID",               // one save per opted-in contact
     listedQuestion: "ListedQuestion",             // from OnboardAPI later; defaults "No"
     realtorOpt: "RealtorOpt",                     // "ok" on the all-set step's CTA
-    sellingTimeFrame: "SellingTimeFrame",         // Open to selling? mapped (Yes - soon…)
+    dnc: "DNC",                                   // "true" on "Do not contact me" (no RealtorOpt then)
+    sellingTimeFrame: "SellingTimeFrame",         // the chip text: Now / Soon / Eventually / No
+    smsOptIn: "SMSOptIn",                         // yes | no on the SMS step
     // future steps (fields reserved, not sent yet): WhySelling, SomethingSpecial
-    smsOptIn: "smsOptIn", // NOT in the canonical list — SMS step is new; needs a name
   };
 
   var K = {
