@@ -34,6 +34,17 @@
       ", " + s.city + ", " + s.state + " " + s.zipcode;
   }
 
+  // Push the verified address into the Pulse lead API (no-op on pages that
+  // don't load pulse-api.js — the homepage and compare tools stay inert).
+  function pulseSaveAddress(s) {
+    if (!window.PulseAPI) return;
+    var F = window.PulseAPI.F;
+    window.PulseAPI.save(F.address, s.street_line + (s.secondary ? " " + s.secondary : ""));
+    window.PulseAPI.save(F.city, s.city);
+    window.PulseAPI.save(F.state, s.state);
+    window.PulseAPI.save(F.zip, s.zipcode);
+  }
+
   function lookup(search, selected) {
     if (keyMissing()) {
       console.warn("[Smarty] No embedded key set in smarty-config.js — autocomplete disabled.");
@@ -88,6 +99,7 @@
     } else {
       input.value = fullAddress(s);
       window.zbSelectedAddress = s; // expose structured pick for the lead modal
+      pulseSaveAddress(s);
       close();
       input.blur(); // dismiss the mobile keyboard once an address is chosen
       // Reverse the focus scroll so the CTA lands by the thumb. Runs twice:
@@ -192,6 +204,7 @@
           if (s && !(s.entries > 1)) { // skip multi-unit umbrellas — keep the composed string
             input.value = fullAddress(s);
             window.zbSelectedAddress = s;
+            pulseSaveAddress(s);
           }
         })
         .catch(function (err) { console.warn("[Smarty] prefill lookup failed:", err); });

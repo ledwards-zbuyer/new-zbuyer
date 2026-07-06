@@ -27,6 +27,9 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
 
 ## Current funnel
 
+**Lead submission (lander only):** the DR lander is wired to the real Pulse Path lead
+API — see §9. The homepage and compare pages remain inert demos.
+
 1. **Hero address step** — CTA **"Get my cash value report →"** — Smarty US Autocomplete
    Pro on `#addr`
    (`mockups/assets/address-autocomplete.js`, embedded key in `assets/smarty-config.js`,
@@ -218,6 +221,40 @@ real page (classic-blue tokens, vanilla JS, no deps). Still "Powered by Zoodeali
 - All values are demo numbers; wiring real Zoodealio / RealEstateAPI data is out of
   scope for the mockup. Contact CTAs are demo `tel:` links; net-equity button is
   not live.
+
+### 9. Pulse Path lead API integration (2026-07-06) — lander only
+The DR lander now submits real leads to zBuyer's internal API
+(`legacy.zbuyer.com/lr/AjaxServer.aspx`; CORS `*`, no client secret — the site stays
+fully static, no backend needed).
+
+- **Client:** `mockups/assets/pulse-api.js` + `assets/pulse-config.js`. Including these
+  two scripts IS the enable switch — the homepage and compare tools don't load them and
+  stay inert demos. All state (submissionID, request counter, field snapshot, pixel
+  HTML, contact cache) lives in `sessionStorage` (per-tab session, survives the
+  navigation to the report page).
+- **Flow:** `InitNewLead` on page load (srcURL = full page URL → mid/affid attribution
+  rides along automatically; **test links must carry `?mid=56&affid=testing`**);
+  `SaveLeadData` on field blur / chip select / address pick (partial leads, incrementing
+  `cnt`); `GetContactOptInNames` once per session (cached — API returns different sets
+  per call) drives the **live matched-pros disclosure** (checkbox list when
+  `renderAsCheckboxes:true`, static line otherwise; `OptInContactID` saved per contact
+  on submit); `FinalizeLead` fires on the SMS step's exit (both buttons), returns pixel
+  HTML stashed for the report page, which injects it into `#pixelDiv`. Navigation never
+  blocks on the API (2.5s cap).
+- **Field names are best guesses** (one mapping table `F` at the top of pulse-api.js):
+  doc-confirmed `fullName`/`address`/`phone`/`OptInContactID`; guessed `email`, `city`,
+  `state`, `zip`, `openToSelling`, `mobilePhone`, `smsOptIn`. All returned 200 in live
+  tests but the API team should confirm they map where expected.
+- **Doc deviations observed live:** dead submissionID → HTTP **403** (docs say 400) —
+  client re-inits and replays the field snapshot on either; ContactOptIn responses carry
+  an undocumented `showOnMeetTheExpertsPage` flag; live response had
+  `renderAsCheckboxes:false` with a single "HousingNow.com" contact.
+- **Verified:** full curl sequence (init → saves incl. OptInContactID → finalize
+  returned `PixelID=TEST-ValuationForm` pixel HTML) + in-browser render of the live
+  contact in the disclosure via harness on localhost.
+- **Not yet wired (later phases):** Onboard AVM values into the report page
+  (`PulseAPI.avmDetail`/`getReport` helpers already exist), GetAreaPropValue,
+  reCaptcha verification, report-page expert card from the cached contact set.
 
 ## Testing
 

@@ -562,3 +562,36 @@ compare page verified live (200s, new markup). Recovery recipe added to HANDOFF.
 *(The wedge recurred on the very next docs commit; poking a rebuild for a commit whose
 build was already stuck did nothing. Refined recipe: fresh commit first, then the POST.
 The mockup pages themselves stayed live and current throughout.)*
+
+---
+
+**Lucas:** *(2026-07-06, planning production)* I am planning to wire this up to our
+zBuyer lead gen APIs (awaiting docs). I will need to provision a server (aws I'm
+guessing) to host 10,000 to 20,000 visits per day. I started as a developer (VB.NET &
+SQL) all microsoft, so I will be a bit in the dark… what do I need to do?
+
+**Claude:** Reframed: the site is pure static files — no server needed. 10–20k
+visits/day ≈ 0.2 req/s; a CDN yawns at that. Recommended AWS shape: S3 + CloudFront +
+ACM (static), Lambda + API Gateway *only if* the lead API needs a secret key
+server-side, GitHub Actions deploys, ~<$10/mo. Questions about platform/timing were
+deferred — then the API docs arrived and mooted the backend entirely.
+
+**Lucas:** Now I want to plan to start submitting these leads via our internal API:
+*(pasted full Pulse Path API docs — InitNewLead / SaveLeadData / FinalizeLead + pixel,
+Onboard proxy, ContactOptIn functions)* → *(decisions via questions: test attribution
+exists — default MID 56 + affid=testing; best-guess field names; lander only; scope =
+core lead path + live opt-in contacts)*
+
+**Claude:** Key insight: every endpoint is browser-callable (CORS `*`, no client
+secret — Onboard's apikey stays behind zBuyer's proxy), so no backend at all. Live
+smoke tests found two doc deviations: dead submissionID returns **403** not 400, and
+ContactOptIn carries an undocumented `showOnMeetTheExpertsPage` flag. Built
+`pulse-api.js` (sessionStorage state, incrementing cnt, 400/403 → re-init + snapshot
+replay, finalize → pixel stash) + `pulse-config.js` (script inclusion = enable switch;
+lander only). Wired: address pick / z-param upgrade → saves; contact fields on blur;
+intent chip; opt-in contacts rendered live from GetContactOptInNames (checkbox mode
+supported; static line observed) with OptInContactID saves on submit; SMS choice;
+FinalizeLead on funnel exit with 2.5s navigation cap; report page injects the pixel
+HTML into #pixelDiv. Verified: full curl sequence returned the TEST-ValuationForm
+pixel; browser harness rendered the live "HousingNow.com" contact in the disclosure.
+Field names are one-table best guesses pending API-team confirmation.

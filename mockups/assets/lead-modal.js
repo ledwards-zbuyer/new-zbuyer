@@ -38,6 +38,17 @@
   var xBtn = modal.querySelector(".lm-x");
   var current = "";
 
+  // ---- Pulse lead API (only on wired pages — pulse-api.js precedes us
+  // there; the homepage/compare tools don't load it and stay inert) ----
+  var P = window.PulseAPI || null;
+  var optInData = null; // cached GetContactOptInNames response
+  function psave(fld, val) { if (P && val) P.save(fld, val); }
+  // API examples show dashed phones (417-555-1212).
+  function dashPhone(v) {
+    var d = v.replace(/\D/g, "").slice(0, 10);
+    return d.length === 10 ? d.slice(0, 3) + "-" + d.slice(3, 6) + "-" + d.slice(6) : "";
+  }
+
   function show(name) {
     current = name;
     screens.forEach(function (s) { s.hidden = s.getAttribute("data-screen") !== name; });
@@ -100,10 +111,52 @@
   if (qp.get("zphone")) phoneEl.value = formatPhone(qp.get("zphone"));
   if (qp.get("zemail")) emailEl.value = qp.get("zemail");
 
+  // ---- Pulse partial-lead capture (docs: send on blur, not per keystroke) ----
+  if (P) {
+    nameEl.addEventListener("blur", function () { psave(P.F.fullName, nameEl.value.trim()); });
+    phoneEl.addEventListener("blur", function () { psave(P.F.phone, dashPhone(phoneEl.value)); });
+    emailEl.addEventListener("blur", function () { psave(P.F.email, emailEl.value.trim()); });
+    mobileEl.addEventListener("blur", function () { psave(P.F.mobilePhone, dashPhone(mobileEl.value)); });
+
+    // Live matched pros from GetContactOptInNames (cached once per session —
+    // the API returns different sets per call). Falls back silently to the
+    // hard-coded disclosure names if the call fails.
+    P.getOptInContacts().then(function (d) {
+      if (!d || !d.contactOptInNames || !d.contactOptInNames.length) return;
+      optInData = d;
+      var box = modal.querySelector(".lm-matched");
+      if (!box) return;
+      var label = d.contactOptInNames.length > 1 ? "Matched real estate pros:" : "Matched real estate pro:";
+      box.innerHTML = "";
+      var b = document.createElement("b");
+      b.textContent = label;
+      box.appendChild(b);
+      if (d.renderAsCheckboxes) {
+        d.contactOptInNames.forEach(function (c) {
+          var row = document.createElement("label");
+          row.className = "lm-optin";
+          var cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.value = c.contactID;
+          cb.checked = !!c.preSelected;
+          row.appendChild(cb);
+          row.appendChild(document.createTextNode(
+            c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "")));
+          box.appendChild(row);
+        });
+      } else {
+        box.appendChild(document.createTextNode(" " + d.contactOptInNames.map(function (c) {
+          return c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
+        }).join("; ")));
+      }
+    });
+  }
+
   // ---- intent chips ----
   chips.forEach(function (chip) {
     chip.addEventListener("click", function () {
       intentValue = chip.getAttribute("data-val");
+      if (P) psave(P.F.openToSelling, intentValue);
       chips.forEach(function (c) {
         c.classList.toggle("sel", c === chip);
         c.setAttribute("aria-checked", c === chip ? "true" : "false");
@@ -117,6 +170,9 @@
   heroForm.addEventListener("submit", function (e) {
     e.preventDefault();
     if (!addr.value.trim()) { addr.focus(); return; }
+    // Structured Smarty picks save their components from address-autocomplete;
+    // a raw typed address still reaches the partial lead as one line.
+    if (P && !window.zbSelectedAddress) psave(P.F.address, addr.value.trim());
     open();
   });
 
@@ -150,6 +206,27 @@
     }
     errEl.hidden = true;
 
+    // Ensure every contact field reaches the partial lead even if a blur
+    // never fired (autofill, z-param prefill), plus the contact opt-ins.
+    if (P) {
+      psave(P.F.fullName, name);
+      psave(P.F.phone, dashPhone(phoneEl.value));
+      psave(P.F.email, email);
+      psave(P.F.openToSelling, intentValue);
+      if (optInData) {
+        if (optInData.renderAsCheckboxes) {
+          modal.querySelectorAll(".lm-optin input:checked").forEach(function (cb) {
+            psave(P.F.optInContact, cb.value);
+          });
+        } else {
+          // Static disclosure list: every named contact is part of the deal.
+          optInData.contactOptInNames.forEach(function (c) {
+            psave(P.F.optInContact, c.contactID);
+          });
+        }
+      }
+    }
+
     mobileEl.value = formatPhone(phoneEl.value); // carry phone into the SMS step
     show("allset");
     if (card) card.focus();
@@ -162,7 +239,17 @@
   document.getElementById("noContact").addEventListener("click", toSmsStep);
 
   // ---- SMS step ----
-  function goToReport() { window.location.href = REPORT_PAGE; }
+  // FinalizeLead posts every collected field and returns pixel-tracking HTML
+  // that the report page injects (stashed in sessionStorage across the
+  // navigation). Never block the user on a slow/failed finalize: navigate
+  // after 2.5s regardless.
+  function goToReport() {
+    if (!P) { window.location.href = REPORT_PAGE; return; }
+    var done = false;
+    function nav() { if (!done) { done = true; window.location.href = REPORT_PAGE; } }
+    P.finalize().then(nav, nav);
+    setTimeout(nav, 2500);
+  }
 
   document.getElementById("viewReport").addEventListener("click", function () {
     var d = mobileEl.value.replace(/\D/g, "");
@@ -173,7 +260,11 @@
       return;
     }
     mobileErr.hidden = true;
+    if (P) { psave(P.F.mobilePhone, dashPhone(mobileEl.value)); psave(P.F.smsOptIn, "yes"); }
     goToReport();
   });
-  document.getElementById("noThanks").addEventListener("click", goToReport);
+  document.getElementById("noThanks").addEventListener("click", function () {
+    if (P) psave(P.F.smsOptIn, "no");
+    goToReport();
+  });
 })();

@@ -452,5 +452,17 @@
   draw("y5");
 })();
 </script>
+<!-- Pulse pixel tracking: FinalizeLead (fired on the funnel's last step)
+     returns raw HTML that must land in the thank-you page body. The lander
+     stashes it in sessionStorage across the navigation; inject it here. -->
+<div id="pixelDiv"></div>
+<script>
+(function () {
+  try {
+    var px = sessionStorage.getItem("pulsePixelHTML");
+    if (px) document.getElementById("pixelDiv").innerHTML = px;
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
