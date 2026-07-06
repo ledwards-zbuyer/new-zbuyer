@@ -671,3 +671,12 @@ report focus on?" Fast cash·Both·Top price; B hypothetical "If you ever sold �
 would matter most?"; C curiosity "What made you curious?" with legacy-compatible
 one-word chips) × two placements (own step / second row in the intent box). Awaiting
 Lucas's pick.
+
+**Lucas:** i want to see A — Report focus · in the intent box along with a repairs slider
+with a gradually increasing amount of repairs defaulted to no repairs
+
+**Claude:** Appended "A + repairs slider — the full intent box" to the workshop page:
+Open to selling? chips + report-focus chips + an "Any repairs needed?" slider (5 stops:
+No repairs — move-in ready → A few touch-ups → Some repairs → Major repairs → A full
+project; defaults to stop 0 with the label muted, label turns blue and updates live as
+it moves; end hints none ⟷ "a full project"). Shown in default and dragged states.

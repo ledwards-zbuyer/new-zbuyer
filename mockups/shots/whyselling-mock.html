@@ -33,6 +33,12 @@
   .lm-cta{display:block;width:100%;margin-top:18px;background:var(--cta);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:16.5px;padding:16px;border-radius:12px;cursor:pointer;text-align:center}
   .axis{display:flex;justify-content:space-between;color:#9ba8bb;font-size:11px;margin-top:6px;padding:0 6px}
   .divider{border-top:1px solid var(--line);margin:12px 0 10px}
+
+  /* ---- repairs slider ---- */
+  .lm-slider{padding:2px 6px 0}
+  .lm-slider input{width:100%;accent-color:var(--c1);cursor:pointer;height:22px}
+  .lm-slider-val{text-align:center;font-size:14.5px;font-weight:600;color:var(--c1);margin-top:2px}
+  .lm-slider-val.zero{color:#9ba8bb;font-weight:500}
 </style>
 </head>
 <body>
@@ -166,5 +172,85 @@
       </div>
     </div>
   </div>
+
+  <h1 style="margin-top:44px">A + repairs slider — the full intent box</h1>
+  <p class="sub">"Open to selling?" + report focus + a repairs slider (defaults to No repairs; label updates as it
+  moves). Left: default state. Right: dragged to the fourth stop.</p>
+
+  <div class="grid" style="max-width:800px">
+    <div class="frame">
+      <p class="tag">Default <span>· No repairs</span></p>
+      <div class="lm-card">
+        <div class="lm-intent" style="margin-top:0">
+          <span class="lm-intent-label">Open to selling?</span>
+          <div class="lm-chips">
+            <button class="lm-chip">Now</button>
+            <button class="lm-chip sel">Soon</button>
+            <button class="lm-chip">Eventually</button>
+            <button class="lm-chip lm-chip-no">No</button>
+          </div>
+          <div class="divider"></div>
+          <span class="lm-intent-label">What should your report focus on?</span>
+          <div class="lm-chips">
+            <button class="lm-chip">Fast cash</button>
+            <button class="lm-chip sel">Both</button>
+            <button class="lm-chip">Top price</button>
+          </div>
+          <div class="divider"></div>
+          <span class="lm-intent-label">Any repairs needed?</span>
+          <div class="lm-slider">
+            <input type="range" min="0" max="4" step="1" value="0" oninput="slideLabel(this)">
+            <div class="axis"><span>none</span><span>a full project</span></div>
+            <div class="lm-slider-val zero">No repairs &mdash; move-in ready</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame">
+      <p class="tag">Dragged <span>· fourth stop</span></p>
+      <div class="lm-card">
+        <div class="lm-intent" style="margin-top:0">
+          <span class="lm-intent-label">Open to selling?</span>
+          <div class="lm-chips">
+            <button class="lm-chip">Now</button>
+            <button class="lm-chip sel">Soon</button>
+            <button class="lm-chip">Eventually</button>
+            <button class="lm-chip lm-chip-no">No</button>
+          </div>
+          <div class="divider"></div>
+          <span class="lm-intent-label">What should your report focus on?</span>
+          <div class="lm-chips">
+            <button class="lm-chip sel">Fast cash</button>
+            <button class="lm-chip">Both</button>
+            <button class="lm-chip">Top price</button>
+          </div>
+          <div class="divider"></div>
+          <span class="lm-intent-label">Any repairs needed?</span>
+          <div class="lm-slider">
+            <input type="range" min="0" max="4" step="1" value="3" oninput="slideLabel(this)">
+            <div class="axis"><span>none</span><span>a full project</span></div>
+            <div class="lm-slider-val">Major repairs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var REPAIR_LABELS = [
+      "No repairs — move-in ready",
+      "A few touch-ups",
+      "Some repairs",
+      "Major repairs",
+      "A full project"
+    ];
+    function slideLabel(inp) {
+      var v = parseInt(inp.value, 10);
+      var el = inp.parentNode.querySelector(".lm-slider-val");
+      el.textContent = REPAIR_LABELS[v];
+      el.classList.toggle("zero", v === 0);
+    }
+  </script>
 </body>
 </html>
