@@ -650,3 +650,24 @@ the option (Now, Soon, Eventually, No) as the FieldValue. Use SMSOptIn for the S
 **Claude:** All three applied: "Do not contact me" → `DNC=true`, RealtorOpt untouched on
 that path; SellingTimeFrame now carries the chip's visible text verbatim; the SMS-step
 field is `SMSOptIn` (yes/no).
+
+---
+
+**Lucas:** *(screenshot of the old funnel's "Why are you interested in the cash value?"
+step — six prose options incl. Financial Problems / Too many repairs)* i would like to do
+something for this question like we did for the SellingTimeFrame question… simplifying
+it… making it more a continuum of sorts (maybe). I'm open to changing what/how we are
+asking entirely. can you dig for synergies between these ideas? …I want to avoid
+pigeon-holing anyone into fully admitting they are selling. its an odd and very personal
+thing… i try to avoid putting those exact words into users' mouths.
+
+**Claude:** Analysis: the six legacy answers collapse onto one Speed⟷Price axis (repairs/
+financial/inherited = fast-as-is end; upgrading = top-dollar end; relocating = middle) —
+the same axis the report page's value module draws. A needs-based ask yields the same
+investor-vs-agent routing signal without the "Financial Problems" confession. Per the
+no-selling-admission rule, framings anchor to the report or stay hypothetical. Built
+`mockups/shots/whyselling-mock.html`: three framings (A report-focus "What should your
+report focus on?" Fast cash·Both·Top price; B hypothetical "If you ever sold — what
+would matter most?"; C curiosity "What made you curious?" with legacy-compatible
+one-word chips) × two placements (own step / second row in the intent box). Awaiting
+Lucas's pick.

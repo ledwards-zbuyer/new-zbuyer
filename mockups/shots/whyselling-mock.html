@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WhySelling workshop — zBuyer</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--c1:#1D4FD7;--navy:#0E1B33;--acc:#3BA4F4;--cta:#FF6B4A;--ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;--tint:#E7EEFC}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;background:linear-gradient(180deg,#0E1B33,#0A1426);color:#fff;
+       padding:34px 18px 60px;-webkit-font-smoothing:antialiased}
+  h1{font-size:22px;font-weight:800;text-align:center;letter-spacing:-.02em}
+  .sub{text-align:center;color:#BBD7FB;font-size:13px;margin:8px auto 26px;max-width:560px;line-height:1.5}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:22px;max-width:1180px;margin:0 auto}
+  .frame{background:transparent}
+  .tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#7FC4FF;margin:0 0 8px 4px}
+  .tag span{color:#7d90b5;font-weight:600;text-transform:none;letter-spacing:0}
+
+  /* ---- real modal card styling (copied from option-1-classic.html) ---- */
+  .lm-card{background:#fff;border-radius:22px;padding:26px 24px 22px;color:var(--ink);
+           box-shadow:0 40px 90px -30px rgba(0,0,0,.65)}
+  .lm-card h3{font-size:21px;font-weight:800;letter-spacing:-.02em;text-align:center}
+  .lm-sub{color:var(--muted);font-size:14px;line-height:1.5;margin-top:7px;text-align:center}
+  .lm-intent{display:flex;flex-direction:column;gap:8px;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:11px 12px 13px;margin-top:16px}
+  .lm-intent-label{font-size:14.5px;font-weight:800;color:var(--muted);letter-spacing:-.01em;text-align:center}
+  .lm-chips{display:flex;gap:6px}
+  .lm-chip{flex:1;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--muted);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:9px 0;cursor:pointer;text-align:center}
+  .lm-chip.sel{background:var(--tint);border-color:var(--c1);color:var(--c1)}
+  .lm-chip-no{flex:0 0 auto;padding:9px 11px;font-weight:500;color:#9ba8bb}
+  .lm-cta{display:block;width:100%;margin-top:18px;background:var(--cta);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:16.5px;padding:16px;border-radius:12px;cursor:pointer;text-align:center}
+  .axis{display:flex;justify-content:space-between;color:#9ba8bb;font-size:11px;margin-top:6px;padding:0 6px}
+  .divider{border-top:1px solid var(--line);margin:12px 0 10px}
+</style>
+</head>
+<body>
+  <h1>WhySelling — three framings × two placements</h1>
+  <p class="sub">Top row: each framing as its own step (like the old funnel). Bottom row: the same question as a
+  second row inside the existing "Open to selling?" box on the contact step. No framing uses the word "selling"
+  as a commitment.</p>
+
+  <div class="grid">
+    <!-- ============ ROW 1: standalone step cards ============ -->
+    <div class="frame">
+      <p class="tag">A — Report focus <span>· own step</span></p>
+      <div class="lm-card">
+        <h3>What should your report focus on?</h3>
+        <p class="lm-sub">We&rsquo;ll shape your cash value report around what matters to you.</p>
+        <div class="lm-intent">
+          <div class="lm-chips">
+            <button class="lm-chip">Fast cash</button>
+            <button class="lm-chip sel">Both</button>
+            <button class="lm-chip">Top price</button>
+          </div>
+          <div class="axis"><span>sell as-is, fast</span><span>listed, top dollar</span></div>
+        </div>
+        <button class="lm-cta">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <div class="frame">
+      <p class="tag">B — Hypothetical <span>· own step</span></p>
+      <div class="lm-card">
+        <h3>If you ever sold &mdash; what would matter most?</h3>
+        <p class="lm-sub">No plans required. It just tunes your report.</p>
+        <div class="lm-intent">
+          <div class="lm-chips">
+            <button class="lm-chip">Speed</button>
+            <button class="lm-chip sel">Both</button>
+            <button class="lm-chip">Top price</button>
+          </div>
+        </div>
+        <button class="lm-cta">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <div class="frame">
+      <p class="tag">C — Curiosity <span>· own step</span></p>
+      <div class="lm-card">
+        <h3>What made you curious about your cash value?</h3>
+        <div class="lm-intent">
+          <div class="lm-chips">
+            <button class="lm-chip">Moving</button>
+            <button class="lm-chip sel">Upgrading</button>
+            <button class="lm-chip">Repairs</button>
+          </div>
+          <div class="lm-chips">
+            <button class="lm-chip">Inherited</button>
+            <button class="lm-chip">Just curious</button>
+          </div>
+        </div>
+        <button class="lm-cta">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ============ ROW 2: second row inside the intent box ============ -->
+    <div class="frame">
+      <p class="tag">A — Report focus <span>· in the intent box</span></p>
+      <div class="lm-card">
+        <div class="lm-intent" style="margin-top:0">
+          <span class="lm-intent-label">Open to selling?</span>
+          <div class="lm-chips">
+            <button class="lm-chip">Now</button>
+            <button class="lm-chip sel">Soon</button>
+            <button class="lm-chip">Eventually</button>
+            <button class="lm-chip lm-chip-no">No</button>
+          </div>
+          <div class="divider"></div>
+          <span class="lm-intent-label">What should your report focus on?</span>
+          <div class="lm-chips">
+            <button class="lm-chip">Fast cash</button>
+            <button class="lm-chip sel">Both</button>
+            <button class="lm-chip">Top price</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame">
+      <p class="tag">B — Hypothetical <span>· in the intent box</span></p>
+      <div class="lm-card">
+        <div class="lm-intent" style="margin-top:0">
+          <span class="lm-intent-label">Open to selling?</span>
+          <div class="lm-chips">
+            <button class="lm-chip">Now</button>
+            <button class="lm-chip sel">Soon</button>
+            <button class="lm-chip">Eventually</button>
+            <button class="lm-chip lm-chip-no">No</button>
+          </div>
+          <div class="divider"></div>
+          <span class="lm-intent-label">If you sold &mdash; what matters most?</span>
+          <div class="lm-chips">
+            <button class="lm-chip">Speed</button>
+            <button class="lm-chip sel">Both</button>
+            <button class="lm-chip">Top price</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame">
+      <p class="tag">C — Curiosity <span>· in the intent box</span></p>
+      <div class="lm-card">
+        <div class="lm-intent" style="margin-top:0">
+          <span class="lm-intent-label">Open to selling?</span>
+          <div class="lm-chips">
+            <button class="lm-chip">Now</button>
+            <button class="lm-chip sel">Soon</button>
+            <button class="lm-chip">Eventually</button>
+            <button class="lm-chip lm-chip-no">No</button>
+          </div>
+          <div class="divider"></div>
+          <span class="lm-intent-label">What made you curious?</span>
+          <div class="lm-chips">
+            <button class="lm-chip">Moving</button>
+            <button class="lm-chip sel">Upgrading</button>
+            <button class="lm-chip">Repairs</button>
+          </div>
+          <div class="lm-chips">
+            <button class="lm-chip">Inherited</button>
+            <button class="lm-chip">Just curious</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
