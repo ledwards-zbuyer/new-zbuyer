@@ -24,22 +24,41 @@
   var BASE = window.PULSE_API_BASE;
   if (!BASE) return; // page not wired for the API; callers guard on window.PulseAPI
 
-  // ---- field-name mapping (BEST GUESSES pending API-team confirmation) ----
-  // fullName / address / phone come from the doc examples; OptInContactID is
-  // documented; the rest are guesses collected here so corrections are
-  // one-line edits.
+  // ---- field-name mapping (CANONICAL list from Lucas, 2026-07-06) ----
   var F = {
-    fullName: "fullName",
-    phone: "phone",
+    // page-load echoes of the raw URL params ("null" placeholders are the
+    // legacy convention for missing address parts)
+    qsAddress: "queryStringAddress",
+    qsCity: "queryStringAddressCity",
+    qsState: "queryStringAddressState",
+    qsZip: "queryStringAddressZipCode",
+    qsFirstName: "queryStringFirstName",
+    qsLastName: "queryStringLastName",
+    qsAddressSuccess: "queryStringAddressSuccess", // "true" when Smarty/Google resolved it
+    // resolved address (canonical components, not the raw URL values)
+    street: "StreetAddress",
+    city: "City",
+    state: "State",
+    zip: "Zip",
+    // contact
+    name: "name",
+    phone: "phone",   // digits only, e.g. 7046927823
     email: "email",
-    address: "address",       // street line (incl. secondary)
-    city: "city",
-    state: "state",
-    zip: "zip",
-    openToSelling: "openToSelling", // now | soon | eventually | no
-    mobilePhone: "mobilePhone",     // SMS-step number (may differ from phone)
-    smsOptIn: "smsOptIn",           // yes | no
-    optInContact: "OptInContactID", // per docs — one save per opted-in contact
+    credit: "credit", // from zcredit; often missing
+    // funnel lifecycle flags
+    addressSubmitClicked: "AddressSubmitClicked", // hero CTA clicked
+    contactFormDisplayed: "ContactFormDisplayed",
+    contactOptInNames: "contactOptInNames",       // JSON of the contact list shown
+    contactOptInNamesRender: "contactOptInNames_renderAsCheckboxes", // "True"/"False"
+    contactFormSubmit: "ContactFormSubmit",
+    tcpaTerms: "trustedform.com_TCPATerms",       // the disclosure+consent text displayed
+    tfCertURL: "trustedform.com_CertURL",         // TrustedForm cert, when script present
+    optInContact: "OptInContactID",               // one save per opted-in contact
+    listedQuestion: "ListedQuestion",             // from OnboardAPI later; defaults "No"
+    realtorOpt: "RealtorOpt",                     // "ok" on the all-set step's CTA
+    sellingTimeFrame: "SellingTimeFrame",         // Open to selling? mapped (Yes - soon…)
+    // future steps (fields reserved, not sent yet): WhySelling, SomethingSpecial
+    smsOptIn: "smsOptIn", // NOT in the canonical list — SMS step is new; needs a name
   };
 
   var K = {
@@ -219,4 +238,25 @@
   };
 
   init(); // docs step 1: call on page load
+
+  // ---- page-load echoes of the raw URL params ----
+  // The canonical lead record keeps what the link *claimed* (queryString*)
+  // separate from what resolution *verified* (StreetAddress/City/State/Zip,
+  // saved by the prepop chain in address-autocomplete.js). Missing address
+  // parts use the literal "null" per the legacy convention.
+  (function () {
+    var qp = new URLSearchParams(window.location.search);
+    var g = function (k) { return (qp.get(k) || "").trim(); };
+    var street = g("zstreet"), city = g("zcity"), state = g("zstate"), zip = g("zzipcode");
+    if (street || city || state || zip) {
+      var nv = function (v) { return v || "null"; };
+      save(F.qsAddress, nv(street) + " " + nv(city) + " " + nv(state) + " " + nv(zip));
+      save(F.qsCity, nv(city));
+      save(F.qsState, nv(state));
+      save(F.qsZip, nv(zip));
+    }
+    if (g("zfname")) save(F.qsFirstName, g("zfname"));
+    if (g("zlastname")) save(F.qsLastName, g("zlastname"));
+    if (g("zcredit")) save(F.credit, g("zcredit"));
+  })();
 })();

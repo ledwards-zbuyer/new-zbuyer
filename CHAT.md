@@ -617,3 +617,28 @@ Google fuzzy-matching junk to a real road and overwriting the box — added a gr
 guard (street_number + route required). Verified live: clean, Shorecrest partial, wrong
 zip, garbage (composed kept), and the example URL's own "Camdlewood" typo rescued via
 G→S3 to canonical Candlewood. Zips are never sent to any geocoder — they lie.
+
+---
+
+**Lucas:** *(supplied the canonical FieldName list for SaveLeadData with example data —
+queryString* page-load echoes, resolved StreetAddress/City/State/Zip, lifecycle flags,
+trustedform.com fields, ListedQuestion default No, RealtorOpt on the all-set step,
+SellingTimeFrame for the open-to-selling answer, future WhySelling/SomethingSpecial)*
+…when the address loads properly via smarty (and/or google) →
+queryStringAddressSuccess true. When an address cannot be found make sure the address
+textbox is left blank. do not just stick the address into the textbox if it cannot be
+found from google or smarty.
+
+**Claude:** Replaced the best-guess `F` table with the canonical names. Added: page-load
+queryString* echoes ("null" placeholders per legacy convention, zcredit → credit),
+queryStringAddressSuccess true/false from the prepop chain, **blank-box-on-failure**
+(no unverified string ever left in the box), digits-only phones, lifecycle flags at hero
+submit / modal open / contact submit, contactOptInNames JSON + renderAsCheckboxes
+record, the exact displayed TCPA text, the TrustedForm script on the lander with cert
+capture, ListedQuestion="No", RealtorOpt="ok" on the all-set CTA only, and the
+SellingTimeFrame mapping (now/soon/eventually/no → "Yes - now"/"Yes - soon"/
+"Yes - eventually"/"No" — inferred beyond the one confirmed example). Verified with a
+new harness `?step=pulse` E2E on the pre-popped lander: every canonical field saved with
+200s, FinalizeLead fired, TrustedForm cert captured, pixel stored + injected on the
+report page. Flagged for confirmation: SellingTimeFrame mapping, SMS-step field name,
+RealtorOpt on "Do not contact me".

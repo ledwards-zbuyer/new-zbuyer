@@ -158,10 +158,12 @@ changing the funnel.
        garbage to towns/bare roads, and a wrong address is worse than the raw string.
     4. **S3 Smarty** — re-attempt from Google's components.
     Smarty success at any stage = canonical address + `window.zbSelectedAddress` + Pulse
-    saves (identical to a manual pick). Google-only success fills the box + saves
-    Google's components. Total failure keeps the composed string. Multi-unit umbrellas
-    stay skipped. Verified live: clean, no-city/no-zip (Shorecrest→Shelton), wrong zip,
-    garbage (kept composed), and the Camdlewood→Candlewood typo rescue (G→S3).
+    saves (identical to a manual pick) + `queryStringAddressSuccess=true`. Google-only
+    success fills the box + saves Google's components. **Total failure BLANKS the box**
+    (per Lucas 2026-07-06 — never leave an unverified string in it) and saves
+    `queryStringAddressSuccess=false`. Multi-unit umbrellas stay skipped. Verified live:
+    clean, no-city/no-zip (Shorecrest→Shelton), wrong zip, garbage (blank), and the
+    Camdlewood→Candlewood typo rescue (G→S3).
   - Contact: name/phone/email prefill (phone through `formatPhone`). (`lead-modal.js`)
   - Landing markup ships empty inputs — no John Doe demo data. `zcredit` currently ignored.
   - Prefill code runs on any page carrying the params; the homepage without params is unchanged.
@@ -254,10 +256,22 @@ fully static, no backend needed).
   on submit); `FinalizeLead` fires on the SMS step's exit (both buttons), returns pixel
   HTML stashed for the report page, which injects it into `#pixelDiv`. Navigation never
   blocks on the API (2.5s cap).
-- **Field names are best guesses** (one mapping table `F` at the top of pulse-api.js):
-  doc-confirmed `fullName`/`address`/`phone`/`OptInContactID`; guessed `email`, `city`,
-  `state`, `zip`, `openToSelling`, `mobilePhone`, `smsOptIn`. All returned 200 in live
-  tests but the API team should confirm they map where expected.
+- **Field names are CANONICAL** (list from Lucas 2026-07-06; mapping table `F` at the top
+  of pulse-api.js). Highlights: page-load `queryString*` echoes of the raw URL params
+  (missing parts = literal `"null"`), `queryStringAddressSuccess` true/false from the
+  prepop chain, resolved components as `StreetAddress`/`City`/`State`/`Zip`, contact as
+  `name`/`phone`(digits-only)/`email`/`credit`, lifecycle flags
+  (`AddressSubmitClicked`, `ContactFormDisplayed`, `contactOptInNames` +
+  `contactOptInNames_renderAsCheckboxes`, `ContactFormSubmit`), consent record
+  (`trustedform.com_TCPATerms` = the exact disclosure+consent text displayed;
+  `trustedform.com_CertURL` from the TrustedForm script now on the lander),
+  `ListedQuestion` (defaults "No" until OnboardAPI is ready), `RealtorOpt` = "ok" on the
+  all-set CTA, `SellingTimeFrame` from the intent chips.
+- **Still to confirm with Lucas/API team:** SellingTimeFrame mapping is inferred from
+  one example ("Yes - soon") — now/eventually/no map to "Yes - now"/"Yes - eventually"/
+  "No"; the SMS step has no canonical field (custom `smsOptIn` yes/no sent meanwhile);
+  RealtorOpt value for "Do not contact me" is undecided (nothing fired on that path);
+  `WhySelling` / `SomethingSpecial` are reserved for possible future steps.
 - **Doc deviations observed live:** dead submissionID → HTTP **403** (docs say 400) —
   client re-inits and replays the field snapshot on either; ContactOptIn responses carry
   an undocumented `showOnMeetTheExpertsPage` flag; live response had

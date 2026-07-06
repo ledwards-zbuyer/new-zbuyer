@@ -11,6 +11,47 @@ else if (hp.get("terms")) f.src = "/mockups/option-1-classic.html?terms=" + hp.g
 f.onload = function () {
   var d = f.contentDocument, w = f.contentWindow;
   var step = new URLSearchParams(location.search).get("step");
+  if (step === "pulse") {
+    // E2E: intercept every AjaxServer call, drive the whole funnel on the
+    // (pre-popped) lander, then assert the pixel handoff on the report page.
+    if (!window.__pulseCalls) window.__pulseCalls = [];
+    var calls = window.__pulseCalls;
+    if (!window.__pulsePhase) {
+      window.__pulsePhase = 1;
+      var of = w.fetch.bind(w);
+      w.fetch = function (u, o) {
+        var fn = (String(u).match(/function=(\w+)/) || [])[1];
+        var fld = (String(u).match(/[?&]fld=([^&]+)/) || [])[1];
+        return of(u, o).then(function (r) {
+          if (fn) calls.push(fn + (fld ? "[" + decodeURIComponent(fld) + "]" : "") + "=" + r.status);
+          return r;
+        });
+      };
+      setTimeout(function () { // let prepop + init settle
+        d.querySelector(".hero .search").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+        d.querySelectorAll("#intentChips .lm-chip")[1].click();
+        setTimeout(function () {
+          d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+          setTimeout(function () {
+            d.getElementById("toSms").click();
+            setTimeout(function () { d.getElementById("viewReport").click(); }, 400);
+          }, 900);
+        }, 1500);
+      }, 3000);
+    } else {
+      setTimeout(function () {
+        var pixel = "";
+        try { pixel = f.contentWindow.sessionStorage.getItem("pulsePixelHTML") || ""; } catch (e) {}
+        var injected = !!f.contentDocument.querySelector("#pixelDiv img");
+        var dbg = document.createElement("div");
+        dbg.style.cssText = "position:fixed;top:0;left:0;right:0;background:#043;color:#fff;z-index:9999;font:11px monospace;padding:6px;white-space:pre-wrap";
+        dbg.textContent = "PIXEL stored=" + (pixel.length > 0) + " injected=" + injected +
+          "\nCALLS:\n" + calls.join("\n");
+        document.body.appendChild(dbg);
+      }, 1500);
+    }
+    return;
+  }
   if (step === "acfocus") {
     // Focus the address input (mobile): the page should scroll the search
     // box to the top, leaving the space below for suggestions.

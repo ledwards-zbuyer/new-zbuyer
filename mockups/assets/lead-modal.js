@@ -43,11 +43,14 @@
   var P = window.PulseAPI || null;
   var optInData = null; // cached GetContactOptInNames response
   function psave(fld, val) { if (P && val) P.save(fld, val); }
-  // API examples show dashed phones (417-555-1212).
-  function dashPhone(v) {
+  // Canonical phone format is digits only (e.g. 7046927823).
+  function phoneDigits(v) {
     var d = v.replace(/\D/g, "").slice(0, 10);
-    return d.length === 10 ? d.slice(0, 3) + "-" + d.slice(3, 6) + "-" + d.slice(6) : "";
+    return d.length === 10 ? d : "";
   }
+  // "Open to selling?" chip values -> canonical SellingTimeFrame strings.
+  // "Yes - soon" confirmed by example; the other three are inferred from it.
+  var SELLING_MAP = { now: "Yes - now", soon: "Yes - soon", eventually: "Yes - eventually", no: "No" };
 
   function show(name) {
     current = name;
@@ -113,10 +116,9 @@
 
   // ---- Pulse partial-lead capture (docs: send on blur, not per keystroke) ----
   if (P) {
-    nameEl.addEventListener("blur", function () { psave(P.F.fullName, nameEl.value.trim()); });
-    phoneEl.addEventListener("blur", function () { psave(P.F.phone, dashPhone(phoneEl.value)); });
+    nameEl.addEventListener("blur", function () { psave(P.F.name, nameEl.value.trim()); });
+    phoneEl.addEventListener("blur", function () { psave(P.F.phone, phoneDigits(phoneEl.value)); });
     emailEl.addEventListener("blur", function () { psave(P.F.email, emailEl.value.trim()); });
-    mobileEl.addEventListener("blur", function () { psave(P.F.mobilePhone, dashPhone(mobileEl.value)); });
 
     // Live matched pros from GetContactOptInNames (cached once per session —
     // the API returns different sets per call). Falls back silently to the
@@ -124,6 +126,9 @@
     P.getOptInContacts().then(function (d) {
       if (!d || !d.contactOptInNames || !d.contactOptInNames.length) return;
       optInData = d;
+      // Record exactly which contact set this user was shown.
+      psave(P.F.contactOptInNames, JSON.stringify(d.contactOptInNames));
+      psave(P.F.contactOptInNamesRender, d.renderAsCheckboxes ? "True" : "False");
       var box = modal.querySelector(".lm-matched");
       if (!box) return;
       var label = d.contactOptInNames.length > 1 ? "Matched real estate pros:" : "Matched real estate pro:";
@@ -156,7 +161,7 @@
   chips.forEach(function (chip) {
     chip.addEventListener("click", function () {
       intentValue = chip.getAttribute("data-val");
-      if (P) psave(P.F.openToSelling, intentValue);
+      if (P) psave(P.F.sellingTimeFrame, SELLING_MAP[intentValue] || intentValue);
       chips.forEach(function (c) {
         c.classList.toggle("sel", c === chip);
         c.setAttribute("aria-checked", c === chip ? "true" : "false");
@@ -171,8 +176,9 @@
     e.preventDefault();
     if (!addr.value.trim()) { addr.focus(); return; }
     // Structured Smarty picks save their components from address-autocomplete;
-    // a raw typed address still reaches the partial lead as one line.
-    if (P && !window.zbSelectedAddress) psave(P.F.address, addr.value.trim());
+    // a raw typed address still reaches the partial lead as the street field.
+    if (P && !window.zbSelectedAddress) psave(P.F.street, addr.value.trim());
+    if (P) { psave(P.F.addressSubmitClicked, "true"); psave(P.F.contactFormDisplayed, "true"); }
     open();
   });
 
@@ -207,12 +213,21 @@
     errEl.hidden = true;
 
     // Ensure every contact field reaches the partial lead even if a blur
-    // never fired (autofill, z-param prefill), plus the contact opt-ins.
+    // never fired (autofill, z-param prefill), plus the submit-time record:
+    // lifecycle flag, the exact TCPA text displayed, the TrustedForm cert
+    // (their script fills a hidden xxTrustedFormCertUrl input when present),
+    // ListedQuestion default, and the contact opt-ins.
     if (P) {
-      psave(P.F.fullName, name);
-      psave(P.F.phone, dashPhone(phoneEl.value));
+      psave(P.F.name, name);
+      psave(P.F.phone, phoneDigits(phoneEl.value));
       psave(P.F.email, email);
-      psave(P.F.openToSelling, intentValue);
+      psave(P.F.sellingTimeFrame, SELLING_MAP[intentValue] || intentValue);
+      psave(P.F.contactFormSubmit, "true");
+      psave(P.F.listedQuestion, "No"); // from OnboardAPI once that's ready
+      var mEl = modal.querySelector(".lm-matched"), cEl = modal.querySelector(".lm-consent");
+      psave(P.F.tcpaTerms, ((mEl ? mEl.textContent : "") + " " + (cEl ? cEl.textContent : "")).replace(/\s+/g, " ").trim());
+      var tf = document.getElementsByName("xxTrustedFormCertUrl")[0];
+      if (tf && tf.value) psave(P.F.tfCertURL, tf.value);
       if (optInData) {
         if (optInData.renderAsCheckboxes) {
           modal.querySelectorAll(".lm-optin input:checked").forEach(function (cb) {
@@ -234,8 +249,13 @@
 
   // ---- all-set step -> SMS step ----
   function toSmsStep() { show("sms"); if (card) card.focus(); }
-  document.getElementById("toSms").addEventListener("click", toSmsStep);
+  document.getElementById("toSms").addEventListener("click", function () {
+    // The all-set step is the RealtorOpt step in the lead record.
+    if (P) psave(P.F.realtorOpt, "ok");
+    toSmsStep();
+  });
   // "Do not contact me": for now it continues to the SMS step like the CTA.
+  // (No RealtorOpt fired — its value for this path is undecided.)
   document.getElementById("noContact").addEventListener("click", toSmsStep);
 
   // ---- SMS step ----
@@ -260,7 +280,8 @@
       return;
     }
     mobileErr.hidden = true;
-    if (P) { psave(P.F.mobilePhone, dashPhone(mobileEl.value)); psave(P.F.smsOptIn, "yes"); }
+    // Per the on-screen note, texting updates the primary contact phone.
+    if (P) { psave(P.F.phone, phoneDigits(mobileEl.value)); psave(P.F.smsOptIn, "yes"); }
     goToReport();
   });
   document.getElementById("noThanks").addEventListener("click", function () {

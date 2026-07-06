@@ -222,6 +222,20 @@
     </div>
   </div>
 
+  <!-- TrustedForm: certifies the consent capture; injects a hidden
+       xxTrustedFormCertUrl input into the lead form, which is saved to the
+       lead as trustedform.com_CertURL on contact-form submit. -->
+  <script>
+  (function () {
+    var tf = document.createElement("script");
+    tf.type = "text/javascript"; tf.async = true;
+    tf.src = "https://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&use_tagged_consent=true&l=" +
+      new Date().getTime() + Math.random();
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(tf, s);
+  })();
+  </script>
+  <noscript><img src="https://api.trustedform.com/ns.gif"></noscript>
   <script src="assets/pulse-config.js"></script>
   <script src="assets/pulse-api.js"></script>
   <script src="assets/smarty-config.js"></script>

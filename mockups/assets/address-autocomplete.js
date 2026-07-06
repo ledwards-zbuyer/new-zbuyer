@@ -39,7 +39,7 @@
   function pulseSaveAddress(s) {
     if (!window.PulseAPI) return;
     var F = window.PulseAPI.F;
-    window.PulseAPI.save(F.address, s.street_line + (s.secondary ? " " + s.secondary : ""));
+    window.PulseAPI.save(F.street, s.street_line + (s.secondary ? " " + s.secondary : ""));
     window.PulseAPI.save(F.city, s.city);
     window.PulseAPI.save(F.state, s.state);
     window.PulseAPI.save(F.zip, s.zipcode);
@@ -273,6 +273,14 @@
       input.value = fullAddress(s);
       window.zbSelectedAddress = s;
       pulseSaveAddress(s);
+      if (window.PulseAPI) window.PulseAPI.save(window.PulseAPI.F.qsAddressSuccess, "true");
+    };
+
+    // Unresolvable address: leave the box BLANK — a wrong/garbled prefill in
+    // the box is worse than asking the user to type. (Lucas, 2026-07-06.)
+    var giveUp = function () {
+      input.value = "";
+      if (window.PulseAPI) window.PulseAPI.save(window.PulseAPI.F.qsAddressSuccess, "false");
     };
 
     smartyTry(zstreet + (zcity ? " " + zcity : ""), zstate, "Validating pre-populated address from URL")
@@ -283,7 +291,7 @@
       .then(function (s) {
         if (s) { apply(s); return; }
         return googleGeocode().then(function (g) {
-          if (!g) return; // chain exhausted — the composed string stays
+          if (!g) { giveUp(); return; } // chain exhausted — blank box
           var gStreet = (gPart(g, "street_number") + " " + gPart(g, "route")).trim();
           var gCity = gPart(g, "locality") || gPart(g, "sublocality") || gPart(g, "postal_town");
           var gState = gPart(g, "administrative_area_level_1", "short_name");
@@ -291,16 +299,17 @@
             "Fallback validation using Google formatted address")
             .then(function (s2) {
               if (s2) { apply(s2); return; }
-              // Google-only outcome: still far better than the raw composed
-              // string. Fill the box and save Google's components to Pulse.
+              // Google-only outcome (street-level, guard-approved): fill the
+              // box and save Google's components to Pulse.
               input.value = g.formatted_address.replace(/,\s*USA$/, "");
               if (window.PulseAPI) {
                 var F = window.PulseAPI.F;
                 var gZip = gPart(g, "postal_code");
-                if (gStreet) window.PulseAPI.save(F.address, gStreet);
+                if (gStreet) window.PulseAPI.save(F.street, gStreet);
                 if (gCity) window.PulseAPI.save(F.city, gCity);
                 if (gState) window.PulseAPI.save(F.state, gState);
                 if (gZip) window.PulseAPI.save(F.zip, gZip);
+                window.PulseAPI.save(F.qsAddressSuccess, "true");
               }
             });
         });
