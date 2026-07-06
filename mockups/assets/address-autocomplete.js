@@ -177,37 +177,133 @@
   });
 
   // ---- z-param address prefill (email/SMS landing links) ----
-  // zstreet/zcity/zstate/zzipcode arrive on paid-traffic links. Fill the box
-  // with the composed address immediately, then run a silent Smarty lookup
-  // (no dropdown) and upgrade to the top suggestion's canonical address so
-  // the box holds the same verified value a manual pick would produce.
+  // zstreet/zcity/zstate/zzipcode arrive on paid-traffic links, often partial
+  // or dirty (missing city/zip, wrong zip). The box shows the composed string
+  // instantly, then a silent resolution chain upgrades it:
+  //   S1  Smarty: search = street (+city), state via include_only_states.
+  //       Filters, NOT search text — state/zip inside the search text is what
+  //       made Smarty miss partial addresses on the prior funnel. Zips are
+  //       never sent at all: they lie, and Smarty supplies the canonical one.
+  //   S2  Smarty: street only + state filter (the city may be the dirty part).
+  //   G   Google geocode — Maps JS SDK lazy-loaded only when Smarty missed
+  //       and a key is configured (google-config.js). Google is better at
+  //       partial/garbled addresses.
+  //   S3  Smarty again, rebuilt from Google's address components.
+  // Smarty success at any stage = canonical address + zbSelectedAddress +
+  // Pulse saves, identical to a manual pick. Google-only success still fills
+  // the box and saves Google's components. Total failure keeps the composed
+  // string. Each attempt logs one [Prepop] line in the prior funnel's QA
+  // format (Source / Result / Reason / Input / Output).
   var qp = new URLSearchParams(window.location.search);
   var zstreet = (qp.get("zstreet") || "").trim();
   if (zstreet) {
     var zcity = (qp.get("zcity") || "").trim();
     var zstate = (qp.get("zstate") || "").trim();
     var zzip = (qp.get("zzipcode") || "").trim();
-    input.value = zstreet + (zcity ? ", " + zcity : "") + (zstate ? ", " + zstate : "") + (zzip ? " " + zzip : "");
-    if (!keyMissing()) {
-      // Search WITHOUT the zip: Smarty returns zero suggestions when the
-      // search string carries a wrong zip (it filters, not corrects), which
-      // left bad z-param zips uncorrected in the box. Street+city+state is
-      // unambiguous and lets Smarty supply the canonical zip itself.
+    var composed = zstreet + (zcity ? ", " + zcity : "") + (zstate ? ", " + zstate : "") + (zzip ? " " + zzip : "");
+    input.value = composed;
+
+    var plog = function (source, result, reason, inp, out) {
+      console.info("[Prepop] Source: " + source + ", Result: " + result +
+        ", Reason: " + reason + ", Input: " + inp + ", Output: " + (out || "undefined"));
+    };
+
+    var smartyTry = function (search, state, reason) {
+      if (keyMissing()) return Promise.resolve(null);
+      var logInput = search + (state ? " [" + state + "]" : "");
       var url = ENDPOINT +
         "?key=" + encodeURIComponent(window.SMARTY_EMBEDDED_KEY) +
-        "&search=" + encodeURIComponent([zstreet, zcity, zstate].join(" ").replace(/\s+/g, " ").trim()) +
+        "&search=" + encodeURIComponent(search) +
+        (state ? "&include_only_states=" + encodeURIComponent(state) : "") +
         "&max_results=1";
-      fetch(url)
+      return fetch(url)
         .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
         .then(function (data) {
           var s = (data.suggestions || [])[0];
-          if (s && !(s.entries > 1)) { // skip multi-unit umbrellas — keep the composed string
-            input.value = fullAddress(s);
-            window.zbSelectedAddress = s;
-            pulseSaveAddress(s);
+          if (s && !(s.entries > 1)) { // multi-unit umbrellas stay skipped
+            plog("Smarty", "SUCCESS", reason, logInput, fullAddress(s));
+            return s;
           }
+          plog("Smarty", "FAIL", reason, logInput, null);
+          return null;
         })
-        .catch(function (err) { console.warn("[Smarty] prefill lookup failed:", err); });
-    }
+        .catch(function (err) { plog("Smarty", "FAIL", reason + " (error " + err + ")", logInput, null); return null; });
+    };
+
+    var googleGeocode = function () {
+      var key = window.GOOGLE_MAPS_KEY;
+      if (!key || key.indexOf("PASTE_") === 0) {
+        plog("Google", "SKIP", "No Google Maps key configured (google-config.js)", composed, null);
+        return Promise.resolve(null);
+      }
+      return new Promise(function (resolve) {
+        var run = function () {
+          new window.google.maps.Geocoder().geocode(
+            { address: composed, componentRestrictions: { country: "US" } },
+            function (results, status) {
+              var r = status === "OK" && results && results[0];
+              // Granularity guard: Google fuzzy-matches garbage to towns and
+              // bare roads. Only a street-level result (house number + street
+              // name) is trustworthy enough to overwrite the user's address.
+              var streetLevel = r && (r.address_components || []).some(function (c) { return c.types.indexOf("street_number") !== -1; })
+                && (r.address_components || []).some(function (c) { return c.types.indexOf("route") !== -1; });
+              if (streetLevel) plog("Google", "SUCCESS", "Geocoding address from URL", composed, r.formatted_address);
+              else if (r) plog("Google", "FAIL", "Result not street-level, rejected", composed, r.formatted_address);
+              else plog("Google", "FAIL", "Geocoder status " + status, composed, null);
+              resolve(streetLevel ? r : null);
+            });
+        };
+        if (window.google && window.google.maps && window.google.maps.Geocoder) { run(); return; }
+        window.zbGeocoderReady = run;
+        var sc = document.createElement("script");
+        sc.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(key) +
+          "&loading=async&callback=zbGeocoderReady";
+        sc.onerror = function () { plog("Google", "FAIL", "Maps JS SDK failed to load", composed, null); resolve(null); };
+        document.head.appendChild(sc);
+      });
+    };
+
+    // Pull one component out of a Google geocoder result.
+    var gPart = function (r, type, form) {
+      var m = (r.address_components || []).filter(function (c) { return c.types.indexOf(type) !== -1; })[0];
+      return m ? m[form || "long_name"] : "";
+    };
+
+    var apply = function (s) { // Smarty success — same effects as a manual pick
+      input.value = fullAddress(s);
+      window.zbSelectedAddress = s;
+      pulseSaveAddress(s);
+    };
+
+    smartyTry(zstreet + (zcity ? " " + zcity : ""), zstate, "Validating pre-populated address from URL")
+      .then(function (s) {
+        if (s || !zcity) return s; // S1 was already street-only when no city
+        return smartyTry(zstreet, zstate, "Retry without city (city may be dirty)");
+      })
+      .then(function (s) {
+        if (s) { apply(s); return; }
+        return googleGeocode().then(function (g) {
+          if (!g) return; // chain exhausted — the composed string stays
+          var gStreet = (gPart(g, "street_number") + " " + gPart(g, "route")).trim();
+          var gCity = gPart(g, "locality") || gPart(g, "sublocality") || gPart(g, "postal_town");
+          var gState = gPart(g, "administrative_area_level_1", "short_name");
+          return smartyTry(gStreet + (gCity ? " " + gCity : ""), gState,
+            "Fallback validation using Google formatted address")
+            .then(function (s2) {
+              if (s2) { apply(s2); return; }
+              // Google-only outcome: still far better than the raw composed
+              // string. Fill the box and save Google's components to Pulse.
+              input.value = g.formatted_address.replace(/,\s*USA$/, "");
+              if (window.PulseAPI) {
+                var F = window.PulseAPI.F;
+                var gZip = gPart(g, "postal_code");
+                if (gStreet) window.PulseAPI.save(F.address, gStreet);
+                if (gCity) window.PulseAPI.save(F.city, gCity);
+                if (gState) window.PulseAPI.save(F.state, gState);
+                if (gZip) window.PulseAPI.save(F.zip, gZip);
+              }
+            });
+        });
+      });
   }
 })();

@@ -595,3 +595,25 @@ FinalizeLead on funnel exit with 2.5s navigation cap; report page injects the pi
 HTML into #pixelDiv. Verified: full curl sequence returned the TEST-ValuationForm
 pixel; browser harness rendered the live "HousingNow.com" contact in the disclosure.
 Field names are one-table best guesses pending API-team confirmation.
+
+---
+
+**Lucas:** now we need to prep for pre-pop… take the address info from the url and put it
+(via smarty streets) into the address textbox. on our prior version of this path, we often
+had to geocode the address with google because of missing items like city state or zip.
+the goal would be to attempt smarty first… if it fails geocode with google… then reattempt
+smarty. google seems to be better at managing partial addresses. however, it couldn't hurt
+to make sure we are using smarty properly. *(supplied a real QA trail: Smarty FAIL on
+"291 E Shorecrest Dr WA" → Google SUCCESS → Smarty fallback SUCCESS)*
+
+**Claude:** Root-caused the historical Smarty failures as a usage bug: state/zip belong in
+US Autocomplete Pro's `include_only_states`/`include_only_zip_codes` FILTER params, not in
+the search text — with the filter, "291 E Shorecrest Dr" + WA resolves to Shelton on the
+FIRST attempt. Built the full chain anyway as the safety net: S1 street(+city)+state
+filter → S2 street-only+state filter → G Google geocode (Maps JS SDK lazy-loaded, new
+key in google-config.js, Lucas pasted it mid-build) → S3 Smarty from Google's components;
+every attempt console-logs the prior funnel's QA format. First garbage-input test caught
+Google fuzzy-matching junk to a real road and overwriting the box — added a granularity
+guard (street_number + route required). Verified live: clean, Shorecrest partial, wrong
+zip, garbage (composed kept), and the example URL's own "Camdlewood" typo rescued via
+G→S3 to canonical Candlewood. Zips are never sent to any geocoder — they lie.

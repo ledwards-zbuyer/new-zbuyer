@@ -143,12 +143,25 @@ changing the funnel.
   with the consent terms), no back buttons anywhere.
 - **z-param pre-pop** (the real email/SMS link convention):
   `?zfname=Alex&zlastname=Smith&zphone=6238805511&zemail=alex@gmail.com&zstreet=1401+Candlewood+Dr&zcity=Pittsburg&zstate=PA&zzipcode=15240`
-  - Address: composed string fills the box instantly; a silent Smarty lookup then upgrades it
-    to the top suggestion's canonical address (sets `window.zbSelectedAddress`). Multi-unit
-    umbrella results are skipped. The Smarty search deliberately **omits the z-param zip**:
-    Smarty filters (returns nothing) on a wrong zip instead of correcting it, so we send
-    street+city+state and let Smarty supply the canonical zip — bad zips in email links get
-    fixed in the box. (`address-autocomplete.js`)
+  - Address: composed string fills the box instantly, then a **silent resolution chain**
+    upgrades it (`address-autocomplete.js`; each attempt logs a `[Prepop]` line in the
+    prior funnel's QA format — Source/Result/Reason/Input/Output):
+    1. **S1 Smarty** — search = street (+city); state goes in `include_only_states` (a
+       FILTER param, never search text — state/zip inside the search text is why the old
+       funnel's Smarty attempts failed on partials like "291 E Shorecrest Dr WA"). Zips
+       are never sent at all: they lie, Smarty supplies the canonical one.
+    2. **S2 Smarty** — street only + state filter (city may be the dirty part).
+    3. **G Google geocode** — Maps JS SDK lazy-loaded only on Smarty miss; key in
+       `assets/google-config.js` (referrer-restricted; Maps JavaScript API + Geocoding
+       API; ~$5/1k, billed only when Smarty misses twice). **Granularity guard:** only
+       street-level results (street_number + route) are accepted — Google fuzzy-matches
+       garbage to towns/bare roads, and a wrong address is worse than the raw string.
+    4. **S3 Smarty** — re-attempt from Google's components.
+    Smarty success at any stage = canonical address + `window.zbSelectedAddress` + Pulse
+    saves (identical to a manual pick). Google-only success fills the box + saves
+    Google's components. Total failure keeps the composed string. Multi-unit umbrellas
+    stay skipped. Verified live: clean, no-city/no-zip (Shorecrest→Shelton), wrong zip,
+    garbage (kept composed), and the Camdlewood→Candlewood typo rescue (G→S3).
   - Contact: name/phone/email prefill (phone through `formatPhone`). (`lead-modal.js`)
   - Landing markup ships empty inputs — no John Doe demo data. `zcredit` currently ignored.
   - Prefill code runs on any page carrying the params; the homepage without params is unchanged.
