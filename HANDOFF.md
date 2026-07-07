@@ -17,6 +17,9 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
   type scale, radii/shadows/spacing, buttons, chips, inputs/address box, sliders, notices,
   motion & voice, do/don't. Visual companion to FORM_DESIGNER.md (behavior). Tokens are
   copied verbatim from the three source pages — if they ever disagree, the pages win.
+  BRAND RULE (Lucas 2026-07-07): the legacy olive-arrow logo `zbuyer-white.png` is retired —
+  the Z's arrows are only ever white/transparent or sky blue #3BA4F4; use `logo-blue-dark.png`
+  on dark. All pages that used the olive asset were swapped.
 - GitHub Pages serves `main`; every push is live in ~1 minute. A `.nojekyll` file at the
   repo root makes Pages deploy the raw files (the default Jekyll build started failing
   flakily 2026-07-02 with no content cause; we never needed it). Browsers cache pages for
