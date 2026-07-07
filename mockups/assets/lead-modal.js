@@ -178,6 +178,10 @@
   var focusWrap = document.getElementById("focusChips");
   var focusLabel = "";
   if (focusWrap) {
+    // "Both" ships pre-selected (visible default — continuing past it is an
+    // answer); the markup's .sel chip seeds the value.
+    var preFocus = focusWrap.querySelector(".lm-chip.sel");
+    if (preFocus) focusLabel = preFocus.textContent.trim();
     focusWrap.querySelectorAll(".lm-chip").forEach(function (chip) {
       chip.addEventListener("click", function () {
         focusLabel = chip.textContent.trim();

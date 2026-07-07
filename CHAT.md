@@ -818,3 +818,11 @@ peak. Fix: the native input is now invisible and only handles touch/drag/keyboar
 dial is our own element positioned by the same paint function that fills the wedge —
 center travels exactly [8px, width-8px] (the wedge's ends) and the dial (44px) always
 crests above the wedge (32px max) on every browser. Focus halo moved to the custom dial.
+
+**Lucas:** also, "Both" should be selected by default on the "what should your report
+focus on?" question
+
+**Claude:** "Both" now ships pre-selected (blue) on both pages; the markup's .sel chip
+seeds the value, so WhySelling=Both submits unless the user changes it. Unlike the
+slider (hidden default, sends nothing untouched), this default is visible — continuing
+past it is an answer.
