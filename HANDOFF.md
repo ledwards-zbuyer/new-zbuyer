@@ -224,8 +224,11 @@ changing the funnel.
 ### 8. Cash Value Report v2 (2026-07-02)
 
 `report-classic-blue.html` rebuilt from a static Zoodealio-dashboard screenshot into a
-real page (classic-blue tokens, vanilla JS, no deps). Still "Powered by Zoodealio"
-(quiet, header right). The old `report-dashboard*.png` assets are deleted.
+real page (classic-blue tokens, vanilla JS, no deps). The "Powered by Zoodealio" badge
+was removed 2026-07-07. The masthead shows the SUBMITTED address (funnel stores the
+verified chip text in sessionStorage as zbAddressDisplay; the report swaps it in on
+load) while values and home stats remain static demo data. The old
+`report-dashboard*.png` assets are deleted.
 
 - **Why:** the funnel's promised object ("Get my cash value report → … → View Cash
   Value Report →") finally lands on a page that looks like the funnel — and the page

@@ -57,6 +57,8 @@
     input.classList.add("hidden-by-pick");
     var box = input.closest(".search");
     if (box) box.classList.add("has-pick");
+    // The report page reads this to show the submitted address.
+    try { sessionStorage.setItem("zbAddressDisplay", street + ", " + sec); } catch (e) {}
   }
 
   // Push the verified address into the Pulse lead API (no-op on pages that

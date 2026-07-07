@@ -54,8 +54,8 @@ f.onload = function () {
         var injected = !!f.contentDocument.querySelector("#pixelDiv img");
         var dbg = document.createElement("div");
         dbg.style.cssText = "position:fixed;top:0;left:0;right:0;background:#043;color:#fff;z-index:9999;font:11px monospace;padding:6px;white-space:pre-wrap";
-        dbg.textContent = "PIXEL stored=" + (pixel.length > 0) + " injected=" + injected +
-          "\nCALLS:\n" + calls.join("\n");
+        var ra = f.contentDocument.getElementById("reportAddr");
+        dbg.textContent = "ADDR=" + (ra ? ra.textContent : "?") + " | PIXEL stored=" + (pixel.length > 0) + " injected=" + injected + " | CALLS: " + calls.join(" ");
         document.body.appendChild(dbg);
       }, 1500);
     }

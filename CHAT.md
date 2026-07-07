@@ -979,3 +979,11 @@ handle can still move
 now has 17 positions (4×) — the dial and wedge fill move at fine granularity, while
 icons, aria text, and the RepairsNeeded value bucket into the same 5 levels
 (round(v/4)). Harness `slide=` param still takes a level (0-4).
+
+**Lucas:** remove the powered by zoodealio at the top of the report. use the address
+submitted, but keep the static demo values and home stats.
+
+**Claude:** Badge removed. The funnel now stores the verified address (the chip text) in
+sessionStorage; the report masthead swaps it in on load — E2E shows "1401 Candlewood Dr,
+Pittsburgh, PA 15241" (Smarty-corrected) on the report with the full 200 call log +
+pixel intact. Values/stats untouched demo data.

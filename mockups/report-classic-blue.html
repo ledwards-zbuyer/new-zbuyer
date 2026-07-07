@@ -184,7 +184,6 @@
 
 <header><div class="wrap hbar">
   <a href="option-1-classic.html"><img class="logo" src="assets/logo-blue-dark.png" alt="zBuyer"></a>
-  <span class="powered">Powered by <b>Zoodealio</b></span>
 </div></header>
 
 <main><div class="wrap">
@@ -194,7 +193,7 @@
     <div>
       <span class="eyebrow"><span class="dot"></span>Report ready</span>
       <h1>Your Cash Value Report</h1>
-      <p class="addr">123 Main St, Springfield, MO 65802</p>
+      <p class="addr" id="reportAddr">123 Main St, Springfield, MO 65802</p>
       <p class="facts"><b>3</b> beds &nbsp;·&nbsp; <b>2</b> baths &nbsp;·&nbsp; <b>1,752</b> sqft &nbsp;·&nbsp; Built <b>1965</b></p>
     </div>
     <img class="photo" src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=70" alt="123 Main St">
@@ -461,6 +460,9 @@
   try {
     var px = sessionStorage.getItem("pulsePixelHTML");
     if (px) document.getElementById("pixelDiv").innerHTML = px;
+    // Show the address the user actually submitted (values/stats stay demo).
+    var a = sessionStorage.getItem("zbAddressDisplay");
+    if (a) document.getElementById("reportAddr").textContent = a;
   } catch (e) {}
 })();
 </script>
