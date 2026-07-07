@@ -24,16 +24,20 @@
 
   @keyframes spinPair{
     0%  {transform:rotate(395deg)}
-    35% {transform:rotate(395deg);animation-timing-function:cubic-bezier(.42,.05,.35,1)}
-    85%,100%{transform:rotate(0deg)}
+    38% {transform:rotate(395deg);animation-timing-function:cubic-bezier(.42,.05,.35,1)}
+    88%,100%{transform:rotate(0deg)}
   }
+  /* 0-12% holds them off-stage so the turnaround shows an empty stage
+     (~1s across both directions) instead of an instant bounce. */
   @keyframes walkW{
-    0%  {transform:translate(82px,-149px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
-    40%,100%{transform:translate(0,0)}
+    0%  {transform:translate(82px,-149px)}
+    12% {transform:translate(82px,-149px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
+    45%,100%{transform:translate(0,0)}
   }
   @keyframes walkB{
-    0%  {transform:translate(-82px,149px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
-    40%,100%{transform:translate(0,0)}
+    0%  {transform:translate(-82px,149px)}
+    12% {transform:translate(-82px,149px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
+    45%,100%{transform:translate(0,0)}
   }
   @media (prefers-reduced-motion:reduce){.pair,.piece{animation:none}}
 </style>
@@ -48,7 +52,7 @@
         </radialGradient>
         <clipPath id="stageClip"><circle cx="100" cy="100" r="96"/></clipPath>
       </defs>
-      <circle cx="100" cy="100" r="96" fill="url(#stage)"/>
+      <circle id="stageBg" cx="100" cy="100" r="96" fill="url(#stage)"/>
       <g clip-path="url(#stageClip)">
         <g class="pair">
           <!-- the "7" -->
@@ -66,7 +70,14 @@
   <script>
     // Frame scrubber for GIF export / screenshots: ?t=SECONDS freezes the
     // animation at that moment (paused + negative delay).
-    var t = new URLSearchParams(location.search).get("t");
+    var q = new URLSearchParams(location.search);
+    // ?bare=1: arrows only — no stage, transparent page (for transparent
+    // GIF/WebP export via --default-background-color=00000000).
+    if (q.get("bare")) {
+      document.body.style.background = "transparent";
+      document.getElementById("stageBg").style.display = "none";
+    }
+    var t = q.get("t");
     if (t !== null) {
       document.querySelectorAll(".pair,.piece").forEach(function (el) {
         el.style.animationPlayState = "paused";

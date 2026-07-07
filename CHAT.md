@@ -879,3 +879,18 @@ spin → settle → hold) and animation-direction:alternate plays it backward �
 the exact time-reversal of the entrance. 4s per direction, 8s full cycle, ~1.2s Z hold
 spanning the turnaround. GIF = 48 rendered frames + mirrored reverse leg (94 frames,
 505KB).
+
+**Lucas:** so close. just let the arrows float off-screen for a tiny moment. right now
+they never appear off screen… or it happens so fast i dont see it. → also, is it
+possible to make an animated gif transparent? if so, make both arrows of the z
+transparent
+
+**Claude:** (1) The palindrome turnaround at the offstage end was instantaneous — added
+a 12% hold at the start of the entrance keyframes, so the stage sits empty ~1s across
+the turnaround (verified via pixel count at t=0.2). (2) Yes — GIF supports binary
+transparency (per-pixel on/off, no soft alpha). Added `?bare=1` mode to z-dance.html
+(no stage, transparent page) and rendered `z-dance-transparent.gif` (arrows only,
+transparent background, 94 frames / 409KB) via Chrome's
+--default-background-color=00000000. Regular z-dance.gif re-rendered with the new
+offstage dwell. Caveats flagged: hard-cut edges (GIF limitation) and the white arrow
+vanishes on white backgrounds; animated WebP/APNG offered for true soft alpha.
