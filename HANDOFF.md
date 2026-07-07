@@ -38,18 +38,26 @@ API — see §9. The homepage and compare pages remain inert demos.
    email + matched-pros disclosure + TCPA consent.
 3. **Intent step — "Tune your cash value" (2026-07-06)** — the full qualifier box in one bottom
    sheet: required **"Open to selling?"** chips (Now / Soon / Eventually / No) +
-   optional **"What should your report focus on?"** chips (Fast cash / Both / Top
-   price) + optional **"Any repairs needed?"** wedge slider (5 stops, defaults to
-   "No repairs — move-in ready"; untouched = nothing sent; display is iconic — a
-   sparkle at rest, then 1-4 hammers as it slides — while the text labels live on as
-   aria-valuetext and the RepairsNeeded field value). Sub-line: "Your answers
+   **"What should your report focus on?"** chips (Fast cash / **Both — ships
+   pre-selected**, a visible default that submits unless changed / Top price) +
+   optional **"Any repairs needed?"** wedge slider (5 stops, "No repairs — move-in
+   ready" → "A full remodel"; untouched = nothing sent; display is iconic — a sparkle
+   at rest, then 1-4 hammers as it slides — while the text labels live on as
+   aria-valuetext and the RepairsNeeded field value). **The visible dial is a custom
+   element**, not the native range thumb — iOS Safari ignores custom thumb geometry
+   (dial fell short of the wedge tip and sank below its peak); the invisible native
+   input handles touch/drag/keys while lead-modal.js positions the dial so its center
+   tracks exactly [8px, width-8px] (the wedge's ends) and always crests above the
+   wedge. Sub-line: "Your answers
    shape what your report highlights." (an earlier "nothing here commits you to
    anything" was cut — over-reassurance reads as suspicious).
 4. **"You're all set!" step** — confirmation only: success graphic, "a local expert will
    be in touch to discuss your cash value and best selling options",
    CTA **View Cash Value Report →**, quiet **Do not contact me** link.
-5. **SMS step** — "One last thing": opt in to get the report link texted
-   (number prefilled from contact step). CTA and "No thanks" both land on
+5. **SMS step** — "One last thing": **"Can we text you the report?"** (a genuine
+   permission question — form matches the opt-in's function), number prefilled from
+   the contact step, CTA **"Text Me the Report →"** (question and button share one
+   noun). CTA and "No thanks, just show my report" both land on
    `report-classic-blue.html` — now a real Cash Value Report page (see §8),
    no longer a dashboard screenshot.
 
@@ -69,8 +77,9 @@ changing the funnel.
 - **Fix:** split into two screens. The all-set screen is pure confirmation (no ask, nothing
   to decline); the SMS screen is the only live question. Both of its buttons still reach the
   report, so skipping the text clearly skips *only* the text.
-- SMS copy: bigger question line + small centered italic note "This will update your
-  primary contact phone."
+- SMS copy (final, 2026-07-06): **"Can we text you the report?"** — Lucas's own
+  six-word cut, beating longer drafts; + small centered italic note "This will update
+  your primary contact phone." CTA "Text Me the Report →".
 - The all-set step's expert line ("A local zBuyer expert will be in touch shortly…")
   carries the same `lm-q` size (16.5px) as the SMS question, so the two closing steps
   read at equal weight.
@@ -297,6 +306,15 @@ fully static, no backend needed).
 - **Not yet wired (later phases):** Onboard AVM values into the report page
   (`PulseAPI.avmDetail`/`getReport` helpers already exist), GetAreaPropValue,
   reCaptcha verification, report-page expert card from the cached contact set.
+
+### 10. Z-mark motion asset (2026-07-06)
+`mockups/assets/z-dance.html` (animated SVG/CSS, ~3KB, crisp at any size) +
+`z-dance.gif` (420px) — the logo's two triangles seen from above: they enter at the
+same angle, walk toward each other along the seam (pure translation, constant gap),
+spin once **as a rigid pair** (the only rotation lives on a shared group — independent
+rotation/overlap structurally impossible), pause as the exact logo Z, spin away, part.
+8s seamless loop; `?t=SECONDS` freezes any frame (that's how the GIF is rendered);
+honors prefers-reduced-motion. Palette-swappable (two fill values).
 
 ## Testing
 
