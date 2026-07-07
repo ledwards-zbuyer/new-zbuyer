@@ -164,7 +164,20 @@ f.onload = function () {
   d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
   if (step === "questions") {
     var sv = new URLSearchParams(location.search).get("slide");
-    if (sv) {
+    if (sv === "drag") {
+      // Synthetic pointer drag across the wedge (tests the iOS-drag fix).
+      // MUST wait out the Z-beat: while the questions screen is hidden the
+      // wedge rect is all zeros and the math collapses to stop 2.
+      setTimeout(function () {
+        var wb = d.querySelector(".lm-wedge");
+        var r = wb.getBoundingClientRect();
+        var y = r.top + r.height / 2;
+        wb.dispatchEvent(new w.PointerEvent("pointerdown", { clientX: r.left + r.width * 0.15, clientY: y, bubbles: true, pointerId: 1 }));
+        wb.dispatchEvent(new w.PointerEvent("pointermove", { clientX: r.left + r.width * 0.55, clientY: y, bubbles: true, pointerId: 1 }));
+        wb.dispatchEvent(new w.PointerEvent("pointermove", { clientX: r.left + r.width * 0.97, clientY: y, bubbles: true, pointerId: 1 }));
+        wb.dispatchEvent(new w.PointerEvent("pointerup", { clientX: r.left + r.width * 0.97, clientY: y, bubbles: true, pointerId: 1 }));
+      }, 2000);
+    } else if (sv) {
       var sl = d.getElementById("repairsSlider");
       sl.value = sv;
       sl.dispatchEvent(new w.Event("input", { bubbles: true }));

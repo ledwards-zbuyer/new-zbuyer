@@ -48,7 +48,10 @@ API — see §9. The homepage and compare pages remain inert demos.
    (dial fell short of the wedge tip and sank below its peak); the invisible native
    input handles touch/drag/keys while lead-modal.js positions the dial so its center
    tracks exactly [8px, width-8px] (the wedge's ends) and always crests above the
-   wedge. Sub-line: "Your answers
+   wedge. **Dragging is pointer-event driven on the wedge itself** (pointer capture +
+   touch-action:none; the native input is pointer-inert, kept for keyboard/AT) — iOS
+   accepts taps on appearance:none range inputs but won't track drags, since drag
+   capture belongs to the native thumb. Sub-line: "Your answers
    shape what your report highlights." (an earlier "nothing here commits you to
    anything" was cut — over-reassurance reads as suspicious).
 4. **"You're all set!" step** — confirmation only: success graphic, "a local expert will

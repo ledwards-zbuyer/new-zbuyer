@@ -34,6 +34,27 @@
       ", " + s.city + ", " + s.state + " " + s.zipcode;
   }
 
+  // Post-selection display chip: street prominent, city/state/zip minimized
+  // (mirrors the suggestion list). Clicking it restores the input to edit.
+  var picked = null;
+  function showPicked(street, sec) {
+    if (!picked) {
+      picked = document.createElement("div");
+      picked.className = "picked";
+      picked.innerHTML = '<span class="p-street"></span><span class="p-sec"></span>';
+      picked.addEventListener("click", function () {
+        picked.hidden = true;
+        input.classList.remove("hidden-by-pick");
+        input.focus();
+      });
+      input.parentNode.insertBefore(picked, input.nextSibling);
+    }
+    picked.children[0].textContent = street;
+    picked.children[1].textContent = sec;
+    picked.hidden = false;
+    input.classList.add("hidden-by-pick");
+  }
+
   // Push the verified address into the Pulse lead API (no-op on pages that
   // don't load pulse-api.js — the homepage and compare tools stay inert).
   function pulseSaveAddress(s) {
@@ -99,6 +120,7 @@
     } else {
       input.value = fullAddress(s);
       window.zbSelectedAddress = s; // expose structured pick for the lead modal
+      showPicked(s.street_line + (s.secondary ? " " + s.secondary : ""), s.city + ", " + s.state + " " + s.zipcode);
       pulseSaveAddress(s);
       close();
       input.blur(); // dismiss the mobile keyboard once an address is chosen
@@ -272,6 +294,7 @@
     var apply = function (s) { // Smarty success — same effects as a manual pick
       input.value = fullAddress(s);
       window.zbSelectedAddress = s;
+      showPicked(s.street_line + (s.secondary ? " " + s.secondary : ""), s.city + ", " + s.state + " " + s.zipcode);
       pulseSaveAddress(s);
       if (window.PulseAPI) window.PulseAPI.save(window.PulseAPI.F.qsAddressSuccess, "true");
     };
@@ -302,6 +325,7 @@
               // Google-only outcome (street-level, guard-approved): fill the
               // box and save Google's components to Pulse.
               input.value = g.formatted_address.replace(/,\s*USA$/, "");
+              showPicked(gStreet, (gCity ? gCity + ", " : "") + gState + (gPart(g, "postal_code") ? " " + gPart(g, "postal_code") : ""));
               if (window.PulseAPI) {
                 var F = window.PulseAPI.F;
                 var gZip = gPart(g, "postal_code");

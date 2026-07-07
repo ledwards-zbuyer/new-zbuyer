@@ -920,3 +920,27 @@ fixed with a beatSeq guard; and (b) a test-rig artifact — under virtual time,
 late-restarted CSS animations report running but sit at frame 0 (computed-style probe
 proved correct name/duration/iteration). Real browsers restart class-swapped animations
 normally; flagged for on-device verification.
+
+---
+
+**Lucas:** On my iphone (chrome) the slider does not slide. it works if i tap on the
+spectrum, but not if i tap, hold, then slide my finger
+
+**Claude:** Third iOS range-input gotcha: taps register on an appearance:none range but
+drags don't — drag capture belongs to the native thumb we removed. The wedge now drives
+the value itself via pointer events (pointerdown/move/up with pointer capture +
+touch-action:none so the page doesn't scroll mid-drag); the native input is
+pointer-inert and remains for keyboard/screen readers. Verified with a synthetic
+pointer drag sweeping to the max stop — after fixing the test itself, which had been
+dispatching against a hidden screen (zeroed rect made every result collapse to stop 2;
+the "bug" in two earlier probes was the probe).
+
+**Lucas:** also, can the address textbox show the post-selected address (or post
+pre-pop) in a better format… kind of like the dropdown list (minimizing the
+city,state,zip)?
+
+**Claude:** Added a post-selection chip: once an address is verified (manual pick or
+prepop), the input swaps for a two-line display — street bold, "City, ST zip" small
+muted — the exact suggestion-list format. Click it to edit (input returns with the full
+text); the next pick re-chips. Mobile chip mirrors the input's soft box incl. the pin
+inset.

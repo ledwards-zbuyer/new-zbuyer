@@ -257,6 +257,38 @@
       paintWedge();
       if (P) psave(P.F.repairsNeeded, REPAIR_LABELS[parseInt(repairsSlider.value, 10)]);
     });
+
+    // Pointer events drive the control directly — iOS accepts taps on an
+    // appearance:none range input but won't track drags (drag capture
+    // belongs to the native thumb we removed). The input is pointer-inert
+    // (CSS) and kept for keyboard/screen readers.
+    var wedgeBox = repairsWedge.parentNode; // .lm-wedge
+    var dragging = false;
+    var setFromX = function (clientX) {
+      var r = wedgeBox.getBoundingClientRect();
+      var frac = (clientX - r.left - 8) / (r.width - 16);
+      frac = Math.max(0, Math.min(1, frac));
+      var v = String(Math.round(frac * 4));
+      if (v !== repairsSlider.value) {
+        repairsSlider.value = v;
+        repairsTouched = true;
+        paintWedge();
+      }
+    };
+    wedgeBox.addEventListener("pointerdown", function (e) {
+      dragging = true;
+      if (wedgeBox.setPointerCapture) { try { wedgeBox.setPointerCapture(e.pointerId); } catch (err) {} }
+      setFromX(e.clientX);
+      e.preventDefault();
+    });
+    wedgeBox.addEventListener("pointermove", function (e) { if (dragging) setFromX(e.clientX); });
+    var endDrag = function () {
+      if (!dragging) return;
+      dragging = false;
+      repairsSlider.dispatchEvent(new Event("change")); // commits the RepairsNeeded save
+    };
+    wedgeBox.addEventListener("pointerup", endDrag);
+    wedgeBox.addEventListener("pointercancel", endDrag);
   }
 
   var qContinue = document.getElementById("qContinue");

@@ -57,6 +57,14 @@
   @media (prefers-reduced-motion:reduce){h1 .hr{animation:none;background-position:-45% 0,0 0}}
   .sub{color:#E4ECF6;font-size:19px;margin-top:18px;font-weight:400;opacity:.95}
   .search{position:relative;margin:34px auto 0;max-width:680px;background:#fff;border-radius:16px;padding:8px 8px 8px 22px;display:flex;align-items:center;gap:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.45)}
+  /* Post-selection address chip: street prominent, city/state/zip minimized
+     (mirrors the suggestion-list layout). Click it to edit — the input
+     returns with the full address text. */
+  .search .picked{flex:1;min-width:0;text-align:left;cursor:text;padding:5px 0}
+  .search .picked[hidden]{display:none}
+  .search .picked .p-street{display:block;font-size:16.5px;font-weight:600;color:var(--ink);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .search .picked .p-sec{display:block;font-size:12.5px;color:var(--muted);margin-top:1px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .search input.hidden-by-pick{display:none}
   .ac-list{position:absolute;top:calc(100% + 10px);left:0;right:0;z-index:40;list-style:none;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 26px 54px -18px rgba(0,0,0,.45);overflow:hidden;text-align:left}
   .ac-list[hidden]{display:none}
   .ac-list li{display:flex;flex-direction:column;gap:2px;padding:12px 20px;cursor:pointer}
@@ -93,7 +101,7 @@
   .lm-divider{border-top:1px solid var(--line);margin:4px 0 2px}
   .lm-questions .lm-intent{margin-top:16px;text-align:left}
   .lm-slider{padding:0 6px}
-  .lm-wedge{position:relative;height:52px;margin-top:2px}
+  .lm-wedge{position:relative;height:52px;margin-top:2px;touch-action:none}
   /* Inset by half the 16px dial width: a range thumb's center only travels
      [8px, width-8px], so the wedge ends must match or the wedge reads as
      extending past the slider's maximum. */
@@ -103,7 +111,7 @@
      which left the dial short of the wedge tip and sunk below its peak.
      left is computed in lead-modal.js so the dial center tracks exactly
      [8px, width-8px] — the wedge ends; taller than the wedge everywhere. */
-  .lm-wedge input{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;background:transparent;border:none;border-radius:0;outline:none;opacity:0;cursor:pointer}
+  .lm-wedge input{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;background:transparent;border:none;border-radius:0;outline:none;opacity:0;cursor:pointer;pointer-events:none}
   .lm-dial{position:absolute;top:4px;left:0;width:16px;height:44px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4);pointer-events:none}
   .lm-wedge input:focus-visible ~ .lm-dial{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
   .lm-axis{display:flex;justify-content:space-between;color:#9ba8bb;font-size:11px;margin-top:7px;padding:0 22px}
@@ -286,6 +294,8 @@
     .search{flex-direction:column;align-items:stretch;gap:10px;padding:14px;border-radius:18px}
     .search svg{display:block;position:absolute;top:30px;left:30px;width:22px;height:22px;z-index:2}
     .search input{border:1.5px solid var(--line);border-radius:11px;background:var(--soft);padding:15px 16px 15px 48px;font-size:16px;text-align:left}
+    /* chip mirrors the input's mobile footprint (incl. room for the pin) */
+    .search .picked{border:1.5px solid var(--line);border-radius:11px;background:var(--soft);padding:9px 16px 9px 48px}
     .search input::placeholder{color:#8597AE}
     .search button{width:100%;padding:16px;font-size:16px}
     .reassure{flex-direction:column;gap:8px;margin-top:16px}
