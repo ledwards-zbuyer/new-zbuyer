@@ -320,7 +320,7 @@
         if (focusLabel) psave(P.F.whySelling, focusLabel);
         if (repairsTouched) psave(P.F.repairsNeeded, REPAIR_LABELS[repairLevel()]);
       }
-      runZBeat("allset");
+      runZBeat("special");
     });
   }
 
@@ -341,7 +341,7 @@
     if (e.key === "Escape" && !modal.hidden && (!DR || current === "contact")) close();
   });
   var backBtn = modal.querySelector("[data-back]");
-  if (backBtn) backBtn.addEventListener("click", function () { show("questions"); });
+  if (backBtn) backBtn.addEventListener("click", function () { show("special"); });
 
   // ---- contact step -> advance to report step ----
   form.addEventListener("submit", function (e) {
@@ -396,18 +396,17 @@
     runZBeat("questions");
   });
 
-  // ---- all-set step -> SomethingSpecial step ----
-  function toSmsStep() { runZBeat("special"); }
+  // ---- all-set (RealtorOpt) step: now the LAST step before the report ----
   document.getElementById("toSms").addEventListener("click", function () {
     // The all-set step is the RealtorOpt step in the lead record.
     if (P) psave(P.F.realtorOpt, "ok");
-    toSmsStep();
+    goToReport();
   });
-  // "Do not contact me": continues to the SMS step like the CTA, but records
-  // DNC=true and deliberately fires NO RealtorOpt.
+  // "Do not contact me": records DNC=true, fires NO RealtorOpt, still gets
+  // the report.
   document.getElementById("noContact").addEventListener("click", function () {
     if (P) psave(P.F.dnc, "true");
-    toSmsStep();
+    goToReport();
   });
 
   // ---- SomethingSpecial step: free text + tap-to-add suggestion chips.
@@ -454,6 +453,6 @@
     if (P && specialText && specialText.value.trim()) {
       psave(P.F.somethingSpecial, specialText.value.trim());
     }
-    goToReport();
+    runZBeat("allset");
   });
 })();

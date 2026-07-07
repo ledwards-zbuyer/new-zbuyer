@@ -41,11 +41,11 @@ f.onload = function () {
           setTimeout(function () {
             d.getElementById("qContinue").click();
             setTimeout(function () {
-              d.getElementById("toSms").click();
               var sp = d.getElementById("specialText");
               sp.value = "Solar panels, corner lot";
               sp.dispatchEvent(new w.Event("input", { bubbles: true }));
-              setTimeout(function () { d.getElementById("viewReport").click(); }, 400);
+              d.getElementById("viewReport").click();
+              setTimeout(function () { d.getElementById("toSms").click(); }, 400);
             }, 700);
           }, 500);
         }, 1500);

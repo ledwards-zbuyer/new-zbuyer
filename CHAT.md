@@ -1041,3 +1041,16 @@ snapshot) + "Update my mobile number" modal — pre-popped, validates 10 digits,
 `phone` through the same submissionID/counter in sessionStorage; `?demoPhone=` previews
 without a session. E2E verified: SomethingSpecial=200 in the call log, correct masthead
 address, pixel intact, notice showing the right number.
+
+**Lucas:** swap the realtoropt (all set) step with the SomethingSpecial step. also make
+the AccessAnytime notice appear more like an alert and have an X somewhere on it so the
+user can close it out (remove it for that session). *(+ screenshot:)* on the address
+entry step, the smarty dropdown goes behind the terms and they are out of place.
+
+**Claude:** (1) Flow reordered: contact → intent → SomethingSpecial ("Continue →") →
+all-set (last step; "View my Report →" fires RealtorOpt and exits through the finale
+into the report; "Do not contact me" fires DNC, same exit; homepage Back now returns to
+the notes step). (2) Notice is alert-styled — orange icon badge, 2px CTA border,
+shadow, role="alert" — with an X that dismisses for the session (sessionStorage). (3)
+Dropdown-behind-footer: stacking-context clash on the lander — hero-inner and footer
+both z-5, footer later in DOM; hero-inner now z-30, list paints over the footer.

@@ -47,11 +47,14 @@
                 box-shadow:0 0 0 4px rgba(59,164,244,.22)}
 
   /* "Access anytime" texted-report notice + phone-update modal */
-  .notice{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#FFF4F0;border:1.5px solid var(--cta);border-radius:14px;padding:12px 16px;font-size:14px;line-height:1.45}
+  .notice{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#FFF4F0;border:2px solid var(--cta);border-radius:14px;padding:13px 44px 13px 16px;font-size:14px;line-height:1.45;box-shadow:0 8px 22px -12px rgba(240,87,47,.45)}
   .notice[hidden]{display:none}
+  .notice .nico{flex:none;width:30px;height:30px;border-radius:50%;background:var(--cta);color:#fff;display:flex;align-items:center;justify-content:center}
   .notice b{font-weight:800}
   .notice .nphone{font-weight:800;color:var(--ink)}
-  .notice button{border:none;background:none;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--c1);text-decoration:underline;cursor:pointer;padding:0;margin-left:auto}
+  .notice .nupd{border:none;background:none;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--c1);text-decoration:underline;cursor:pointer;padding:0;margin-left:auto}
+  .notice .nclose{position:absolute;top:4px;right:8px;border:none;background:none;font-size:22px;line-height:1;color:#c9856d;cursor:pointer;padding:4px}
+  .notice .nclose:hover{color:var(--cta-d)}
   .pmodal{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:20px}
   .pmodal[hidden]{display:none}
   .pm-backdrop{position:fixed;inset:0;background:rgba(8,14,26,.55);backdrop-filter:blur(3px)}
@@ -220,9 +223,11 @@
 
 <main><div class="wrap">
 
-  <section class="notice" id="smsNotice" hidden>
+  <section class="notice" id="smsNotice" role="alert" hidden>
+    <span class="nico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-9l-5 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></svg></span>
     <span><b>Access anytime:</b> we texted your report link to <span class="nphone" id="noticePhone"></span></span>
-    <button type="button" id="updPhoneBtn">Update my mobile number</button>
+    <button type="button" class="nupd" id="updPhoneBtn">Update my mobile number</button>
+    <button type="button" class="nclose" id="noticeClose" aria-label="Dismiss">&times;</button>
   </section>
 
   <!-- masthead: deliver the promised object -->
@@ -599,9 +604,14 @@
   if (digits.length !== 10) digits = String(new URLSearchParams(location.search).get("demoPhone") || "").replace(/\D/g, "").slice(0, 10);
   if (digits.length !== 10) return; // no phone on record: keep the notice hidden
   var notice = document.getElementById("smsNotice");
+  if (sessionStorage.getItem("zbNoticeClosed")) return; // dismissed this session
   var noticePhone = document.getElementById("noticePhone");
   noticePhone.textContent = fmt(digits);
   notice.hidden = false;
+  document.getElementById("noticeClose").addEventListener("click", function () {
+    notice.hidden = true;
+    try { sessionStorage.setItem("zbNoticeClosed", "1"); } catch (e) {}
+  });
 
   var modal = document.getElementById("phoneModal");
   var input = document.getElementById("phoneUpd");

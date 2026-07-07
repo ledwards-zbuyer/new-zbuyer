@@ -30,7 +30,9 @@
       url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=2000&q=80'),
       linear-gradient(135deg,#13294f,#0a1426);
       background-size:cover;background-position:center center}
-  .hero-inner{position:relative;z-index:5;max-width:820px;padding:0 24px;margin-top:44px}
+  /* z-index above the footer's 5 — the Smarty dropdown lives in this
+     stacking context and must paint over the footer on short pages */
+  .hero-inner{position:relative;z-index:30;max-width:820px;padding:0 24px;margin-top:44px}
   .lp-logo{height:32px;width:auto;margin:0 auto 34px}
   .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#BBD7FB;font-weight:600;font-size:14px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:18px}
   .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 4px rgba(59,164,244,.3)}
@@ -326,7 +328,7 @@
           <button type="button" class="sp-chip">Remodeled kitchen</button>
           <button type="button" class="sp-chip">Finished basement</button>
         </div>
-        <button type="button" class="lm-cta" id="viewReport">View my Report &rarr;</button>
+        <button type="button" class="lm-cta" id="viewReport">Continue &rarr;</button>
       </div>
     </div>
   </div>

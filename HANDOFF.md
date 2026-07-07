@@ -55,18 +55,18 @@ API — see §9. The homepage and compare pages remain inert demos.
    capture belongs to the native thumb. Sub-line: "Your answers
    shape what your report highlights." (an earlier "nothing here commits you to
    anything" was cut — over-reassurance reads as suspicious).
-4. **"You're all set!" step** — confirmation only: success graphic, "a local expert will
-   be in touch to discuss your cash value and best selling options",
-   CTA **View my Report →** (fires RealtorOpt="ok"), quiet **Do not contact me** link (fires DNC="true").
-5. **SomethingSpecial step (2026-07-07, replaced the SMS step)** — "Anything else we
-   should know?" / "Upgrades or features that could affect your value — totally
-   optional." A free multiline box + five tap-to-add suggestion chips (Solar panels /
-   Pool / New roof / Remodeled kitchen / Finished basement — tapping appends to the
-   box, chips light up when their text is present, typing stays free). One button,
-   no validation: **"View my Report →"**; sends `SomethingSpecial` only if the box
-   has content. The finale beat's caption is now **"Sending your report link to your
-   phone…"** (the report is texted to the contact phone by the backend on finalize;
-   the SMS opt-in question is gone). Lands on `report-classic-blue.html` (§8).
+4. **SomethingSpecial step (2026-07-07, replaced the SMS step; swapped BEFORE
+   all-set same day)** — "Anything else we should know?" / "Upgrades or features that
+   could affect your value — totally optional." Free multiline box + five tap-to-add
+   suggestion chips (Solar panels / Pool / New roof / Remodeled kitchen / Finished
+   basement — tapping appends, chips light up while their text is present, typing
+   stays free). One button, no validation: **"Continue →"**; sends `SomethingSpecial`
+   only if the box has content.
+5. **"You're all set!" step — the last step** — confirmation: success graphic, "a
+   local expert will be in touch…", CTA **View my Report →** (fires RealtorOpt="ok"
+   and exits through the finale beat — caption **"Sending your report link to your
+   phone…"** — while FinalizeLead posts underneath), quiet **Do not contact me** link
+   (fires DNC="true", same exit). Lands on `report-classic-blue.html` (§8).
 
 Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
 
@@ -82,7 +82,9 @@ changing the funnel.
   contact phone automatically (finale caption says so); the report page carries an
   "Access anytime: we texted your report link to (xxx) xxx-xxxx" notice with an
   "Update my mobile number" modal (pre-popped phone; Update saves `phone` through the
-  same lead session via SaveLeadData; `?demoPhone=` previews it). The step's slot now
+  same lead session via SaveLeadData; `?demoPhone=` previews it). The notice is styled
+  as an alert (icon, 2px CTA border, shadow, role="alert") with an X dismiss that
+  hides it for the session (sessionStorage zbNoticeClosed). The step's slot now
   holds the optional SomethingSpecial notes step (see Current funnel #5). History of
   the SMS step below, kept for the rationale:
 - The old single step mixed a *statement* ("an expert will contact you" — already covered
@@ -153,7 +155,9 @@ changing the funnel.
   a smooth scroll loses the race against the keyboard animation.
 - **Autocomplete unclipped:** `.hero` must **not** have `overflow:hidden` — it clipped the
   Smarty list at the hero/trust-strip boundary. The hero bg is `inset:0` so nothing else
-  escapes.
+  escapes. On the LANDER, `.hero-inner` must out-z the footer (30 vs 5) — both are
+  positioned, footer comes later in the DOM, and the suggestion list lives inside
+  hero-inner's stacking context; at footer z-parity the list painted behind it.
 
 ### 5. Terms comparison tool (`mockups/compare-terms.html`)
 - Internal chooser (noindex) to preview the funnel under each sale model:
