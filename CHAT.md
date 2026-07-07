@@ -857,3 +857,8 @@ disabled under prefers-reduced-motion. The quiet "No" chip still stays out of th
 
 **Claude:** Both CTAs renamed on both pages — the all-set step's button is now
 "View my Report →" and the SMS step's is "Text my Report →".
+
+**Lucas:** can you make the chip row shake vertically (yes) instead of horizontally (no)?
+
+**Claude:** Swapped the shake axis to a nod — translateY, six diminishing bobs. The
+gesture now invites a yes instead of scolding with a no.

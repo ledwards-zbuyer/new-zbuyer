@@ -108,7 +108,7 @@
   .lm-nothanks{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;padding:4px;align-self:center;text-decoration:underline}
   .lm-err{color:#D8442B;font-size:13.5px;font-weight:600;text-align:center}
   /* Validation "pop": shake the chip row, bounce the message in. */
-  @keyframes lmShake{0%,100%{transform:translateX(0)}18%{transform:translateX(-7px)}36%{transform:translateX(6px)}54%{transform:translateX(-4px)}72%{transform:translateX(3px)}90%{transform:translateX(-1px)}}
+  @keyframes lmShake{0%,100%{transform:translateY(0)}18%{transform:translateY(-6px)}36%{transform:translateY(4px)}54%{transform:translateY(-4px)}72%{transform:translateY(2px)}90%{transform:translateY(-1px)}}
   .lm-chips.shake{animation:lmShake .4s ease}
   @keyframes lmErrIn{0%{opacity:0;transform:translateY(4px) scale(.96)}60%{transform:translateY(-1px) scale(1.03)}100%{opacity:1;transform:none}}
   .lm-err.pop{animation:lmErrIn .28s ease-out;font-weight:700}
