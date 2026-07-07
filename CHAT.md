@@ -1196,3 +1196,15 @@ chip pattern, motion & voice principles, and a do/don't card. It cross-reference
 FORM_DESIGNER.md for behavior. Header note makes the contract explicit: tokens are
 copied verbatim from the live pages — if the guide and a page ever disagree, the page
 wins.
+
+**Lucas:** change the logo in the design-guide. that green (i think) in the right
+arrow of the logo "Z" should never be that color. either white (transparent) or the
+same color it is on the dancing logo gif
+
+**Claude:** Yes, green — zbuyer-white.png is the legacy asset with the olive arrow.
+Swapped the design guide to logo-blue-dark.png (white wordmark, arrow as a
+transparent cutout — same file the homepage nav and lander use), and since the rule
+is "never," purged zbuyer-white.png from the four compare/jump pages that also used
+it. The guide's logo rule now states it explicitly: the Z's arrows are only ever
+white/transparent or sky blue #3BA4F4 (the dancing-logo color) — the olive asset is
+retired.
