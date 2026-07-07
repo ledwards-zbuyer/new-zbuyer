@@ -58,12 +58,15 @@ API — see §9. The homepage and compare pages remain inert demos.
 4. **"You're all set!" step** — confirmation only: success graphic, "a local expert will
    be in touch to discuss your cash value and best selling options",
    CTA **View my Report →** (fires RealtorOpt="ok"), quiet **Do not contact me** link (fires DNC="true").
-5. **SMS step** — "One last thing": **"Can we text you the report?"** (a genuine
-   permission question — form matches the opt-in's function), number prefilled from
-   the contact step, CTA **"Text my Report →"** (question and button share one
-   noun). CTA and "No thanks, just show my report" both land on
-   `report-classic-blue.html` — now a real Cash Value Report page (see §8),
-   no longer a dashboard screenshot.
+5. **SomethingSpecial step (2026-07-07, replaced the SMS step)** — "Anything else we
+   should know?" / "Upgrades or features that could affect your value — totally
+   optional." A free multiline box + five tap-to-add suggestion chips (Solar panels /
+   Pool / New roof / Remodeled kitchen / Finished basement — tapping appends to the
+   box, chips light up when their text is present, typing stays free). One button,
+   no validation: **"View my Report →"**; sends `SomethingSpecial` only if the box
+   has content. The finale beat's caption is now **"Sending your report link to your
+   phone…"** (the report is texted to the contact phone by the backend on finalize;
+   the SMS opt-in question is gone). Lands on `report-classic-blue.html` (§8).
 
 Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
 
@@ -74,7 +77,14 @@ changing the funnel.
 
 ## Changes made & why
 
-### 1. SMS step reframed, then the final step split in two
+### 1. SMS step reframed, split in two — then replaced by SomethingSpecial
+- **2026-07-07: the SMS step was removed entirely.** The report link now texts to the
+  contact phone automatically (finale caption says so); the report page carries an
+  "Access anytime: we texted your report link to (xxx) xxx-xxxx" notice with an
+  "Update my mobile number" modal (pre-popped phone; Update saves `phone` through the
+  same lead session via SaveLeadData; `?demoPhone=` previews it). The step's slot now
+  holds the optional SomethingSpecial notes step (see Current funnel #5). History of
+  the SMS step below, kept for the rationale:
 - The old single step mixed a *statement* ("an expert will contact you" — already covered
   by the TCPA consent) with a *question* ("want the link texted?"). One card + one CTA made
   declining the text feel like backing out of the consent just given.

@@ -29,8 +29,6 @@
   var nameEl = form.querySelector('[name="name"]');
   var phoneEl = document.getElementById("leadPhone");
   var emailEl = form.querySelector('[name="email"]');
-  var mobileEl = document.getElementById("leadMobile");
-  var mobileErr = document.getElementById("mobileErr");
 
   // "Open to selling?" intent chips — one-word continuum, one tap to answer.
   var chipsWrap = document.getElementById("intentChips");
@@ -114,13 +112,10 @@
     if (d.length > 0) return "(" + a;
     return "";
   }
-  [phoneEl, mobileEl].forEach(function (el) {
-    el.addEventListener("input", function () {
-      el.value = formatPhone(el.value);
-      el.classList.remove("invalid");
-      errEl.hidden = true;
-      if (mobileErr) mobileErr.hidden = true;
-    });
+  phoneEl.addEventListener("input", function () {
+    phoneEl.value = formatPhone(phoneEl.value);
+    phoneEl.classList.remove("invalid");
+    errEl.hidden = true;
   });
   [nameEl, emailEl].forEach(function (el) {
     el.addEventListener("input", function () { el.classList.remove("invalid"); errEl.hidden = true; });
@@ -398,12 +393,11 @@
       }
     }
 
-    mobileEl.value = formatPhone(phoneEl.value); // carry phone into the SMS step
     runZBeat("questions");
   });
 
-  // ---- all-set step -> SMS step ----
-  function toSmsStep() { runZBeat("sms"); }
+  // ---- all-set step -> SomethingSpecial step ----
+  function toSmsStep() { runZBeat("special"); }
   document.getElementById("toSms").addEventListener("click", function () {
     // The all-set step is the RealtorOpt step in the lead record.
     if (P) psave(P.F.realtorOpt, "ok");
@@ -416,7 +410,9 @@
     toSmsStep();
   });
 
-  // ---- SMS step ----
+  // ---- SomethingSpecial step: free text + tap-to-add suggestion chips.
+  // Obviously optional — one button, no validation; sends SomethingSpecial
+  // only if the box carries anything. ----
   // FinalizeLead posts every collected field and returns pixel-tracking HTML
   // that the report page injects (stashed in sessionStorage across the
   // navigation). Never block the user on a slow/failed finalize: navigate
@@ -435,21 +431,29 @@
     }
   }
 
+  var specialText = document.getElementById("specialText");
+  var specialChips = document.getElementById("specialChips");
+  if (specialChips && specialText) {
+    var syncChips = function () {
+      specialChips.querySelectorAll(".sp-chip").forEach(function (c) {
+        c.classList.toggle("sel", specialText.value.indexOf(c.textContent.trim()) !== -1);
+      });
+    };
+    specialChips.querySelectorAll(".sp-chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        var t = chip.textContent.trim();
+        if (specialText.value.indexOf(t) !== -1) return; // already in the box
+        var cur = specialText.value.replace(/[\s,]+$/, "");
+        specialText.value = cur ? cur + ", " + t : t;
+        syncChips();
+      });
+    });
+    specialText.addEventListener("input", syncChips);
+  }
   document.getElementById("viewReport").addEventListener("click", function () {
-    var d = mobileEl.value.replace(/\D/g, "");
-    if (d.length < 10) {
-      mobileEl.classList.add("invalid");
-      mobileErr.textContent = "Please enter a valid mobile number.";
-      mobileErr.hidden = false;
-      return;
+    if (P && specialText && specialText.value.trim()) {
+      psave(P.F.somethingSpecial, specialText.value.trim());
     }
-    mobileErr.hidden = true;
-    // Per the on-screen note, texting updates the primary contact phone.
-    if (P) { psave(P.F.phone, phoneDigits(mobileEl.value)); psave(P.F.smsOptIn, "yes"); }
-    goToReport();
-  });
-  document.getElementById("noThanks").addEventListener("click", function () {
-    if (P) psave(P.F.smsOptIn, "no");
     goToReport();
   });
 })();

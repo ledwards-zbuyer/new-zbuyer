@@ -139,6 +139,13 @@
   @keyframes lmErrIn{0%{opacity:0;transform:translateY(4px) scale(.96)}60%{transform:translateY(-1px) scale(1.03)}100%{opacity:1;transform:none}}
   .lm-err.pop{animation:lmErrIn .28s ease-out;font-weight:700}
   @media (prefers-reduced-motion:reduce){.lm-chips.shake,.lm-err.pop{animation:none}}
+  /* SomethingSpecial step: free-text + tap-to-add suggestion chips */
+  .lm-textarea{width:100%;font-family:inherit;font-size:16px;color:var(--ink);padding:13px 15px;border:1.5px solid var(--line);border-radius:12px;outline:none;background:#fff;resize:none;margin-top:14px;text-align:left;line-height:1.45}
+  .lm-textarea:focus{border-color:var(--c1)}
+  .lm-textarea::placeholder{color:#98A6BC}
+  .sp-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:11px}
+  .sp-chip{font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);background:var(--soft);border:1.5px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer}
+  .sp-chip.sel{background:var(--tint);border-color:var(--c1);color:var(--c1)}
   /* Z-beat interstitial: a one-shot of the logo dance (walk in, rigid
      spin, lock into the Z) shown between steps — a branded "aligning"
      beat. Not used before the report; that exit navigates directly. */
@@ -548,7 +555,7 @@
             </g>
           </g>
         </svg>
-        <p class="zb-note" hidden>Your report is on the way</p>
+        <p class="zb-note" hidden>Sending your report link to your phone&hellip;</p>
       </div>
 
       <div class="lm-screen lm-final" data-screen="allset" hidden>
@@ -572,25 +579,18 @@
         <button type="button" class="lm-nothanks" id="noContact">Do not contact me</button>
       </div>
 
-      <div class="lm-screen lm-final" data-screen="sms" hidden>
-        <h3>One last thing</h3>
-        <div class="lm-gfx">
-          <svg width="150" height="104" viewBox="0 0 150 104" fill="none" stroke="#0E1B33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="52" y="8" width="44" height="88" rx="9"/>
-            <line x1="67" y1="15.5" x2="81" y2="15.5"/>
-            <line x1="60" y1="30" x2="88" y2="30"/><line x1="60" y1="39" x2="82" y2="39"/>
-            <rect x="60" y="52" width="28" height="10" rx="3" fill="#E7EEFC" stroke="none"/>
-            <path d="M60 85h28" stroke="#1D4FD7"/>
-            <path d="M100 36h30a6 6 0 0 1 6 6v13a6 6 0 0 1-6 6h-15l-8 8v-8h-7a6 6 0 0 1-6-6V42a6 6 0 0 1 6-6Z" fill="#fff" stroke="#1D4FD7"/>
-            <path d="M112 47.5h17" stroke="#1D4FD7" stroke-width="1.8"/>
-          </svg>
+      <div class="lm-screen lm-final" data-screen="special" hidden>
+        <h3>Anything else we should know?</h3>
+        <p class="lm-sub lm-q">Upgrades or features that could affect your value &mdash; totally optional.</p>
+        <textarea id="specialText" class="lm-textarea" rows="3" placeholder="Type anything worth factoring in&hellip;"></textarea>
+        <div class="sp-chips" id="specialChips" aria-label="Common features">
+          <button type="button" class="sp-chip">Solar panels</button>
+          <button type="button" class="sp-chip">Pool</button>
+          <button type="button" class="sp-chip">New roof</button>
+          <button type="button" class="sp-chip">Remodeled kitchen</button>
+          <button type="button" class="sp-chip">Finished basement</button>
         </div>
-        <p class="lm-sub lm-q">Can we text you the report?</p>
-        <p class="lm-note">This will update your primary contact phone.</p>
-        <input id="leadMobile" type="tel" inputmode="tel" placeholder="(555) 555-5555" autocomplete="tel">
-        <p class="lm-err" id="mobileErr" hidden></p>
-        <button type="button" class="lm-cta" id="viewReport">Text my Report &rarr;</button>
-        <button type="button" class="lm-nothanks" id="noThanks">No thanks, just show my report</button>
+        <button type="button" class="lm-cta" id="viewReport">View my Report &rarr;</button>
       </div>
     </div>
   </div>

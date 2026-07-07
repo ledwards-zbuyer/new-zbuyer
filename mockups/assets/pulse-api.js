@@ -60,8 +60,7 @@
     sellingTimeFrame: "SellingTimeFrame",         // the chip text: Now / Soon / Eventually / No
     whySelling: "WhySelling",                     // report-focus chip text: Fast cash / Both / Top price
     repairsNeeded: "RepairsNeeded",               // repairs-slider label; NOT canonical yet — confirm name
-    smsOptIn: "SMSOptIn",                         // yes | no on the SMS step
-    // future field (reserved, not sent yet): SomethingSpecial
+    somethingSpecial: "SomethingSpecial",         // free-text notes step (optional)
   };
 
   var K = {

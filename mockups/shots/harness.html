@@ -42,6 +42,9 @@ f.onload = function () {
             d.getElementById("qContinue").click();
             setTimeout(function () {
               d.getElementById("toSms").click();
+              var sp = d.getElementById("specialText");
+              sp.value = "Solar panels, corner lot";
+              sp.dispatchEvent(new w.Event("input", { bubbles: true }));
               setTimeout(function () { d.getElementById("viewReport").click(); }, 400);
             }, 700);
           }, 500);
@@ -55,7 +58,10 @@ f.onload = function () {
         var dbg = document.createElement("div");
         dbg.style.cssText = "position:fixed;top:0;left:0;right:0;background:#043;color:#fff;z-index:9999;font:11px monospace;padding:6px;white-space:pre-wrap";
         var ra = f.contentDocument.getElementById("reportAddr");
-        dbg.textContent = "ADDR=" + (ra ? ra.textContent : "?") + " | PIXEL stored=" + (pixel.length > 0) + " injected=" + injected + " | CALLS: " + calls.join(" ");
+        var nt = f.contentDocument.getElementById("smsNotice");
+        var ph = "";
+        try { ph = JSON.parse(f.contentWindow.sessionStorage.getItem("pulseFields") || "{}").phone || "none"; } catch (e) { ph = "err"; }
+        dbg.textContent = "ADDR=" + (ra ? ra.textContent : "?") + " | NOTICE hidden=" + (nt ? nt.hidden : "?") + " snapPhone=" + ph + " | PIXEL stored=" + (pixel.length > 0) + " injected=" + injected + " | CALLS: " + calls.join(" ");
         document.body.appendChild(dbg);
       }, 1500);
     }
@@ -190,7 +196,7 @@ f.onload = function () {
   if (step === "sms") d.getElementById("toSms").click();
   if (step === "finale") {
     d.getElementById("toSms").click();
-    setTimeout(function () { d.getElementById("noThanks").click(); }, 1800);
+    setTimeout(function () { d.getElementById("viewReport").click(); }, 1800);
   }
 };
 </script>

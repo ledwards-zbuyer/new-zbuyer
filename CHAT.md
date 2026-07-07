@@ -1018,3 +1018,26 @@ to be abundantly obvious there is a slider dial to use on desktop and mobile
 
 **Claude:** Dial is now 26×70 (was 18×42) with two white grip ridges — the universal
 "grab me" glyph — and a stronger shadow so it floats above the track.
+
+---
+
+**Lucas:** Lets remove the SMS step and replace it with the SomethingSpecial step (also
+the FieldName). open multiline text box with 4-5 suggestions (like solar panels…); when
+the user selects an item it adds it to the textbox where they can also freely type. the
+title should say something like tell us anything else that might be relevant to the
+value (word it better). obviously optional. button "View my Report". on the final
+zbuyer spinner change the text to something like "We are sending a report link to your
+phone". On the report add a temporary notice: "Access Anytime: We texted your report to
+{PHONE} · Update your mobile number" with the update link opening a modal (phone
+pre-popped + update button).
+
+**Claude:** Done across the funnel: (1) SMS step replaced by "Anything else we should
+know?" — textarea + five tap-to-add chips (append to box, light up when present, free
+typing preserved), "totally optional" in the sub, single "View my Report →" button,
+`SomethingSpecial` sent only when non-empty (mobile field, SMSOptIn, and "No thanks"
+all removed). (2) Finale caption: "Sending your report link to your phone…". (3) Report
+notice: orange "Access anytime" bar with the lead's formatted phone (from the Pulse
+snapshot) + "Update my mobile number" modal — pre-popped, validates 10 digits, saves
+`phone` through the same submissionID/counter in sessionStorage; `?demoPhone=` previews
+without a session. E2E verified: SomethingSpecial=200 in the call log, correct masthead
+address, pixel intact, notice showing the right number.
