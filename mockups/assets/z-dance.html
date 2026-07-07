@@ -10,56 +10,26 @@
   .wrap{width:min(72vmin,520px)}
   svg{display:block;width:100%;height:auto}
 
-  /* Overhead ballet, waltz-phrased: the two halves of the z circle the stage
-     twice coming IN (three lilts — the scale "breathes" up on the ONE of
-     each measure, the catwalk view of a dancer rising), settle into the
-     logo's Z with a small landing sway, HOLD the pose, then retrace their
-     circles back OUT and rest offstage before the next repeat. The white 7
-     travels a hair wider than the blue L (740° vs 700°) so the pair drifts
-     like partners instead of spinning like a rigid logo; they always arrive
-     together. Segment-eased keyframes give each measure its step. */
-  .dancer{transform-origin:100px 100px;animation:10s cubic-bezier(.45,.05,.55,.95) infinite both}
-  .w{animation-name:danceW}
-  .b{animation-name:danceB}
-  @keyframes danceW{
-    0%  {transform:rotate(740deg) scale(1.32);opacity:0}
-    5%  {opacity:1}
-    10% {transform:rotate(560deg) scale(1.24)}
-    13% {transform:rotate(500deg) scale(1.29)}
-    18% {transform:rotate(330deg) scale(1.14)}
-    21% {transform:rotate(280deg) scale(1.19)}
-    26% {transform:rotate(110deg) scale(1.05)}
-    29% {transform:rotate(70deg) scale(1.09)}
-    33% {transform:rotate(9deg) scale(1.02)}
-    36% {transform:rotate(-3deg) scale(.995)}
-    39%,58%{transform:rotate(0deg) scale(1)}
-    61% {transform:rotate(-7deg) scale(1.015)}
-    67% {transform:rotate(90deg) scale(1.08)}
-    70% {transform:rotate(140deg) scale(1.05)}
-    75% {transform:rotate(320deg) scale(1.18)}
-    78% {transform:rotate(370deg) scale(1.14)}
-    84% {transform:rotate(600deg) scale(1.28);opacity:1}
-    90%,100%{transform:rotate(740deg) scale(1.32);opacity:0}
+  /* Reduced concept: the two halves of the z slide on PARALLEL tracks along
+     the Z's own diagonal — the perpendicular seam between them never changes.
+     The 7 glides in from upper-right, the L from lower-left; they lock into
+     the logo Z, hold, then continue through and exit the way the other came.
+     2s loop: 35% approach (ease-out), 30% pause, 35% departure (ease-in).
+     A circle clip makes them emerge from / vanish into the stage rim. */
+  .dancer{animation:2s linear infinite both}
+  .w{animation-name:slideW}
+  .b{animation-name:slideB}
+  @keyframes slideW{
+    0%  {transform:translate(96px,-174px);animation-timing-function:cubic-bezier(.16,.6,.3,1)}
+    35%,65%{transform:translate(0,0)}
+    65% {transform:translate(0,0);animation-timing-function:cubic-bezier(.7,.02,.84,.44)}
+    100%{transform:translate(-96px,174px)}
   }
-  @keyframes danceB{
-    0%  {transform:rotate(700deg) scale(1.32);opacity:0}
-    5%  {opacity:1}
-    10% {transform:rotate(530deg) scale(1.24)}
-    13% {transform:rotate(473deg) scale(1.29)}
-    18% {transform:rotate(312deg) scale(1.14)}
-    21% {transform:rotate(265deg) scale(1.19)}
-    26% {transform:rotate(104deg) scale(1.05)}
-    29% {transform:rotate(66deg) scale(1.09)}
-    33% {transform:rotate(-8deg) scale(1.02)}
-    36% {transform:rotate(3deg) scale(.995)}
-    39%,58%{transform:rotate(0deg) scale(1)}
-    61% {transform:rotate(6deg) scale(1.015)}
-    67% {transform:rotate(85deg) scale(1.08)}
-    70% {transform:rotate(132deg) scale(1.05)}
-    75% {transform:rotate(302deg) scale(1.18)}
-    78% {transform:rotate(350deg) scale(1.14)}
-    84% {transform:rotate(567deg) scale(1.28);opacity:1}
-    90%,100%{transform:rotate(700deg) scale(1.32);opacity:0}
+  @keyframes slideB{
+    0%  {transform:translate(-96px,174px);animation-timing-function:cubic-bezier(.16,.6,.3,1)}
+    35%,65%{transform:translate(0,0)}
+    65% {transform:translate(0,0);animation-timing-function:cubic-bezier(.7,.02,.84,.44)}
+    100%{transform:translate(96px,-174px)}
   }
   @media (prefers-reduced-motion:reduce){.dancer{animation:none}}
 </style>
@@ -74,6 +44,8 @@
         </radialGradient>
       </defs>
       <circle cx="100" cy="100" r="96" fill="url(#stage)"/>
+      <clipPath id="stageClip"><circle cx="100" cy="100" r="96"/></clipPath>
+      <g clip-path="url(#stageClip)">
       <!-- the "7" -->
       <g class="dancer w">
         <polygon fill="#FFFFFF" points="40,42 128,42 64,158 39,158 95,68 40,68"/>
@@ -81,6 +53,7 @@
       <!-- its 180°-twin, the "L" -->
       <g class="dancer b">
         <polygon fill="#3BA4F4" points="160,158 72,158 136,42 161,42 105,132 160,132"/>
+      </g>
       </g>
     </svg>
   </div>

@@ -774,3 +774,14 @@ into the exact logo Z with a landing sway, HOLD the pose ~2s, dance back out ret
 their circles, rest offstage, repeat seamlessly. The 7 travels 740° vs the L's 700° so
 they drift like partners rather than spinning as a rigid logo. `?t=SECONDS` freezes any
 frame (how the GIF was rendered); prefers-reduced-motion shows the still Z.
+
+**Lucas:** the distance between the triangles on the "Z" should never change. reduce the
+concept to the moments before the pause (35%), the pause (30%), and after the pause (35%)
+in the gif. represent movement by sliding in parallel. *(mid-build:)* make it 2 seconds
+or less
+
+**Claude:** Rebuilt the concept: no rotation/scale — the 7 and L slide on PARALLEL
+tracks along the Z's own diagonal (the perpendicular seam between them literally cannot
+change), converge into the Z (35%, ease-out), hold (30%), then continue through and exit
+the way the other came (35%, ease-in). Circle-clipped so they emerge from / vanish into
+the stage rim. 2s seamless loop; GIF now 40 frames / 136KB.
