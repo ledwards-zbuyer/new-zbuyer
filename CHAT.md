@@ -832,3 +832,11 @@ past it is an answer.
 **Claude:** Changed in the axis hint (both pages) and in the label array — so the
 slider's aria-valuetext and the RepairsNeeded field value now top out at
 "A full remodel".
+
+**Lucas:** can we say this in a simpler way?: "Want your report link texted to you so
+you can open it anytime?" → *(after four options were offered)* why not: can we text
+you the report?
+
+**Claude:** His beat all four offered: six words, a genuine permission question (form
+matches the opt-in's function), and "the report" beats "your report link" — people want
+the thing, not the hyperlink to it. Applied to both pages.
