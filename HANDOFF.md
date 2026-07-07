@@ -53,10 +53,10 @@ API — see §9. The homepage and compare pages remain inert demos.
    anything" was cut — over-reassurance reads as suspicious).
 4. **"You're all set!" step** — confirmation only: success graphic, "a local expert will
    be in touch to discuss your cash value and best selling options",
-   CTA **View Cash Value Report →**, quiet **Do not contact me** link.
+   CTA **View my Report →** (fires RealtorOpt="ok"), quiet **Do not contact me** link (fires DNC="true").
 5. **SMS step** — "One last thing": **"Can we text you the report?"** (a genuine
    permission question — form matches the opt-in's function), number prefilled from
-   the contact step, CTA **"Text Me the Report →"** (question and button share one
+   the contact step, CTA **"Text my Report →"** (question and button share one
    noun). CTA and "No thanks, just show my report" both land on
    `report-classic-blue.html` — now a real Cash Value Report page (see §8),
    no longer a dashboard screenshot.
@@ -79,7 +79,7 @@ changing the funnel.
   report, so skipping the text clearly skips *only* the text.
 - SMS copy (final, 2026-07-06): **"Can we text you the report?"** — Lucas's own
   six-word cut, beating longer drafts; + small centered italic note "This will update
-  your primary contact phone." CTA "Text Me the Report →".
+  your primary contact phone." CTA "Text my Report →".
 - The all-set step's expert line ("A local zBuyer expert will be in touch shortly…")
   carries the same `lm-q` size (16.5px) as the SMS question, so the two closing steps
   read at equal weight.

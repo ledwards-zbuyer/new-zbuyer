@@ -852,3 +852,8 @@ open to selling question, the validation needs to "pop" a little more
 error message bounces in (fade + rise + slight overshoot, weight bumped to 700) — both
 restartable on every repeat tap via the remove-class/reflow/re-add trick, and both
 disabled under prefers-reduced-motion. The quiet "No" chip still stays out of the red.
+
+**Lucas:** change the buttons to "View my Report" (RealtorOpt) and "Text my Report" (SMS)
+
+**Claude:** Both CTAs renamed on both pages — the all-set step's button is now
+"View my Report →" and the SMS step's is "Text my Report →".
