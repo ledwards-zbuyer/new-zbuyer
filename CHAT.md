@@ -713,3 +713,12 @@ border) was painting a box around the range input. Fix: the wedge input now zero
 border/radius/padding/outline in all states, and the keyboard-focus affordance moved
 onto the dial itself (soft blue halo via `:focus-visible` on the thumb) so
 accessibility survives.
+
+**Lucas:** on the step after the contact form step… we will call this the Intent step.
+we need to change "A few quick taps — nothing here commits you to anything." to
+something else. it sounds like its pandering a bit too much… "nothing to see here"
+(looks around suspiciously)
+
+**Claude:** Agreed — over-reassurance is its own red flag. Sub-line is now the factual
+benefit: "Your answers shape what your report highlights." Step is referred to as the
+Intent step in the docs.
