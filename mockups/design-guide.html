@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>zBuyer Seller Experience — Design Guide</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* The tokens below are THE tokens — copied verbatim from option-1-classic.html,
+     landing-classic-blue.html and report-classic-blue.html. If a value here ever
+     disagrees with those pages, the pages win; fix this file. */
+  :root{
+    --c1:#1D4FD7;--c1d:#1640A8;--navy:#0E1B33;--navy-dd:#0A1426;
+    --acc:#3BA4F4;--cta:#FF6B4A;--cta-d:#F0572F;
+    --ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;--bg:#FFFFFF;
+    --tint:#E7EEFC;--tintink:#1D4FD7;
+    --err:#D8442B;--notice-bg:#FFF4F0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--soft);-webkit-font-smoothing:antialiased}
+  a{color:var(--c1);font-weight:600;text-decoration:underline}
+  img{display:block}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px 60px}
+
+  .top{background:var(--navy);color:#fff;padding:38px 0 34px;margin-bottom:26px}
+  .top .wrap{padding-bottom:0}
+  .top img{height:30px;margin-bottom:18px}
+  .top h1{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+  .top p{color:#BBD7FB;font-size:15px;margin-top:10px;max-width:640px;line-height:1.55}
+
+  section{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:0 14px 34px -22px rgba(14,27,51,.18);margin-bottom:18px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--c1);font-weight:800;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 4px rgba(59,164,244,.22)}
+  section h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-top:8px}
+  section .lead{font-size:14px;color:var(--muted);line-height:1.55;margin-top:6px;max-width:720px}
+  h3.sub{font-size:15px;font-weight:800;margin:22px 0 10px;letter-spacing:-.01em}
+  .rule{font-size:13.5px;color:var(--muted);line-height:1.6;margin-top:8px;max-width:720px}
+  .rule b{color:var(--ink)}
+  code{font-family:ui-monospace,Consolas,monospace;font-size:12px;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--ink)}
+
+  /* swatches */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
+  .sw{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+  .sw .chip{height:56px}
+  .sw .meta{padding:8px 10px}
+  .sw .nm{font-size:12px;font-weight:800}
+  .sw .hx{font-size:11.5px;color:var(--muted);font-family:ui-monospace,Consolas,monospace;margin-top:1px}
+  .sw .use{font-size:11px;color:var(--muted);line-height:1.4;margin-top:4px}
+
+  /* type scale */
+  .type-row{display:flex;align-items:baseline;gap:18px;padding:12px 0;border-bottom:1px dashed var(--line)}
+  .type-row:last-child{border-bottom:none}
+  .type-row .spec{flex:none;width:190px;font-size:11.5px;color:var(--muted);font-family:ui-monospace,Consolas,monospace;line-height:1.5}
+  .t-hero{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1.05}
+  .t-hero span{color:var(--acc)}
+  .t-h2{font-size:30px;font-weight:800;letter-spacing:-.02em}
+  .t-card{font-size:21px;font-weight:800;letter-spacing:-.02em}
+  .t-body{font-size:15px;line-height:1.6}
+  .t-sub{font-size:14.5px;color:var(--muted);line-height:1.45}
+  .t-small{font-size:13px;color:var(--muted)}
+  .t-micro{font-size:11px;line-height:1.5;color:#8a97ab}
+  .t-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--c1)}
+
+  /* components */
+  .demo{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:10px}
+  .demo-dark{background:var(--navy);border-color:var(--navy)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:800;font-size:15px;padding:13px 18px;border-radius:12px;cursor:pointer;border:none}
+  .btn-cta{background:var(--cta);color:#fff}
+  .btn-cta:hover{background:var(--cta-d)}
+  .btn-line{background:#fff;color:var(--c1);border:1.5px solid var(--line)}
+  .btn-line:hover{border-color:var(--c1)}
+  .btn-quiet{background:none;border:none;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--c1);text-decoration:underline;cursor:pointer}
+
+  .lm-chip{font-family:inherit;font-size:14.5px;font-weight:600;color:var(--muted);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:9px 22px;cursor:pointer;text-align:center}
+  .lm-chip.sel{background:var(--tint);border-color:var(--c1);color:var(--c1)}
+  .lm-chip.lite{font-weight:400;padding:9px 14px}
+
+  .field{width:100%;max-width:320px;font-family:inherit;font-size:16px;color:var(--ink);padding:13px 15px;border:1.5px solid var(--line);border-radius:12px;outline:none;background:#fff}
+  .field:focus{border-color:var(--c1)}
+  .err{color:var(--err);font-size:13.5px;font-weight:600;margin-top:8px}
+
+  .notice{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--notice-bg);border:2px solid var(--cta);border-radius:14px;padding:13px 44px 13px 16px;font-size:14px;line-height:1.45;box-shadow:0 8px 22px -12px rgba(240,87,47,.45)}
+  .notice .nico{flex:none;width:30px;height:30px;border-radius:50%;background:var(--cta);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+  .notice .nclose{position:absolute;top:4px;right:8px;border:none;background:none;font-size:22px;line-height:1;color:#c9856d;cursor:pointer;padding:4px}
+
+  .stat{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .stat .num{font-weight:800;font-size:24px;color:var(--c1)}
+  .stat .lbl{font-size:13px;color:var(--muted);font-weight:500}
+
+  .dial-demo{position:relative;height:60px;max-width:340px}
+  .dial-demo .track{position:absolute;left:8px;right:8px;top:50%;height:10px;transform:translateY(-50%);border-radius:6px;background:linear-gradient(90deg,var(--tint),var(--c1))}
+  .dial-demo .lm-dial{position:absolute;top:8px;left:55%;width:16px;height:44px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4)}
+  .dial-demo .vs-handle{position:absolute;top:-5px;left:20%;width:26px;height:70px;border-radius:13px;background:var(--cta);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);cursor:grab}
+  .vs-handle::before{content:"";position:absolute;inset:14px 8px;background:repeating-linear-gradient(180deg,rgba(255,255,255,.75) 0 2px,transparent 2px 8px);border-radius:2px}
+
+  .radii{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
+  .rad{background:#fff;border:1.5px solid var(--c1);color:var(--ink);font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px}
+  .shadow-row{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px}
+  .shadow-row .sh{width:170px;height:80px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);text-align:center;padding:8px;line-height:1.5}
+
+  .dont{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin-top:12px}
+  .dont .card{border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:13px;line-height:1.55;background:var(--soft)}
+  .dont .card b{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px}
+  .dont .no b{color:var(--err)}
+  .dont .yes b{color:#178A4C}
+
+  footer{color:var(--muted);font-size:12px;text-align:center;padding-bottom:40px;line-height:1.6}
+  @media (max-width:560px){
+    .top h1{font-size:27px}
+    .type-row{flex-direction:column;gap:4px}
+    .type-row .spec{width:auto}
+    section{padding:20px 16px}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <img src="assets/zbuyer-white.png" alt="zBuyer">
+    <h1>Seller Experience — Design Guide</h1>
+    <p>The visual system behind the seller homepage, DR lander, lead funnel and Cash Value Report.
+       Everything on this page is rendered with the exact tokens and CSS the live pages use —
+       if it looks right here, it's right. Companion doc for form/funnel <em>behavior</em>: FORM_DESIGNER.md in the repo.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <span class="eyebrow"><span class="dot"></span>Foundations</span>
+    <h2>Color</h2>
+    <p class="lead">One blue family carries the brand; one orange exists solely to be pressed. If a screen has
+       two orange elements, one of them is wrong.</p>
+
+    <h3 class="sub">Brand blues</h3>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#1D4FD7"></div><div class="meta"><div class="nm">--c1 · Primary blue</div><div class="hx">#1D4FD7</div><div class="use">Brand, links, selected states, focus rings, stat numbers</div></div></div>
+      <div class="sw"><div class="chip" style="background:#1640A8"></div><div class="meta"><div class="nm">--c1d · Primary dark</div><div class="hx">#1640A8</div><div class="use">Hover/active on blue elements</div></div></div>
+      <div class="sw"><div class="chip" style="background:#3BA4F4"></div><div class="meta"><div class="nm">--acc · Sky accent</div><div class="hx">#3BA4F4</div><div class="use">The "cash value" highlight, eyebrow dots, small accents on dark</div></div></div>
+      <div class="sw"><div class="chip" style="background:#0E1B33"></div><div class="meta"><div class="nm">--navy · Navy</div><div class="hx">#0E1B33</div><div class="use">Dark surfaces: hero overlays, footers</div></div></div>
+      <div class="sw"><div class="chip" style="background:#0A1426"></div><div class="meta"><div class="nm">--navy-dd · Navy deep</div><div class="hx">#0A1426</div><div class="use">Bottom of dark gradients</div></div></div>
+      <div class="sw"><div class="chip" style="background:#E7EEFC"></div><div class="meta"><div class="nm">--tint · Blue tint</div><div class="hx">#E7EEFC</div><div class="use">Selected-chip fill, hover fills — always paired with --c1 text/border</div></div></div>
+    </div>
+
+    <h3 class="sub">Action orange</h3>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#FF6B4A"></div><div class="meta"><div class="nm">--cta · CTA orange</div><div class="hx">#FF6B4A</div><div class="use">THE primary action. One per view. Also urgent notices (2px border)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#F0572F"></div><div class="meta"><div class="nm">--cta-d · CTA hover</div><div class="hx">#F0572F</div><div class="use">Hover/active on orange</div></div></div>
+    </div>
+
+    <h3 class="sub">Neutrals &amp; feedback</h3>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#14233D"></div><div class="meta"><div class="nm">--ink · Ink</div><div class="hx">#14233D</div><div class="use">Body text on light (never pure black)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#5C6B82"></div><div class="meta"><div class="nm">--muted · Muted</div><div class="hx">#5C6B82</div><div class="use">Secondary text, labels, unselected chips</div></div></div>
+      <div class="sw"><div class="chip" style="background:#E4EAF3"></div><div class="meta"><div class="nm">--line · Line</div><div class="hx">#E4EAF3</div><div class="use">Borders, dividers (1px cards / 1.5px controls)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#F4F8FD"></div><div class="meta"><div class="nm">--soft · Soft</div><div class="hx">#F4F8FD</div><div class="use">Page background (report), quiet fills, mobile inputs</div></div></div>
+      <div class="sw"><div class="chip" style="background:#D8442B"></div><div class="meta"><div class="nm">Error</div><div class="hx">#D8442B</div><div class="use">Validation text + shake. Never used decoratively</div></div></div>
+      <div class="sw"><div class="chip" style="background:#FFF4F0;border-bottom:1px solid #E4EAF3"></div><div class="meta"><div class="nm">Notice fill</div><div class="hx">#FFF4F0</div><div class="use">Orange-alert background (with --cta border)</div></div></div>
+    </div>
+
+    <p class="rule"><b>Text on dark surfaces:</b> headings pure <code>#fff</code>; supporting copy <code>#E4ECF6</code>;
+       eyebrow/quiet copy <code>#BBD7FB</code>. <b>Logos:</b> <code>logo-blue-dark.png</code> on photos/dark,
+       <code>zbuyer-white.png</code> when all-white is needed. Clay/cyan logo recolors exist for the other style
+       concepts — the seller experience uses classic blue only.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow"><span class="dot"></span>Foundations</span>
+    <h2>Typography</h2>
+    <p class="lead">One typeface: <b>Inter</b> (Google Fonts, weights 400–900). Hierarchy comes from weight and
+       tracking, not from more fonts. Big text tightens (negative letter-spacing), tiny labels widen and uppercase.</p>
+
+    <div class="type-row"><div class="spec">60px/800 · -.03em<br>(44px shown; 42–50 mobile)</div><div class="t-hero">See your home's <span>cash value</span> today.</div></div>
+    <div class="type-row"><div class="spec">30–34px/800 · -.02em</div><div class="t-h2">Section heading</div></div>
+    <div class="type-row"><div class="spec">19–21px/800 · -.02em</div><div class="t-card">Card / modal step title</div></div>
+    <div class="type-row"><div class="spec">15px/400 · 1.6</div><div class="t-body">Body copy. Short sentences; benefit first, mechanics second.</div></div>
+    <div class="type-row"><div class="spec">14.5px/400 · --muted</div><div class="t-sub">Supporting sub-copy under titles.</div></div>
+    <div class="type-row"><div class="spec">13px/500 · --muted</div><div class="t-small">Labels, captions, facts</div></div>
+    <div class="type-row"><div class="spec">11.5px/800 · +.08em · caps</div><div class="t-eyebrow">Eyebrow label</div></div>
+    <div class="type-row"><div class="spec">11px/400 · #8a97ab</div><div class="t-micro">Consent & legal micro-copy. Present but quiet — readable, never hidden.</div></div>
+  </section>
+
+  <section>
+    <span class="eyebrow"><span class="dot"></span>Foundations</span>
+    <h2>Shape, depth &amp; rhythm</h2>
+    <p class="lead">Everything is rounded, nothing is sharp. Radius scales with the size of the thing.</p>
+    <div class="radii">
+      <div class="rad" style="width:120px;height:76px;border-radius:20px">18–20px<br>cards / modals</div>
+      <div class="rad" style="width:120px;height:56px;border-radius:14px">14px<br>inner panels</div>
+      <div class="rad" style="width:110px;height:48px;border-radius:12px">11–12px<br>buttons / inputs</div>
+      <div class="rad" style="width:110px;height:40px;border-radius:999px">999px<br>chips / pills</div>
+    </div>
+    <div class="shadow-row">
+      <div class="sh" style="box-shadow:0 30px 60px -20px rgba(0,0,0,.45)">hero search card<br>0 30px 60px -20px</div>
+      <div class="sh" style="box-shadow:0 40px 90px -20px rgba(0,0,0,.55)">modal<br>0 40px 90px -20px</div>
+      <div class="sh" style="box-shadow:0 26px 54px -18px rgba(0,0,0,.45)">dropdown<br>0 26px 54px -18px</div>
+      <div class="sh" style="box-shadow:0 14px 34px -22px rgba(14,27,51,.18)">report card<br>0 14px 34px -22px</div>
+    </div>
+    <p class="rule">Shadows are soft, long-throw, and always negative-spread — depth without gray halos.
+       Vertical rhythm: report page stacks cards at <b>16px gap</b>; card padding <b>22px</b> (26–30 for modals);
+       control rows gap <b>10px</b>; mobile page gutters <b>16–20px</b>.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow"><span class="dot"></span>Components</span>
+    <h2>Buttons</h2>
+    <div class="demo"><div class="row">
+      <button class="btn btn-cta">Get my cash value report &rarr;</button>
+      <button class="btn btn-line">Schedule</button>
+      <button class="btn-quiet">Update my mobile number</button>
+    </div></div>
+    <p class="rule"><b>Primary (orange):</b> weight 800, 12px radius, arrow suffix on funnel-advancing actions.
+       One per view — every equal-weight action beside it is also orange <em>only</em> when the actions are true peers
+       (Call / Text on the report). <b>Outline (white/blue):</b> secondary choices. <b>Quiet link:</b> tertiary,
+       underlined blue. Escape hatches ("Do not contact me", "No thanks") are quiet links, never gray buttons —
+       visible, not promoted.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow"><span class="dot"></span>Components</span>
+    <h2>Chips &amp; choices</h2>
+    <div class="demo"><div class="row">
+      <button class="lm-chip">Now</button>
+      <button class="lm-chip sel">Soon</button>
+      <button class="lm-chip">Eventually</button>
+      <button class="lm-chip lite">No</button>
+    </div></div>
+    <p class="rule">Chips are the default answer control: one-word, self-ordering options in a single row
+       (equal <code>flex:1</code> widths; a deliberately narrower + lighter "No" sits last). Selected =
+       <code>--tint</code> fill + <code>--c1</code> border/text. Suggestion chips (SomethingSpecial) pack
+       left-aligned in a horizontally scrolling carousel — right-edge fade hints at more, touch scrolls natively,
+       mouse drag-scrolls on desktop. Validation: the chip row <b>shakes vertically</b> and an error line pops —
+       color alone never carries the error.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow"><span class="dot"></span>Components</span>
+    <h2>Inputs &amp; the address box</h2>
+    <div class="demo">
+      <div class="row" style="align-items:flex-start;flex-direction:column;gap:12px">
+        <input class="field" placeholder="Phone number">
+        <div>
+          <input class="field" style="border-color:var(--c1)" value="Focused state">
+          <div class="err">Please enter your phone number.</div>
+        </div>
+      </div>
+    </div>
+    <p class="rule">Text inputs: 16px font (prevents iOS zoom), 1.5px <code>--line</code> border, 12px radius,
+       focus = border flips to <code>--c1</code> (no glow). Desktop hero address input is borderless inside its
+       white card; mobile styles it as a <code>--soft</code> filled box. A verified address collapses to a
+       <b>two-line chip</b> (street bold / "City, ST zip" muted small) and the card shrinks to fit; tapping the chip
+       re-opens editing, where a circled-X clears the whole line in one tap. Street View strip (when enabled) sits
+       above, full card width, fixed height — it never widens the card.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow"><span class="dot"></span>Components</span>
+    <h2>Sliders</h2>
+    <div class="demo">
+      <div class="dial-demo">
+        <div class="track"></div>
+        <div class="vs-handle" title="report value slider handle"></div>
+        <div class="lm-dial" title="repairs dial"></div>
+      </div>
+    </div>
+    <p class="rule">Two flavors, one language: tall pill handles with a 3px white border and a real shadow —
+       unmistakably grabbable. Funnel repairs dial: 16×44, blue. Report value slider: 26×70, orange, grip ridges.
+       Both slide freely and <b>snap to stops</b> on release. iOS gotcha: the visible handle is a custom element
+       positioned by JS (iOS ignores native thumb styling); pointer events + <code>touch-action:none</code> make
+       press-drag work on the whole track.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow"><span class="dot"></span>Components</span>
+    <h2>Notices, stats &amp; eyebrows</h2>
+    <div class="demo" style="display:flex;flex-direction:column;gap:16px">
+      <div class="notice"><span class="nico">✓</span><span><b>Access anytime:</b> We texted your report link to <b>(417) 880-9688</b>.</span><button class="nclose">×</button></div>
+      <div class="row" style="gap:40px">
+        <div class="stat"><span class="num">$250B+</span><span class="lbl">In home value evaluated</span></div>
+        <div class="stat"><span class="num">2.1M+</span><span class="lbl">Homeowners helped</span></div>
+        <span class="eyebrow"><span class="dot"></span>Your local expert</span>
+      </div>
+    </div>
+    <p class="rule">Alert notices: <code>#FFF4F0</code> fill, 2px <code>--cta</code> border, icon coin, dismissible ×
+       (dismissal persists for the session). Trust stats: number in <code>--c1</code> 800, label muted.
+       Eyebrows introduce sections everywhere: caps, tracked out, dotted.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow"><span class="dot"></span>Behavior</span>
+    <h2>Motion &amp; voice</h2>
+    <p class="rule"><b>Motion:</b> entrances 200–300ms ease with slight rise; hero "cash value" shimmer loops
+       gently (4s); errors shake ~300ms; the Z-beat interstitial (two triangles walking in, spinning as a rigid
+       pair into the Z) covers API round-trips between funnel steps. Every animation has a
+       <code>prefers-reduced-motion</code> fallback — no exceptions.</p>
+    <p class="rule"><b>Voice:</b> plain, confident, second person. Benefit first ("Get my cash value report"),
+       never mechanics first ("Submit"). Questions are one line; answers are one word where possible. Never put
+       "I'm selling" in the user's mouth — frame around the report they're already getting. Optional means
+       optional: say "totally optional" and mean it (no validation). Settled facts read as settled
+       ("A local expert will be in touch"), not as questions.</p>
+    <div class="dont">
+      <div class="card no"><b>Don't</b>Blue CTA buttons; two orange CTAs doing different jobs; gray disabled-looking escape links; ALL-CAPS body copy; pure #000 text; sharp corners; error color as decoration.</div>
+      <div class="card yes"><b>Do</b>One orange action per view; chips over dropdowns; weight over size for emphasis; soft long shadows; 16px+ input text; quiet-link escape hatches; reduced-motion fallbacks.</div>
+    </div>
+  </section>
+
+  <footer>
+    Living document — rendered from the same tokens as the live pages.<br>
+    Sources: option-1-classic.html · landing-classic-blue.html · report-classic-blue.html · FORM_DESIGNER.md (behavior &amp; funnel principles)
+  </footer>
+</div>
+
+</body>
+</html>

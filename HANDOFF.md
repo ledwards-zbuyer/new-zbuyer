@@ -12,6 +12,11 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
   without — Alex Smith example + mid=56/affid=testing on both; empty lander as a footnote link)
 - **Report comparison tool:** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/compare-report.html
   (three value-display strategies × Exclusive/Max Sold on the rebuilt report page)
+- **Design guide (for the team):** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/design-guide.html
+  — living style guide rendered from the live pages' exact tokens: palette + usage rules,
+  type scale, radii/shadows/spacing, buttons, chips, inputs/address box, sliders, notices,
+  motion & voice, do/don't. Visual companion to FORM_DESIGNER.md (behavior). Tokens are
+  copied verbatim from the three source pages — if they ever disagree, the pages win.
 - GitHub Pages serves `main`; every push is live in ~1 minute. A `.nojekyll` file at the
   repo root makes Pages deploy the raw files (the default Jekyll build started failing
   flakily 2026-07-02 with no content cause; we never needed it). Browsers cache pages for

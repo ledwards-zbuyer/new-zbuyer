@@ -1181,3 +1181,18 @@ StreetView, Pre-popped version w/ no StreetView.
 three cards — homepage, pre-popped lander with &zsv=1, pre-popped lander without.
 Both prepop links carry the Alex Smith example + test attribution (mid=56,
 affid=testing); the empty no-prefill lander stays as a small footnote link.
+
+**Lucas:** can you draft a design guide for my team based on this styling and the
+report styling? I'm not even sure what the deliverable would be there, but I assume
+you know a comfortable standard
+
+**Claude:** The comfortable standard is a living style guide — a rendered HTML page
+rather than a document, so the team sees the real components, not descriptions of
+them. Built mockups/design-guide.html from the exact tokens in the homepage, lander,
+and report pages: palette swatches with hex + usage rules (one blue family for brand,
+one orange that exists solely to be pressed), the Inter type scale, radii/shadow/
+spacing recipes, live-rendered buttons/chips/inputs/sliders/notices, the address-box
+chip pattern, motion & voice principles, and a do/don't card. It cross-references
+FORM_DESIGNER.md for behavior. Header note makes the contract explicit: tokens are
+copied verbatim from the live pages — if the guide and a page ever disagree, the page
+wins.
