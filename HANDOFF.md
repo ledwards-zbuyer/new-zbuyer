@@ -203,6 +203,18 @@ changing the funnel.
   - Contact: name/phone/email prefill (phone through `formatPhone`). (`lead-modal.js`)
   - Landing markup ships empty inputs — no John Doe demo data. `zcredit` currently ignored.
   - Prefill code runs on any page carrying the params; the homepage without params is unchanged.
+  - **Post-selection chip:** once an address verifies (manual pick or prepop), the input
+    swaps for a two-line chip — street bold, "City, ST zip" small — mirroring the
+    suggestion-list format; click to edit; the desktop box shrinks to fit
+    (`width:fit-content`, min 430px) while chipped.
+  - **`&zsv=1` Street View preview:** with the param, a wide/short Street View strip
+    (640x200, fov 75, radius 100; free metadata call gates the billable render) appears
+    inside the search card above the box once the address verifies — manual pick,
+    prepop, or Google-rescued; typing hides the stale photo; no imagery → nothing shows.
+    Uses `GOOGLE_MAPS_KEY` (google-config.js) — Street View Static API works on that
+    key. TOOLING GOTCHA (recurring, third strike): bash heredocs mangle backslash
+    escapes fed to python — a literal backspace byte landed inside the zsv regex and
+    silently disabled it. Write JS regexes/strings to these files with the Edit tool.
 - Lander logo = `assets/logo-blue-dark.png`, same file as the homepage nav (was briefly
   `zbuyer-white.png` — corrected to match).
 - **Street View hero background — currently OFF** (the two `<script>` includes are
