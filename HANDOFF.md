@@ -57,10 +57,11 @@ API — see §9. The homepage and compare pages remain inert demos.
    anything" was cut — over-reassurance reads as suspicious).
 4. **SomethingSpecial step (2026-07-07, replaced the SMS step; swapped BEFORE
    all-set same day)** — "Anything else we should know?" / "Upgrades or features that
-   could affect your value — totally optional." Free multiline box + five tap-to-add
-   suggestion chips (Solar panels / Pool / New roof / Remodeled kitchen / Finished
-   basement — tapping appends, chips light up while their text is present, typing
-   stays free). One button, no validation: **"Continue →"**; sends `SomethingSpecial`
+   could affect your value — totally optional." Free multiline box + TWENTY tap-to-add
+   suggestion chips in a two-row horizontal carousel (left-aligned, same height as
+   the original five; scrolls right with a right-edge fade hinting more; scrollbar
+   hidden; tapping appends, chips light up while their text is present, typing stays
+   free). One button, no validation: **"Continue →"**; sends `SomethingSpecial`
    only if the box has content.
 5. **"You're all set!" step — the last step** — confirmation: success graphic, "a
    local expert will be in touch…", CTA **View my Report →** (fires RealtorOpt="ok"

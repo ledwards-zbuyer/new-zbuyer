@@ -1054,3 +1054,12 @@ the notes step). (2) Notice is alert-styled — orange icon badge, 2px CTA borde
 shadow, role="alert" — with an X that dismisses for the session (sessionStorage). (3)
 Dropdown-behind-footer: stacking-context clash on the lander — hero-inner and footer
 both z-5, footer later in DOM; hero-inner now z-30, list paints over the footer.
+
+**Lucas:** on the somethingspecial step, include up to 20 suggestions, but make it the
+same height, just left align the suggestions and allow the user to scroll horizontally
+to the right to see more options (carousel style)
+
+**Claude:** Twenty suggestions in a two-row horizontal carousel: flex column-wrap at a
+fixed 76px height flows chips into columns that scroll right; left-aligned, hidden
+scrollbar, right-edge fade mask as the "more" cue. Same toggle/append logic covers all
+twenty.
