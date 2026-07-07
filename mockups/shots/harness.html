@@ -162,7 +162,15 @@ f.onload = function () {
   if (step === "contact") return;
   if (step === "err") { d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true })); return; }
   d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
-  if (step === "questions") return;
+  if (step === "questions") {
+    var sv = new URLSearchParams(location.search).get("slide");
+    if (sv) {
+      var sl = d.getElementById("repairsSlider");
+      sl.value = sv;
+      sl.dispatchEvent(new w.Event("input", { bubbles: true }));
+    }
+    return;
+  }
   if (step === "qerr") { d.getElementById("qContinue").click(); return; } // continue with no intent picked
   d.querySelectorAll("#intentChips .lm-chip")[1].click(); // pick "Soon" so validation passes
   d.getElementById("qContinue").click();

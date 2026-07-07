@@ -722,3 +722,24 @@ something else. it sounds like its pandering a bit too much… "nothing to see h
 **Claude:** Agreed — over-reassurance is its own red flag. Sub-line is now the factual
 benefit: "Your answers shape what your report highlights." Step is referred to as the
 Intent step in the docs.
+
+**Lucas:** In that same vein… does "open to selling?" appear too assumptive? what would
+two other versions (each in an opposite direction) look like?
+
+**Claude:** Assessment: the assumption lives in the answer arc (three temporal yeses),
+not the question — "open to" is the softest verb frame, and the quiet "No" is the valve.
+Poles sketched: more assumptive "When are you selling?" (Now/Soon/Eventually/Not sure —
+the old Timeframe failure in a shorter coat) vs fully detached "How would you describe
+your interest?" (Just curious/Weighing options/Getting serious — comfortable but blurs
+the routing signal and self-labels leads weaker). **Lucas: keep as-is** — now a decision
+rather than an accident; both poles are documented if CR data ever argues for moving.
+
+**Lucas:** the slider seems shorter than the highest repair possibility. can you see in
+the ss?
+
+**Claude:** Confirmed: a range thumb's center only travels [8px, width−8px] while the
+wedge spanned full width, so at max the wedge (and its fill) extended past the dial.
+Fixed: wedge inset 8px each side so its endpoints sit exactly at the dial's travel
+limits; wedge zone heightened and axis labels inset so the tall dial no longer grazes
+"none"/"a full project" at the extremes. Harness gained `?step=questions&slide=N` for
+screenshotting any slider position.

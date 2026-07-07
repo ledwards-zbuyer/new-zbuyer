@@ -81,8 +81,11 @@
   .lm-divider{border-top:1px solid var(--line);margin:4px 0 2px}
   .lm-questions .lm-intent{margin-top:16px;text-align:left}
   .lm-slider{padding:0 6px}
-  .lm-wedge{position:relative;height:44px;margin-top:2px}
-  .lm-wedge .wedge{position:absolute;left:0;right:0;bottom:6px;height:32px;clip-path:polygon(0 100%,100% 0,100% 100%);background:linear-gradient(90deg,#E4EAF3 0%,#E4EAF3 100%);border-radius:2px}
+  .lm-wedge{position:relative;height:52px;margin-top:2px}
+  /* Inset by half the 16px dial width: a range thumb's center only travels
+     [8px, width-8px], so the wedge ends must match or the wedge reads as
+     extending past the slider's maximum. */
+  .lm-wedge .wedge{position:absolute;left:8px;right:8px;bottom:10px;height:32px;clip-path:polygon(0 100%,100% 0,100% 100%);background:linear-gradient(90deg,#E4EAF3 0%,#E4EAF3 100%);border-radius:2px}
   /* border/padding/outline:none — the generic .lm-final input text-field
      styling (border, radius, white bg, blue focus border) must not paint a
      box around the range control; focus shows on the dial instead. */
@@ -91,10 +94,10 @@
   .lm-wedge input:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
   .lm-wedge input:focus-visible::-moz-range-thumb{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
   .lm-wedge input::-webkit-slider-runnable-track{background:transparent;height:100%}
-  .lm-wedge input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:40px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4);margin-top:2px}
+  .lm-wedge input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:40px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4);margin-top:0}
   .lm-wedge input::-moz-range-track{background:transparent;height:100%}
   .lm-wedge input::-moz-range-thumb{width:16px;height:40px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4)}
-  .lm-axis{display:flex;justify-content:space-between;color:#9ba8bb;font-size:11px;margin-top:4px}
+  .lm-axis{display:flex;justify-content:space-between;color:#9ba8bb;font-size:11px;margin-top:7px;padding:0 22px}
   .lm-slider-val{text-align:center;font-size:14.5px;font-weight:600;color:var(--c1);margin-top:2px}
   .lm-slider-val.zero{color:#9ba8bb;font-weight:500}
   .lm-final h3,.lm-final .lm-sub{text-align:center}
