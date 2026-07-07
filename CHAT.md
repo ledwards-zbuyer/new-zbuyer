@@ -1138,3 +1138,13 @@ View photo, and the wrap needed `flex:1 1 auto` (a 0-basis wrap got glued onto t
 photo's flex line at zero width, hiding the chip). Verified headless: edit state
 (photo gone, box stable at 680px, X visible), X tap (empty + refocused), picked state
 desktop + mobile, homepage manual pick. New harness steps `clearx` / `clearx2`.
+
+**Lucas:** see how there is a little more white space on the right side of the
+streetview image than there is on the left?
+
+**Claude:** Measured it: 8px left, 22px right. The strip's `flex:0 0 100%` was the
+culprit — a percentage flex-basis overrides the `width` property, so the
+`calc(100% + 14px)` bleed from the earlier "symmetric frame" fix never actually
+applied; the -14px margin just slid a too-narrow image left. Changed the basis to
+auto so the width wins: even 8px frame on both sides now (mobile was already
+symmetric, unchanged).

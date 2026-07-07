@@ -57,7 +57,9 @@
   .search input.hidden-by-pick{display:none}
   /* ?zsv=1: Street View preview inside the search card, above the box —
      wide/short frame (640x200 + tight fov) so the CTA stays near the fold */
-  .search .sv-img{flex:0 0 100%;width:calc(100% + 14px);margin-left:-14px;display:block;border-radius:12px;object-fit:cover;margin-bottom:8px}
+  /* flex-basis must be auto: a % basis overrides the width property, so the
+     +14px bleed never applied and the frame sat 8px left / 22px right */
+  .search .sv-img{flex:0 0 auto;width:calc(100% + 14px);margin-left:-14px;display:block;border-radius:12px;object-fit:cover;margin-bottom:8px}
   /* display:block above beats the browser's [hidden] rule — without this the
      photo never hides and its 100%-basis row shoves the input out of the card */
   .search .sv-img[hidden]{display:none}

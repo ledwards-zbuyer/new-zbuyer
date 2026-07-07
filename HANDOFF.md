@@ -208,7 +208,7 @@ changing the funnel.
     suggestion-list format; click to edit; the desktop box shrinks to fit
     (`width:fit-content`, min 430px) while chipped.
   - **`&zsv=1` Street View preview:** with the param, a wide/short Street View strip
-    (640x200, fov 75, radius 100; free metadata call gates the billable render) appears
+    (640x200, fov 68, pitch 6, radius 100; free metadata call gates the billable render) appears
     inside the search card above the box once the address verifies — manual pick,
     prepop, or Google-rescued; typing hides the stale photo; no imagery → nothing shows.
     Uses `GOOGLE_MAPS_KEY` (google-config.js) — Street View Static API works on that
@@ -232,6 +232,10 @@ changing the funnel.
        Chrome glued it onto the photo's line at zero width (chip/pin invisible).
     3. Mobile pin now anchors to the wrap (`top:50%`), which also fixes the pin
        floating over the sv photo (it used to anchor `top:30px` to `.search`).
+    4. **`.sv-img` needs `flex:0 0 auto`, not `flex:0 0 100%`** — a percentage
+       flex-basis overrides the `width` property, so the `calc(100% + 14px)` bleed
+       never applied and the photo's white frame sat 8px left / 22px right (Lucas
+       spotted the asymmetry). Basis auto defers to width → even 8/8 frame.
     Harness: `?step=clearx` (prepop→chip-edit→delete chars; asserts photo hidden, box
     width stable, X visible) and `?step=clearx2` (+taps the X; asserts empty+focused).
 - Lander logo = `assets/logo-blue-dark.png`, same file as the homepage nav (was briefly
