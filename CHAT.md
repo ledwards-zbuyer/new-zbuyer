@@ -999,3 +999,16 @@ both ends, the selected range as a thicker gradient fill between two white-ringe
 knobs, anchor dots at the true proportional spots (345K → 55.3%, 355K → 70.6%; hover
 tooltips carry their names, no visible labels), and end labels only — "$312,000 / Quick
 cash close" and "$371,000 / Top market value". Big range headline stays.
+
+**Lucas:** make the spectrum on the report an actual slider, but only change the range
+values (312,000 - 371,000) on top IF the user moves the slider, then replace those range
+values with the actual value at the stopping point. use the stopping points you already
+have, but let the slider move freely, but snap to the nearest stopping point.
+*(mid-build:)* the slider should be tall like the repair slider
+
+**Claude:** The combined module is now interactive: a tall orange pill handle (same
+family as the repairs dial) parked mid-track; drags freely (pointer capture,
+touch-action:none), snaps to the nearest of the four anchors on release with a short
+ease, and only on first snap does the headline swap from "$312,000 – $371,000" to the
+anchor's value ($312,000 / $345,000 / $355,000 / $371,000). Keyboard arrows step
+anchors; ?snap=N for testing. Verified rest + snapped states ($345K, $355K).

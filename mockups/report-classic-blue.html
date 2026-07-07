@@ -104,11 +104,15 @@
      ($345K) and Cash+ w/ repairs ($355K) at their proportional positions
      (title tooltips only); values are labeled at the ends only. */
   .vrange{font-size:38px;font-weight:800;letter-spacing:-.03em;margin-top:10px;text-align:center}
-  .vslide{position:relative;height:28px;margin:22px 2px 6px}
+  .vslide{position:relative;height:46px;margin:18px 2px 4px}
   .vs-track{position:absolute;left:0;right:0;top:50%;height:8px;transform:translateY(-50%);border-radius:999px;background:var(--line)}
   .vs-fill{position:absolute;left:5%;right:5%;top:50%;height:14px;transform:translateY(-50%);border-radius:999px;background:linear-gradient(90deg,var(--acc),var(--c1) 55%,var(--navy))}
   .vs-knob{position:absolute;top:50%;width:22px;height:22px;border-radius:50%;background:var(--c1);border:4px solid #fff;box-shadow:0 2px 8px rgba(14,27,51,.35);transform:translate(-50%,-50%)}
   .vs-dot{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:#fff;opacity:.85;transform:translate(-50%,-50%)}
+  .vslide{cursor:pointer;touch-action:none}
+  .vs-handle{position:absolute;top:50%;width:18px;height:42px;border-radius:10px;background:var(--cta);border:3px solid #fff;box-shadow:0 3px 10px rgba(14,27,51,.4);transform:translate(-50%,-50%);cursor:grab;z-index:2}
+  .vs-handle.snap{transition:left .18s ease}
+  .vs-handle:focus-visible{outline:none;box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 10px rgba(14,27,51,.4)}
   .vs-ends{display:flex;justify-content:space-between;gap:14px;margin-top:10px}
   .vs-end b{display:block;font-size:15px;font-weight:800;color:var(--ink)}
   .vs-end span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
@@ -257,11 +261,11 @@
 
   <section class="card vmod" id="vCombined" hidden>
     <div class="vhead"><span class="eyebrow">Your selling range</span></div>
-    <p class="vrange">$312,000 &ndash; $371,000</p>
+    <p class="vrange" id="vRangeVal">$312,000 &ndash; $371,000</p>
     <!-- anchors: $312K quick cash close (knob) · $345K Cash+ (dot, 55.3%) ·
          $355K Cash+ w/ repairs (dot, 70.6%) · $371K top market value (knob).
          Dot positions: 5% + (v-312)/(371-312) * 90%. -->
-    <div class="vslide" aria-hidden="true">
+    <div class="vslide" id="vSlide">
       <div class="vs-track"></div>
       <div class="vs-fill"></div>
       <span class="vs-knob" style="left:5%"></span>
@@ -474,6 +478,72 @@
 <!-- Pulse pixel tracking: FinalizeLead (fired on the funnel's last step)
      returns raw HTML that must land in the thank-you page body. The lander
      stashes it in sessionStorage across the navigation; inject it here. -->
+<script>
+/* Combined-range slider: the handle drags freely, snaps to the nearest
+ * anchor on release, and only then does the headline swap from the full
+ * range to the snapped anchor's value. ?snap=N (0-3) presets it (testing). */
+(function () {
+  var slide = document.getElementById("vSlide");
+  if (!slide) return;
+  var rangeEl = document.getElementById("vRangeVal");
+  var ANCHORS = [
+    { p: 5,    v: "$312,000", n: "Quick cash close" },
+    { p: 55.3, v: "$345,000", n: "Cash+" },
+    { p: 70.6, v: "$355,000", n: "Cash+ with repairs" },
+    { p: 95,   v: "$371,000", n: "Top market value" }
+  ];
+  var handle = document.createElement("span");
+  handle.className = "vs-handle";
+  handle.tabIndex = 0;
+  handle.setAttribute("role", "slider");
+  handle.setAttribute("aria-label", "Explore your selling range");
+  handle.setAttribute("aria-valuetext", "$312,000 to $371,000");
+  handle.style.left = "50%";
+  slide.appendChild(handle);
+  var idx = -1; // untouched: headline keeps the full range
+  function snapTo(i) {
+    idx = Math.max(0, Math.min(ANCHORS.length - 1, i));
+    var a = ANCHORS[idx];
+    handle.classList.add("snap");
+    handle.style.left = a.p + "%";
+    rangeEl.textContent = a.v;
+    handle.setAttribute("aria-valuetext", a.v + " — " + a.n);
+  }
+  function pctFromX(clientX) {
+    var r = slide.getBoundingClientRect();
+    return Math.max(5, Math.min(95, ((clientX - r.left) / r.width) * 100));
+  }
+  var dragging = false;
+  slide.addEventListener("pointerdown", function (e) {
+    dragging = true;
+    handle.classList.remove("snap"); // free movement while dragging
+    try { slide.setPointerCapture(e.pointerId); } catch (err) {}
+    handle.style.left = pctFromX(e.clientX) + "%";
+    e.preventDefault();
+  });
+  slide.addEventListener("pointermove", function (e) {
+    if (dragging) handle.style.left = pctFromX(e.clientX) + "%";
+  });
+  function endDrag(e) {
+    if (!dragging) return;
+    dragging = false;
+    var p = pctFromX(e.clientX);
+    var best = 0;
+    ANCHORS.forEach(function (a, i) {
+      if (Math.abs(a.p - p) < Math.abs(ANCHORS[best].p - p)) best = i;
+    });
+    snapTo(best);
+  }
+  slide.addEventListener("pointerup", endDrag);
+  slide.addEventListener("pointercancel", endDrag);
+  handle.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight" || e.key === "ArrowUp") { snapTo(idx < 0 ? 0 : idx + 1); e.preventDefault(); }
+    else if (e.key === "ArrowLeft" || e.key === "ArrowDown") { snapTo(idx < 0 ? 0 : idx - 1); e.preventDefault(); }
+  });
+  var qs = new URLSearchParams(location.search).get("snap");
+  if (qs !== null) snapTo(parseInt(qs, 10));
+})();
+</script>
 <div id="pixelDiv"></div>
 <script>
 (function () {
