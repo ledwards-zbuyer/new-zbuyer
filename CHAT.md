@@ -1085,3 +1085,9 @@ the rows stagger naturally.
 **Claude:** Expert card now has three buttons: Call Jason (orange, tel:), Text Jason
 (sms: — opens the messaging app), Schedule. The names use the .xName spans so the
 maxsold variant's "your pros" swap keeps working.
+
+**Lucas:** just change it to Call, Text, & Schedule (currently too wide on mobile). make
+call and text buttons the same color
+
+**Claude:** Done — Call and Text both orange (Schedule stays outline); all three fit
+comfortably on one mobile row.
