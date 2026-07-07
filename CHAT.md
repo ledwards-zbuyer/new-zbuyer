@@ -798,3 +798,8 @@ impossible. Choreography: both enter at the same 35° tilt walking toward each o
 along the seam (pure translation, constant gap), spin once around each other as a pair,
 pause as the exact logo Z, spin away the opposite direction, and part. 2s seamless loop,
 GIF 40 frames / 219KB.
+
+**Lucas:** make it twice as long
+
+**Claude:** Loop doubled to 4s (same choreography percentages — every phase, including
+the Z hold, scales with it); GIF re-rendered at 80 frames / 371KB.
