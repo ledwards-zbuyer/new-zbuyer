@@ -61,7 +61,11 @@ API — see §9. The homepage and compare pages remain inert demos.
    suggestion chips in a two-row horizontal carousel (left-aligned, same height as
    the original five; scrolls right with a right-edge fade hinting more; scrollbar
    hidden; tapping appends, chips light up while their text is present, typing stays
-   free). One button, no validation: **"Continue →"**; sends `SomethingSpecial`
+   free). Desktop mouse-drag scrolls the carousel too (2026-07-07: mousedown/move on
+   `#specialChips`, 6px threshold so plain clicks still add, the drag-end click is
+   swallowed in capture phase so releasing on a chip doesn't add it; grab/grabbing
+   cursors; touch untouched — it scrolls natively; harness `?step=spdrag` asserts all
+   three). One button, no validation: **"Continue →"**; sends `SomethingSpecial`
    only if the box has content.
 5. **"You're all set!" step — the last step** — confirmation: success graphic, "a
    local expert will be in touch…", CTA **View my Report →** (fires RealtorOpt="ok"
@@ -207,8 +211,9 @@ changing the funnel.
     swaps for a two-line chip — street bold, "City, ST zip" small — mirroring the
     suggestion-list format; click to edit; the desktop box shrinks to fit
     (`width:fit-content`, min 430px) while chipped.
-  - **`&zsv=1` Street View preview:** with the param, a wide/short Street View strip
-    (640x200, fov 68, pitch 6, radius 100; free metadata call gates the billable render) appears
+  - **`&zsv=1` Street View preview:** with the param, a Street View strip
+    (640x400 source, fov 68, pitch 6, radius 100, displayed 230px tall desktop /
+    190px mobile, cover-cropped; free metadata call gates the billable render) appears
     inside the search card above the box once the address verifies — manual pick,
     prepop, or Google-rescued; typing hides the stale photo; no imagery → nothing shows.
     Uses `GOOGLE_MAPS_KEY` (google-config.js) — Street View Static API works on that
@@ -236,6 +241,12 @@ changing the funnel.
        flex-basis overrides the `width` property, so the `calc(100% + 14px)` bleed
        never applied and the photo's white frame sat 8px left / 22px right (Lucas
        spotted the asymmetry). Basis auto defers to width → even 8/8 frame.
+    5. **The photo must not widen the chipped card** (Lucas disliked the white gap
+       it forced between address chip and button): `width:0` +
+       `min-width:calc(100% + 14px)` keeps the photo out of the `fit-content`
+       intrinsic math (% min-widths are ignored there) — chip + button alone set
+       the card width, the photo just spans it, and a fixed height (230/190px,
+       640x400 source) shows more house vertically instead.
     Harness: `?step=clearx` (prepop→chip-edit→delete chars; asserts photo hidden, box
     width stable, X visible) and `?step=clearx2` (+taps the X; asserts empty+focused).
 - Lander logo = `assets/logo-blue-dark.png`, same file as the homepage nav (was briefly

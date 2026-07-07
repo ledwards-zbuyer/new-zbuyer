@@ -58,8 +58,12 @@
   /* ?zsv=1: Street View preview inside the search card, above the box —
      wide/short frame (640x200 + tight fov) so the CTA stays near the fold */
   /* flex-basis must be auto: a % basis overrides the width property, so the
-     +14px bleed never applied and the frame sat 8px left / 22px right */
-  .search .sv-img{flex:0 0 auto;width:calc(100% + 14px);margin-left:-14px;display:block;border-radius:12px;object-fit:cover;margin-bottom:8px}
+     +14px bleed never applied and the frame sat 8px left / 22px right.
+     width:0 + %-min-width keeps the photo out of the card's fit-content math
+     (intrinsic sizing ignores % min-widths) — the chip + button alone set the
+     chipped card's width and the photo just spans whatever that is; a fixed
+     height (cover-cropped) shows more house without widening anything. */
+  .search .sv-img{flex:0 0 auto;width:0;min-width:calc(100% + 14px);height:230px;margin-left:-14px;display:block;border-radius:12px;object-fit:cover;margin-bottom:8px}
   /* display:block above beats the browser's [hidden] rule — without this the
      photo never hides and its 100%-basis row shoves the input out of the card */
   .search .sv-img[hidden]{display:none}
@@ -157,6 +161,9 @@
      hints there's more to scroll */
   .sp-chips{display:flex;flex-direction:column;gap:7px;overflow-x:auto;overflow-y:hidden;margin-top:11px;text-align:left;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 90%,transparent);mask-image:linear-gradient(90deg,#000 90%,transparent)}
   .sp-chips::-webkit-scrollbar{display:none}
+  .sp-chips{cursor:grab;user-select:none;-webkit-user-select:none}
+  .sp-chips.dragging{cursor:grabbing}
+  .sp-chips.dragging .sp-chip{cursor:grabbing}
   .sp-row{display:flex;gap:7px;width:max-content;padding-right:26px}
   .sp-chip{white-space:nowrap}
   .sp-chip{font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);background:var(--soft);border:1.5px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer}
@@ -227,7 +234,7 @@
     .search input::placeholder{color:#8597AE}
     .search button{width:100%;padding:16px;font-size:16px}
     .search.has-pick{width:auto;min-width:0}
-    .search .sv-img{width:100%;margin-left:0}
+    .search .sv-img{width:100%;min-width:0;margin-left:0;height:190px}
   }
 </style>
 </head>

@@ -448,6 +448,34 @@
       });
     });
     specialText.addEventListener("input", syncChips);
+
+    // Desktop: mouse-drag scrolls the chip carousel (touch already scrolls
+    // natively and never fires these). A 6px threshold keeps plain clicks
+    // working; after a real drag the click that follows mouseup is swallowed
+    // so releasing on a chip doesn't add it.
+    var dragX = null, dragScroll = 0, dragged = false;
+    specialChips.addEventListener("mousedown", function (e) {
+      dragX = e.clientX;
+      dragScroll = specialChips.scrollLeft;
+      dragged = false;
+      e.preventDefault(); // no text-selection drag
+    });
+    window.addEventListener("mousemove", function (e) {
+      if (dragX === null) return;
+      var dx = e.clientX - dragX;
+      if (Math.abs(dx) > 6) {
+        dragged = true;
+        specialChips.classList.add("dragging");
+      }
+      if (dragged) specialChips.scrollLeft = dragScroll - dx;
+    });
+    window.addEventListener("mouseup", function () {
+      dragX = null;
+      specialChips.classList.remove("dragging");
+    });
+    specialChips.addEventListener("click", function (e) {
+      if (dragged) { e.stopPropagation(); e.preventDefault(); dragged = false; }
+    }, true);
   }
   document.getElementById("viewReport").addEventListener("click", function () {
     if (P && specialText && specialText.value.trim()) {

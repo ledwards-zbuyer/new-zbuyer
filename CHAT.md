@@ -1148,3 +1148,28 @@ culprit — a percentage flex-basis overrides the `width` property, so the
 applied; the -14px margin just slid a too-narrow image left. Changed the basis to
 auto so the width wins: even 8px frame on both sides now (mobile was already
 symmetric, unchanged).
+
+**Lucas:** on somethingspecial on desktop, can the user click and drag to scroll right
+and see more suggestions? it won't let me do it in chrome, but the finger touch worked
+on mobile
+
+**Claude:** Added — browsers only wire touch to scrolling, so desktop needed explicit
+mouse-drag: mousedown+move on the chip carousel scrolls it (grab/grabbing cursor), a
+6px threshold keeps plain clicks adding chips, and the click that fires when you
+release a drag is swallowed so you don't accidentally add whatever chip you let go on.
+Touch path untouched. Harness step `spdrag` asserts drag-scrolls / drag-click-ignored /
+plain-click-adds.
+
+**Lucas:** also, keep the streetview image from stretching the width of the address
+textbox container. just increase the height of the textbox to get more of the house
+image, but not the width. i don't like the extra white space between the formatted
+address and the button when it is stretched
+
+**Claude:** Done. The photo's natural 640px width was feeding the card's fit-content
+width, stretching the chipped card and leaving that dead gap between address and
+button. Now the photo is width-passive (`width:0` + `min-width:calc(100%+14px)` — %
+min-widths are invisible to intrinsic sizing) so chip + button alone set the card
+width and the photo just spans it. More house comes from height instead: 640x400
+source (was 640x200), displayed 230px tall desktop / 190px mobile, cover-cropped and
+still centered on the house. Verified both widths: narrow card, no gap, symmetric
+frame, noticeably more house.

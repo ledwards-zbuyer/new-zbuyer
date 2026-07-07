@@ -223,6 +223,33 @@ f.onload = function () {
   if (step === "qerr") { d.getElementById("qContinue").click(); return; } // continue with no intent picked
   d.querySelectorAll("#intentChips .lm-chip")[1].click(); // pick "Soon" so validation passes
   d.getElementById("qContinue").click();
+  if (step === "spdrag") {
+    // Desktop mouse-drag on the SomethingSpecial carousel: drag must scroll,
+    // the click released at drag-end must NOT add a chip, and a plain click
+    // afterwards must still add one.
+    setTimeout(function () { // wait out the Z-beat into the special screen
+      var sc = d.getElementById("specialChips");
+      var r = sc.getBoundingClientRect();
+      var y = r.top + 18;
+      sc.dispatchEvent(new w.MouseEvent("mousedown", { clientX: r.left + 320, clientY: y, bubbles: true }));
+      sc.dispatchEvent(new w.MouseEvent("mousemove", { clientX: r.left + 60, clientY: y, bubbles: true }));
+      sc.dispatchEvent(new w.MouseEvent("mouseup", { clientX: r.left + 60, clientY: y, bubbles: true }));
+      var scrolled = sc.scrollLeft;
+      var chip = sc.querySelector(".sp-chip");
+      chip.dispatchEvent(new w.MouseEvent("click", { bubbles: true, cancelable: true })); // drag-end click: swallowed
+      var afterDragClick = d.getElementById("specialText").value;
+      chip.dispatchEvent(new w.MouseEvent("click", { bubbles: true, cancelable: true })); // plain click: adds
+      setTimeout(function () {
+        var dbg = document.createElement("div");
+        dbg.style.cssText = "position:fixed;top:0;left:0;background:#060;color:#fff;z-index:9999;font:12px monospace;padding:4px 8px";
+        dbg.textContent = "scrolled=" + scrolled +
+          " dragClickAdded=[" + afterDragClick + "]" +
+          " plainClickAdded=[" + d.getElementById("specialText").value + "]";
+        document.body.appendChild(dbg);
+      }, 300);
+    }, 2600);
+    return;
+  }
   if (step === "sms") d.getElementById("toSms").click();
   if (step === "finale") {
     d.getElementById("toSms").click();
