@@ -963,3 +963,9 @@ CSS, supported everywhere modern; the nightmare version would be JS-measured wid
 which this avoids. (2) The "solid dot" is the back/forward cache restoring the page
 exactly as left — mid-finale. A `pageshow`/`persisted` handler now reloads the lander on
 back; the Pulse submissionID survives in sessionStorage so it's the same lead session.
+
+**Lucas:** give just a little more space between the left end of the chip (address) and
+the button
+
+**Claude:** +14px of right padding on the chip — the address and the button breathe now
+(total gap 28px with the box's existing 14px flex gap).
