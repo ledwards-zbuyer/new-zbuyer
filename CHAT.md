@@ -680,3 +680,11 @@ Open to selling? chips + report-focus chips + an "Any repairs needed?" slider (5
 No repairs — move-in ready → A few touch-ups → Some repairs → Major repairs → A full
 project; defaults to stop 0 with the label muted, label turns blue and updates live as
 it moves; end hints none ⟷ "a full project"). Shown in default and dragged states.
+
+**Lucas:** the slider dial needs to be taller and more prominent and the slider itself
+needs to gradually grow vertically like a 90 degree triangle on its side
+
+**Claude:** Rebuilt the slider as a wedge: the track is a right-triangle (clip-path) that
+grows from a sliver at "none" to full height at "a full project", filled blue up to the
+dial and gray ahead of it; the dial is now a tall white-ringed pill (16×40px) riding over
+the wedge. Default state keeps the wedge all-gray with the muted label.
