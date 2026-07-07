@@ -240,9 +240,12 @@ load) while values and home stats remain static demo data. The old
   fold** → value module → property details + net-equity cards → value-history chart
   (inline SVG, 5y/10y toggle) → minimal footer.
 - **`?values=` param — three value-display strategies** (default `combined`):
-  - `combined` — one wide range ($312K–$371K demo), endpoints labeled as *choices*
-    ("Fastest cash sale" ↔ "Top market value"). Most member-protective: no
-    individual offer shown.
+  - `combined` — one wide range ($312K–$371K demo) drawn as a slider (2026-07-07):
+    muted outer track, the selected range prominent between two knobs, unlabeled
+    anchor dots at Cash+ ($345K, 55.3%) and Cash+ w/ repairs ($355K, 70.6%) with
+    title tooltips, values labeled at the ends only ("$312,000 Quick cash close" ↔
+    "$371,000 Top market value"). Most member-protective: interior offers are
+    positions, not numbers.
   - `options` — a range per path (Cash / Cash+ featured / List), expert as
     tie-breaker CTA. Exposes the Cash+ number.
   - `spectrum` — all paths as interval bars on one Speed ⟷ Price axis; the geometry

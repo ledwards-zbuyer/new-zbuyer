@@ -99,10 +99,20 @@
   .vask{display:block;text-align:center;font-size:14.5px;font-weight:700;color:var(--c1);margin-top:12px}
   .vask:hover{text-decoration:underline}
 
-  /* combined: one wide range */
+  /* combined: slider-style spectrum — muted outer track with the selected
+     range prominent between two knobs; unlabeled anchor dots mark Cash+
+     ($345K) and Cash+ w/ repairs ($355K) at their proportional positions
+     (title tooltips only); values are labeled at the ends only. */
   .vrange{font-size:38px;font-weight:800;letter-spacing:-.03em;margin-top:10px;text-align:center}
-  .vtrack{position:relative;height:12px;border-radius:999px;margin:22px 6px 10px;
-          background:linear-gradient(90deg,var(--acc),var(--c1) 55%,var(--navy))}
+  .vslide{position:relative;height:28px;margin:22px 2px 6px}
+  .vs-track{position:absolute;left:0;right:0;top:50%;height:8px;transform:translateY(-50%);border-radius:999px;background:var(--line)}
+  .vs-fill{position:absolute;left:5%;right:5%;top:50%;height:14px;transform:translateY(-50%);border-radius:999px;background:linear-gradient(90deg,var(--acc),var(--c1) 55%,var(--navy))}
+  .vs-knob{position:absolute;top:50%;width:22px;height:22px;border-radius:50%;background:var(--c1);border:4px solid #fff;box-shadow:0 2px 8px rgba(14,27,51,.35);transform:translate(-50%,-50%)}
+  .vs-dot{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:#fff;opacity:.85;transform:translate(-50%,-50%)}
+  .vs-ends{display:flex;justify-content:space-between;gap:14px;margin-top:10px}
+  .vs-end b{display:block;font-size:15px;font-weight:800;color:var(--ink)}
+  .vs-end span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+  .vs-end.right{text-align:right}
   .vpoles{display:flex;justify-content:space-between;gap:14px;margin-top:12px}
   .vpole{max-width:46%}
   .vpole b{display:block;font-size:13.5px;font-weight:800;color:var(--ink)}
@@ -248,10 +258,20 @@
   <section class="card vmod" id="vCombined" hidden>
     <div class="vhead"><span class="eyebrow">Your selling range</span></div>
     <p class="vrange">$312,000 &ndash; $371,000</p>
-    <div class="vtrack"></div>
-    <div class="vpoles">
-      <div class="vpole"><b>Fastest cash sale</b><span>Close in as little as ~2 weeks</span></div>
-      <div class="vpole right"><b>Top market value</b><span>Listed with an agent, on your timeline</span></div>
+    <!-- anchors: $312K quick cash close (knob) · $345K Cash+ (dot, 55.3%) ·
+         $355K Cash+ w/ repairs (dot, 70.6%) · $371K top market value (knob).
+         Dot positions: 5% + (v-312)/(371-312) * 90%. -->
+    <div class="vslide" aria-hidden="true">
+      <div class="vs-track"></div>
+      <div class="vs-fill"></div>
+      <span class="vs-knob" style="left:5%"></span>
+      <span class="vs-dot" style="left:55.3%" title="Cash+ &mdash; $345,000"></span>
+      <span class="vs-dot" style="left:70.6%" title="Cash+ with repairs &mdash; $355,000"></span>
+      <span class="vs-knob" style="left:95%"></span>
+    </div>
+    <div class="vs-ends">
+      <div class="vs-end"><b>$312,000</b><span>Quick cash close</span></div>
+      <div class="vs-end right"><b>$371,000</b><span>Top market value</span></div>
     </div>
     <p class="vnote">This range reflects different ways to sell — it isn't an appraisal of your home. Where you land depends on the path you choose.</p>
     <a class="vask" href="tel:1234567890">Talk through your range with <span class="xName">Jason</span> &rarr;</a>

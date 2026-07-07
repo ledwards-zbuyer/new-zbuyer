@@ -987,3 +987,15 @@ submitted, but keep the static demo values and home stats.
 sessionStorage; the report masthead swaps it in on load — E2E shows "1401 Candlewood Dr,
 Pittsburgh, PA 15241" (Smarty-corrected) on the report with the full 200 call log +
 pixel intact. Values/stats untouched demo data.
+
+**Lucas:** make the report range a slider with high and low values visible, but the
+range selected more prominent. make an anchor point at bottom (312k - quick cash
+close), then another relative on the spectrum at 345k (Cash+) and at 355k (Cash+ w/
+Repairs) and obviously at 371k (Top Market Value). the labels do not need to be visible
+except the opposite ends
+
+**Claude:** Combined value module redrawn as a slider: muted outer track running past
+both ends, the selected range as a thicker gradient fill between two white-ringed
+knobs, anchor dots at the true proportional spots (345K → 55.3%, 355K → 70.6%; hover
+tooltips carry their names, no visible labels), and end labels only — "$312,000 / Quick
+cash close" and "$371,000 / Top market value". Big range headline stays.
