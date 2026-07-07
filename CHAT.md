@@ -907,3 +907,16 @@ stopped 86px out — inside the 96px circle; travel now ~205px, fully clear with
 rigid spin → lock the Z) plays between contact→intent, intent→all-set, and all-set→SMS;
 the SMS→report exit navigates directly. Restartable per transition; reduced-motion
 shows the locked Z; DR lock-in unaffected (X stays hidden on the beat screen).
+
+**Lucas:** add a z beat after the SMS step that "Your report is on the way" and let that
+beat run the full cycle
+
+**Claude:** Finale beat added: after "Text my Report" / "No thanks", the full cycle
+plays (in → hold → back out, ~3.3s via two alternate iterations) with the caption
+"Your report is on the way" — and FinalizeLead runs underneath it, so the beat covers
+the API round-trip before navigating to the report. Investigation of empty-circle
+headless shots found (a) a REAL race — a stale beat timer could stomp a newer screen —
+fixed with a beatSeq guard; and (b) a test-rig artifact — under virtual time,
+late-restarted CSS animations report running but sit at frame 0 (computed-style probe
+proved correct name/duration/iteration). Real browsers restart class-swapped animations
+normally; flagged for on-device verification.

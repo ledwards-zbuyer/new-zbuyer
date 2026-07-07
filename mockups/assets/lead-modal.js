@@ -67,13 +67,28 @@
   // Z-beat interstitial: one-shot logo dance between steps. The final step
   // (SMS -> report) exits directly, per design.
   var zbeat = modal.querySelector(".lm-zbeat");
+  var beatSeq = 0; // stale-timer guard: only the latest beat's timer may act
   function runZBeat(target) {
     if (!zbeat) { show(target); if (card) card.focus(); return; }
+    var my = ++beatSeq;
     show("zbeat");
-    zbeat.classList.remove("run");
+    zbeat.classList.remove("run", "run-full");
     void zbeat.offsetWidth; // restart the one-shot on every transition
     zbeat.classList.add("run");
-    setTimeout(function () { show(target); if (card) card.focus(); }, 1650);
+    setTimeout(function () { if (my === beatSeq) { show(target); if (card) card.focus(); } }, 1650);
+  }
+  // Finale after the SMS step: full cycle (in, hold, back out) + caption,
+  // then hand off — FinalizeLead runs underneath it.
+  function runZBeatFinale(cb) {
+    if (!zbeat) { cb(); return; }
+    var my = ++beatSeq;
+    show("zbeat");
+    var note = zbeat.querySelector(".zb-note");
+    if (note) note.hidden = false;
+    zbeat.classList.remove("run", "run-full");
+    void zbeat.offsetWidth;
+    zbeat.classList.add("run-full");
+    setTimeout(function () { if (my === beatSeq) cb(); }, 3350);
   }
 
   function close() {
@@ -363,11 +378,17 @@
   // navigation). Never block the user on a slow/failed finalize: navigate
   // after 2.5s regardless.
   function goToReport() {
-    if (!P) { window.location.href = REPORT_PAGE; return; }
     var done = false;
     function nav() { if (!done) { done = true; window.location.href = REPORT_PAGE; } }
-    P.finalize().then(nav, nav);
-    setTimeout(nav, 2500);
+    if (zbeat) {
+      if (P) P.finalize(); // resolves during the finale; pixel stored for the report page
+      runZBeatFinale(nav);
+    } else if (P) {
+      P.finalize().then(nav, nav);
+      setTimeout(nav, 2500);
+    } else {
+      nav();
+    }
   }
 
   document.getElementById("viewReport").addEventListener("click", function () {

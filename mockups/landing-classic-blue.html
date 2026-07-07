@@ -118,8 +118,15 @@
   /* Z-beat interstitial: a one-shot of the logo dance (walk in, rigid
      spin, lock into the Z) shown between steps — a branded "aligning"
      beat. Not used before the report; that exit navigates directly. */
-  .lm-zbeat{display:flex;justify-content:center;padding:36px 0 28px}
+  .lm-zbeat{display:flex;flex-direction:column;align-items:center;padding:36px 0 28px}
   .lm-zbeat[hidden]{display:none}
+  .zb-note{margin-top:20px;font-size:17px;font-weight:700;color:var(--ink);text-align:center}
+  .zb-note[hidden]{display:none}
+  /* Finale (after the SMS step): the full cycle — in, hold, back out —
+     via 2 alternate iterations; covers the FinalizeLead round-trip. */
+  .lm-zbeat.run-full .zb-pair{animation:zbSpin 1.6s linear 2 alternate both}
+  .lm-zbeat.run-full .zb-w{animation:zbWalkW 1.6s linear 2 alternate both}
+  .lm-zbeat.run-full .zb-b{animation:zbWalkB 1.6s linear 2 alternate both}
   .zb-pair{transform-origin:100px 100px;transform:rotate(395deg)}
   .zb-w{transform:translate(99px,-180px)}
   .zb-b{transform:translate(-99px,180px)}
@@ -263,6 +270,7 @@
             </g>
           </g>
         </svg>
+        <p class="zb-note" hidden>Your report is on the way</p>
       </div>
 
       <div class="lm-screen lm-final" data-screen="allset" hidden>

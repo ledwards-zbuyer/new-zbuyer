@@ -322,9 +322,15 @@ TRUE soft alpha — use this over the transparent gif wherever WebP is accepted)
 prefers-reduced-motion. Palette-swappable (two fill values).
 **Funnel interstitial ("Z beat"):** a 1.5s one-shot of the dance (walk in, rigid spin,
 lock the Z) plays between modal steps — contact→intent, intent→all-set, all-set→SMS —
-via `runZBeat(target)` in lead-modal.js (data-screen="zbeat" panel in both pages). The
-SMS→report exit navigates directly, per design. Reduced-motion shows the locked Z
-statically.
+via `runZBeat(target)` in lead-modal.js (data-screen="zbeat" panel in both pages). **Finale beat (SMS→report):** the full
+cycle — in, hold, back out (~3.3s via 2 alternate iterations) — with the caption
+"Your report is on the way"; FinalizeLead fires underneath it, so the beat doubles as
+cover for the API round-trip. A beatSeq guard keeps stale beat timers from stomping a
+newer screen. Reduced-motion shows the locked Z statically. NOTE: headless
+virtual-time screenshots show late-restarted CSS animations pinned at frame 0
+(state=running, transform=0% — a rendering artifact of the test rig, same genre as the
+2026-07-01 scroll-race artifact); real browsers restart class-swapped animations
+normally — verify beats on-device.
 
 ## Testing
 

@@ -175,5 +175,9 @@ f.onload = function () {
   d.querySelectorAll("#intentChips .lm-chip")[1].click(); // pick "Soon" so validation passes
   d.getElementById("qContinue").click();
   if (step === "sms") d.getElementById("toSms").click();
+  if (step === "finale") {
+    d.getElementById("toSms").click();
+    setTimeout(function () { d.getElementById("noThanks").click(); }, 1800);
+  }
 };
 </script>
