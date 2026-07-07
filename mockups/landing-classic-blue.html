@@ -58,7 +58,20 @@
   /* ?zsv=1: Street View preview inside the search card, above the box —
      wide/short frame (640x200 + tight fov) so the CTA stays near the fold */
   .search .sv-img{flex:0 0 100%;width:calc(100% + 14px);margin-left:-14px;display:block;border-radius:12px;object-fit:cover;margin-bottom:8px}
+  /* display:block above beats the browser's [hidden] rule — without this the
+     photo never hides and its 100%-basis row shoves the input out of the card */
+  .search .sv-img[hidden]{display:none}
   .search.has-sv{flex-wrap:wrap}
+  /* pin + input + clear share one positioned wrapper so the X (and the pin on
+     mobile) anchor to the input row, not the card — immune to the sv photo */
+  /* basis auto (not 0): with the sv photo shown the box flex-wraps, and a
+     0-basis wrap gets glued onto the photo's line at 0px instead of wrapping */
+  .search .addr-wrap{flex:1 1 auto;min-width:0;position:relative;display:flex;align-items:center;gap:14px}
+  .search .addr-wrap input{padding-right:36px}
+  .search .addr-clear{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:none;background:none;padding:0;border-radius:50%;cursor:pointer;color:#98A6BC}
+  .search .addr-clear:hover{color:#5B6B82}
+  .search .addr-clear[hidden]{display:none}
+  .search .addr-clear svg{display:block}
   .ac-list{position:absolute;top:calc(100% + 10px);left:0;right:0;z-index:40;list-style:none;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 26px 54px -18px rgba(0,0,0,.45);overflow:hidden;text-align:left}
   .ac-list[hidden]{display:none}
   .ac-list li{display:flex;flex-direction:column;gap:2px;padding:12px 20px;cursor:pointer}
@@ -203,8 +216,10 @@
     h1{font-size:clamp(42px,11vw,50px)}
     .sub{font-size:16.5px;margin-top:14px}
     .search{flex-direction:column;align-items:stretch;gap:10px;padding:14px;border-radius:18px}
-    .search svg{display:block;position:absolute;top:30px;left:30px;width:22px;height:22px;z-index:2}
+    .search .pin{display:block;position:absolute;top:50%;left:16px;transform:translateY(-50%);width:22px;height:22px;z-index:2}
     .search input{border:1.5px solid var(--line);border-radius:11px;background:var(--soft);padding:15px 16px 15px 48px;font-size:16px;text-align:left}
+    .search .addr-wrap input{padding-right:44px}
+    .search .addr-clear{right:10px}
     /* chip mirrors the input's mobile footprint (incl. room for the pin) */
     .search .picked{border:1.5px solid var(--line);border-radius:11px;background:var(--soft);padding:9px 16px 9px 48px}
     .search input::placeholder{color:#8597AE}
@@ -224,8 +239,11 @@
       <h1>See your home's<br><span>cash value</span> today.</h1>
       <p class="sub">Your report blends pricing models with local agent and investor insight to pinpoint your home's cash value.</p>
       <form class="search" onsubmit="return false">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" stroke="#1D4FD7" stroke-width="2"/><circle cx="12" cy="10" r="2.6" stroke="#1D4FD7" stroke-width="2"/></svg>
-        <input id="addr" placeholder="Enter your home address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="addr-suggestions">
+        <div class="addr-wrap">
+          <svg class="pin" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" stroke="#1D4FD7" stroke-width="2"/><circle cx="12" cy="10" r="2.6" stroke="#1D4FD7" stroke-width="2"/></svg>
+          <input id="addr" placeholder="Enter your home address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="addr-suggestions">
+          <button type="button" class="addr-clear" id="addrClear" hidden aria-label="Clear address"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M9.2 9.2l5.6 5.6M14.8 9.2l-5.6 5.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+        </div>
         <button>Get my cash value report &rarr;</button>
         <ul id="addr-suggestions" class="ac-list" role="listbox" hidden></ul>
       </form>

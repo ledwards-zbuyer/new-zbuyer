@@ -67,6 +67,36 @@ f.onload = function () {
     }
     return;
   }
+  if (step === "clearx" || step === "clearx2") {
+    // Regression for the "jumping box": prepop lander with ?zsv=1, click the
+    // picked chip to edit, backspace some chars — the sv photo must actually
+    // hide (not just lose flex-wrap) and the X-clear must appear. clearx2
+    // additionally taps the X and asserts the input is emptied + refocused.
+    setTimeout(function () {
+      var pk = d.querySelector(".search .picked");
+      if (pk && !pk.hidden) pk.click();
+      var inp = d.getElementById("addr");
+      inp.value = inp.value.slice(0, -9); // "backspace" a chunk
+      inp.dispatchEvent(new w.Event("input", { bubbles: true }));
+      setTimeout(function () {
+        if (step === "clearx2") d.getElementById("addrClear").click();
+        setTimeout(function () {
+          var img = d.querySelector(".sv-img");
+          var xb = d.getElementById("addrClear");
+          var sb = d.querySelector(".search");
+          var dbg = document.createElement("div");
+          dbg.style.cssText = "position:fixed;top:0;left:0;background:#060;color:#fff;z-index:9999;font:12px monospace;padding:4px 8px";
+          dbg.textContent = "svGone=" + (!img || w.getComputedStyle(img).display === "none") +
+            " xVisible=" + (xb && !xb.hidden) +
+            " boxW=" + Math.round(sb.getBoundingClientRect().width) +
+            " val=[" + inp.value + "]" +
+            " focused=" + (d.activeElement === inp);
+          document.body.appendChild(dbg);
+        }, 300);
+      }, 300);
+    }, 4000);
+    return;
+  }
   if (step === "acfocus") {
     // Focus the address input (mobile): the page should scroll the search
     // box to the top, leaving the space below for suggestions.

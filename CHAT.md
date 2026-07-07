@@ -1116,3 +1116,25 @@ that's built into the Street View Static API, no realtime intervention. The resi
 looseness was framing: fov tightened 75→68 (zoom) + pitch=6 (trade lawn for house).
 Candlewood now fills the frame dead-center. True AI re-framing (detect the house
 bounding box, crop) exists as an offline/batch option but is unnecessary here.
+
+**Lucas:** when a user clicks on the address textbox and it switches to the in-line
+normal textbox, can we add an X with a circle around it allowing the user to remove
+the address line instead of having to backspace the whole way
+
+**Lucas:** (while that was in flight) the address textbox is strangely jumping around
+when i remove text in a certain way — see screenshot
+
+**Claude:** Both shipped together — same code path. The jumping box: `hideStreetView()`
+set the photo's `hidden` attribute, but the CSS `display:block` on `.sv-img` overrides
+the browser's `[hidden]` rule, so the photo never actually disappeared — editing after
+a pick only removed the flex-wrap flag, and the still-visible full-width photo shoved
+the input and button out of the card. Fixed with `.sv-img[hidden]{display:none}` (the
+exact guard `.picked[hidden]` already had). The X-clear: pin + input now share a
+positioned `.addr-wrap`, and a circled-X overlays the input's right edge whenever it's
+visible with content — one tap wipes the address, hides the photo, closes suggestions,
+and refocuses the input; it never shows over the picked chip. Bonus fixes that fell
+out: the mobile pin now centers on the input row instead of floating over the Street
+View photo, and the wrap needed `flex:1 1 auto` (a 0-basis wrap got glued onto the
+photo's flex line at zero width, hiding the chip). Verified headless: edit state
+(photo gone, box stable at 680px, X visible), X tap (empty + refocused), picked state
+desktop + mobile, homepage manual pick. New harness steps `clearx` / `clearx2`.

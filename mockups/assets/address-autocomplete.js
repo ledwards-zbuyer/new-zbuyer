@@ -48,6 +48,7 @@
         var box = input.closest(".search");
         if (box) box.classList.remove("has-pick");
         input.focus();
+        syncClear();
       });
       input.parentNode.insertBefore(picked, input.nextSibling);
     }
@@ -59,6 +60,26 @@
     if (box) box.classList.add("has-pick");
     // The report page reads this to show the submitted address.
     try { sessionStorage.setItem("zbAddressDisplay", street + ", " + sec); } catch (e) {}
+    syncClear();
+  }
+
+  // Circled-X clear button: one tap wipes the address instead of backspacing.
+  // Shown only while the real input is visible with content — never over the
+  // picked chip (tapping the chip is already the edit affordance).
+  var clearBtn = document.getElementById("addrClear");
+  function syncClear() {
+    if (!clearBtn) return;
+    clearBtn.hidden = !input.value || input.classList.contains("hidden-by-pick");
+  }
+  if (clearBtn) {
+    clearBtn.addEventListener("click", function () {
+      input.value = "";
+      window.zbSelectedAddress = null;
+      hideStreetView();
+      close();
+      syncClear();
+      input.focus();
+    });
   }
 
   // ---- optional Street View preview (?zsv=1): shows above the address box
@@ -225,6 +246,7 @@
   input.addEventListener("input", function () {
     window.zbSelectedAddress = null; // typing invalidates the last structured pick
     hideStreetView(); // stale photo for whatever they type next
+    syncClear();
     var q = input.value.trim();
     clearTimeout(debounce);
     if (q.length < 3) { close(); return; }
@@ -270,6 +292,7 @@
     var zzip = (qp.get("zzipcode") || "").trim();
     var composed = zstreet + (zcity ? ", " + zcity : "") + (zstate ? ", " + zstate : "") + (zzip ? " " + zzip : "");
     input.value = composed;
+    syncClear();
 
     var plog = function (source, result, reason, inp, out) {
       console.info("[Prepop] Source: " + source + ", Result: " + result +
@@ -350,6 +373,7 @@
     // the box is worse than asking the user to type. (Lucas, 2026-07-06.)
     var giveUp = function () {
       input.value = "";
+      syncClear();
       if (window.PulseAPI) window.PulseAPI.save(window.PulseAPI.F.qsAddressSuccess, "false");
     };
 

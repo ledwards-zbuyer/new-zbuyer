@@ -215,6 +215,25 @@ changing the funnel.
     key. TOOLING GOTCHA (recurring, third strike): bash heredocs mangle backslash
     escapes fed to python — a literal backspace byte landed inside the zsv regex and
     silently disabled it. Write JS regexes/strings to these files with the Edit tool.
+  - **X-clear button (2026-07-07, both pages):** the pin + input now live in a
+    positioned `.addr-wrap` inside `.search`; a circled-X (`#addrClear`) overlays the
+    input's right edge whenever the input is visible with content (never over the
+    chip — tapping the chip is the edit affordance) and one tap wipes the address,
+    hides the sv photo, closes suggestions, and refocuses. Wired via `syncClear()` in
+    `address-autocomplete.js` (input events, chip restore, showPicked, prepop fill,
+    giveUp). CSS GOTCHAS captured while building it:
+    1. **`.sv-img` never actually hid** — `hidden` attr loses to the author
+       `display:block`; edits after a pick removed `has-sv` (flex-wrap) but kept the
+       photo, whose 100%-basis row shoved the input/button out of the card (the
+       "jumping box" Lucas screenshotted). Fixed with `.sv-img[hidden]{display:none}`
+       (same fix `.picked[hidden]` already had). Same guard on `.addr-clear[hidden]`.
+    2. **`.addr-wrap` must be `flex:1 1 auto`, not `flex:1`** — with the photo shown
+       the box flex-wraps, and a 0-basis wrap contributes 0px to line-breaking, so
+       Chrome glued it onto the photo's line at zero width (chip/pin invisible).
+    3. Mobile pin now anchors to the wrap (`top:50%`), which also fixes the pin
+       floating over the sv photo (it used to anchor `top:30px` to `.search`).
+    Harness: `?step=clearx` (prepop→chip-edit→delete chars; asserts photo hidden, box
+    width stable, X visible) and `?step=clearx2` (+taps the X; asserts empty+focused).
 - Lander logo = `assets/logo-blue-dark.png`, same file as the homepage nav (was briefly
   `zbuyer-white.png` — corrected to match).
 - **Street View hero background — currently OFF** (the two `<script>` includes are
@@ -375,8 +394,9 @@ normally — verify beats on-device.
 ## Testing
 
 - **Harness:** `mockups/shots/harness.html` (now tracked) iframes the real page
-  and drives it: `?step=contact | err | allset | sms | ac | acfocus`, plus
-  `&terms=exclusive`. Serve the repo root first (`python -m http.server 8741`).
+  and drives it: `?step=contact | err | allset | sms | ac | acfocus | clearx | clearx2`,
+  plus `&terms=exclusive` and `&src=<encoded page URL>` to point it at the lander.
+  Serve the repo root first (`python -m http.server 8741`).
 - **Headless screenshots:** Chrome `--headless --screenshot --window-size=... --virtual-time-budget=4000`
   against `http://localhost:8741/...`. Use Windows `file:///C:/...` URLs for static pages.
   Local headless Chrome clamps the layout viewport to ~474px min — verify mobile at ≥500px.
