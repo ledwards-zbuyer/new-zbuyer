@@ -40,7 +40,9 @@ API — see §9. The homepage and compare pages remain inert demos.
    sheet: required **"Open to selling?"** chips (Now / Soon / Eventually / No) +
    optional **"What should your report focus on?"** chips (Fast cash / Both / Top
    price) + optional **"Any repairs needed?"** wedge slider (5 stops, defaults to
-   "No repairs — move-in ready"; untouched = nothing sent). Sub-line: "Your answers
+   "No repairs — move-in ready"; untouched = nothing sent; display is iconic — a
+   sparkle at rest, then 1-4 hammers as it slides — while the text labels live on as
+   aria-valuetext and the RepairsNeeded field value). Sub-line: "Your answers
    shape what your report highlights." (an earlier "nothing here commits you to
    anything" was cut — over-reassurance reads as suspicious).
 4. **"You're all set!" step** — confirmation only: success graphic, "a local expert will

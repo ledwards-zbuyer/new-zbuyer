@@ -192,7 +192,11 @@
 
   // Repairs slider: wedge fills to the dial; the default (untouched) state
   // sends nothing — "No repairs" is only data once the user actually says so.
+  // Display is iconic (sparkle = move-in ready, then 1-4 hammers); the text
+  // labels live on as aria-valuetext and as the RepairsNeeded field value.
   var REPAIR_LABELS = ["No repairs — move-in ready", "A few touch-ups", "Some repairs", "Major repairs", "A full project"];
+  var HAMMER_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M5.245 8.07l2.83-2.827 14.14 14.142-2.828 2.828z"/><path d="M12.317 1l5.657 5.656-2.83 2.83-5.654-5.66z"/><path d="M3.825 9.485l5.657 5.657-2.828 2.828-5.657-5.657z"/></svg>';
+  var SPARKLE_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 2l.9 2.6 2.6.9-2.6.9L19 9l-.9-2.6-2.6-.9 2.6-.9z" opacity=".55"/></svg>';
   var repairsSlider = document.getElementById("repairsSlider");
   var repairsTouched = false;
   if (repairsSlider) {
@@ -200,8 +204,9 @@
     var repairsVal = document.getElementById("repairsVal");
     var paintWedge = function () {
       var v = parseInt(repairsSlider.value, 10);
-      repairsVal.textContent = REPAIR_LABELS[v];
+      repairsVal.innerHTML = v === 0 ? SPARKLE_SVG : new Array(v + 1).join(HAMMER_SVG);
       repairsVal.classList.toggle("zero", v === 0);
+      repairsSlider.setAttribute("aria-valuetext", REPAIR_LABELS[v]);
       var p = (v / 4) * 100;
       repairsWedge.style.background = v === 0
         ? "linear-gradient(90deg,#E4EAF3 0%,#E4EAF3 100%)"

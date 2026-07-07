@@ -747,3 +747,12 @@ screenshotting any slider position.
 **Lucas:** also change the title from "Tune your report" to "Tune your cash value"
 
 **Claude:** Retitled the Intent step on both pages.
+
+**Lucas:** instead of descriptions as you slide the repair slider… what if you had
+little hammer icons that just increased in number… zero (maybe something to represent
+no repairs in that instance), then increasingly more hammers as it slides right?
+
+**Claude:** Swapped the text label for icons: a muted sparkle at the default (move-in
+ready), then 1–4 blue hammers accumulating with the stops. The descriptions survive as
+the slider's aria-valuetext (screen readers) and as the RepairsNeeded field value —
+only the visual changed.

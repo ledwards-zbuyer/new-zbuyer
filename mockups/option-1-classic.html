@@ -110,8 +110,8 @@
   .lm-wedge input::-moz-range-track{background:transparent;height:100%}
   .lm-wedge input::-moz-range-thumb{width:16px;height:40px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4)}
   .lm-axis{display:flex;justify-content:space-between;color:#9ba8bb;font-size:11px;margin-top:7px;padding:0 22px}
-  .lm-slider-val{text-align:center;font-size:14.5px;font-weight:600;color:var(--c1);margin-top:2px}
-  .lm-slider-val.zero{color:#9ba8bb;font-weight:500}
+  .lm-slider-icons{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:5px;min-height:20px;color:var(--c1)}
+  .lm-slider-icons.zero{color:#9ba8bb}
   .lm-final h3,.lm-final .lm-sub{text-align:center}
   .lm-gfx{display:flex;justify-content:center;margin:16px 0 4px}
   .lm-final input{text-align:center;margin-top:14px}
@@ -482,7 +482,7 @@
               <input type="range" id="repairsSlider" min="0" max="4" step="1" value="0" aria-label="How many repairs does the home need?">
             </div>
             <div class="lm-axis"><span>none</span><span>a full project</span></div>
-            <div class="lm-slider-val zero" id="repairsVal">No repairs &mdash; move-in ready</div>
+            <div class="lm-slider-icons zero" id="repairsVal"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 2l.9 2.6 2.6.9-2.6.9L19 9l-.9-2.6-2.6-.9 2.6-.9z" opacity=".55"/></svg></div>
           </div>
         </div>
         <p class="lm-err" id="qErr" hidden></p>
