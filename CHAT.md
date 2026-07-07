@@ -756,3 +756,21 @@ no repairs in that instance), then increasingly more hammers as it slides right?
 ready), then 1–4 blue hammers accumulating with the stops. The descriptions survive as
 the slider's aria-valuetext (screen readers) and as the RepairsNeeded field value —
 only the visual changed.
+
+---
+
+**Lucas:** create an animated gif (or its modern counterpart) that shows the Z in zBuyer
+as it is in the logo (two triangles facing each other), but the animation is almost that
+of someone peering down from the catwalk of a ballet performance as the "two triangles"
+dance in a circle (maybe two??) into "Z" in zBuyer position. *(mid-build:)* dance in
+there… Pause… and then back out. (think waltz timing). making it repeatable
+
+**Claude:** Built `mockups/assets/z-dance.html` (animated SVG/CSS, the modern
+counterpart — crisp at any size) + `z-dance.gif` (420px, 100 frames, ~700KB) rendered
+from it. Choreography: overhead stage (the roundel as a spotlit floor); the white "7"
+and blue "L" — traced from the real logo geometry — waltz two circuits in (scale
+"breathes" on the ONE of each measure, the catwalk view of a rising dancer), settle
+into the exact logo Z with a landing sway, HOLD the pose ~2s, dance back out retracing
+their circles, rest offstage, repeat seamlessly. The 7 travels 740° vs the L's 700° so
+they drift like partners rather than spinning as a rigid logo. `?t=SECONDS` freezes any
+frame (how the GIF was rendered); prefers-reduced-motion shows the still Z.
