@@ -61,6 +61,44 @@
     try { sessionStorage.setItem("zbAddressDisplay", street + ", " + sec); } catch (e) {}
   }
 
+  // ---- optional Street View preview (?zsv=1): shows above the address box
+  // once an address is verified (manual pick or prepop). Free metadata call
+  // gates the billable render; wide/short frame keeps the CTA near the fold.
+  // Uses GOOGLE_MAPS_KEY (google-config.js) — Street View Static API must be
+  // enabled on it. ----
+  var SV_ON = /[?&]zsv=1(&|$|#)/.test(window.location.search + "&");
+  var svImg = null;
+  function hideStreetView() {
+    if (svImg) {
+      svImg.hidden = true;
+      var b = input.closest(".search");
+      if (b) b.classList.remove("has-sv");
+    }
+  }
+  function maybeShowStreetView(addr) {
+    if (!SV_ON) return;
+    var key = window.GOOGLE_MAPS_KEY;
+    if (!key || key.indexOf("PASTE_") === 0) return;
+    var params = "location=" + encodeURIComponent(addr) + "&source=outdoor&radius=100&key=" + encodeURIComponent(key);
+    fetch("https://maps.googleapis.com/maps/api/streetview/metadata?" + params)
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (meta) {
+        if (meta.status !== "OK") { console.info("[StreetView] preview skipped:", meta.status); return; }
+        var box = input.closest(".search");
+        if (!box) return;
+        if (!svImg) {
+          svImg = document.createElement("img");
+          svImg.className = "sv-img";
+          svImg.alt = "Street view of this address";
+          box.insertBefore(svImg, box.firstChild);
+        }
+        svImg.src = "https://maps.googleapis.com/maps/api/streetview?size=640x200&fov=75&" + params;
+        svImg.hidden = false;
+        box.classList.add("has-sv");
+      })
+      .catch(function (err) { console.info("[StreetView] preview failed:", err); });
+  }
+
   // Push the verified address into the Pulse lead API (no-op on pages that
   // don't load pulse-api.js — the homepage and compare tools stay inert).
   function pulseSaveAddress(s) {
@@ -127,6 +165,7 @@
       input.value = fullAddress(s);
       window.zbSelectedAddress = s; // expose structured pick for the lead modal
       showPicked(s.street_line + (s.secondary ? " " + s.secondary : ""), s.city + ", " + s.state + " " + s.zipcode);
+      maybeShowStreetView(fullAddress(s));
       pulseSaveAddress(s);
       close();
       input.blur(); // dismiss the mobile keyboard once an address is chosen
@@ -185,6 +224,7 @@
 
   input.addEventListener("input", function () {
     window.zbSelectedAddress = null; // typing invalidates the last structured pick
+    hideStreetView(); // stale photo for whatever they type next
     var q = input.value.trim();
     clearTimeout(debounce);
     if (q.length < 3) { close(); return; }
@@ -301,6 +341,7 @@
       input.value = fullAddress(s);
       window.zbSelectedAddress = s;
       showPicked(s.street_line + (s.secondary ? " " + s.secondary : ""), s.city + ", " + s.state + " " + s.zipcode);
+      maybeShowStreetView(fullAddress(s));
       pulseSaveAddress(s);
       if (window.PulseAPI) window.PulseAPI.save(window.PulseAPI.F.qsAddressSuccess, "true");
     };
@@ -332,6 +373,7 @@
               // box and save Google's components to Pulse.
               input.value = g.formatted_address.replace(/,\s*USA$/, "");
               showPicked(gStreet, (gCity ? gCity + ", " : "") + gState + (gPart(g, "postal_code") ? " " + gPart(g, "postal_code") : ""));
+              maybeShowStreetView(g.formatted_address);
               if (window.PulseAPI) {
                 var F = window.PulseAPI.F;
                 var gZip = gPart(g, "postal_code");

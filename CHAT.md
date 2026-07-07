@@ -1091,3 +1091,16 @@ call and text buttons the same color
 
 **Claude:** Done — Call and Text both orange (Schedule stays outline); all three fit
 comfortably on one mobile row.
+
+**Lucas:** lets add the static google streetview of the address to the same container as
+the address textbox directly above it, but frame/zoom the image so its not too tall…
+horizontal rectangle… controllable via querystring "&zsv=1"… load when the address is
+successfully selected or auto-filled via smarty.
+
+**Claude:** Built: with &zsv=1, a 640x200 (fov 75) Street View strip renders inside the
+search card above the box once the address verifies — manual pick, prepop, or
+Google-rescued; typing hides the stale photo; free metadata call gates the billable
+render; no-imagery addresses show nothing. Debugging detour: the feature was silently
+dead because a literal BACKSPACE byte (heredoc-mangled \b escape) sat inside the zsv
+regex — found via console probe (on=false), fixed with an explicit (&|$|#) boundary.
+Verified: the real Candlewood house in the card at both widths, CTA above the fold.
