@@ -32,6 +32,18 @@ Split into two screens: the all-set screen is pure confirmation — *nothing to 
 and the SMS screen is the only live question. Statements inform; questions ask; never
 let them share a container.
 
+**Never put "I'm selling" in the user's mouth.** Selling a home is personal, and when
+someone "is selling" is genuinely ambiguous — sign in the yard? browsing listings? years
+before either? Every question must survive without the user ever conceding a sale
+exists. Two tools: *hypothetical framing* ("If you ever sold — what would matter
+most?") and *anchoring the ask to something they already requested* — "What should your
+report focus on?" is a preference about their report, not a confession about their
+life, so answering honestly is self-serving. Corollary: kill confessional options.
+"Financial Problems" and "Too many repairs" demand disclosure of distress; a
+needs-based ask ("Fast cash" / a repairs slider) carries the identical routing signal
+with no confession. The legacy why-selling categories collapse onto one Speed⟷Price
+axis — ask about the axis, not the private reason behind their position on it.
+
 ## 2. Choice UI (chips, dropdowns, escape hatches)
 
 **Visible chips beat any dropdown.** A dropdown hides the options behind a tap and makes

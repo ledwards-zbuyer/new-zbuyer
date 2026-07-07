@@ -29,13 +29,22 @@ f.onload = function () {
       };
       setTimeout(function () { // let prepop + init settle
         d.querySelector(".hero .search").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
-        d.querySelectorAll("#intentChips .lm-chip")[1].click();
         setTimeout(function () {
           d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+          // questions step: intent chip, focus chip, slider to stop 3, continue
+          d.querySelectorAll("#intentChips .lm-chip")[1].click();
+          d.querySelectorAll("#focusChips .lm-chip")[0].click();
+          var sl = d.getElementById("repairsSlider");
+          sl.value = "3";
+          sl.dispatchEvent(new w.Event("input", { bubbles: true }));
+          sl.dispatchEvent(new w.Event("change", { bubbles: true }));
           setTimeout(function () {
-            d.getElementById("toSms").click();
-            setTimeout(function () { d.getElementById("viewReport").click(); }, 400);
-          }, 900);
+            d.getElementById("qContinue").click();
+            setTimeout(function () {
+              d.getElementById("toSms").click();
+              setTimeout(function () { d.getElementById("viewReport").click(); }, 400);
+            }, 700);
+          }, 500);
         }, 1500);
       }, 3000);
     } else {
@@ -136,7 +145,6 @@ f.onload = function () {
     d.querySelector(".lm-backdrop").click();
     var openAfterBackdrop = !d.getElementById("leadModal").hidden;
     var xOnContact = !d.querySelector(".lm-x").hidden;
-    d.querySelectorAll("#intentChips .lm-chip")[1].click();
     d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
     setTimeout(function () {
       var dbg = document.createElement("div");
@@ -151,10 +159,13 @@ f.onload = function () {
   }
   d.getElementById("addr").value = "123 Main St, Springfield, MO 65807";
   d.querySelector(".hero .search").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
-  if (step === "contact") { d.querySelectorAll("#intentChips .lm-chip")[1].click(); return; }
+  if (step === "contact") return;
   if (step === "err") { d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true })); return; }
-  d.querySelectorAll("#intentChips .lm-chip")[1].click(); // pick "Soon" so validation passes
   d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+  if (step === "questions") return;
+  if (step === "qerr") { d.getElementById("qContinue").click(); return; } // continue with no intent picked
+  d.querySelectorAll("#intentChips .lm-chip")[1].click(); // pick "Soon" so validation passes
+  d.getElementById("qContinue").click();
   if (step === "sms") d.getElementById("toSms").click();
 };
 </script>

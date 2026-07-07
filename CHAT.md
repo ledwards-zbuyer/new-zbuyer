@@ -688,3 +688,18 @@ needs to gradually grow vertically like a 90 degree triangle on its side
 grows from a sliver at "none" to full height at "a full project", filled blue up to the
 dial and gray ahead of it; the dial is now a tall white-ringed pill (16×40px) riding over
 the wedge. Default state keeps the wedge all-gray with the muted label.
+
+**Lucas:** A + repairs slider — the full intent box - Default · No repairs - It's own
+step - After the contact info
+
+**Claude:** Built it into both pages as the new step 3, "Tune your report" ("A few quick
+taps — nothing here commits you to anything"): required Open to selling? chips (moved
+off the contact form) + optional report-focus chips + optional repairs wedge slider.
+Funnel is now contact → tune-your-report → all-set → SMS → report; the homepage all-set
+Back button returns to the questions step. Data: SellingTimeFrame (chip text, validated
+on Continue), WhySelling = focus chip text, RepairsNeeded = slider label (only sent if
+the slider was actually touched — an untouched default isn't an answer; field name not
+canonical yet, flagged for the API team). Harness reworked for the 5-step flow
+(+`?step=questions|qerr`); E2E shows the complete lead record incl. the three new
+fields, FinalizeLead, and pixel injection. FORM_DESIGNER gained the "never put 'I'm
+selling' in the user's mouth" principle.

@@ -168,8 +168,72 @@
       });
       chipsWrap.classList.remove("invalid");
       errEl.hidden = true;
+      if (qErr) qErr.hidden = true;
     });
   });
+
+  // ---- questions step (Tune your report): focus chips + repairs slider ----
+  // Report-focus chips are optional — no validation, saved on tap.
+  var qErr = document.getElementById("qErr");
+  var focusWrap = document.getElementById("focusChips");
+  var focusLabel = "";
+  if (focusWrap) {
+    focusWrap.querySelectorAll(".lm-chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        focusLabel = chip.textContent.trim();
+        focusWrap.querySelectorAll(".lm-chip").forEach(function (c) {
+          c.classList.toggle("sel", c === chip);
+          c.setAttribute("aria-checked", c === chip ? "true" : "false");
+        });
+        if (P) psave(P.F.whySelling, focusLabel);
+      });
+    });
+  }
+
+  // Repairs slider: wedge fills to the dial; the default (untouched) state
+  // sends nothing — "No repairs" is only data once the user actually says so.
+  var REPAIR_LABELS = ["No repairs — move-in ready", "A few touch-ups", "Some repairs", "Major repairs", "A full project"];
+  var repairsSlider = document.getElementById("repairsSlider");
+  var repairsTouched = false;
+  if (repairsSlider) {
+    var repairsWedge = document.getElementById("repairsWedge");
+    var repairsVal = document.getElementById("repairsVal");
+    var paintWedge = function () {
+      var v = parseInt(repairsSlider.value, 10);
+      repairsVal.textContent = REPAIR_LABELS[v];
+      repairsVal.classList.toggle("zero", v === 0);
+      var p = (v / 4) * 100;
+      repairsWedge.style.background = v === 0
+        ? "linear-gradient(90deg,#E4EAF3 0%,#E4EAF3 100%)"
+        : "linear-gradient(90deg,#7FC4FF 0%,#1D4FD7 " + p + "%,#E4EAF3 " + p + "%,#E4EAF3 100%)";
+    };
+    repairsSlider.addEventListener("input", function () { repairsTouched = true; paintWedge(); });
+    repairsSlider.addEventListener("change", function () {
+      repairsTouched = true;
+      paintWedge();
+      if (P) psave(P.F.repairsNeeded, REPAIR_LABELS[parseInt(repairsSlider.value, 10)]);
+    });
+  }
+
+  var qContinue = document.getElementById("qContinue");
+  if (qContinue) {
+    qContinue.addEventListener("click", function () {
+      if (!intentValue) {
+        chipsWrap.classList.add("invalid");
+        qErr.textContent = "Please tell us if you’re open to selling.";
+        qErr.hidden = false;
+        return;
+      }
+      qErr.hidden = true;
+      if (P) {
+        psave(P.F.sellingTimeFrame, intentLabel || intentValue);
+        if (focusLabel) psave(P.F.whySelling, focusLabel);
+        if (repairsTouched) psave(P.F.repairsNeeded, REPAIR_LABELS[parseInt(repairsSlider.value, 10)]);
+      }
+      show("allset");
+      if (card) card.focus();
+    });
+  }
 
   // ---- open on hero submit (require an address first) ----
   heroForm.addEventListener("submit", function (e) {
@@ -188,7 +252,7 @@
     if (e.key === "Escape" && !modal.hidden && (!DR || current === "contact")) close();
   });
   var backBtn = modal.querySelector("[data-back]");
-  if (backBtn) backBtn.addEventListener("click", function () { show("contact"); });
+  if (backBtn) backBtn.addEventListener("click", function () { show("questions"); });
 
   // ---- contact step -> advance to report step ----
   form.addEventListener("submit", function (e) {
@@ -197,13 +261,12 @@
     var digits = phoneEl.value.replace(/\D/g, "");
     var email = emailEl.value.trim();
 
-    [nameEl, phoneEl, emailEl, chipsWrap].forEach(function (el) { el.classList.remove("invalid"); });
+    [nameEl, phoneEl, emailEl].forEach(function (el) { el.classList.remove("invalid"); });
 
     var err = "", bad = null;
     if (!name) { err = "Please enter your name."; bad = nameEl; }
     else if (digits.length < 10) { err = "Please enter a valid phone number."; bad = phoneEl; }
     else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err = "Please enter a valid email address."; bad = emailEl; }
-    else if (!intentValue) { err = "Please tell us if you’re open to selling."; bad = chipsWrap; }
 
     if (err) {
       bad.classList.add("invalid");
@@ -221,7 +284,6 @@
       psave(P.F.name, name);
       psave(P.F.phone, phoneDigits(phoneEl.value));
       psave(P.F.email, email);
-      psave(P.F.sellingTimeFrame, intentLabel || intentValue);
       psave(P.F.contactFormSubmit, "true");
       psave(P.F.listedQuestion, "No"); // from OnboardAPI once that's ready
       var mEl = modal.querySelector(".lm-matched"), cEl = modal.querySelector(".lm-consent");
@@ -243,7 +305,7 @@
     }
 
     mobileEl.value = formatPhone(phoneEl.value); // carry phone into the SMS step
-    show("allset");
+    show("questions");
     if (card) card.focus();
   });
 

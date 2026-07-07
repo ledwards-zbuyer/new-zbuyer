@@ -58,8 +58,10 @@
     realtorOpt: "RealtorOpt",                     // "ok" on the all-set step's CTA
     dnc: "DNC",                                   // "true" on "Do not contact me" (no RealtorOpt then)
     sellingTimeFrame: "SellingTimeFrame",         // the chip text: Now / Soon / Eventually / No
+    whySelling: "WhySelling",                     // report-focus chip text: Fast cash / Both / Top price
+    repairsNeeded: "RepairsNeeded",               // repairs-slider label; NOT canonical yet — confirm name
     smsOptIn: "SMSOptIn",                         // yes | no on the SMS step
-    // future steps (fields reserved, not sent yet): WhySelling, SomethingSpecial
+    // future field (reserved, not sent yet): SomethingSpecial
   };
 
   var K = {

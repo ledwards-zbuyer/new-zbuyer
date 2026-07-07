@@ -35,12 +35,17 @@ API — see §9. The homepage and compare pages remain inert demos.
    (`mockups/assets/address-autocomplete.js`, embedded key in `assets/smarty-config.js`,
    host-locked to github.io / zbuyer.com / localhost — `file://` can't test it).
 2. **Contact step (modal)** — titled **"Request Cash Value Estimate"** — name / phone /
-   email + required **"Open to selling?"** intent chips (Now / Soon / Eventually / No)
-   + matched-pros disclosure + TCPA consent.
-3. **"You're all set!" step** — confirmation only: success graphic, "a local expert will
+   email + matched-pros disclosure + TCPA consent.
+3. **"Tune your report" step (2026-07-06)** — the full qualifier box in one bottom
+   sheet: required **"Open to selling?"** chips (Now / Soon / Eventually / No) +
+   optional **"What should your report focus on?"** chips (Fast cash / Both / Top
+   price) + optional **"Any repairs needed?"** wedge slider (5 stops, defaults to
+   "No repairs — move-in ready"; untouched = nothing sent). Sub-line: "A few quick
+   taps — nothing here commits you to anything."
+4. **"You're all set!" step** — confirmation only: success graphic, "a local expert will
    be in touch to discuss your cash value and best selling options",
    CTA **View Cash Value Report →**, quiet **Do not contact me** link.
-4. **SMS step** — "One last thing": opt in to get the report link texted
+5. **SMS step** — "One last thing": opt in to get the report link texted
    (number prefilled from contact step). CTA and "No thanks" both land on
    `report-classic-blue.html` — now a real Cash Value Report page (see §8),
    no longer a dashboard screenshot.
@@ -269,7 +274,16 @@ fully static, no backend needed).
   all-set CTA (its "Do not contact me" link instead fires `DNC` = "true" and NO
   RealtorOpt), `SellingTimeFrame` = the chip's visible text (Now/Soon/Eventually/No),
   `SMSOptIn` yes/no on the SMS step (a yes also updates `phone` to the texted number).
-- `WhySelling` / `SomethingSpecial` are reserved for possible future steps (not sent).
+- **WhySelling reworked (2026-07-06):** the legacy "Why are you interested in the cash
+  value?" prose list (six options incl. the confessional "Financial Problems") is
+  replaced by the "Tune your report" step. Rationale: the legacy answers collapse onto
+  one Speed⟷Price axis (repairs/financial/inherited = fast-as-is; upgrading = top
+  dollar) — the same axis the report page draws — so a report-anchored ask yields the
+  same investor-vs-agent routing signal with zero selling admission (Lucas's rule:
+  never put "I'm selling" in the user's mouth). Fields: `WhySelling` = focus chip text
+  (Fast cash / Both / Top price); `RepairsNeeded` = slider label ("No repairs —
+  move-in ready" … "A full project") — **RepairsNeeded is not canonical yet, confirm
+  the name with the API team**. `SomethingSpecial` remains reserved.
 - **Doc deviations observed live:** dead submissionID → HTTP **403** (docs say 400) —
   client re-inits and replays the field snapshot on either; ContactOptIn responses carry
   an undocumented `showOnMeetTheExpertsPage` flag; live response had
