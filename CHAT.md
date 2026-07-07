@@ -1208,3 +1208,12 @@ is "never," purged zbuyer-white.png from the four compare/jump pages that also u
 it. The guide's logo rule now states it explicitly: the Z's arrows are only ever
 white/transparent or sky blue #3BA4F4 (the dancing-logo color) — the olive asset is
 retired.
+
+**Lucas:** include the animation for interstitial page loading in the style guide
+
+**Claude:** Added a "Z-beat — the loading interstitial" section: the live SVG with the
+funnel's verbatim keyframes (looping infinite-alternate in the guide where the funnel
+plays it once per step / in-hold-out on the finale), the sample caption line, and the
+usage rules — arrows spin as a rigid pair only, minimum-hold so it never flashes,
+always paired with a caption saying what the wait is for, reduced-motion shows the
+locked Z, gif/webp assets for email use, and never green.

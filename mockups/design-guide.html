@@ -101,6 +101,22 @@
   .shadow-row{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px}
   .shadow-row .sh{width:170px;height:80px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);text-align:center;padding:8px;line-height:1.5}
 
+  /* Z-beat interstitial — SVG + keyframes copied verbatim from the funnel
+     (option-1-classic.html); the guide loops it (infinite alternate) where the
+     funnel plays it once per step change (.run) or in-hold-out (.run-full). */
+  .zbeat-demo{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+  .zbeat-demo .zb-note{font-size:17px;font-weight:700;color:var(--ink)}
+  .zb-pair{transform-origin:100px 100px;transform:rotate(395deg)}
+  .zb-w{transform:translate(99px,-180px)}
+  .zb-b{transform:translate(-99px,180px)}
+  .zbeat-demo .zb-pair{animation:zbSpin 1.6s linear infinite alternate both}
+  .zbeat-demo .zb-w{animation:zbWalkW 1.6s linear infinite alternate both}
+  .zbeat-demo .zb-b{animation:zbWalkB 1.6s linear infinite alternate both}
+  @keyframes zbSpin{0%{transform:rotate(395deg)}25%{transform:rotate(395deg);animation-timing-function:cubic-bezier(.42,.05,.35,1)}92%,100%{transform:rotate(0deg)}}
+  @keyframes zbWalkW{0%{transform:translate(99px,-180px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}40%,100%{transform:translate(0,0)}}
+  @keyframes zbWalkB{0%{transform:translate(-99px,180px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}40%,100%{transform:translate(0,0)}}
+  @media (prefers-reduced-motion:reduce){.zb-pair,.zb-w,.zb-b{transform:none!important;animation:none!important}}
+
   .dont{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin-top:12px}
   .dont .card{border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:13px;line-height:1.55;background:var(--soft)}
   .dont .card b{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px}
@@ -290,6 +306,40 @@
     <p class="rule">Alert notices: <code>#FFF4F0</code> fill, 2px <code>--cta</code> border, icon coin, dismissible ×
        (dismissal persists for the session). Trust stats: number in <code>--c1</code> 800, label muted.
        Eyebrows introduce sections everywhere: caps, tracked out, dotted.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow"><span class="dot"></span>Components</span>
+    <h2>Z-beat — the loading interstitial</h2>
+    <div class="demo">
+      <div class="zbeat-demo">
+        <svg viewBox="0 0 200 200" width="150" height="150" aria-hidden="true">
+          <defs>
+            <radialGradient id="zbStage" cx="50%" cy="44%" r="68%">
+              <stop offset="0%" stop-color="#172A4E"/><stop offset="100%" stop-color="#0E1B33"/>
+            </radialGradient>
+            <clipPath id="zbClip"><circle cx="100" cy="100" r="96"/></clipPath>
+          </defs>
+          <circle cx="100" cy="100" r="96" fill="url(#zbStage)"/>
+          <g clip-path="url(#zbClip)">
+            <g class="zb-pair">
+              <g class="zb-piece zb-w"><polygon fill="#FFFFFF" points="40,42 128,42 64,158 39,158 95,68 40,68"/></g>
+              <g class="zb-piece zb-b"><polygon fill="#3BA4F4" points="160,158 72,158 136,42 161,42 105,132 160,132"/></g>
+            </g>
+          </g>
+        </svg>
+        <p class="zb-note">Sending your report link to your phone&hellip;</p>
+      </div>
+    </div>
+    <p class="rule">The brand beat between funnel steps: the Z's two arrows (white + <code>--acc</code> sky, on the
+       navy stage coin) walk in from opposite corners and spin <b>as a rigid pair</b> into the locked Z — the seam
+       between them never changes. It plays while a step's API round-trip settles, with a minimum hold so it reads
+       as a beat, never a flash. One-way in (~1.5s) between steps; the full in–hold–out cycle behind the finale,
+       where a caption line states what's happening ("Sending your report link to your phone…" — always say what
+       the wait is for). Reduced motion shows the locked Z statically. The same choreography exists as standalone
+       assets for email/marketing: <code>assets/z-dance.gif</code> / <code>z-dance-transparent.gif</code> /
+       <code>z-dance.webp</code> (8s loop). Rules: arrows never rotate independently, never green (see Color),
+       and the beat never runs without a reason — it means "we're working," not decoration.</p>
   </section>
 
   <section>

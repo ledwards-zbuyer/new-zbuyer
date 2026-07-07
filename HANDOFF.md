@@ -15,6 +15,7 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
 - **Design guide (for the team):** https://ledwards-zbuyer.github.io/new-zbuyer/mockups/design-guide.html
   — living style guide rendered from the live pages' exact tokens: palette + usage rules,
   type scale, radii/shadows/spacing, buttons, chips, inputs/address box, sliders, notices,
+  the Z-beat loading interstitial (live SVG loop, verbatim funnel keyframes),
   motion & voice, do/don't. Visual companion to FORM_DESIGNER.md (behavior). Tokens are
   copied verbatim from the three source pages — if they ever disagree, the pages win.
   BRAND RULE (Lucas 2026-07-07): the legacy olive-arrow logo `zbuyer-white.png` is retired —
