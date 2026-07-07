@@ -64,6 +64,18 @@
     // Focus the dialog (not an input) so the mobile keyboard doesn't pop up.
     if (card) card.focus();
   }
+  // Z-beat interstitial: one-shot logo dance between steps. The final step
+  // (SMS -> report) exits directly, per design.
+  var zbeat = modal.querySelector(".lm-zbeat");
+  function runZBeat(target) {
+    if (!zbeat) { show(target); if (card) card.focus(); return; }
+    show("zbeat");
+    zbeat.classList.remove("run");
+    void zbeat.offsetWidth; // restart the one-shot on every transition
+    zbeat.classList.add("run");
+    setTimeout(function () { show(target); if (card) card.focus(); }, 1650);
+  }
+
   function close() {
     modal.hidden = true;
     document.body.style.overflow = "";
@@ -254,8 +266,7 @@
         if (focusLabel) psave(P.F.whySelling, focusLabel);
         if (repairsTouched) psave(P.F.repairsNeeded, REPAIR_LABELS[parseInt(repairsSlider.value, 10)]);
       }
-      show("allset");
-      if (card) card.focus();
+      runZBeat("allset");
     });
   }
 
@@ -329,12 +340,11 @@
     }
 
     mobileEl.value = formatPhone(phoneEl.value); // carry phone into the SMS step
-    show("questions");
-    if (card) card.focus();
+    runZBeat("questions");
   });
 
   // ---- all-set step -> SMS step ----
-  function toSmsStep() { show("sms"); if (card) card.focus(); }
+  function toSmsStep() { runZBeat("sms"); }
   document.getElementById("toSms").addEventListener("click", function () {
     // The all-set step is the RealtorOpt step in the lead record.
     if (P) psave(P.F.realtorOpt, "ok");

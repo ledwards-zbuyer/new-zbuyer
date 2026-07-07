@@ -30,13 +30,13 @@
   /* 0-12% holds them off-stage so the turnaround shows an empty stage
      (~1s across both directions) instead of an instant bounce. */
   @keyframes walkW{
-    0%  {transform:translate(82px,-149px)}
-    12% {transform:translate(82px,-149px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
+    0%  {transform:translate(99px,-180px)}
+    12% {transform:translate(99px,-180px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
     45%,100%{transform:translate(0,0)}
   }
   @keyframes walkB{
-    0%  {transform:translate(-82px,149px)}
-    12% {transform:translate(-82px,149px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
+    0%  {transform:translate(-99px,180px)}
+    12% {transform:translate(-99px,180px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
     45%,100%{transform:translate(0,0)}
   }
   @media (prefers-reduced-motion:reduce){.pair,.piece{animation:none}}

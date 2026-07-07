@@ -894,3 +894,16 @@ transparent background, 94 frames / 409KB) via Chrome's
 --default-background-color=00000000. Regular z-dance.gif re-rendered with the new
 offstage dwell. Caveats flagged: hard-cut edges (GIF limitation) and the white arrow
 vanishes on white backgrounds; animated WebP/APNG offered for true soft alpha.
+
+**Lucas:** lets do the webP/APNG. also note that the very very end of the arrows never
+quite leaves the circle. make that happen. also. i want this to be shown between each
+step on the path. giving a beat to let it run through once. or just long enough to see
+the z line up on all steps but the last one before the report
+
+**Claude:** (1) `z-dance.webp` — true soft alpha (arrows only), lossless. (2) Root cause
+on the tips: travel was ~170px but a shape tip reaches ~84px from center, so tips
+stopped 86px out — inside the 96px circle; travel now ~205px, fully clear with margin
+(all three exports re-rendered). (3) "Z beat" interstitial: a 1.5s one-shot (walk in →
+rigid spin → lock the Z) plays between contact→intent, intent→all-set, and all-set→SMS;
+the SMS→report exit navigates directly. Restartable per transition; reduced-motion
+shows the locked Z; DR lock-in unaffected (X stays hidden on the beat screen).

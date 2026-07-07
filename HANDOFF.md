@@ -307,14 +307,24 @@ fully static, no backend needed).
   (`PulseAPI.avmDetail`/`getReport` helpers already exist), GetAreaPropValue,
   reCaptcha verification, report-page expert card from the cached contact set.
 
-### 10. Z-mark motion asset (2026-07-06)
+### 10. Z-mark motion asset + funnel interstitial (2026-07-06/07)
 `mockups/assets/z-dance.html` (animated SVG/CSS, ~3KB, crisp at any size) +
 `z-dance.gif` (420px) — the logo's two triangles seen from above: they enter at the
 same angle, walk toward each other along the seam (pure translation, constant gap),
 spin once **as a rigid pair** (the only rotation lives on a shared group — independent
 rotation/overlap structurally impossible), pause as the exact logo Z, spin away, part.
-8s seamless loop; `?t=SECONDS` freezes any frame (that's how the GIF is rendered);
-honors prefers-reduced-motion. Palette-swappable (two fill values).
+Palindrome loop (entrance defined once; animation-direction:alternate plays it back
+out exactly the way it came), ~1s empty-stage dwell at the offstage turnaround, travel
+distance clears the circle rim completely. Exports: `z-dance.gif` (dark stage),
+`z-dance-transparent.gif` (arrows only, binary alpha), `z-dance.webp` (arrows only,
+TRUE soft alpha — use this over the transparent gif wherever WebP is accepted).
+`?t=SECONDS` freezes any frame; `?bare=1` = arrows only on transparent; honors
+prefers-reduced-motion. Palette-swappable (two fill values).
+**Funnel interstitial ("Z beat"):** a 1.5s one-shot of the dance (walk in, rigid spin,
+lock the Z) plays between modal steps — contact→intent, intent→all-set, all-set→SMS —
+via `runZBeat(target)` in lead-modal.js (data-screen="zbeat" panel in both pages). The
+SMS→report exit navigates directly, per design. Reduced-motion shows the locked Z
+statically.
 
 ## Testing
 
