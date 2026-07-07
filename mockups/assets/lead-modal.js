@@ -237,6 +237,13 @@
         chipsWrap.classList.add("invalid");
         qErr.textContent = "Please tell us if you’re open to selling.";
         qErr.hidden = false;
+        // Shake the chips + bounce the message in — restartable on every
+        // repeat tap (remove class, force reflow, re-add).
+        chipsWrap.classList.remove("shake");
+        qErr.classList.remove("pop");
+        void chipsWrap.offsetWidth;
+        chipsWrap.classList.add("shake");
+        qErr.classList.add("pop");
         return;
       }
       qErr.hidden = true;

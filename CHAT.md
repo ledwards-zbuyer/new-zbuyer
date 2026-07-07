@@ -844,3 +844,11 @@ the thing, not the hyperlink to it. Applied to both pages.
 **Lucas:** change the button to "Text Me the Report"
 
 **Claude:** Done on both pages — question and CTA now speak of the same object.
+
+**Lucas:** when the user clicks continue on the intent step but has not filled out the
+open to selling question, the validation needs to "pop" a little more
+
+**Claude:** Added motion: the chip row shakes (0.4s, six diminishing swings) and the
+error message bounces in (fade + rise + slight overshoot, weight bumped to 700) — both
+restartable on every repeat tap via the remove-class/reflow/re-add trick, and both
+disabled under prefers-reduced-motion. The quiet "No" chip still stays out of the red.
