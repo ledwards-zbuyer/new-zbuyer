@@ -36,7 +36,7 @@ API — see §9. The homepage and compare pages remain inert demos.
    host-locked to github.io / zbuyer.com / localhost — `file://` can't test it).
 2. **Contact step (modal)** — titled **"Request Cash Value Estimate"** — name / phone /
    email + matched-pros disclosure + TCPA consent.
-3. **Intent step — "Tune your report" (2026-07-06)** — the full qualifier box in one bottom
+3. **Intent step — "Tune your cash value" (2026-07-06)** — the full qualifier box in one bottom
    sheet: required **"Open to selling?"** chips (Now / Soon / Eventually / No) +
    optional **"What should your report focus on?"** chips (Fast cash / Both / Top
    price) + optional **"Any repairs needed?"** wedge slider (5 stops, defaults to

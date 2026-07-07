@@ -743,3 +743,7 @@ Fixed: wedge inset 8px each side so its endpoints sit exactly at the dial's trav
 limits; wedge zone heightened and axis labels inset so the tall dial no longer grazes
 "none"/"a full project" at the extremes. Harness gained `?step=questions&slide=N` for
 screenshotting any slider position.
+
+**Lucas:** also change the title from "Tune your report" to "Tune your cash value"
+
+**Claude:** Retitled the Intent step on both pages.
