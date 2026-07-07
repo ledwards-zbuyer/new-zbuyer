@@ -1173,3 +1173,11 @@ width and the photo just spans it. More house comes from height instead: 640x400
 source (was 640x200), displayed 230px tall desktop / 190px mobile, cover-cropped and
 still centered on the house. Verified both widths: narrow card, no gap, symmetric
 frame, noticeably more house.
+
+**Lucas:** make a jump page with links to the Homepage, Pre-popped version w/
+StreetView, Pre-popped version w/ no StreetView.
+
+**Claude:** Reworked the existing jump page (mockups/compare-pages.html) to those
+three cards — homepage, pre-popped lander with &zsv=1, pre-popped lander without.
+Both prepop links carry the Alex Smith example + test attribution (mid=56,
+affid=testing); the empty no-prefill lander stays as a small footnote link.
