@@ -1012,3 +1012,9 @@ touch-action:none), snaps to the nearest of the four anchors on release with a s
 ease, and only on first snap does the headline swap from "$312,000 – $371,000" to the
 anchor's value ($312,000 / $345,000 / $355,000 / $371,000). Keyboard arrows step
 anchors; ?snap=N for testing. Verified rest + snapped states ($345K, $355K).
+
+**Lucas:** try making the slider dial maybe twice as tall and a little thicker… i want it
+to be abundantly obvious there is a slider dial to use on desktop and mobile
+
+**Claude:** Dial is now 26×70 (was 18×42) with two white grip ridges — the universal
+"grab me" glyph — and a stronger shadow so it floats above the track.
