@@ -862,3 +862,11 @@ disabled under prefers-reduced-motion. The quiet "No" chip still stays out of th
 
 **Claude:** Swapped the shake axis to a nod — translateY, six diminishing bobs. The
 gesture now invites a yes instead of scolding with a no.
+
+**Lucas:** i cant handle it. we need 5 hammers and we need to make the sparkle brighter
+or more sparkely… it looks grey to my colorblind eye lol
+
+**Claude:** Sparkle is now gold (#F5A623 + two lighter companion sparks), bigger (22px),
+with a gentle twinkle animation — luminance carries "shiny", not hue, so it reads bright
+for colorblind eyes too. Hammers now run 2-3-4-5 across the stops ("a few touch-ups"
+starts at two — it IS a few — and no count-skips on the way to five).

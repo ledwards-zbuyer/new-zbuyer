@@ -200,7 +200,9 @@
   // labels live on as aria-valuetext and as the RepairsNeeded field value.
   var REPAIR_LABELS = ["No repairs — move-in ready", "A few touch-ups", "Some repairs", "Major repairs", "A full remodel"];
   var HAMMER_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M5.245 8.07l2.83-2.827 14.14 14.142-2.828 2.828z"/><path d="M12.317 1l5.657 5.656-2.83 2.83-5.654-5.66z"/><path d="M3.825 9.485l5.657 5.657-2.828 2.828-5.657-5.657z"/></svg>';
-  var SPARKLE_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 2l.9 2.6 2.6.9-2.6.9L19 9l-.9-2.6-2.6-.9 2.6-.9z" opacity=".55"/></svg>';
+  // Gold, not gray: luminance (not hue) carries the "shiny" read, so it
+  // stays bright for colorblind users too.
+  var SPARKLE_SVG = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#F5A623" d="M12 2.5l2.2 6.7L21 11.4l-6.8 2.2L12 20.3l-2.2-6.7L3 11.4l6.8-2.2z"/><path fill="#FFC957" d="M19.2 2l.8 2.3 2.3.8-2.3.8-.8 2.3-.8-2.3-2.3-.8 2.3-.8z"/><path fill="#FFD98A" d="M5.6 16.8l.6 1.7 1.7.6-1.7.6-.6 1.7-.6-1.7-1.7-.6 1.7-.6z"/></svg>';
   var repairsSlider = document.getElementById("repairsSlider");
   var repairsTouched = false;
   if (repairsSlider) {
@@ -210,7 +212,7 @@
     var paintWedge = function () {
       var v = parseInt(repairsSlider.value, 10);
       var frac = v / 4;
-      repairsVal.innerHTML = v === 0 ? SPARKLE_SVG : new Array(v + 1).join(HAMMER_SVG);
+      repairsVal.innerHTML = v === 0 ? SPARKLE_SVG : new Array(v + 2).join(HAMMER_SVG); // 2..5 hammers across stops 1-4
       repairsVal.classList.toggle("zero", v === 0);
       repairsSlider.setAttribute("aria-valuetext", REPAIR_LABELS[v]);
       // Our own dial (the native thumb is invisible — iOS ignores custom
