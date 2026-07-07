@@ -92,7 +92,7 @@
           svImg.alt = "Street view of this address";
           box.insertBefore(svImg, box.firstChild);
         }
-        svImg.src = "https://maps.googleapis.com/maps/api/streetview?size=640x200&fov=75&" + params;
+        svImg.src = "https://maps.googleapis.com/maps/api/streetview?size=640x200&fov=68&pitch=6&" + params;
         svImg.hidden = false;
         box.classList.add("has-sv");
       })

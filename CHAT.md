@@ -1104,3 +1104,15 @@ render; no-imagery addresses show nothing. Debugging detour: the feature was sil
 dead because a literal BACKSPACE byte (heredoc-mangled \b escape) sat inside the zsv
 regex — found via console probe (on=false), fixed with an explicit (&|$|#) boundary.
 Verified: the real Candlewood house in the card at both widths, CTA above the fold.
+
+**Lucas:** the view portal for the streetview is not centered. also, is it possible to
+center any given house in the image? would that require realtime ai intervention?
+
+**Claude:** Two causes, no AI needed. (1) The frame: the desktop card pads 22px left /
+8px right, so a "full-width" image sat off-center — the strip now bleeds -14px left for
+a symmetric 8/8 frame (mobile already symmetric). (2) The house: Google already aims
+the camera at the building's facade server-side whenever `location` is an ADDRESS —
+that's built into the Street View Static API, no realtime intervention. The residual
+looseness was framing: fov tightened 75→68 (zoom) + pitch=6 (trade lawn for house).
+Candlewood now fills the frame dead-center. True AI re-framing (detect the house
+bounding box, crop) exists as an offline/batch option but is unnecessary here.
