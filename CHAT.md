@@ -803,3 +803,8 @@ GIF 40 frames / 219KB.
 
 **Claude:** Loop doubled to 4s (same choreography percentages — every phase, including
 the Z hold, scales with it); GIF re-rendered at 80 frames / 371KB.
+
+**Lucas:** lets try 8 seconds
+
+**Claude:** Loop is now 8s (96-frame GIF at 12fps, 413KB). Phases: ~1.8s walk in, ~1.8s
+spin together, ~2.2s holding the Z, ~1.8s spin away.
