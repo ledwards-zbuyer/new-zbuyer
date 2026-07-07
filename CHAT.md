@@ -1063,3 +1063,10 @@ to the right to see more options (carousel style)
 fixed 76px height flows chips into columns that scroll right; left-aligned, hidden
 scrollbar, right-edge fade mask as the "more" cue. Same toggle/append logic covers all
 twenty.
+
+**Lucas:** let the width of the suggestion container match the width of the text so they
+are not all aligned in vertical columns
+
+**Claude:** One property — align-items:flex-start on the carousel — stops flexbox from
+stretching each chip to its column's width; every chip now hugs its own label, giving
+the strip a natural staggered look.
