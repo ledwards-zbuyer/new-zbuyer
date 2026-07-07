@@ -1078,3 +1078,10 @@ are still aligned in vertical columns → left aligned
 Replaced with two independent packed rows (alternating chips) inside one horizontal
 scroller — each row starts flush left and its chips float tight against each other, so
 the rows stagger naturally.
+
+**Lucas:** on the report add the text option for jason. so Call Jason, Text Jason, &
+"Schedule" for the buttons
+
+**Claude:** Expert card now has three buttons: Call Jason (orange, tel:), Text Jason
+(sms: — opens the messaging app), Schedule. The names use the .xName spans so the
+maxsold variant's "your pros" swap keeps working.
