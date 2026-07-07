@@ -202,16 +202,22 @@
   if (repairsSlider) {
     var repairsWedge = document.getElementById("repairsWedge");
     var repairsVal = document.getElementById("repairsVal");
+    var repairsDial = document.getElementById("repairsDial");
     var paintWedge = function () {
       var v = parseInt(repairsSlider.value, 10);
+      var frac = v / 4;
       repairsVal.innerHTML = v === 0 ? SPARKLE_SVG : new Array(v + 1).join(HAMMER_SVG);
       repairsVal.classList.toggle("zero", v === 0);
       repairsSlider.setAttribute("aria-valuetext", REPAIR_LABELS[v]);
-      var p = (v / 4) * 100;
+      // Our own dial (the native thumb is invisible — iOS ignores custom
+      // thumb geometry): center travels [8px, width-8px], the wedge's ends.
+      if (repairsDial) repairsDial.style.left = "calc(" + (frac * 100) + "% - " + (frac * 16) + "px)";
+      var p = frac * 100;
       repairsWedge.style.background = v === 0
         ? "linear-gradient(90deg,#E4EAF3 0%,#E4EAF3 100%)"
         : "linear-gradient(90deg,#7FC4FF 0%,#1D4FD7 " + p + "%,#E4EAF3 " + p + "%,#E4EAF3 100%)";
     };
+    paintWedge(); // position the dial at the default stop on load
     repairsSlider.addEventListener("input", function () { repairsTouched = true; paintWedge(); });
     repairsSlider.addEventListener("change", function () {
       repairsTouched = true;

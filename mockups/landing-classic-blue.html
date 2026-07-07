@@ -86,17 +86,14 @@
      [8px, width-8px], so the wedge ends must match or the wedge reads as
      extending past the slider's maximum. */
   .lm-wedge .wedge{position:absolute;left:8px;right:8px;bottom:10px;height:32px;clip-path:polygon(0 100%,100% 0,100% 100%);background:linear-gradient(90deg,#E4EAF3 0%,#E4EAF3 100%);border-radius:2px}
-  /* border/padding/outline:none — the generic .lm-final input text-field
-     styling (border, radius, white bg, blue focus border) must not paint a
-     box around the range control; focus shows on the dial instead. */
-  .lm-wedge input{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;background:transparent;border:none;border-radius:0;outline:none;cursor:pointer}
-  .lm-wedge input:focus{border:none;outline:none}
-  .lm-wedge input:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
-  .lm-wedge input:focus-visible::-moz-range-thumb{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
-  .lm-wedge input::-webkit-slider-runnable-track{background:transparent;height:100%}
-  .lm-wedge input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:40px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4);margin-top:0}
-  .lm-wedge input::-moz-range-track{background:transparent;height:100%}
-  .lm-wedge input::-moz-range-thumb{width:16px;height:40px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4)}
+  /* The native range input is invisible (it handles touch/drag/keys); the
+     dial is our own element — iOS Safari ignores custom thumb geometry,
+     which left the dial short of the wedge tip and sunk below its peak.
+     left is computed in lead-modal.js so the dial center tracks exactly
+     [8px, width-8px] — the wedge ends; taller than the wedge everywhere. */
+  .lm-wedge input{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;background:transparent;border:none;border-radius:0;outline:none;opacity:0;cursor:pointer}
+  .lm-dial{position:absolute;top:4px;left:0;width:16px;height:44px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4);pointer-events:none}
+  .lm-wedge input:focus-visible ~ .lm-dial{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
   .lm-axis{display:flex;justify-content:space-between;color:#9ba8bb;font-size:11px;margin-top:7px;padding:0 22px}
   .lm-slider-icons{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:5px;min-height:20px;color:var(--c1)}
   .lm-slider-icons.zero{color:#9ba8bb}
@@ -217,6 +214,7 @@
             <div class="lm-wedge">
               <div class="wedge" id="repairsWedge"></div>
               <input type="range" id="repairsSlider" min="0" max="4" step="1" value="0" aria-label="How many repairs does the home need?">
+              <div class="lm-dial" id="repairsDial"></div>
             </div>
             <div class="lm-axis"><span>none</span><span>a full project</span></div>
             <div class="lm-slider-icons zero" id="repairsVal"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 2l.9 2.6 2.6.9-2.6.9L19 9l-.9-2.6-2.6-.9 2.6-.9z" opacity=".55"/></svg></div>

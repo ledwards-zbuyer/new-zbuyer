@@ -808,3 +808,13 @@ the Z hold, scales with it); GIF re-rendered at 80 frames / 371KB.
 
 **Claude:** Loop is now 8s (96-frame GIF at 12fps, 413KB). Phases: ~1.8s walk in, ~1.8s
 spin together, ~2.2s holding the Z, ~1.8s spin away.
+
+**Lucas:** *(iPhone screenshot)* the slider is still messed up on mobile. it obviously
+needs to go to the end, but also the rising background should never be above it.
+
+**Claude:** Root cause: iOS Safari ignores custom range-thumb geometry (size, travel,
+vertical centering), so the native dial fell short of the wedge tip and sank below its
+peak. Fix: the native input is now invisible and only handles touch/drag/keyboard; the
+dial is our own element positioned by the same paint function that fills the wedge —
+center travels exactly [8px, width-8px] (the wedge's ends) and the dial (44px) always
+crests above the wedge (32px max) on every browser. Focus halo moved to the custom dial.
