@@ -969,3 +969,13 @@ the button
 
 **Claude:** +14px of right padding on the chip — the address and the button breathe now
 (total gap 28px with the box's existing 14px flex gap).
+
+**Lucas:** add a little bit more gap. then work on the repairs slider… still want only 5
+hammers, but can there be at least twice as many stopping points on the spectrum… maybe
+4 times as many. just so it feels smoother. even if we dont add a hammer, the slider
+handle can still move
+
+**Claude:** Chip gap widened to 26px padding (+ the box's 14px flex gap). Slider track
+now has 17 positions (4×) — the dial and wedge fill move at fine granularity, while
+icons, aria text, and the RepairsNeeded value bucket into the same 5 levels
+(round(v/4)). Harness `slide=` param still takes a level (0-4).

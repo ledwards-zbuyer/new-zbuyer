@@ -48,7 +48,7 @@
      button) instead of holding the full 680px. fit-content + auto margins
      keep it centered; mobile keeps the stacked full-width layout. */
   .search.has-pick{width:-moz-fit-content;width:fit-content;min-width:430px}
-  .search .picked{flex:1;min-width:0;text-align:left;cursor:text;padding:5px 14px 5px 0}
+  .search .picked{flex:1;min-width:0;text-align:left;cursor:text;padding:5px 26px 5px 0}
   .search .picked[hidden]{display:none}
   .search .picked .p-street{display:block;font-size:16.5px;font-weight:600;color:var(--ink);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .search .picked .p-sec{display:block;font-size:12.5px;color:var(--muted);margin-top:1px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -258,7 +258,7 @@
           <div class="lm-slider">
             <div class="lm-wedge">
               <div class="wedge" id="repairsWedge"></div>
-              <input type="range" id="repairsSlider" min="0" max="4" step="1" value="0" aria-label="How many repairs does the home need?">
+              <input type="range" id="repairsSlider" min="0" max="16" step="1" value="0" aria-label="How many repairs does the home need?">
               <div class="lm-dial" id="repairsDial"></div>
             </div>
             <div class="lm-axis"><span>none</span><span>a full remodel</span></div>

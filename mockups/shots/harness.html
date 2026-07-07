@@ -179,7 +179,7 @@ f.onload = function () {
       }, 2000);
     } else if (sv) {
       var sl = d.getElementById("repairsSlider");
-      sl.value = sv;
+      sl.value = String(parseInt(sv, 10) * 4); // slide= takes a LEVEL (0-4)
       sl.dispatchEvent(new w.Event("input", { bubbles: true }));
     }
     return;

@@ -244,12 +244,16 @@
     var repairsWedge = document.getElementById("repairsWedge");
     var repairsVal = document.getElementById("repairsVal");
     var repairsDial = document.getElementById("repairsDial");
+    // The track has 17 positions (0-16) so dragging feels smooth; display
+    // and data bucket into 5 levels (sparkle, then 2-5 hammers).
+    var repairLevel = function () { return Math.round(parseInt(repairsSlider.value, 10) / 4); };
     var paintWedge = function () {
       var v = parseInt(repairsSlider.value, 10);
-      var frac = v / 4;
-      repairsVal.innerHTML = v === 0 ? SPARKLE_SVG : new Array(v + 2).join(HAMMER_SVG); // 2..5 hammers across stops 1-4
-      repairsVal.classList.toggle("zero", v === 0);
-      repairsSlider.setAttribute("aria-valuetext", REPAIR_LABELS[v]);
+      var frac = v / 16;
+      var lvl = repairLevel();
+      repairsVal.innerHTML = lvl === 0 ? SPARKLE_SVG : new Array(lvl + 2).join(HAMMER_SVG); // 2..5 hammers across levels 1-4
+      repairsVal.classList.toggle("zero", lvl === 0);
+      repairsSlider.setAttribute("aria-valuetext", REPAIR_LABELS[lvl]);
       // Our own dial (the native thumb is invisible — iOS ignores custom
       // thumb geometry): center travels [8px, width-8px], the wedge's ends.
       if (repairsDial) repairsDial.style.left = "calc(" + (frac * 100) + "% - " + (frac * 16) + "px)";
@@ -263,7 +267,7 @@
     repairsSlider.addEventListener("change", function () {
       repairsTouched = true;
       paintWedge();
-      if (P) psave(P.F.repairsNeeded, REPAIR_LABELS[parseInt(repairsSlider.value, 10)]);
+      if (P) psave(P.F.repairsNeeded, REPAIR_LABELS[repairLevel()]);
     });
 
     // Pointer events drive the control directly — iOS accepts taps on an
@@ -276,7 +280,7 @@
       var r = wedgeBox.getBoundingClientRect();
       var frac = (clientX - r.left - 8) / (r.width - 16);
       frac = Math.max(0, Math.min(1, frac));
-      var v = String(Math.round(frac * 4));
+      var v = String(Math.round(frac * 16));
       if (v !== repairsSlider.value) {
         repairsSlider.value = v;
         repairsTouched = true;
@@ -319,7 +323,7 @@
       if (P) {
         psave(P.F.sellingTimeFrame, intentLabel || intentValue);
         if (focusLabel) psave(P.F.whySelling, focusLabel);
-        if (repairsTouched) psave(P.F.repairsNeeded, REPAIR_LABELS[parseInt(repairsSlider.value, 10)]);
+        if (repairsTouched) psave(P.F.repairsNeeded, REPAIR_LABELS[repairLevel()]);
       }
       runZBeat("allset");
     });
