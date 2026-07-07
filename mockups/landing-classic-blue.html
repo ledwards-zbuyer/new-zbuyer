@@ -136,8 +136,9 @@
   /* two fixed rows that flow into columns and scroll horizontally —
      20 suggestions at the same height as the old five; right-edge fade
      hints there's more to scroll */
-  .sp-chips{display:flex;flex-direction:column;flex-wrap:wrap;align-content:flex-start;align-items:flex-start;gap:7px;height:76px;overflow-x:auto;overflow-y:hidden;margin-top:11px;text-align:left;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 90%,transparent);mask-image:linear-gradient(90deg,#000 90%,transparent);padding-right:26px}
+  .sp-chips{display:flex;flex-direction:column;gap:7px;overflow-x:auto;overflow-y:hidden;margin-top:11px;text-align:left;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 90%,transparent);mask-image:linear-gradient(90deg,#000 90%,transparent)}
   .sp-chips::-webkit-scrollbar{display:none}
+  .sp-row{display:flex;gap:7px;width:max-content;padding-right:26px}
   .sp-chip{white-space:nowrap}
   .sp-chip{font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);background:var(--soft);border:1.5px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer}
   .sp-chip.sel{background:var(--tint);border-color:var(--c1);color:var(--c1)}
@@ -327,26 +328,8 @@
         <p class="lm-sub lm-q">Upgrades or features that could affect your value &mdash; totally optional.</p>
         <textarea id="specialText" class="lm-textarea" rows="3" placeholder="Type anything worth factoring in&hellip;"></textarea>
         <div class="sp-chips" id="specialChips" aria-label="Common features">
-          <button type="button" class="sp-chip">Solar panels</button>
-          <button type="button" class="sp-chip">Pool</button>
-          <button type="button" class="sp-chip">New roof</button>
-          <button type="button" class="sp-chip">Remodeled kitchen</button>
-          <button type="button" class="sp-chip">Finished basement</button>
-          <button type="button" class="sp-chip">New HVAC</button>
-          <button type="button" class="sp-chip">Hardwood floors</button>
-          <button type="button" class="sp-chip">Updated bathrooms</button>
-          <button type="button" class="sp-chip">Large lot</button>
-          <button type="button" class="sp-chip">Garage workshop</button>
-          <button type="button" class="sp-chip">Mother-in-law suite</button>
-          <button type="button" class="sp-chip">Fenced yard</button>
-          <button type="button" class="sp-chip">New windows</button>
-          <button type="button" class="sp-chip">Corner lot</button>
-          <button type="button" class="sp-chip">RV parking</button>
-          <button type="button" class="sp-chip">Deck / patio</button>
-          <button type="button" class="sp-chip">Smart home</button>
-          <button type="button" class="sp-chip">Fireplace</button>
-          <button type="button" class="sp-chip">Sprinkler system</button>
-          <button type="button" class="sp-chip">Storm shelter</button>
+          <div class="sp-row"><button type="button" class="sp-chip">Solar panels</button><button type="button" class="sp-chip">New roof</button><button type="button" class="sp-chip">Finished basement</button><button type="button" class="sp-chip">Hardwood floors</button><button type="button" class="sp-chip">Large lot</button><button type="button" class="sp-chip">Mother-in-law suite</button><button type="button" class="sp-chip">New windows</button><button type="button" class="sp-chip">RV parking</button><button type="button" class="sp-chip">Smart home</button><button type="button" class="sp-chip">Sprinkler system</button></div>
+          <div class="sp-row"><button type="button" class="sp-chip">Pool</button><button type="button" class="sp-chip">Remodeled kitchen</button><button type="button" class="sp-chip">New HVAC</button><button type="button" class="sp-chip">Updated bathrooms</button><button type="button" class="sp-chip">Garage workshop</button><button type="button" class="sp-chip">Fenced yard</button><button type="button" class="sp-chip">Corner lot</button><button type="button" class="sp-chip">Deck / patio</button><button type="button" class="sp-chip">Fireplace</button><button type="button" class="sp-chip">Storm shelter</button></div>
         </div>
         <button type="button" class="lm-cta" id="viewReport">Continue &rarr;</button>
       </div>

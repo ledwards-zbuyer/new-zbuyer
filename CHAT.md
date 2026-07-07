@@ -1070,3 +1070,11 @@ are not all aligned in vertical columns
 **Claude:** One property — align-items:flex-start on the carousel — stops flexbox from
 stretching each chip to its column's width; every chip now hugs its own label, giving
 the strip a natural staggered look.
+
+**Lucas:** not quite on the suggestions. i want them to float against each other. they
+are still aligned in vertical columns → left aligned
+
+**Claude:** Root cause: flex column-wrap always pairs chips into shared-x columns.
+Replaced with two independent packed rows (alternating chips) inside one horizontal
+scroller — each row starts flush left and its chips float tight against each other, so
+the rows stagger naturally.
