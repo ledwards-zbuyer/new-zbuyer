@@ -944,3 +944,22 @@ prepop), the input swaps for a two-line display — street bold, "City, ST zip" 
 muted — the exact suggestion-list format. Click it to edit (input returns with the full
 text); the next pick re-chips. Mobile chip mirrors the input's soft box incl. the pin
 inset.
+
+**Lucas:** is trustedform fully in place? i thought you would need some key or something
+
+**Claude:** Page side needs no key by design (anonymous cert creation, verified real cert
+in the E2E); the key belongs to the server-side CLAIM step within ~72h. **Lucas: as long
+as you are sending the info into saveleaddata, we are good.**
+
+**Lucas:** 1: can the address textbox width adjust to the size of the address characters
+inside it… to an absolute minimum of some kind. this full width version seems too wide.
+if this is overkill that is going to make cross-browser checks a nightmare… give me a
+heads up. 2: if the user clicks "back" from the report, can it reload the page so it
+does not look unfinished or broken (shows the "gif" at the very end so its a solid dot)
+
+**Claude:** (1) Not overkill — `width:fit-content` on the chipped box (min 430px,
+centered by the existing auto margins; mobile keeps stacked full width). Two lines of
+CSS, supported everywhere modern; the nightmare version would be JS-measured widths,
+which this avoids. (2) The "solid dot" is the back/forward cache restoring the page
+exactly as left — mid-finale. A `pageshow`/`persisted` handler now reloads the lander on
+back; the Pulse submissionID survives in sessionStorage so it's the same lead session.

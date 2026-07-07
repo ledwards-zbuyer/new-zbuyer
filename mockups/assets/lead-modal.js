@@ -14,6 +14,14 @@
 
   var REPORT_PAGE = "report-classic-blue.html"; // demo Cash Value Report page
 
+  // Back from the report restores this page from the back/forward cache
+  // exactly as it was left — mid-finale, an empty stage dot. Reload instead
+  // so the funnel restarts cleanly (the Pulse submissionID survives in
+  // sessionStorage, so it's still the same lead session).
+  window.addEventListener("pageshow", function (e) {
+    if (e.persisted) window.location.reload();
+  });
+
   var card = modal.querySelector(".lm-card");
   var screens = modal.querySelectorAll(".lm-screen");
   var form = document.getElementById("leadForm");

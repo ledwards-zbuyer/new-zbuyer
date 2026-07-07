@@ -45,6 +45,8 @@
       picked.addEventListener("click", function () {
         picked.hidden = true;
         input.classList.remove("hidden-by-pick");
+        var box = input.closest(".search");
+        if (box) box.classList.remove("has-pick");
         input.focus();
       });
       input.parentNode.insertBefore(picked, input.nextSibling);
@@ -53,6 +55,8 @@
     picked.children[1].textContent = sec;
     picked.hidden = false;
     input.classList.add("hidden-by-pick");
+    var box = input.closest(".search");
+    if (box) box.classList.add("has-pick");
   }
 
   // Push the verified address into the Pulse lead API (no-op on pages that
