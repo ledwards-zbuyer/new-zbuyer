@@ -703,3 +703,13 @@ canonical yet, flagged for the API team). Harness reworked for the 5-step flow
 (+`?step=questions|qerr`); E2E shows the complete lead record incl. the three new
 fields, FinalizeLead, and pixel injection. FORM_DESIGNER gained the "never put 'I'm
 selling' in the user's mouth" principle.
+
+**Lucas:** In chrome there is a strange outline around the whole repair slider area.
+even when the focus is taken away there is a faint slider outline.
+
+**Claude:** Root cause: the questions screen carries `.lm-final`, whose generic
+`.lm-final input` text-field styling (1.5px border, 12px radius, white bg, blue focus
+border) was painting a box around the range input. Fix: the wedge input now zeroes
+border/radius/padding/outline in all states, and the keyboard-focus affordance moved
+onto the dial itself (soft blue halo via `:focus-visible` on the thumb) so
+accessibility survives.

@@ -95,7 +95,13 @@
   .lm-slider{padding:0 6px}
   .lm-wedge{position:relative;height:44px;margin-top:2px}
   .lm-wedge .wedge{position:absolute;left:0;right:0;bottom:6px;height:32px;clip-path:polygon(0 100%,100% 0,100% 100%);background:linear-gradient(90deg,#E4EAF3 0%,#E4EAF3 100%);border-radius:2px}
-  .lm-wedge input{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;background:transparent;cursor:pointer}
+  /* border/padding/outline:none — the generic .lm-final input text-field
+     styling (border, radius, white bg, blue focus border) must not paint a
+     box around the range control; focus shows on the dial instead. */
+  .lm-wedge input{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;background:transparent;border:none;border-radius:0;outline:none;cursor:pointer}
+  .lm-wedge input:focus{border:none;outline:none}
+  .lm-wedge input:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
+  .lm-wedge input:focus-visible::-moz-range-thumb{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
   .lm-wedge input::-webkit-slider-runnable-track{background:transparent;height:100%}
   .lm-wedge input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:40px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4);margin-top:2px}
   .lm-wedge input::-moz-range-track{background:transparent;height:100%}
