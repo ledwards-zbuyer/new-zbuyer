@@ -826,3 +826,9 @@ focus on?" question
 seeds the value, so WhySelling=Both submits unless the user changes it. Unlike the
 slider (hidden default, sends nothing untouched), this default is visible — continuing
 past it is an answer.
+
+**Lucas:** also change "a full project" to "a full remodel"
+
+**Claude:** Changed in the axis hint (both pages) and in the label array — so the
+slider's aria-valuetext and the RepairsNeeded field value now top out at
+"A full remodel".
