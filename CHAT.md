@@ -870,3 +870,12 @@ or more sparkely… it looks grey to my colorblind eye lol
 with a gentle twinkle animation — luminance carries "shiny", not hue, so it reads bright
 for colorblind eyes too. Hammers now run 2-3-4-5 across the stops ("a few touch-ups"
 starts at two — it IS a few — and no count-skips on the way to five).
+
+**Lucas:** back to the gif. cut it in half and reverse/repeat it so it goes back out the
+way it came in
+
+**Claude:** Palindrome cut: only the entrance is defined (walk in at 35° tilt → rigid
+spin → settle → hold) and animation-direction:alternate plays it backward — the exit is
+the exact time-reversal of the entrance. 4s per direction, 8s full cycle, ~1.2s Z hold
+spanning the turnaround. GIF = 48 rendered frames + mirrored reverse leg (94 frames,
+505KB).

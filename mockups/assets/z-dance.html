@@ -10,37 +10,30 @@
   .wrap{width:min(72vmin,520px)}
   svg{display:block;width:100%;height:auto}
 
-  /* Two dancers seen from above, never touching, never rotating
-     independently: the ONLY rotation lives on the shared .pair group, so
-     the shapes can only spin together, rigidly (overlap is geometrically
-     impossible). They enter the shot at the SAME angle (pair pre-tilted
-     35°), walking toward each other along the seam (pure translation,
-     constant perpendicular gap); meet; SPIN once around each other; pause
-     as the logo Z; spin away the other direction; and part.
-     8s seamless loop (off-stage at both ends, hidden by the circle clip). */
-  .pair{transform-origin:100px 100px;animation:8s linear infinite both;animation-name:spinPair}
-  .piece{animation:8s linear infinite both}
+  /* Palindrome cut: only the ENTRANCE is defined — walk in at the same
+     35° tilt (pure translation, constant gap), spin once as a rigid pair,
+     settle into the Z, hold. animation-direction:alternate then plays it
+     backward, so they leave EXACTLY the way they came, and the loop repeats.
+     4s per direction = 8s full cycle; hold at the Z spans the turnaround
+     (~1.2s). The only rotation is the shared .pair group — independent
+     rotation/overlap remain impossible. */
+  .pair{transform-origin:100px 100px;animation:4s linear infinite alternate both;animation-name:spinPair}
+  .piece{animation:4s linear infinite alternate both}
   .pw{animation-name:walkW}
   .pb{animation-name:walkB}
 
   @keyframes spinPair{
     0%  {transform:rotate(395deg)}
-    20% {transform:rotate(395deg);animation-timing-function:cubic-bezier(.42,.05,.35,1)}
-    42% {transform:rotate(0deg)}
-    70% {transform:rotate(0deg);animation-timing-function:cubic-bezier(.55,.03,.68,.42)}
-    92%,100%{transform:rotate(-395deg)}
+    35% {transform:rotate(395deg);animation-timing-function:cubic-bezier(.42,.05,.35,1)}
+    85%,100%{transform:rotate(0deg)}
   }
   @keyframes walkW{
     0%  {transform:translate(82px,-149px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
-    22% {transform:translate(0,0)}
-    78% {transform:translate(0,0);animation-timing-function:cubic-bezier(.6,.02,.8,.42)}
-    96%,100%{transform:translate(82px,-149px)}
+    40%,100%{transform:translate(0,0)}
   }
   @keyframes walkB{
     0%  {transform:translate(-82px,149px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
-    22% {transform:translate(0,0)}
-    78% {transform:translate(0,0);animation-timing-function:cubic-bezier(.6,.02,.8,.42)}
-    96%,100%{transform:translate(-82px,149px)}
+    40%,100%{transform:translate(0,0)}
   }
   @media (prefers-reduced-motion:reduce){.pair,.piece{animation:none}}
 </style>
