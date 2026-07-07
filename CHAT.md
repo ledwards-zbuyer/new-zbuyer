@@ -840,3 +840,7 @@ you the report?
 **Claude:** His beat all four offered: six words, a genuine permission question (form
 matches the opt-in's function), and "the report" beats "your report link" — people want
 the thing, not the hyperlink to it. Applied to both pages.
+
+**Lucas:** change the button to "Text Me the Report"
+
+**Claude:** Done on both pages — question and CTA now speak of the same object.
