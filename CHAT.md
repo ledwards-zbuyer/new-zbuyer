@@ -785,3 +785,16 @@ tracks along the Z's own diagonal (the perpendicular seam between them literally
 change), converge into the Z (35%, ease-out), hold (30%), then continue through and exit
 the way the other came (35%, ease-in). Circle-clipped so they emerge from / vanish into
 the stage rim. 2s seamless loop; GIF now 40 frames / 136KB.
+
+**Lucas:** misunderstanding. I do not want the two shapes to move in relation to each
+other. they should never overlap. they can come apart… like little arrows (or people,
+top down) walking up to each other, doing a spin, but never touching. entering the
+gif/shot/room at the same angle, spinning, pausing, spinning away. *(mid-build:)* the
+arrows should not rotate independent of each other
+
+**Claude:** v3: the only rotation lives on one shared `.pair` group — the shapes can
+only spin together, rigidly, so independent rotation and overlap are structurally
+impossible. Choreography: both enter at the same 35° tilt walking toward each other
+along the seam (pure translation, constant gap), spin once around each other as a pair,
+pause as the exact logo Z, spin away the opposite direction, and part. 2s seamless loop,
+GIF 40 frames / 219KB.

@@ -3,57 +3,70 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>zBuyer Z — ballet from the catwalk</title>
+<title>zBuyer Z — the meeting</title>
 <meta name="robots" content="noindex">
 <style>
   html,body{height:100%;margin:0;display:grid;place-items:center;background:#0A1426}
   .wrap{width:min(72vmin,520px)}
   svg{display:block;width:100%;height:auto}
 
-  /* Reduced concept: the two halves of the z slide on PARALLEL tracks along
-     the Z's own diagonal — the perpendicular seam between them never changes.
-     The 7 glides in from upper-right, the L from lower-left; they lock into
-     the logo Z, hold, then continue through and exit the way the other came.
-     2s loop: 35% approach (ease-out), 30% pause, 35% departure (ease-in).
-     A circle clip makes them emerge from / vanish into the stage rim. */
-  .dancer{animation:2s linear infinite both}
-  .w{animation-name:slideW}
-  .b{animation-name:slideB}
-  @keyframes slideW{
-    0%  {transform:translate(96px,-174px);animation-timing-function:cubic-bezier(.16,.6,.3,1)}
-    35%,65%{transform:translate(0,0)}
-    65% {transform:translate(0,0);animation-timing-function:cubic-bezier(.7,.02,.84,.44)}
-    100%{transform:translate(-96px,174px)}
+  /* Two dancers seen from above, never touching, never rotating
+     independently: the ONLY rotation lives on the shared .pair group, so
+     the shapes can only spin together, rigidly (overlap is geometrically
+     impossible). They enter the shot at the SAME angle (pair pre-tilted
+     35°), walking toward each other along the seam (pure translation,
+     constant perpendicular gap); meet; SPIN once around each other; pause
+     as the logo Z; spin away the other direction; and part.
+     2s seamless loop (off-stage at both ends, hidden by the circle clip). */
+  .pair{transform-origin:100px 100px;animation:2s linear infinite both;animation-name:spinPair}
+  .piece{animation:2s linear infinite both}
+  .pw{animation-name:walkW}
+  .pb{animation-name:walkB}
+
+  @keyframes spinPair{
+    0%  {transform:rotate(395deg)}
+    20% {transform:rotate(395deg);animation-timing-function:cubic-bezier(.42,.05,.35,1)}
+    42% {transform:rotate(0deg)}
+    70% {transform:rotate(0deg);animation-timing-function:cubic-bezier(.55,.03,.68,.42)}
+    92%,100%{transform:rotate(-395deg)}
   }
-  @keyframes slideB{
-    0%  {transform:translate(-96px,174px);animation-timing-function:cubic-bezier(.16,.6,.3,1)}
-    35%,65%{transform:translate(0,0)}
-    65% {transform:translate(0,0);animation-timing-function:cubic-bezier(.7,.02,.84,.44)}
-    100%{transform:translate(96px,-174px)}
+  @keyframes walkW{
+    0%  {transform:translate(82px,-149px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
+    22% {transform:translate(0,0)}
+    78% {transform:translate(0,0);animation-timing-function:cubic-bezier(.6,.02,.8,.42)}
+    96%,100%{transform:translate(82px,-149px)}
   }
-  @media (prefers-reduced-motion:reduce){.dancer{animation:none}}
+  @keyframes walkB{
+    0%  {transform:translate(-82px,149px);animation-timing-function:cubic-bezier(.2,.6,.3,1)}
+    22% {transform:translate(0,0)}
+    78% {transform:translate(0,0);animation-timing-function:cubic-bezier(.6,.02,.8,.42)}
+    96%,100%{transform:translate(-82px,149px)}
+  }
+  @media (prefers-reduced-motion:reduce){.pair,.piece{animation:none}}
 </style>
 </head>
 <body>
   <div class="wrap">
-    <svg viewBox="0 0 200 200" role="img" aria-label="zBuyer Z mark: two triangles dance in circles and settle into the Z">
+    <svg viewBox="0 0 200 200" role="img" aria-label="zBuyer Z mark: two shapes walk up to each other, spin together, pause as the Z, and spin away">
       <defs>
         <radialGradient id="stage" cx="50%" cy="44%" r="68%">
           <stop offset="0%" stop-color="#172A4E"/>
           <stop offset="100%" stop-color="#0E1B33"/>
         </radialGradient>
+        <clipPath id="stageClip"><circle cx="100" cy="100" r="96"/></clipPath>
       </defs>
       <circle cx="100" cy="100" r="96" fill="url(#stage)"/>
-      <clipPath id="stageClip"><circle cx="100" cy="100" r="96"/></clipPath>
       <g clip-path="url(#stageClip)">
-      <!-- the "7" -->
-      <g class="dancer w">
-        <polygon fill="#FFFFFF" points="40,42 128,42 64,158 39,158 95,68 40,68"/>
-      </g>
-      <!-- its 180°-twin, the "L" -->
-      <g class="dancer b">
-        <polygon fill="#3BA4F4" points="160,158 72,158 136,42 161,42 105,132 160,132"/>
-      </g>
+        <g class="pair">
+          <!-- the "7" -->
+          <g class="piece pw">
+            <polygon fill="#FFFFFF" points="40,42 128,42 64,158 39,158 95,68 40,68"/>
+          </g>
+          <!-- its 180°-twin, the "L" -->
+          <g class="piece pb">
+            <polygon fill="#3BA4F4" points="160,158 72,158 136,42 161,42 105,132 160,132"/>
+          </g>
+        </g>
       </g>
     </svg>
   </div>
@@ -62,7 +75,7 @@
     // animation at that moment (paused + negative delay).
     var t = new URLSearchParams(location.search).get("t");
     if (t !== null) {
-      document.querySelectorAll(".dancer").forEach(function (el) {
+      document.querySelectorAll(".pair,.piece").forEach(function (el) {
         el.style.animationPlayState = "paused";
         el.style.animationDelay = (-parseFloat(t)) + "s";
       });
