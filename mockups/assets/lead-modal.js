@@ -121,17 +121,65 @@
     el.addEventListener("input", function () { el.classList.remove("invalid"); errEl.hidden = true; });
   });
 
-  // ---- terms variant (?terms=maxsold; default exclusive) ----
-  // compare-terms.html links here with either variant so the disclosure
-  // can be previewed under each sale model. Markup carries the Exclusive
-  // default (single pro); maxsold swaps in the 6-buyer worst case +
-  // plural consent language. Placeholder copy pending final legal language.
-  if (/[?&]terms=maxsold\b/.test(window.location.search)) {
+  // ---- terms variants (?terms=maxsold / inline / inline-maxsold) ----
+  // compare-terms.html links here with each variant so the disclosure can
+  // be previewed under each sale model and consent UI. Two axes:
+  //   sale model — markup carries the Exclusive default (single pro);
+  //     maxsold swaps in the 6-buyer worst case + plural consent language.
+  //   consent UI — default is the classic implicit paragraph; inline
+  //     rebuilds it in first person behind an explicit checkbox (below).
+  // Placeholder copy pending final legal language.
+  if (/[?&]terms=(inline-)?maxsold\b/.test(window.location.search)) {
     var matchedEl = modal.querySelector(".lm-matched");
     if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)";
     var consentEl = modal.querySelector(".lm-consent");
     if (consentEl) consentEl.innerHTML = consentEl.innerHTML
       .replace("your matched real-estate professional", "its real-estate partners");
+  }
+
+  // ---- inline-consent variant (?terms=inline / inline-maxsold) ----
+  // Alternative TCPA presentation: the disclosure collapses to one
+  // first-person paragraph ("I agree to receive…") with the matched pro
+  // names inline and an oversized checkbox floated top-left so the text
+  // wraps around it. The whole box is a tap target (links exempt) and
+  // Continue requires the check. Runs after the maxsold swap so the
+  // names it lifts from .lm-matched already reflect the sale model.
+  var termsBox = null, termsCheck = null, inlinePros = null;
+  if (/[?&]terms=inline(-maxsold)?\b/.test(window.location.search)) {
+    termsBox = modal.querySelector(".lm-disclosure");
+    var mInl = termsBox.querySelector(".lm-matched");
+    var cInl = termsBox.querySelector(".lm-consent");
+    // The standalone matched line folds into the sentence (it returns only
+    // if GetContactOptInNames renders per-pro checkboxes — see below).
+    var mLbl = mInl.querySelector("b");
+    var proNames = mInl.textContent.replace(mLbl ? mLbl.textContent : "", "").replace(/\s+/g, " ").trim();
+    mInl.hidden = true;
+    termsBox.classList.add("lm-inline");
+    cInl.innerHTML =
+      '<input type="checkbox" class="lm-check" aria-label="I agree to receive calls, texts, and emails as described in the terms">' +
+      'I agree to receive calls, texts, and emails from zBuyer and <b class="lm-inline-pros"></b>' +
+      ' — including marketing and AI-generated messages about my property at the number I provided,' +
+      ' made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if my' +
+      ' number is on a Do Not Call list. This is my express written consent; I understand consent' +
+      ' is not a condition of purchase. Msg &amp; data rates may apply. See our' +
+      ' <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp;' +
+      ' <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.';
+    termsCheck = cInl.querySelector(".lm-check");
+    inlinePros = cInl.querySelector(".lm-inline-pros");
+    inlinePros.textContent = proNames;
+
+    var syncTerms = function () {
+      termsBox.classList.toggle("checked", termsCheck.checked);
+      if (termsCheck.checked) { termsBox.classList.remove("invalid"); errEl.hidden = true; }
+    };
+    termsCheck.addEventListener("change", syncTerms);
+    // Tapping anywhere in the box toggles the check — except the links
+    // (and the per-pro opt-in rows when the API renders those).
+    termsBox.addEventListener("click", function (e) {
+      if (e.target.closest("a, .lm-check, .lm-optin")) return;
+      termsCheck.checked = !termsCheck.checked;
+      syncTerms();
+    });
   }
 
   // ---- z-param contact prefill (email/SMS landing links) ----
@@ -182,6 +230,19 @@
         box.appendChild(document.createTextNode(" " + d.contactOptInNames.map(function (c) {
           return c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
         }).join("; ")));
+      }
+      // Inline-consent variant: the live names belong inside the sentence.
+      // With per-pro checkboxes the standalone list returns (it IS the
+      // selection UI) and the sentence points at it instead.
+      if (inlinePros) {
+        if (d.renderAsCheckboxes) {
+          box.hidden = false;
+          inlinePros.textContent = "the real estate pros selected above";
+        } else {
+          inlinePros.textContent = d.contactOptInNames.map(function (c) {
+            return c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
+          }).join("; ");
+        }
       }
     });
   }
@@ -356,10 +417,22 @@
     if (!name) { err = "Please enter your name."; bad = nameEl; }
     else if (digits.length < 10) { err = "Please enter a valid phone number."; bad = phoneEl; }
     else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err = "Please enter a valid email address."; bad = emailEl; }
+    else if (termsCheck && !termsCheck.checked) { err = "Please check the box to agree to the terms."; bad = termsBox; }
 
     if (err) {
       bad.classList.add("invalid");
       errEl.textContent = err; errEl.hidden = false;
+      if (bad === termsBox) {
+        // Same treatment as the intent chips: shake the whole box and
+        // bounce the message in — restartable on every repeat tap.
+        termsBox.classList.remove("shake");
+        errEl.classList.remove("pop");
+        void termsBox.offsetWidth;
+        termsBox.classList.add("shake");
+        errEl.classList.add("pop");
+      } else {
+        errEl.classList.remove("pop");
+      }
       return;
     }
     errEl.hidden = true;
@@ -375,8 +448,10 @@
       psave(P.F.email, email);
       psave(P.F.contactFormSubmit, "true");
       psave(P.F.listedQuestion, "No"); // from OnboardAPI once that's ready
+      // In the inline variant the matched line is hidden (names live in the
+      // consent sentence) — record only what was actually displayed.
       var mEl = modal.querySelector(".lm-matched"), cEl = modal.querySelector(".lm-consent");
-      psave(P.F.tcpaTerms, ((mEl ? mEl.textContent : "") + " " + (cEl ? cEl.textContent : "")).replace(/\s+/g, " ").trim());
+      psave(P.F.tcpaTerms, (((mEl && !mEl.hidden) ? mEl.textContent : "") + " " + (cEl ? cEl.textContent : "")).replace(/\s+/g, " ").trim());
       var tf = document.getElementsByName("xxTrustedFormCertUrl")[0];
       if (tf && tf.value) psave(P.F.tfCertURL, tf.value);
       if (optInData) {

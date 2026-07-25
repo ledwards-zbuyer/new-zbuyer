@@ -151,7 +151,7 @@
   .lm-chips.shake{animation:lmShake .4s ease}
   @keyframes lmErrIn{0%{opacity:0;transform:translateY(4px) scale(.96)}60%{transform:translateY(-1px) scale(1.03)}100%{opacity:1;transform:none}}
   .lm-err.pop{animation:lmErrIn .28s ease-out;font-weight:700}
-  @media (prefers-reduced-motion:reduce){.lm-chips.shake,.lm-err.pop{animation:none}}
+  @media (prefers-reduced-motion:reduce){.lm-chips.shake,.lm-err.pop,.lm-disclosure.lm-inline.shake{animation:none}}
   /* SomethingSpecial step: free-text + tap-to-add suggestion chips */
   .lm-textarea{width:100%;font-family:inherit;font-size:16px;color:var(--ink);padding:13px 15px;border:1.5px solid var(--line);border-radius:12px;outline:none;background:#fff;resize:none;margin-top:14px;text-align:left;line-height:1.45}
   .lm-textarea:focus{border-color:var(--c1)}
@@ -198,6 +198,17 @@
   .lm-matched .lm-optin input{margin:0;accent-color:var(--c1)}
   .lm-consent{font-size:11px;line-height:1.5;color:#8a97ab;margin:0}
   .lm-consent a{color:var(--c1);font-weight:600;text-decoration:underline}
+  /* Inline-consent variant (?terms=inline / inline-maxsold): first-person
+     terms with an oversized checkbox floated top-left — the text wraps
+     around it. The whole box toggles the check (links exempt); checked
+     darkens the box a touch; invalid gets the chip-row treatment. */
+  .lm-disclosure.lm-inline{cursor:pointer;user-select:none;-webkit-user-select:none;transition:background .15s ease,border-color .15s ease}
+  .lm-disclosure.lm-inline.checked{background:#EAF0F8;border-color:#D6DFEC}
+  .lm-disclosure.lm-inline.invalid{border-color:#D8442B;background:#FEF6F4}
+  .lm-disclosure.lm-inline.shake{animation:lmShake .4s ease}
+  /* input.lm-check must out-rank the generic .lm-form input sizing */
+  .lm-form input.lm-check{float:left;width:22px;height:22px;margin:1px 10px 3px 0;padding:0;border:none;border-radius:4px;background:none;accent-color:var(--c1);cursor:pointer}
+  .lm-inline-pros{color:var(--muted);font-weight:700}
   .lm-cta{margin-top:4px;background:var(--cta);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:16.5px;padding:16px;border-radius:12px;cursor:pointer}
   .lm-cta:hover{background:var(--cta-d)}
   @media (max-width:560px){

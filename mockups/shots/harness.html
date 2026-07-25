@@ -195,7 +195,12 @@ f.onload = function () {
   }
   d.getElementById("addr").value = "123 Main St, Springfield, MO 65807";
   d.querySelector(".hero .search").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
-  if (step === "contact") return;
+  if (step === "contact") {
+    // ?check=1 taps the inline-consent box (?terms=inline variant) —
+    // exercises tap-anywhere toggling + the checked darkening.
+    if (hp.get("check")) d.querySelector(".lm-disclosure").click();
+    return;
+  }
   if (step === "err") { d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true })); return; }
   d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
   if (step === "questions") {
