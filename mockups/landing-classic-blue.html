@@ -112,12 +112,16 @@
   /* position:relative lifts the rail above the fixed backdrop (positioned
      elements paint over static content — the backdrop would cover it).
      display:none here — the reveal region is mobile-only (media query). */
-  .lm-below{display:none;position:relative;min-height:74vh;flex-direction:column;align-items:center;text-align:center;padding:26px 16px 34px;pointer-events:none;color:#5D6F93;font-size:12px}
+  .lm-below{display:none;position:relative;min-height:46vh;flex-direction:column;align-items:center;text-align:center;padding:26px 16px 34px;pointer-events:none;color:#5D6F93;font-size:12px}
   .lm-progress{pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:11px;background:rgba(11,21,38,.5);border:1px solid rgba(93,111,147,.22);border-radius:14px;padding:14px 26px}
   .lm-prog-dots{display:flex;gap:7px}
   .lm-prog-dot{width:7px;height:7px;border-radius:50%;background:rgba(93,111,147,.32)}
   .lm-prog-dot.on{background:#5D6F93}
-  .lm-legal{pointer-events:auto;margin:auto;display:flex;flex-direction:column;align-items:center;gap:30px;padding:48px 0}
+  /* Once revealed, the links read at full footer strength (#9FB2D4, the
+     page-footer link tone) — only the peek/indicator stay whisper-quiet.
+     Top-packed right under the step container (no auto-centering gap). */
+  .lm-legal{pointer-events:auto;margin:24px 0 0;display:flex;flex-direction:column;align-items:center;gap:28px;padding:0 0 34px;color:#9FB2D4}
+  .lm-legal a{text-decoration-color:rgba(159,178,212,.6)}
   .lm-card{position:relative;width:100%;max-width:440px;background:#fff;border-radius:20px;padding:30px 30px 24px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);animation:lmIn .22s ease}
   @keyframes lmIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){.lm-card{animation:none}}

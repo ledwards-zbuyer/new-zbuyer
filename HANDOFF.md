@@ -208,7 +208,9 @@ changing the funnel.
   **Mobile (≤560px):** peek hidden (thumb territory stays clean); the card keeps the exact
   bottom-anchored feel and scrolling past it reveals `.lm-below` — "Step x of 4" dots/text
   in a soft dark container (updated in `show()`; the zbeat isn't a step), then the same
-  links as an airy stack. Carrier letter-of-the-law placement without parking "Do not
+  links right below it (24px margin, 28px gaps, top-packed — no auto-centering). Revealed
+  links read at full footer strength (#9FB2D4); only the peek line and the step
+  indicator stay whisper-quiet (#5D6F93). Carrier letter-of-the-law placement without parking "Do not
   sell" under the CTA. Every step change resets `modal.scrollTop`. Rail links open in new
   tabs (never navigate the funnel away). Mobile card rules moved from `.lead-modal` to
   `.lm-fold`.

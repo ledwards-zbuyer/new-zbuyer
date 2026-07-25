@@ -1283,3 +1283,13 @@ and scrolling past it reveals the "Step x of 4" dots in a soft dark rounded cont
 then the airy legal stack and copyright, all in the same muted tone. Verified by
 screenshot: desktop scrolled-to-max renders identical to at-rest, mobile at-rest is
 byte-identical to before, and the mobile reveal shows container + links as specced.
+
+**Lucas:** *(iPhone screenshot)* the terms/privacy links don't need to be so hidden on
+the scroll down once they're down there. also remove some of the v space between the
+step 1/4 and the beginning of the terms/privacy links
+
+**Claude:** Revealed links now read at full footer strength — #9FB2D4, the same tone as
+the page-footer links — with a matching stronger underline; only the desktop peek line
+and the step indicator stay whisper-quiet. The legal stack is top-packed 24px under the
+step container (auto-centering removed, gaps 34→28, reveal region 74vh→46vh), so one
+swipe shows the container and all the links together.
