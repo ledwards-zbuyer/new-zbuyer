@@ -199,16 +199,19 @@ changing the funnel.
 - **Modal lock-in** via `<body data-dr>` (behavior in `lead-modal.js`): backdrop has no
   `data-close` (click-off can't dismiss), X + Escape close ONLY on the contact step (the one
   with the consent terms), no back buttons anywhere.
-- **Desktop legal rail (2026-07-25, lander + homepage):** while the path is up, the modal
-  overlay is a hidden-scrollbar scroll surface. The card sits in a full-viewport `.lm-fold`
-  (at rest, pixel-identical to before); a one-line `.lm-peek` (© · Terms · Privacy · Do Not
-  Sell or Share My Personal Information) rests at the fold's bottom edge — always visible,
-  one muted tone (#5D6F93) on the dark backdrop, clickable. Scrolling reveals `.lm-below`:
-  "Step x of 4" dots/text (updated in `show()`; the zbeat isn't a step) then the same links
-  as an airy stack — carrier letter-of-the-law placement without parking "Do not sell"
-  under the CTA. Every step change resets `modal.scrollTop`. Rail links open in new tabs
-  (never navigate the funnel away). Desktop-only: `≤560px` hides peek+below, mobile keeps
-  the exact bottom-anchored feel (mobile rules moved from `.lead-modal` to `.lm-fold`).
+- **Legal rail (2026-07-25, lander + homepage):** while the path is up, the modal overlay
+  is a hidden-scrollbar scroll surface; the card sits in a full-viewport `.lm-fold`
+  (at rest, pixel-identical to before). **Desktop:** a one-line `.lm-peek` (© · Terms ·
+  Privacy · Do Not Sell or Share My Personal Information) rests at the fold's bottom
+  edge — always visible, one muted tone (#5D6F93) on the dark backdrop, clickable — and
+  there is NO scroll-down (`.lm-below` is display:none; the fold is exactly one viewport).
+  **Mobile (≤560px):** peek hidden (thumb territory stays clean); the card keeps the exact
+  bottom-anchored feel and scrolling past it reveals `.lm-below` — "Step x of 4" dots/text
+  in a soft dark container (updated in `show()`; the zbeat isn't a step), then the same
+  links as an airy stack. Carrier letter-of-the-law placement without parking "Do not
+  sell" under the CTA. Every step change resets `modal.scrollTop`. Rail links open in new
+  tabs (never navigate the funnel away). Mobile card rules moved from `.lead-modal` to
+  `.lm-fold`.
   - Wrappers are `pointer-events:none` (card/peek/progress/legal `auto`) so click-off still
     reaches the backdrop; wheel over the backdrop scrolls the overlay (nearest scrollable
     ancestor).

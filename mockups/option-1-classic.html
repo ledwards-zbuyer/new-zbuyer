@@ -100,13 +100,14 @@
   .ac-list .ac-street{font-size:15.5px;font-weight:600;color:var(--ink)}
   .ac-list .ac-sec{font-size:13px;color:var(--muted)}
 
-  /* Desktop legal rail: the overlay is a scroll surface. The first fold is
-     exactly one viewport (card centered as before, wrapped in .lm-fold);
-     scrolling reveals a step indicator, then the legal links with room to
-     breathe. A compact legal line rests at the fold's bottom edge so the
-     footer is on screen the whole time the path is up — letter-of-the-law
-     placement without parking "Do not sell" under the CTA. Wrappers are
-     pointer-inert so click-off still reaches the backdrop (data-close). */
+  /* Legal rail. Desktop: a compact legal line rests at the fold's bottom
+     edge — always visible + clickable, no scroll-down (the fold is exactly
+     one viewport and .lm-below is hidden). Mobile: the card keeps its
+     bottom-anchored feel and scrolling past it reveals .lm-below — the
+     "Step x of 4" indicator in a soft container, then the legal links with
+     room to breathe. Letter-of-the-law placement without parking "Do not
+     sell" under the CTA in thumb territory. Wrappers are pointer-inert so
+     click-off still reaches the backdrop (data-close). */
   .lead-modal{position:fixed;inset:0;z-index:200;display:block;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .lead-modal::-webkit-scrollbar{display:none}
   .lead-modal[hidden]{display:none}
@@ -119,13 +120,14 @@
   .lm-peek a,.lm-legal a{color:inherit;font-weight:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(93,111,147,.55)}
   .lm-peek a:hover,.lm-legal a:hover{color:#8FA3C8}
   /* position:relative lifts the rail above the fixed backdrop (positioned
-     elements paint over static content — the backdrop would cover it) */
-  .lm-below{position:relative;min-height:90vh;display:flex;flex-direction:column;align-items:center;text-align:center;padding:34px 20px 30px;pointer-events:none;color:#5D6F93;font-size:12px}
-  .lm-progress{pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:11px}
+     elements paint over static content — the backdrop would cover it).
+     display:none here — the reveal region is mobile-only (media query). */
+  .lm-below{display:none;position:relative;min-height:74vh;flex-direction:column;align-items:center;text-align:center;padding:26px 16px 34px;pointer-events:none;color:#5D6F93;font-size:12px}
+  .lm-progress{pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:11px;background:rgba(11,21,38,.5);border:1px solid rgba(93,111,147,.22);border-radius:14px;padding:14px 26px}
   .lm-prog-dots{display:flex;gap:7px}
   .lm-prog-dot{width:7px;height:7px;border-radius:50%;background:rgba(93,111,147,.32)}
   .lm-prog-dot.on{background:#5D6F93}
-  .lm-legal{pointer-events:auto;margin:auto;display:flex;flex-direction:column;align-items:center;gap:34px;padding:60px 0}
+  .lm-legal{pointer-events:auto;margin:auto;display:flex;flex-direction:column;align-items:center;gap:30px;padding:48px 0}
   .lm-card{position:relative;width:100%;max-width:440px;background:#fff;border-radius:20px;padding:30px 30px 24px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);animation:lmIn .22s ease}
   @keyframes lmIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){.lm-card{animation:none}}
@@ -246,8 +248,10 @@
   .lm-cta{margin-top:4px;background:var(--cta);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:16.5px;padding:16px;border-radius:12px;cursor:pointer}
   .lm-cta:hover{background:var(--cta-d)}
   @media (max-width:560px){
-    /* Desktop-only rail: mobile keeps the exact bottom-anchored feel. */
-    .lm-peek,.lm-below{display:none}
+    /* Mobile: no always-visible line (thumb territory stays clean) — the
+       rail is the scroll-down reveal past the bottom-anchored card. */
+    .lm-peek{display:none}
+    .lm-below{display:flex}
     .lm-fold{padding:12px;align-items:flex-start}
     /* margin-top:auto bottom-anchors every step (thumb reach) but, unlike
        align-items:flex-end, collapses to 0 when the card is taller than

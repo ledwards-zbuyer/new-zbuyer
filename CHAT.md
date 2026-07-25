@@ -1269,3 +1269,17 @@ absolutely-positioned top bar there (fixed by using a div with role=navigation).
 added the Do Not Sell link to both page footers and gave it a real target — an anchored
 "Your Choices & Rights — Do Not Sell or Share My Personal Information" section in the
 privacy page. DR lock-in assertions re-run green; step dots verified at step 2.
+
+**Lucas:** i misspoke. on desktop there needs to be no scroll down capabilities. those
+links are already clickable now with your solution for the initially visible footer.
+the scroll down was for mobile. on mobile when the user scrolls down i should see the
+X of 4 step element in a container and then the footer lingo like you did on the
+desktop scroll down.
+
+**Claude:** Swapped. Desktop keeps only the always-visible bottom-edge legal line — the
+reveal region is hidden so there's nothing to scroll to (the fold is exactly one
+viewport). Mobile now owns the scroll-down: the card keeps its bottom-anchored feel,
+and scrolling past it reveals the "Step x of 4" dots in a soft dark rounded container,
+then the airy legal stack and copyright, all in the same muted tone. Verified by
+screenshot: desktop scrolled-to-max renders identical to at-rest, mobile at-rest is
+byte-identical to before, and the mobile reveal shows container + links as specced.
