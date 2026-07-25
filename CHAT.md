@@ -1307,3 +1307,8 @@ runZBeatFinale now take a caption override: "Do not contact me" plays the same f
 but says "Preparing your report…" (the Z-beat rule wants every wait captioned, so it
 swaps rather than hides). "View my Report" keeps the texting caption. Verified both by
 screenshot; new harness steps allset / dnc.
+
+**Lucas:** the thumb and palm seem too big on the graphic
+
+**Claude:** Slimmed both: the palm no longer juts past the phone's right edge (and sits
+4px lower/shorter), and the thumb shrank to a small oval over the lower corner.
