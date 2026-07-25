@@ -1312,3 +1312,8 @@ screenshot; new harness steps allset / dnc.
 
 **Claude:** Slimmed both: the palm no longer juts past the phone's right edge (and sits
 4px lower/shorter), and the thumb shrank to a small oval over the lower corner.
+
+**Lucas:** remove some of the left side of the palm. it looks unnatural
+
+**Claude:** Palm's left edge moved in 11px (starts under the phone's midsection with a
+rounded corner) — the grip now reads bottom-right, consistent with the thumb.
