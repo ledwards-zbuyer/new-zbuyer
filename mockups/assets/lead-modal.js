@@ -97,13 +97,17 @@
     setTimeout(function () { if (my === beatSeq) { show(target); if (card) card.focus(); } }, 1650);
   }
   // Finale after the SMS step: full cycle (in, hold, back out) + caption,
-  // then hand off — FinalizeLead runs underneath it.
-  function runZBeatFinale(cb) {
+  // then hand off — FinalizeLead runs underneath it. noteText overrides the
+  // default caption (DNC exits must not promise a text message).
+  function runZBeatFinale(cb, noteText) {
     if (!zbeat) { cb(); return; }
     var my = ++beatSeq;
     show("zbeat");
     var note = zbeat.querySelector(".zb-note");
-    if (note) note.hidden = false;
+    if (note) {
+      if (noteText) note.textContent = noteText;
+      note.hidden = false;
+    }
     zbeat.classList.remove("run", "run-full");
     void zbeat.offsetWidth;
     zbeat.classList.add("run-full");
@@ -491,10 +495,10 @@
     goToReport();
   });
   // "Do not contact me": records DNC=true, fires NO RealtorOpt, still gets
-  // the report.
+  // the report — with a caption that doesn't promise a text.
   document.getElementById("noContact").addEventListener("click", function () {
     if (P) psave(P.F.dnc, "true");
-    goToReport();
+    goToReport("Preparing your report…");
   });
 
   // ---- SomethingSpecial step: free text + tap-to-add suggestion chips.
@@ -504,12 +508,12 @@
   // that the report page injects (stashed in sessionStorage across the
   // navigation). Never block the user on a slow/failed finalize: navigate
   // after 2.5s regardless.
-  function goToReport() {
+  function goToReport(noteText) {
     var done = false;
     function nav() { if (!done) { done = true; window.location.href = REPORT_PAGE; } }
     if (zbeat) {
       if (P) P.finalize(); // resolves during the finale; pixel stored for the report page
-      runZBeatFinale(nav);
+      runZBeatFinale(nav, noteText);
     } else if (P) {
       P.finalize().then(nav, nav);
       setTimeout(nav, 2500);

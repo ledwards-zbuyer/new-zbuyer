@@ -262,6 +262,17 @@ f.onload = function () {
     }, 2600);
     return;
   }
+  if (step === "allset") {
+    // ride the zbeat past the special step to land on the all-set screen
+    setTimeout(function () { d.getElementById("viewReport").click(); }, 2200);
+    return;
+  }
+  if (step === "dnc") {
+    // Do-not-contact exit: the finale caption must NOT promise a text
+    setTimeout(function () { d.getElementById("viewReport").click(); }, 2200);
+    setTimeout(function () { d.getElementById("noContact").click(); }, 4400);
+    return;
+  }
   if (step === "sms") d.getElementById("toSms").click();
   if (step === "finale") {
     d.getElementById("toSms").click();

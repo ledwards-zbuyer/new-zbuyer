@@ -77,11 +77,14 @@ API — see §9. The homepage and compare pages remain inert demos.
    cursors; touch untouched — it scrolls natively; harness `?step=spdrag` asserts all
    three). One button, no validation: **"Continue →"**; sends `SomethingSpecial`
    only if the box has content.
-5. **"You're all set!" step — the last step** — confirmation: success graphic, "a
+5. **"You're all set!" step — the last step** — confirmation: hand-holding-a-phone
+   graphic (2026-07-25; was a green checkmark) with the sparkle plusses kept, "a
    local expert will be in touch…", CTA **View my Report →** (fires RealtorOpt="ok"
    and exits through the finale beat — caption **"Sending your report link to your
    phone…"** — while FinalizeLead posts underneath), quiet **Do not contact me** link
-   (fires DNC="true", same exit). Lands on `report-classic-blue.html` (§8).
+   (fires DNC="true", same exit but the finale caption swaps to **"Preparing your
+   report…"** — a DNC exit must not promise a text). Lands on
+   `report-classic-blue.html` (§8). Harness: `?step=allset` / `?step=dnc`.
 
 Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
 

@@ -1293,3 +1293,17 @@ the page-footer links — with a matching stronger underline; only the desktop p
 and the step indicator stay whisper-quiet. The legal stack is top-packed 24px under the
 step container (auto-centering removed, gaps 34→28, reveal region 74vh→46vh), so one
 swipe shows the container and all the links together.
+
+**Lucas:** on the you're all set step change the graphic to a smartphone with a hand
+holding it possibly with some plus signs around it like the current checkmark graphic.
+if someone clicks do not contact me, we do not want to show "sending you report via
+text" on the next loading screen
+
+**Claude:** Redrew the all-set graphic on both pages: a hand holding a smartphone —
+fingers wrapping the left edge, palm cradling the bottom, thumb over the front corner —
+with a blue check bubble and report lines on the screen, keeping the old graphic's
+sparkle plusses and dots (blue-ified, no more greens). For the DNC exit, goToReport /
+runZBeatFinale now take a caption override: "Do not contact me" plays the same finale
+but says "Preparing your report…" (the Z-beat rule wants every wait captioned, so it
+swaps rather than hides). "View my Report" keeps the texting caption. Verified both by
+screenshot; new harness steps allset / dnc.
