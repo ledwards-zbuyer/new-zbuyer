@@ -1240,3 +1240,32 @@ live link
 
 **Claude:** Merged `tcpa-and-privacy-changes` into `main` and pushed — the inline
 variant is live on the Pages lander and homepage, linked from compare-terms.html.
+
+**Lucas:** now, on desktop, i want the footer to be always visible, BUT it needs to be
+as subtle as possible esp considering the light text on the dark and shaded background.
+i want the form to feel the exact same as it does now (the path)... modules resting at
+the bottom of the screen etc. BUT instead of them resting at the bottom, i want the user
+to be able to scroll down to reveal an indicator of how far they are along in the
+question process (x of 5 steps — or 4 currently)... importantly, under that with room to
+stretch the vertical height we have the terms/privacy/do not sell my information/
+copyright etc., as much as we want to blend in. all the same color and font style. the
+objective is to follow the letter of the law (according to the carriers) without having
+to show do-not-sell below the continue button(s) but above the fold in prime thumb
+territory. all of the footer links need to be clickable when the modules are up.
+
+**Claude:** Built the desktop legal rail on both funnel pages. The modal overlay is now
+a hidden-scrollbar scroll surface: the card sits centered in a full-viewport fold —
+at rest nothing about the path changes — and a one-line footer (© · Terms · Privacy ·
+Do Not Sell or Share My Personal Information) rests at the fold's bottom edge, always
+visible and clickable in one muted tone (#5D6F93) against the shaded backdrop.
+Scrolling down reveals "Step x of 4" (dots + text, updated on every step change) and,
+under it with generous vertical room, the same links as an airy stack ending in the
+copyright — identical color, size, and weight throughout, links opening in new tabs so
+the funnel is never lost. Desktop-only; mobile keeps the exact bottom-anchored feel.
+Two paint-order bugs found by screenshot: the rail rendered beneath the fixed backdrop
+(positioned elements paint over static content — fixed with position:relative), and on
+the homepage the legal stack pinned itself to the rail's top because bare `nav` is the
+absolutely-positioned top bar there (fixed by using a div with role=navigation). Also
+added the Do Not Sell link to both page footers and gave it a real target — an anchored
+"Your Choices & Rights — Do Not Sell or Share My Personal Information" section in the
+privacy page. DR lock-in assertions re-run green; step dots verified at step 2.

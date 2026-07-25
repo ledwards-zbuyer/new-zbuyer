@@ -57,10 +57,23 @@
   // SellingTimeFrame carries the chip's visible text (Now/Soon/Eventually/No).
   var intentLabel = "";
 
+  // Desktop legal rail below the fold: "Step x of 4" + dots. The zbeat
+  // interstitial isn't a step — it keeps the previous reading.
+  var STEP_NUM = { contact: 1, questions: 2, special: 3, allset: 4 };
+  var progText = modal.querySelector(".lm-prog-text");
+  var progDots = modal.querySelectorAll(".lm-prog-dot");
   function show(name) {
     current = name;
     screens.forEach(function (s) { s.hidden = s.getAttribute("data-screen") !== name; });
     if (DR && xBtn) xBtn.hidden = name !== "contact";
+    var n = STEP_NUM[name];
+    if (n && progText) {
+      progText.textContent = "Step " + n + " of 4";
+      progDots.forEach(function (d, i) { d.classList.toggle("on", i < n); });
+    }
+    // The overlay is the scroll surface (legal rail below the fold) —
+    // every step change starts back at the card.
+    modal.scrollTop = 0;
   }
   function open() {
     lastFocus = document.activeElement;

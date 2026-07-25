@@ -11,6 +11,13 @@ else if (hp.get("terms")) f.src = "/mockups/option-1-classic.html?terms=" + hp.g
 f.onload = function () {
   var d = f.contentDocument, w = f.contentWindow;
   var step = new URLSearchParams(location.search).get("step");
+  // ?scroll=N|max — scroll the modal overlay (the desktop legal-rail surface)
+  // after the step settles; "max" lands on the stretched legal links.
+  var sc = hp.get("scroll");
+  if (sc) setTimeout(function () {
+    var m = d.getElementById("leadModal");
+    if (m) m.scrollTop = sc === "max" ? m.scrollHeight : parseInt(sc, 10);
+  }, 2600);
   if (step === "pulse") {
     // E2E: intercept every AjaxServer call, drive the whole funnel on the
     // (pre-popped) lander, then assert the pixel handoff on the report page.

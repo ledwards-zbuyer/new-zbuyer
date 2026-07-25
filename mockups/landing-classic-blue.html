@@ -90,9 +90,32 @@
   .lfoot a{color:#9fb2d4;text-decoration:underline}
 
   /* ---- lead modal (same system as the homepage) ---- */
-  .lead-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+  /* Desktop legal rail: the overlay is a scroll surface. The first fold is
+     exactly one viewport (card centered as before, wrapped in .lm-fold);
+     scrolling reveals a step indicator, then the legal links with room to
+     breathe. A compact legal line rests at the fold's bottom edge so the
+     footer is on screen the whole time the path is up — letter-of-the-law
+     placement without parking "Do not sell" under the CTA. Wrappers are
+     pointer-inert so click-off still reaches the backdrop. */
+  .lead-modal{position:fixed;inset:0;z-index:200;display:block;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .lead-modal::-webkit-scrollbar{display:none}
   .lead-modal[hidden]{display:none}
   .lm-backdrop{position:fixed;inset:0;background:rgba(8,14,26,.62);backdrop-filter:blur(4px)}
+  .lm-fold{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px 20px 56px;pointer-events:none}
+  .lm-card{pointer-events:auto}
+  /* One muted tone + one size for everything on the rail — links included —
+     so nothing competes with the card. Underlines stay (findability). */
+  .lm-peek{position:absolute;left:0;right:0;bottom:0;padding:15px 20px;text-align:center;font-size:11.5px;line-height:1.5;color:#5D6F93;pointer-events:auto}
+  .lm-peek a,.lm-legal a{color:inherit;font-weight:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(93,111,147,.55)}
+  .lm-peek a:hover,.lm-legal a:hover{color:#8FA3C8}
+  /* position:relative lifts the rail above the fixed backdrop (positioned
+     elements paint over static content — the backdrop would cover it) */
+  .lm-below{position:relative;min-height:90vh;display:flex;flex-direction:column;align-items:center;text-align:center;padding:34px 20px 30px;pointer-events:none;color:#5D6F93;font-size:12px}
+  .lm-progress{pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:11px}
+  .lm-prog-dots{display:flex;gap:7px}
+  .lm-prog-dot{width:7px;height:7px;border-radius:50%;background:rgba(93,111,147,.32)}
+  .lm-prog-dot.on{background:#5D6F93}
+  .lm-legal{pointer-events:auto;margin:auto;display:flex;flex-direction:column;align-items:center;gap:34px;padding:60px 0}
   .lm-card{position:relative;width:100%;max-width:440px;background:#fff;border-radius:20px;padding:30px 30px 24px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);animation:lmIn .22s ease}
   @keyframes lmIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){.lm-card{animation:none}}
@@ -215,7 +238,9 @@
   .lm-cta{margin-top:4px;background:var(--cta);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:16.5px;padding:16px;border-radius:12px;cursor:pointer}
   .lm-cta:hover{background:var(--cta-d)}
   @media (max-width:560px){
-    .lead-modal{padding:12px;align-items:flex-start;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch}
+    /* Desktop-only rail: mobile keeps the exact bottom-anchored feel. */
+    .lm-peek,.lm-below{display:none}
+    .lm-fold{padding:12px;align-items:flex-start}
     /* margin-top:auto bottom-anchors every step (thumb reach) but collapses
        to 0 when the card is taller than the viewport (top stays scrollable). */
     .lm-card{max-width:none;max-height:none;padding:18px 16px 16px;border-radius:18px;margin-top:auto}
@@ -273,10 +298,11 @@
     </div>
   </header>
 
-  <footer class="lfoot">© 2026 zBuyer. All rights reserved. · <a href="terms-classic-blue.html">Terms of Service</a> · <a href="privacy-classic-blue.html">Privacy Policy</a></footer>
+  <footer class="lfoot">© 2026 zBuyer. All rights reserved. · <a href="terms-classic-blue.html">Terms of Service</a> · <a href="privacy-classic-blue.html">Privacy Policy</a> · <a href="privacy-classic-blue.html#do-not-sell">Do Not Sell or Share My Personal Information</a></footer>
 
   <div class="lead-modal" id="leadModal" hidden>
     <div class="lm-backdrop"></div><!-- no data-close: clicking off must not dismiss -->
+    <div class="lm-fold">
     <div class="lm-card" role="dialog" aria-modal="true" aria-labelledby="lm-title" tabindex="-1">
       <button class="lm-x" type="button" data-close aria-label="Close">&times;</button>
 
@@ -378,6 +404,20 @@
           <div class="sp-row"><button type="button" class="sp-chip">Pool</button><button type="button" class="sp-chip">Remodeled kitchen</button><button type="button" class="sp-chip">New HVAC</button><button type="button" class="sp-chip">Updated bathrooms</button><button type="button" class="sp-chip">Garage workshop</button><button type="button" class="sp-chip">Fenced yard</button><button type="button" class="sp-chip">Corner lot</button><button type="button" class="sp-chip">Deck / patio</button><button type="button" class="sp-chip">Fireplace</button><button type="button" class="sp-chip">Storm shelter</button></div>
         </div>
         <button type="button" class="lm-cta" id="viewReport">Continue &rarr;</button>
+      </div>
+    </div>
+    <p class="lm-peek">&copy; 2026 zBuyer &middot; <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &middot; <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy</a> &middot; <a href="privacy-classic-blue.html#do-not-sell" target="_blank" rel="noopener">Do Not Sell or Share My Personal Information</a></p>
+    </div>
+    <div class="lm-below">
+      <div class="lm-progress">
+        <span class="lm-prog-dots" aria-hidden="true"><span class="lm-prog-dot on"></span><span class="lm-prog-dot"></span><span class="lm-prog-dot"></span><span class="lm-prog-dot"></span></span>
+        <span class="lm-prog-text">Step 1 of 4</span>
+      </div>
+      <div class="lm-legal" role="navigation" aria-label="Legal">
+        <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms of Service</a>
+        <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>
+        <a href="privacy-classic-blue.html#do-not-sell" target="_blank" rel="noopener">Do Not Sell or Share My Personal Information</a>
+        <span>&copy; 2026 zBuyer. All rights reserved.</span>
       </div>
     </div>
   </div>
