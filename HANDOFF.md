@@ -179,9 +179,17 @@ changing the funnel.
   - **Exclusive Lead** → default (no param, also `?terms=exclusive`): single named pro +
     consent says "your matched real-estate professional".
   - **Max Sold** → `?terms=maxsold`: 6-buyer list + "its real-estate partners".
+  - **Inline checkbox** (2026-07-25) → `?terms=inline` (Exclusive copy) /
+    `?terms=inline-maxsold` (Max Sold copy): explicit-consent variant of the contact
+    step — first-person consent paragraph with the matched pro names inline, a 19px
+    checkbox floated top-left with the text wrapping around it, tap anywhere in the
+    box toggles it (links exempt), background darkens slightly when checked, and the
+    whole box gets the chip-style shake + highlight if Continue is hit unchecked.
+    Pro names unbolded, Terms/Privacy links muted gray (they repeat in the footer).
 - Markup carries the Exclusive default; `lead-modal.js` swaps in the Max Sold worst case
-  when `?terms=maxsold` is present. (Default flipped to Exclusive 2026-07-01 for a team
-  demo of the hero-title comparison.) **Consent wording differences are placeholders**
+  when `?terms=maxsold` is present, and builds the checkbox box for the `inline*`
+  variants. (Default flipped to Exclusive 2026-07-01 for a team demo of the hero-title
+  comparison.) **Consent wording differences are placeholders**
   pending final legal language.
 
 ### 6. Direct-response landing page (`mockups/landing-classic-blue.html`)

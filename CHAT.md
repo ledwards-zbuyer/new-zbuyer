@@ -1217,3 +1217,26 @@ plays it once per step / in-hold-out on the finale), the sample caption line, an
 usage rules — arrows spin as a rigid pair only, minimum-hold so it never flashes,
 always paired with a caption saying what the wait is for, reduced-motion shows the
 locked Z, gif/webp assets for email use, and never green.
+
+---
+
+*(The session behind the next two entries was lost to a PC reset before the log was
+written; they are reconstructed from the commit messages, not verbatim.)*
+
+**Lucas:** *(built the `tcpa-and-privacy-changes` branch: an explicit-consent variant
+of the contact-step TCPA terms to compare against the classic implicit paragraph.)*
+
+**Claude:** Added the inline-checkbox variant behind `?terms=inline` (Exclusive copy;
+`?terms=inline-maxsold` pairs it with the six-buyer Max Sold copy) — first-person
+consent with the matched pro names inline, a checkbox floated top-left with the text
+wrapping around it, tap-anywhere-to-toggle (links exempt), slight background darken
+when checked, chip-style shake + highlight on the box when Continue is hit unchecked.
+compare-terms.html links both. A follow-up quieted the box typography: names unbolded,
+tighter line-height, Terms/Privacy links muted gray, checkbox down to 19px so it sits
+flush with two text lines.
+
+**Lucas:** *(after reviewing `?terms=inline` on localhost:)* merge push and send me the
+live link
+
+**Claude:** Merged `tcpa-and-privacy-changes` into `main` and pushed — the inline
+variant is live on the Pages lander and homepage, linked from compare-terms.html.
