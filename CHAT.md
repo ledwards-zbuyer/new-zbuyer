@@ -1330,3 +1330,22 @@ frequency varies. Msg & data rates may apply.", then "See our Terms & Privacy Po
 — each on its own line with a 3px gap (block spans, .lm-cline). Same treatment in the
 inline-checkbox variant (lead-modal.js). Leading spaces inside the spans keep the
 saved trustedform TCPATerms text from squishing words together across the breaks.
+
+**Lucas:** lets re-think that. add this centered line (w/ appropriate links) under the
+terms container and above the button (spaced reasonably vertically): "By clicking
+Continue, you agree to the Terms and Privacy Policy". Also, remove the last line in
+the terms container: "See our Terms and Privacy Policy." ALSO: remove the line breaks
+etc from "Msg frequency varies. Msg & data rates may apply." and make it very slightly
+bold. ALSO: bold the names/companies of the members receiving the lead (Jason Dalbey
+in this case). should all be in one paragraph with terms/privacy line and links
+outside the container
+
+**Claude:** Done on both pages + both consent variants: the box is back to one
+paragraph ending in "…not a condition of purchase. Msg frequency varies. Msg & data
+rates may apply." with the carrier sentence at font-weight 500; the Terms/Privacy
+sentence is gone from inside; a centered .lm-agree line ("By clicking Continue, you
+agree to the Terms and Privacy Policy", linked, new-tab) sits between the box and the
+CTA with the form's 12px gaps. Matched pro names/companies are bold everywhere they
+render — static markup, the maxsold swap, and both GetContactOptInNames paths (list
+and per-pro checkboxes). The saved TCPATerms capture now appends the agree line since
+it's consent language the user saw.

@@ -148,7 +148,7 @@
   // Placeholder copy pending final legal language.
   if (/[?&]terms=(inline-)?maxsold\b/.test(window.location.search)) {
     var matchedEl = modal.querySelector(".lm-matched");
-    if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)";
+    if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> <b>Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)</b>";
     var consentEl = modal.querySelector(".lm-consent");
     if (consentEl) consentEl.innerHTML = consentEl.innerHTML
       .replace("your matched real-estate professional", "its real-estate partners");
@@ -179,10 +179,7 @@
       ' made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if my' +
       ' number is on a Do Not Call list. This is my express written consent; I understand consent' +
       ' is not a condition of purchase.' +
-      '<span class="lm-cline"> Msg frequency varies. Msg &amp; data rates may apply.</span>' +
-      '<span class="lm-cline"> See our' +
-      ' <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp;' +
-      ' <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>';
+      ' <span class="lm-carrier">Msg frequency varies. Msg &amp; data rates may apply.</span>';
     termsCheck = cInl.querySelector(".lm-check");
     inlinePros = cInl.querySelector(".lm-inline-pros");
     inlinePros.textContent = proNames;
@@ -241,14 +238,18 @@
           cb.value = c.contactID;
           cb.checked = !!c.preSelected;
           row.appendChild(cb);
-          row.appendChild(document.createTextNode(
-            c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "")));
+          var nm = document.createElement("b");
+          nm.textContent = c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
+          row.appendChild(nm);
           box.appendChild(row);
         });
       } else {
-        box.appendChild(document.createTextNode(" " + d.contactOptInNames.map(function (c) {
+        box.appendChild(document.createTextNode(" "));
+        var names = document.createElement("b");
+        names.textContent = d.contactOptInNames.map(function (c) {
           return c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
-        }).join("; ")));
+        }).join("; ");
+        box.appendChild(names);
       }
       // Inline-consent variant: the live names belong inside the sentence.
       // With per-pro checkboxes the standalone list returns (it IS the
@@ -469,8 +470,9 @@
       psave(P.F.listedQuestion, "No"); // from OnboardAPI once that's ready
       // In the inline variant the matched line is hidden (names live in the
       // consent sentence) — record only what was actually displayed.
-      var mEl = modal.querySelector(".lm-matched"), cEl = modal.querySelector(".lm-consent");
-      psave(P.F.tcpaTerms, (((mEl && !mEl.hidden) ? mEl.textContent : "") + " " + (cEl ? cEl.textContent : "")).replace(/\s+/g, " ").trim());
+      var mEl = modal.querySelector(".lm-matched"), cEl = modal.querySelector(".lm-consent"),
+          aEl = modal.querySelector(".lm-agree");
+      psave(P.F.tcpaTerms, (((mEl && !mEl.hidden) ? mEl.textContent : "") + " " + (cEl ? cEl.textContent : "") + " " + (aEl ? aEl.textContent : "")).replace(/\s+/g, " ").trim());
       var tf = document.getElementsByName("xxTrustedFormCertUrl")[0];
       if (tf && tf.value) psave(P.F.tfCertURL, tf.value);
       if (optInData) {

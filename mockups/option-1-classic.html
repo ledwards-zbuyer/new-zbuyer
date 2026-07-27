@@ -234,9 +234,11 @@
   .lm-matched{font-size:11px;line-height:1.5;color:#7d8ca4}
   .lm-matched b{color:var(--muted);font-weight:700}
   .lm-consent{font-size:11px;line-height:1.5;color:#7d8ca4;margin:0}
-  /* carrier boilerplate + links break onto their own lines with the
-     smallest visible separation */
-  .lm-consent .lm-cline{display:block;margin-top:3px}
+  /* carrier boilerplate rides inside the paragraph, just slightly bolder */
+  .lm-consent .lm-carrier{font-weight:500}
+  /* the agreement line lives OUTSIDE the box — centered between it and the CTA */
+  .lm-agree{font-size:11.5px;line-height:1.5;color:#7d8ca4;text-align:center;margin:0}
+  .lm-agree a{color:var(--c1);font-weight:600;text-decoration:underline}
   .lm-consent a{color:var(--c1);font-weight:600;text-decoration:underline}
   /* Inline-consent variant (?terms=inline / inline-maxsold): first-person
      terms with an oversized checkbox floated top-left — the text wraps
@@ -273,6 +275,7 @@
     .lm-chip-no{padding:8px 9px}
     .lm-disclosure{padding:10px 12px;gap:5px}
     .lm-matched,.lm-consent{font-size:10.5px;line-height:1.42}
+    .lm-agree{font-size:11px}
     .lm-cta{padding:14px;font-size:16px}
     .lm-nothanks{padding:2px}
     .lm-back{margin-bottom:4px}
@@ -587,9 +590,10 @@
           <input name="email" type="email" placeholder="Email address" autocomplete="email" value="john@aol.com">
           <p class="lm-err" id="leadErr" hidden></p>
           <div class="lm-disclosure">
-            <p class="lm-matched"><b>Matched real estate pro:</b> Jason Dalbey (BHHS The Preferred Realty)</p>
-            <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give zBuyer and your matched real-estate professional your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase.<span class="lm-cline"> Msg frequency varies. Msg &amp; data rates may apply.</span><span class="lm-cline"> See our <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp; <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</span></p>
+            <p class="lm-matched"><b>Matched real estate pro:</b> <b>Jason Dalbey (BHHS The Preferred Realty)</b></p>
+            <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give zBuyer and your matched real-estate professional your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase. <span class="lm-carrier">Msg frequency varies. Msg &amp; data rates may apply.</span></p>
           </div>
+          <p class="lm-agree">By clicking Continue, you agree to the <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a></p>
           <button type="submit" class="lm-cta">Continue &rarr;</button>
         </form>
       </div>
