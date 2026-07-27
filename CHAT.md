@@ -1372,3 +1372,14 @@ from the earlier "quiet down the inline box" pass. That's the view where names s
 quiet-down rule. (Default-variant paths were already correct on the live site, so any
 lingering plain look there is the ~10-min asset cache — lead-modal.js carries no ?v
 buster.)
+
+**Lucas:** there are a couple of " — " long-dashes in the terms. that so ai-typical.
+remove those and use different simpler (more common for human) punctuation
+
+**Claude:** Both consent texts rewritten without em-dashes. Default: "...by phone,
+text, and email, including marketing and AI-generated messages about your property at
+the number provided. This contact may use an autodialer or an artificial, prerecorded,
+or AI-generated voice, and may occur even if your number is on a Do Not Call list."
+Inline first-person version gets the same comma/period structure, and its semicolon
+became ", and". (The maxsold swap still finds its "your matched real-estate
+professional" anchor.)

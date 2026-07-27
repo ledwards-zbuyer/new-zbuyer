@@ -174,10 +174,10 @@
     termsBox.classList.add("lm-inline");
     cInl.innerHTML =
       '<input type="checkbox" class="lm-check" aria-label="I agree to receive calls, texts, and emails as described in the terms">' +
-      'I agree to receive calls, texts, and emails from zBuyer and <span class="lm-inline-pros"></span>' +
-      ' — including marketing and AI-generated messages about my property at the number I provided,' +
-      ' made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if my' +
-      ' number is on a Do Not Call list. This is my express written consent; I understand consent' +
+      'I agree to receive calls, texts, and emails from zBuyer and <span class="lm-inline-pros"></span>,' +
+      ' including marketing and AI-generated messages about my property at the number I provided.' +
+      ' These may use an autodialer or an artificial, prerecorded, or AI-generated voice, even if my' +
+      ' number is on a Do Not Call list. This is my express written consent, and I understand consent' +
       ' is not a condition of purchase.' +
       ' <span class="lm-carrier">Msg frequency varies. Msg &amp; data rates may apply.</span>';
     termsCheck = cInl.querySelector(".lm-check");
