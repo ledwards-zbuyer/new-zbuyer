@@ -1356,3 +1356,8 @@ make "Jason Dalbey..." (or whatever variable is in its place) the same boldness
 **Claude:** Both at font-weight 600 now — the carrier sentence up from 500, and the
 recipient names down from the browser's 700 via a .lm-names class on every render path
 (the "Matched real estate pro:" label alone stays 700).
+
+**Lucas:** "Jason Dalbey (BHHS The Preferred Realty)" does not look bold
+
+**Claude:** Right — 600 reads weak at 11px in Inter. Names and the carrier sentence
+are both full bold (700) now, same as the label.
