@@ -1411,3 +1411,8 @@ notice showing the texted number.
 
 **Claude:** Done — the sub now reads "Make sure you can access your updated home value
 report when you want. We'll text the link."
+
+**Lucas:** also change "By tapping" to "By clicking"
+
+**Claude:** Done — the SMS disclosure opens with "By clicking 'Text my Report,'" now,
+matching the contact step's "By clicking Continue" language.
