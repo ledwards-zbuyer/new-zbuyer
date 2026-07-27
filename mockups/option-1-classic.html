@@ -231,9 +231,12 @@
   @media (prefers-reduced-motion:reduce){.zb-pair,.zb-w,.zb-b{transform:none!important;animation:none!important}}
   .lm-err[hidden]{display:none}
   .lm-disclosure{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:8px}
-  .lm-matched{font-size:11px;line-height:1.5;color:#8a97ab}
+  .lm-matched{font-size:11px;line-height:1.5;color:#7d8ca4}
   .lm-matched b{color:var(--muted);font-weight:700}
-  .lm-consent{font-size:11px;line-height:1.5;color:#8a97ab;margin:0}
+  .lm-consent{font-size:11px;line-height:1.5;color:#7d8ca4;margin:0}
+  /* carrier boilerplate + links break onto their own lines with the
+     smallest visible separation */
+  .lm-consent .lm-cline{display:block;margin-top:3px}
   .lm-consent a{color:var(--c1);font-weight:600;text-decoration:underline}
   /* Inline-consent variant (?terms=inline / inline-maxsold): first-person
      terms with an oversized checkbox floated top-left — the text wraps
@@ -585,7 +588,7 @@
           <p class="lm-err" id="leadErr" hidden></p>
           <div class="lm-disclosure">
             <p class="lm-matched"><b>Matched real estate pro:</b> Jason Dalbey (BHHS The Preferred Realty)</p>
-            <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give zBuyer and your matched real-estate professional your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase. Msg &amp; data rates may apply. See our <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp; <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+            <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give zBuyer and your matched real-estate professional your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase.<span class="lm-cline"> Msg frequency varies. Msg &amp; data rates may apply.</span><span class="lm-cline"> See our <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp; <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</span></p>
           </div>
           <button type="submit" class="lm-cta">Continue &rarr;</button>
         </form>

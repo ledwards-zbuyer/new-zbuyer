@@ -178,9 +178,11 @@
       ' — including marketing and AI-generated messages about my property at the number I provided,' +
       ' made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if my' +
       ' number is on a Do Not Call list. This is my express written consent; I understand consent' +
-      ' is not a condition of purchase. Msg &amp; data rates may apply. See our' +
+      ' is not a condition of purchase.' +
+      '<span class="lm-cline"> Msg frequency varies. Msg &amp; data rates may apply.</span>' +
+      '<span class="lm-cline"> See our' +
       ' <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> &amp;' +
-      ' <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.';
+      ' <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>';
     termsCheck = cInl.querySelector(".lm-check");
     inlinePros = cInl.querySelector(".lm-inline-pros");
     inlinePros.textContent = proNames;

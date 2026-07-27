@@ -1317,3 +1317,16 @@ screenshot; new harness steps allset / dnc.
 
 **Claude:** Palm's left edge moved in 11px (starts under the phone's midsection with a
 rounded corner) — the grip now reads bottom-right, consistent with the thumb.
+
+**Lucas:** on the terms section of the PII form, make the text contrast slightly more
+against the background. add a line break and the smallest amount of space possible
+(to show separation) after "not a condition of purchase." — then add "Msg frequency
+varies. " in front of "Msg & data rates apply". also add another line break and
+minimal space before "See our Terms..."
+
+**Claude:** Consent text darkened a step (#8a97ab → #7d8ca4, matched-pro line too) and
+the paragraph now ends in three separated blocks — the consent sentence, then "Msg
+frequency varies. Msg & data rates may apply.", then "See our Terms & Privacy Policy."
+— each on its own line with a 3px gap (block spans, .lm-cline). Same treatment in the
+inline-checkbox variant (lead-modal.js). Leading spaces inside the spans keep the
+saved trustedform TCPATerms text from squishing words together across the breaks.
