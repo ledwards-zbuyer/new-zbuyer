@@ -1361,3 +1361,14 @@ recipient names down from the browser's 700 via a .lm-names class on every rende
 
 **Claude:** Right — 600 reads weak at 11px in Inter. Names and the carrier sentence
 are both full bold (700) now, same as the label.
+
+**Lucas:** must be a different issue. the name(s) look unchanged and undifferentiated
+from the normal text of the terms. on mobile and desktop
+
+**Claude:** Found it — the inline-checkbox variant (?terms=inline) puts the names
+inside the consent sentence (.lm-inline-pros), and those were deliberately left plain
+from the earlier "quiet down the inline box" pass. That's the view where names sit in
+"the normal text of the terms." They're bold (700) there now too, superseding the
+quiet-down rule. (Default-variant paths were already correct on the live site, so any
+lingering plain look there is the ~10-min asset cache — lead-modal.js carries no ?v
+buster.)
