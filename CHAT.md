@@ -1405,3 +1405,9 @@ also goes neutral if they declined. Rail is "Step x of 5" with a fifth dot; home
 Back from all-set returns to the new step; SMSOptIn re-added to the Pulse field map.
 Full Pulse E2E re-run green: SMSOptIn=200 in the call log, pixel stored + injected,
 notice showing the texted number.
+
+**Lucas:** remove the line "We'll text you the link, then show you the report." with
+"We'll text the link."
+
+**Claude:** Done — the sub now reads "Make sure you can access your updated home value
+report when you want. We'll text the link."
