@@ -1423,3 +1423,9 @@ little more
 **Claude:** The desktop rail line stepped up from the whisper tone: #5D6F93 → #8296B9,
 11.5px → 12px, stronger underlines, brighter hover (#AFC2E2). Still clearly quieter
 than the card, but readable at a glance.
+
+**Lucas:** make this statement as small as possible with the same message: "Make sure
+you can access your updated home value report when you want."
+
+**Claude:** Picked from four candidates: "Check your updated value anytime." The full
+sub is now "Check your updated value anytime. We'll text the link."
