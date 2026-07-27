@@ -606,6 +606,7 @@
   if (digits.length !== 10) return; // no phone on record: keep the notice hidden
   var notice = document.getElementById("smsNotice");
   if (sessionStorage.getItem("zbNoticeClosed")) return; // dismissed this session
+  if (sessionStorage.getItem("zbNoText")) return; // declined anytime-access: nothing was texted
   var noticePhone = document.getElementById("noticePhone");
   noticePhone.textContent = fmt(digits);
   notice.hidden = false;

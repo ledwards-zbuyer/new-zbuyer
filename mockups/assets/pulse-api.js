@@ -57,6 +57,7 @@
     listedQuestion: "ListedQuestion",             // from OnboardAPI later; defaults "No"
     realtorOpt: "RealtorOpt",                     // "ok" on the all-set step's CTA
     dnc: "DNC",                                   // "true" on "Do not contact me" (no RealtorOpt then)
+    smsOptIn: "SMSOptIn",                         // "true"/"false" from the Access-anytime step
     sellingTimeFrame: "SellingTimeFrame",         // the chip text: Now / Soon / Eventually / No
     whySelling: "WhySelling",                     // report-focus chip text: Fast cash / Both / Top price
     repairsNeeded: "RepairsNeeded",               // repairs-slider label; NOT canonical yet — confirm name

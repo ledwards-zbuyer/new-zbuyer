@@ -52,7 +52,8 @@ f.onload = function () {
               sp.value = "Solar panels, corner lot";
               sp.dispatchEvent(new w.Event("input", { bubbles: true }));
               d.getElementById("viewReport").click();
-              setTimeout(function () { d.getElementById("toSms").click(); }, 400);
+              setTimeout(function () { d.getElementById("textReport").click(); }, 400);
+              setTimeout(function () { d.getElementById("toSms").click(); }, 800);
             }, 700);
           }, 500);
         }, 1500);
@@ -262,15 +263,13 @@ f.onload = function () {
     }, 2600);
     return;
   }
-  if (step === "allset") {
-    // ride the zbeat past the special step to land on the all-set screen
+  if (step === "textreport" || step === "allset" || step === "dnc") {
+    // seed a phone so the Access-anytime prefill + validation pass, then
+    // ride the zbeats: special -> textreport (-> allset (-> dnc finale))
+    d.getElementById("leadPhone").value = "(417) 880-9688";
     setTimeout(function () { d.getElementById("viewReport").click(); }, 2200);
-    return;
-  }
-  if (step === "dnc") {
-    // Do-not-contact exit: the finale caption must NOT promise a text
-    setTimeout(function () { d.getElementById("viewReport").click(); }, 2200);
-    setTimeout(function () { d.getElementById("noContact").click(); }, 4400);
+    if (step !== "textreport") setTimeout(function () { d.getElementById("textReport").click(); }, 4400);
+    if (step === "dnc") setTimeout(function () { d.getElementById("noContact").click(); }, 6600);
     return;
   }
   if (step === "sms") d.getElementById("toSms").click();

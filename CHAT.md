@@ -1381,5 +1381,27 @@ text, and email, including marketing and AI-generated messages about your proper
 the number provided. This contact may use an autodialer or an artificial, prerecorded,
 or AI-generated voice, and may occur even if your number is on a Do Not Call list."
 Inline first-person version gets the same comma/period structure, and its semicolon
-became ", and". (The maxsold swap still finds its "your matched real-estate
-professional" anchor.)
+became ", and".
+
+**Lucas:** now remove "zBuyer and" from those terms. ALSO: add another step before the
+"You're all set!" step: title "Access your report anytime", a "time/later" graphic, a
+textbox with the user's formatted phone number, sentence "Make sure you can access
+your updated home value report when you want. We'll text you the link, then show you
+the report.", button "Text my Report", and under it a link "No thanks, I don't want
+anytime-access". *(mid-build:)* also add a terms container above the button on the
+new step — the absolute minimum for SMS compliance, no checkbox.
+
+**Claude:** Consent now reads "you give your matched real-estate professional…" (and
+the Max Sold swap compensates: "its real-estate partners" became "zBuyer's real-estate
+partners" since zBuyer is no longer named earlier in the sentence); same removal in
+the inline variant. New step 4 of now-5 built on both pages: clock graphic in the
+sparkle family with a clockwise "later" sweep, phone input prefilled from the contact
+step with live formatting, minimal SMS terms box (automated text from zBuyer, Msg
+frequency varies / rates line bold, HELP/STOP), "Text my Report" validates 10 digits
+and saves the corrected phone + SMSOptIn=true; the no-thanks link saves
+SMSOptIn=false and sets a zbNoText session flag the report page now respects (its
+"we texted you" notice stays hidden — it would have been a lie). The finale caption
+also goes neutral if they declined. Rail is "Step x of 5" with a fifth dot; homepage
+Back from all-set returns to the new step; SMSOptIn re-added to the Pulse field map.
+Full Pulse E2E re-run green: SMSOptIn=200 in the call log, pixel stored + injected,
+notice showing the texted number.

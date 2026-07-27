@@ -57,9 +57,10 @@
   // SellingTimeFrame carries the chip's visible text (Now/Soon/Eventually/No).
   var intentLabel = "";
 
-  // Desktop legal rail below the fold: "Step x of 4" + dots. The zbeat
-  // interstitial isn't a step — it keeps the previous reading.
-  var STEP_NUM = { contact: 1, questions: 2, special: 3, allset: 4 };
+  // Legal rail below the fold: "Step x of N" + dots (N = dot count in the
+  // markup). The zbeat interstitial isn't a step — it keeps the previous
+  // reading.
+  var STEP_NUM = { contact: 1, questions: 2, special: 3, textreport: 4, allset: 5 };
   var progText = modal.querySelector(".lm-prog-text");
   var progDots = modal.querySelectorAll(".lm-prog-dot");
   function show(name) {
@@ -68,7 +69,7 @@
     if (DR && xBtn) xBtn.hidden = name !== "contact";
     var n = STEP_NUM[name];
     if (n && progText) {
-      progText.textContent = "Step " + n + " of 4";
+      progText.textContent = "Step " + n + " of " + progDots.length;
       progDots.forEach(function (d, i) { d.classList.toggle("on", i < n); });
     }
     // The overlay is the scroll surface (legal rail below the fold) —
@@ -151,7 +152,7 @@
     if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> <b class=\"lm-names\">Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)</b>";
     var consentEl = modal.querySelector(".lm-consent");
     if (consentEl) consentEl.innerHTML = consentEl.innerHTML
-      .replace("your matched real-estate professional", "its real-estate partners");
+      .replace("your matched real-estate professional", "zBuyer&rsquo;s real-estate partners");
   }
 
   // ---- inline-consent variant (?terms=inline / inline-maxsold) ----
@@ -174,7 +175,7 @@
     termsBox.classList.add("lm-inline");
     cInl.innerHTML =
       '<input type="checkbox" class="lm-check" aria-label="I agree to receive calls, texts, and emails as described in the terms">' +
-      'I agree to receive calls, texts, and emails from zBuyer and <span class="lm-inline-pros"></span>,' +
+      'I agree to receive calls, texts, and emails from <span class="lm-inline-pros"></span>,' +
       ' including marketing and AI-generated messages about my property at the number I provided.' +
       ' These may use an autodialer or an artificial, prerecorded, or AI-generated voice, even if my' +
       ' number is on a Do Not Call list. This is my express written consent, and I understand consent' +
@@ -424,7 +425,8 @@
     if (e.key === "Escape" && !modal.hidden && (!DR || current === "contact")) close();
   });
   var backBtn = modal.querySelector("[data-back]");
-  if (backBtn) backBtn.addEventListener("click", function () { show("special"); });
+  // (textPhone is initialized below; clicks only happen after init)
+  if (backBtn) backBtn.addEventListener("click", function () { show(textPhone ? "textreport" : "special"); });
 
   // ---- contact step -> advance to report step ----
   form.addEventListener("submit", function (e) {
@@ -494,11 +496,47 @@
     runZBeat("questions");
   });
 
+  // ---- Access-anytime step: text the report link, before the all-set step ----
+  // Prefilled with the contact step's phone; "Text my Report" needs 10
+  // digits and records SMSOptIn=true (+ the possibly-corrected number).
+  // The no-thanks link records SMSOptIn=false and flags the session so the
+  // report page's "we texted you" notice stays hidden.
+  var textPhone = document.getElementById("textPhone");
+  var textErr = document.getElementById("textErr");
+  var textOpt = null; // null until the step is answered
+  if (textPhone) {
+    textPhone.addEventListener("input", function () {
+      textPhone.value = formatPhone(textPhone.value);
+      textPhone.classList.remove("invalid");
+      if (textErr) textErr.hidden = true;
+    });
+    document.getElementById("textReport").addEventListener("click", function () {
+      var d = phoneDigits(textPhone.value);
+      if (!d) {
+        textPhone.classList.add("invalid");
+        textErr.textContent = "Please enter a valid mobile number.";
+        textErr.hidden = false;
+        return;
+      }
+      textOpt = true;
+      try { sessionStorage.removeItem("zbNoText"); } catch (e) {}
+      if (P) { psave(P.F.phone, d); psave(P.F.smsOptIn, "true"); }
+      runZBeat("allset");
+    });
+    document.getElementById("noText").addEventListener("click", function () {
+      textOpt = false;
+      try { sessionStorage.setItem("zbNoText", "1"); } catch (e) {}
+      if (P) psave(P.F.smsOptIn, "false");
+      runZBeat("allset");
+    });
+  }
+
   // ---- all-set (RealtorOpt) step: now the LAST step before the report ----
   document.getElementById("toSms").addEventListener("click", function () {
     // The all-set step is the RealtorOpt step in the lead record.
     if (P) psave(P.F.realtorOpt, "ok");
-    goToReport();
+    // Declined anytime-access: don't promise a text on the finale.
+    goToReport(textOpt === false ? "Preparing your report…" : undefined);
   });
   // "Do not contact me": records DNC=true, fires NO RealtorOpt, still gets
   // the report — with a caption that doesn't promise a text.
@@ -579,6 +617,8 @@
     if (P && specialText && specialText.value.trim()) {
       psave(P.F.somethingSpecial, specialText.value.trim());
     }
-    runZBeat("allset");
+    // Access-anytime step opens with the contact step's number in place.
+    if (textPhone && !textPhone.value) textPhone.value = phoneEl.value;
+    runZBeat(textPhone ? "textreport" : "allset");
   });
 })();

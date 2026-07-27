@@ -171,6 +171,7 @@
   .lm-final .lm-q{font-size:16.5px}
   .lm-note{font-size:12.5px;font-style:italic;color:var(--muted);text-align:center;margin-top:6px;line-height:1.4}
   .lm-final .lm-cta{display:block;width:100%;margin-top:18px}
+  .lm-final .lm-disclosure{margin-top:12px;text-align:left}
   .lm-final .lm-nothanks{display:block;margin:12px auto 0}
   .lm-final .lm-err{margin-top:8px}
   .lm-nothanks{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;padding:4px;align-self:center;text-decoration:underline}
@@ -334,7 +335,7 @@
           <p class="lm-err" id="leadErr" hidden></p>
           <div class="lm-disclosure">
             <p class="lm-matched"><b>Matched real estate pro:</b> <b class="lm-names">Jason Dalbey (BHHS The Preferred Realty)</b></p>
-            <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give zBuyer and your matched real-estate professional your express written consent to contact you by phone, text, and email, including marketing and AI-generated messages about your property at the number provided. This contact may use an autodialer or an artificial, prerecorded, or AI-generated voice, and may occur even if your number is on a Do Not Call list. Consent is not a condition of purchase. <span class="lm-carrier">Msg frequency varies. Msg &amp; data rates may apply.</span></p>
+            <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give your matched real-estate professional your express written consent to contact you by phone, text, and email, including marketing and AI-generated messages about your property at the number provided. This contact may use an autodialer or an artificial, prerecorded, or AI-generated voice, and may occur even if your number is on a Do Not Call list. Consent is not a condition of purchase. <span class="lm-carrier">Msg frequency varies. Msg &amp; data rates may apply.</span></p>
           </div>
           <p class="lm-agree">By clicking Continue, you agree to the <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a></p>
           <button type="submit" class="lm-cta">Continue &rarr;</button>
@@ -394,6 +395,34 @@
         <p class="zb-note" hidden>Sending your report link to your phone&hellip;</p>
       </div>
 
+      <div class="lm-screen lm-final" data-screen="textreport" hidden>
+        <h3>Access your report anytime</h3>
+        <div class="lm-gfx">
+          <svg width="170" height="118" viewBox="0 0 170 118" fill="none" aria-hidden="true">
+            <circle cx="85" cy="59" r="46" fill="#E7EEFC"/>
+            <circle cx="85" cy="59" r="28" fill="#FFFFFF" stroke="#14233D" stroke-width="5"/>
+            <path d="M85 59V44" stroke="#1D4FD7" stroke-width="4" stroke-linecap="round"/>
+            <path d="M85 59l10 7" stroke="#3BA4F4" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="85" cy="59" r="3.2" fill="#14233D"/>
+            <!-- "later" cue: a short clockwise sweep off the face -->
+            <path d="M119 36a42 42 0 0 1 8 23" stroke="#3BA4F4" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <path d="M123 55l4 6 5-6" stroke="#3BA4F4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M27 34v12M21 40h12" stroke="#3BA4F4" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M150 78v10M145 83h10" stroke="#C7DFFB" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="38" cy="86" r="3.4" fill="#CDE3FB"/>
+            <circle cx="52" cy="18" r="2.8" fill="#C7DFFB"/>
+          </svg>
+        </div>
+        <p class="lm-sub lm-q">Make sure you can access your updated home value report when you want. We&rsquo;ll text you the link, then show you the report.</p>
+        <input id="textPhone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel" aria-label="Mobile number">
+        <p class="lm-err" id="textErr" hidden></p>
+        <div class="lm-disclosure">
+          <p class="lm-consent">By tapping &ldquo;Text my Report,&rdquo; you agree to receive an automated text from zBuyer with your report link at the number above. <span class="lm-carrier">Msg frequency varies. Msg &amp; data rates may apply.</span> Reply HELP for help or STOP to cancel.</p>
+        </div>
+        <button type="button" class="lm-cta" id="textReport">Text my Report</button>
+        <button type="button" class="lm-nothanks" id="noText">No thanks, I don&rsquo;t want anytime-access</button>
+      </div>
+
       <div class="lm-screen lm-final" data-screen="allset" hidden>
         <h3>You&rsquo;re all set!</h3>
         <div class="lm-gfx">
@@ -443,8 +472,8 @@
     </div>
     <div class="lm-below">
       <div class="lm-progress">
-        <span class="lm-prog-dots" aria-hidden="true"><span class="lm-prog-dot on"></span><span class="lm-prog-dot"></span><span class="lm-prog-dot"></span><span class="lm-prog-dot"></span></span>
-        <span class="lm-prog-text">Step 1 of 4</span>
+        <span class="lm-prog-dots" aria-hidden="true"><span class="lm-prog-dot on"></span><span class="lm-prog-dot"></span><span class="lm-prog-dot"></span><span class="lm-prog-dot"></span><span class="lm-prog-dot"></span></span>
+        <span class="lm-prog-text">Step 1 of 5</span>
       </div>
       <div class="lm-legal" role="navigation" aria-label="Legal">
         <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms of Service</a>
