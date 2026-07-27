@@ -1416,3 +1416,10 @@ report when you want. We'll text the link."
 
 **Claude:** Done — the SMS disclosure opens with "By clicking 'Text my Report,'" now,
 matching the contact step's "By clicking Continue" language.
+
+**Lucas:** in general, on the desktop version, make the footer text stand out a
+little more
+
+**Claude:** The desktop rail line stepped up from the whisper tone: #5D6F93 → #8296B9,
+11.5px → 12px, stronger underlines, brighter hover (#AFC2E2). Still clearly quieter
+than the card, but readable at a glance.
