@@ -148,7 +148,7 @@
   // Placeholder copy pending final legal language.
   if (/[?&]terms=(inline-)?maxsold\b/.test(window.location.search)) {
     var matchedEl = modal.querySelector(".lm-matched");
-    if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> <b>Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)</b>";
+    if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> <b class=\"lm-names\">Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)</b>";
     var consentEl = modal.querySelector(".lm-consent");
     if (consentEl) consentEl.innerHTML = consentEl.innerHTML
       .replace("your matched real-estate professional", "its real-estate partners");
@@ -239,6 +239,7 @@
           cb.checked = !!c.preSelected;
           row.appendChild(cb);
           var nm = document.createElement("b");
+          nm.className = "lm-names";
           nm.textContent = c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
           row.appendChild(nm);
           box.appendChild(row);
@@ -246,6 +247,7 @@
       } else {
         box.appendChild(document.createTextNode(" "));
         var names = document.createElement("b");
+        names.className = "lm-names";
         names.textContent = d.contactOptInNames.map(function (c) {
           return c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
         }).join("; ");

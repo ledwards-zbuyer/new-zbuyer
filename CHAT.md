@@ -1349,3 +1349,10 @@ CTA with the form's 12px gaps. Matched pro names/companies are bold everywhere t
 render — static markup, the maxsold swap, and both GetContactOptInNames paths (list
 and per-pro checkboxes). The saved TCPATerms capture now appends the agree line since
 it's consent language the user saw.
+
+**Lucas:** make "Msg frequency varies. Msg & data rates may apply." slightly bolder and
+make "Jason Dalbey..." (or whatever variable is in its place) the same boldness
+
+**Claude:** Both at font-weight 600 now — the carrier sentence up from 500, and the
+recipient names down from the browser's 700 via a .lm-names class on every render path
+(the "Matched real estate pro:" label alone stays 700).

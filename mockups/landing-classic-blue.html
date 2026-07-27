@@ -226,8 +226,10 @@
   .lm-matched .lm-optin{display:flex;align-items:center;gap:7px;margin-top:5px;cursor:pointer}
   .lm-matched .lm-optin input{margin:0;accent-color:var(--c1)}
   .lm-consent{font-size:11px;line-height:1.5;color:#7d8ca4;margin:0}
-  /* carrier boilerplate rides inside the paragraph, just slightly bolder */
-  .lm-consent .lm-carrier{font-weight:500}
+  /* carrier boilerplate rides inside the paragraph, just slightly bolder;
+     the recipient names match it exactly (the label stays 700) */
+  .lm-consent .lm-carrier{font-weight:600}
+  .lm-matched .lm-names{font-weight:600}
   /* the agreement line lives OUTSIDE the box — centered between it and the CTA */
   .lm-agree{font-size:11.5px;line-height:1.5;color:#7d8ca4;text-align:center;margin:0}
   .lm-agree a{color:var(--c1);font-weight:600;text-decoration:underline}
@@ -329,7 +331,7 @@
           <input name="email" type="email" placeholder="Email address" autocomplete="email">
           <p class="lm-err" id="leadErr" hidden></p>
           <div class="lm-disclosure">
-            <p class="lm-matched"><b>Matched real estate pro:</b> <b>Jason Dalbey (BHHS The Preferred Realty)</b></p>
+            <p class="lm-matched"><b>Matched real estate pro:</b> <b class="lm-names">Jason Dalbey (BHHS The Preferred Realty)</b></p>
             <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give zBuyer and your matched real-estate professional your express written consent to contact you by phone, text, and email — including marketing and AI-generated messages about your property at the number provided, made with an autodialer or an artificial, prerecorded, or AI-generated voice — even if your number is on a Do Not Call list. Consent is not a condition of purchase. <span class="lm-carrier">Msg frequency varies. Msg &amp; data rates may apply.</span></p>
           </div>
           <p class="lm-agree">By clicking Continue, you agree to the <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a></p>
