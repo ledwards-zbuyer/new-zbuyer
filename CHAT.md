@@ -1433,3 +1433,9 @@ sub is now "Check your updated value anytime. We'll text the link."
 **Lucas:** change "Check your updated value anytime" to "check your value anytime"
 
 **Claude:** Done — "Check your value anytime. We'll text the link."
+
+**Lucas:** on the "Access your report anytime" step: remove the boldness from "Msg
+frequency varies. Msg & data rates may apply"
+
+**Claude:** Dropped the .lm-carrier span from that step's SMS disclosure — the whole
+box reads at one weight now. The contact step's bold carrier line is untouched.
