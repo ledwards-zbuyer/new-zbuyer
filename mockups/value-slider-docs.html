@@ -57,8 +57,11 @@
     <p>Until the cash offer exists, the same widget renders the <b>initial pause</b> — a
     wait state that animates until the offer is delivered (details in section 5):</p>
     <div class="demo">
-      <div class="demo-tag">Live — the initial pause (no delivery configured, so it waits forever)</div>
+      <div class="demo-tag">Live — the initial pause (the offer arrives after 8s)</div>
       <div id="ex4"></div>
+      <p class="picked"><button id="ex4reset" style="font:inherit;font-size:13px;font-weight:700;
+        padding:7px 14px;border-radius:9px;border:1.5px solid #E4EAF3;background:#fff;
+        cursor:pointer">&#8635; Reset</button></p>
     </div>
   </div>
 
@@ -269,14 +272,22 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
   zbValueSlider(document.getElementById("ex2"), {
     anchors: [{ value: 340000, label: "Cash offer" }]
   });
-  zbValueSlider(document.getElementById("ex4"), {
-    anchors: [{ value: 371000, label: "Estimated market value" }],
-    pending: {} // no demo, no deliver(): the wait state runs indefinitely
-  });
+  // destroy() before re-init: it stops the old instance's pending timer,
+  // which would otherwise deliver into the container the new instance owns
+  var introSlider = null;
+  function initIntroPending() {
+    if (introSlider) introSlider.destroy();
+    introSlider = zbValueSlider(document.getElementById("ex4"), {
+      anchors: [{ value: 371000, label: "Estimated market value" }],
+      pending: { demo: { value: 312000, label: "Quick cash close", seconds: 8 } }
+    });
+  }
+  initIntroPending();
+  document.getElementById("ex4reset").addEventListener("click", initIntroPending);
+  var arriveSlider = null;
   function initPending() {
-    var el = document.getElementById("ex5");
-    el.innerHTML = "";
-    zbValueSlider(el, {
+    if (arriveSlider) arriveSlider.destroy();
+    arriveSlider = zbValueSlider(document.getElementById("ex5"), {
       anchors: [{ value: 371000, label: "Estimated market value" }],
       pending: { demo: { value: 312000, label: "Quick cash close", seconds: 6 } }
     });

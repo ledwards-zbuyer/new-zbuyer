@@ -1751,3 +1751,12 @@ minute."), matching the report's override.
 **Claude:** Moved it up — section 1 now shows the draggable range demo and, right
 under it, the live initial-pause demo with a one-line intro pointing at section 5
 for the details. Section 5 keeps the 6s arrival demo with the replay button.
+
+**Lucas:** on the initial pause slider in dev doc, make it wait for 8 seconds then
+show the received offer animation. include a reset button
+
+**Claude:** Done — the section-1 demo now delivers at 8s (pending.demo seconds: 8)
+and has a Reset button. Bug fixed along the way: both doc demos now destroy() the
+old instance before re-initializing — previously a replay during the wait left the
+old delivery timer alive, and it would re-render into the container the new
+instance owned.
