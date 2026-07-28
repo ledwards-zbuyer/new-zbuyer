@@ -29,7 +29,7 @@
  *                                         //  palette of the Cash Value Report)
  *       pending: {                        // OPTIONAL wait-for-offer state; needs
  *                                         // exactly ONE anchor. All keys optional:
- *         ticker: "Awaiting your cash offer — usually arrives in under a minute",
+ *         ticker: "Awaiting your cash offer. Usually arrives in under a minute.",
  *         demo:   { value: 412500, label: "Quick cash close", seconds: 6 },
  *                                         // stand-in for the API: auto-delivers
  *                                         // after seconds (default 6; legacy
@@ -369,7 +369,7 @@
       var mts = [0, 1].map(function () { // two copies = seamless loop
         var t = svgEl("text", { x: mx0 + 8, y: EXT + 51, fill: "#FFFFFF", opacity: .85 }, mq);
         t.style.font = "600 10.5px Inter,system-ui,sans-serif";
-        t.textContent = conf.ticker || "Awaiting your cash offer — usually arrives in under a minute";
+        t.textContent = conf.ticker || "Awaiting your cash offer. Usually arrives in under a minute.";
         return t;
       });
       var mper = mts[0].getComputedTextLength() + 70;

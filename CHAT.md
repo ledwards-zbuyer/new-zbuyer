@@ -1737,3 +1737,11 @@ that can be defined and default it to 6. *(mid-build:)* update dev doc
 still honored). The report drops its explicit 4s and rides the default; dev doc's
 options table, pending example, and live-demo tag all say seconds/6s, and the stale
 pending.label mention came out of the table while I was in there.
+
+**Lucas:** show the initial pause (with animation) on the dev doc
+
+**Claude:** Section 5 now opens with a live wait-state demo — one anchor, pending
+with no demo delivery, so the scrim / marching dashes / pulsing dot / ticker / bobbing
+Z run indefinitely — above the existing 6s arrival demo. Also made the widget's
+default ticker copy dash-free ("Awaiting your cash offer. Usually arrives in under a
+minute."), matching the report's override.

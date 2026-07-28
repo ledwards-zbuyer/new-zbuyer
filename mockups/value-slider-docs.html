@@ -182,6 +182,10 @@ slider.destroy();    // empty the container</code></pre>
     will become, a pulsing dot marks where the offer will land, a
     quiet ticker crawls along the bottom-right behind the inert handle, and the Z mark bobs
     over the landing spot.</p>
+    <div class="demo">
+      <div class="demo-tag">Live — the initial pause (no delivery configured, so it waits forever)</div>
+      <div id="ex4"></div>
+    </div>
     <p>When the offer arrives — <code>slider.deliver(anchor)</code> from your API handler, or
     the built-in <code>demo</code> timer — the arrival is fully animated: the overlay lifts,
     the mark dives to its spot, the flat chart <b>morphs into the two-anchor curve</b> (the
@@ -262,6 +266,10 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
   });
   zbValueSlider(document.getElementById("ex2"), {
     anchors: [{ value: 340000, label: "Cash offer" }]
+  });
+  zbValueSlider(document.getElementById("ex4"), {
+    anchors: [{ value: 371000, label: "Estimated market value" }],
+    pending: {} // no demo, no deliver(): the wait state runs indefinitely
   });
   function initPending() {
     var el = document.getElementById("ex5");
