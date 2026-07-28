@@ -1789,3 +1789,19 @@ curve (span-zoom, 8px floor, dot per stop, "Complete home value range" sub-label
 portable-file pointer), plus a LIVE five-anchor zbValueSlider rendered in the guide
 itself. Z-beat section: caption element removed and the "always say what the wait is
 for" rule updated — the finale plays uncaptioned as of 2026-07-28.
+
+**Lucas:** reskin this in our design and provide a link on the reports page. make
+sure the made up values match between the reports *(Downloads/
+zbuyer-report-mockup-17-topeka-pass.html — the Property Intelligence Report
+workbench mockup with the REAPI field map)*
+
+**Claude:** Built mockups/report-intel-classic-blue.html: the Topeka mockup's
+serif/paper/money-green design swapped for the classic-blue system (Inter, white
+18px cards, eyebrows, blue big numbers, tint cash panel, green CLEAR stamps,
+notice-style caveats), every mock value re-pointed at our demo property — 123 Main
+St Springfield, $371,000 estimated, $312K–$355K cash band (the funnel anchors),
+$345,030 net after 7% costs, purchased Jun 2021 for $268,000 (matches the value
+history chart's start), 3bd/2ba/1,752 sqft/1965/0.28 ac, rent ladder rebuilt around
+the 3-bedroom. The REAPI field mapping survived intact (data-reapi attributes,
+srclines, the JSON spec with gates and caveats). The report page gains a "Go deeper"
+card above the footer linking to it, and the intel page links back.

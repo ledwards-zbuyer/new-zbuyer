@@ -367,6 +367,16 @@ load) while values and home stats remain static demo data. The old
   #7FC4FF→#1D4FD7, orange pill handle, warm notice bar. `assets/value-slider.js`
   defaults + value-slider-docs.html were synced back to this palette at the same
   time. design-guide.html is consistent again (it never documented the retone).
+- **Property Intelligence Report (2026-07-28):** `report-intel-classic-blue.html` — the
+  Topeka Pass design mockup (REAPI field-map workbench export) reskinned into the
+  classic-blue system, linked from the report's "Go deeper" card above the footer.
+  MOCK VALUES MATCHED to the report demo: 123 Main St Springfield MO, 3bd/2ba/1,752
+  sqft/1965, est. value $371,000, cash band $312,000–$355,000 (the funnel anchors),
+  net-after-7%-costs $345,030, purchased Jun 2021 $268,000 (agrees with the value
+  history chart's 2021 start). The REAPI implementation spec survives intact:
+  data-reapi/data-reapi-derived attributes on every value, visible .srcline per card,
+  machine-readable JSON at #reapi-field-map (incl. the HUD geo-validation gate and
+  per-card caveats). Original file: Downloads/zbuyer-report-mockup-17-topeka-pass.html.
 - **`?values=` param — three value-display strategies** (default `combined`):
   - `combined` — POWERED BY THE PORTABLE WIDGET (2026-07-28): the bespoke inline
     slider was deleted; `#vSlider` initializes `assets/value-slider.js` with the
