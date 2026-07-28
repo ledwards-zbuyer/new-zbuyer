@@ -89,12 +89,11 @@ API — see §9. The homepage and compare pages remain inert demos.
 6. **"You're all set!" step — the last step** — confirmation: hand-holding-a-phone
    graphic (2026-07-25; was a green checkmark) with the sparkle plusses kept, "a
    local expert will be in touch…", CTA **View my Report →** (fires RealtorOpt="ok"
-   and exits through the finale beat — caption **"Sending your report link to your
-   phone…"**, or **"Preparing your report…"** if they declined the text — while
-   FinalizeLead posts underneath), quiet **Do not contact me** link (fires
-   DNC="true", same exit with the no-text caption). Homepage Back returns to the
-   Access-anytime step. Lands on `report-classic-blue.html` (§8). Harness:
-   `?step=textreport` / `allset` / `dnc`.
+   and exits through the finale beat — animation only, no caption (2026-07-27) —
+   while FinalizeLead posts underneath), quiet **Do not contact me** link (fires
+   DNC="true", same exit). Homepage Back returns to the Access-anytime step. Lands
+   on `report-classic-blue.html` (§8). Harness: `?step=textreport` / `allset` /
+   `dnc`.
 
 Modal logic lives in `mockups/assets/lead-modal.js` (vanilla JS, no deps).
 

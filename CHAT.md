@@ -1513,3 +1513,11 @@ the slider
 granularity kept): sparkle at rest, then 2-10 hammers, with ten RepairsNeeded labels
 from "No repairs — move-in ready" through "A full remodel". Harness slide= now takes
 levels 0-9. Verified: level 9 shows all ten hammers on one row.
+
+**Lucas:** on the loading logo after the last step — remove the "sending your report
+link..." and "preparing your report" labels entirely... just the animation
+
+**Claude:** Finale is caption-free now: the zb-note element, its CSS, and the whole
+caption-override plumbing (goToReport/runZBeatFinale noteText, the DNC and
+declined-text variants) are gone from both pages + lead-modal.js. Note this departs
+from the design guide's "always caption the beat" rule for the finale specifically.

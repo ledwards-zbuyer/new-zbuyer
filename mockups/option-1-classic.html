@@ -213,8 +213,6 @@
      beat. Not used before the report; that exit navigates directly. */
   .lm-zbeat{display:flex;flex-direction:column;align-items:center;padding:36px 0 28px}
   .lm-zbeat[hidden]{display:none}
-  .zb-note{margin-top:20px;font-size:17px;font-weight:700;color:var(--ink);text-align:center}
-  .zb-note[hidden]{display:none}
   /* Finale (after the SMS step): the full cycle — in, hold, back out —
      via 2 alternate iterations; covers the FinalizeLead round-trip. */
   .lm-zbeat.run-full .zb-pair{animation:zbSpin 1.6s linear 2 alternate both}
@@ -651,7 +649,6 @@
             </g>
           </g>
         </svg>
-        <p class="zb-note" hidden>Sending your report link to your phone&hellip;</p>
       </div>
 
       <div class="lm-screen lm-final" data-screen="textreport" hidden>

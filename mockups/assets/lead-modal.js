@@ -97,18 +97,13 @@
     zbeat.classList.add("run");
     setTimeout(function () { if (my === beatSeq) { show(target); if (card) card.focus(); } }, 1650);
   }
-  // Finale after the SMS step: full cycle (in, hold, back out) + caption,
-  // then hand off — FinalizeLead runs underneath it. noteText overrides the
-  // default caption (DNC exits must not promise a text message).
-  function runZBeatFinale(cb, noteText) {
+  // Finale before the report: full cycle (in, hold, back out), no caption
+  // (Lucas 2026-07-27: just the animation), then hand off — FinalizeLead
+  // runs underneath it.
+  function runZBeatFinale(cb) {
     if (!zbeat) { cb(); return; }
     var my = ++beatSeq;
     show("zbeat");
-    var note = zbeat.querySelector(".zb-note");
-    if (note) {
-      if (noteText) note.textContent = noteText;
-      note.hidden = false;
-    }
     zbeat.classList.remove("run", "run-full");
     void zbeat.offsetWidth;
     zbeat.classList.add("run-full");
@@ -540,14 +535,13 @@
   document.getElementById("toSms").addEventListener("click", function () {
     // The all-set step is the RealtorOpt step in the lead record.
     if (P) psave(P.F.realtorOpt, "ok");
-    // Declined anytime-access: don't promise a text on the finale.
-    goToReport(textOpt === false ? "Preparing your report…" : undefined);
+    goToReport();
   });
   // "Do not contact me": records DNC=true, fires NO RealtorOpt, still gets
-  // the report — with a caption that doesn't promise a text.
+  // the report.
   document.getElementById("noContact").addEventListener("click", function () {
     if (P) psave(P.F.dnc, "true");
-    goToReport("Preparing your report…");
+    goToReport();
   });
 
   // ---- SomethingSpecial step: free text + tap-to-add suggestion chips.
@@ -557,12 +551,12 @@
   // that the report page injects (stashed in sessionStorage across the
   // navigation). Never block the user on a slow/failed finalize: navigate
   // after 2.5s regardless.
-  function goToReport(noteText) {
+  function goToReport() {
     var done = false;
     function nav() { if (!done) { done = true; window.location.href = REPORT_PAGE; } }
     if (zbeat) {
       if (P) P.finalize(); // resolves during the finale; pixel stored for the report page
-      runZBeatFinale(nav, noteText);
+      runZBeatFinale(nav);
     } else if (P) {
       P.finalize().then(nav, nav);
       setTimeout(nav, 2500);
