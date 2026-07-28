@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>zbValueSlider — portable value-curve slider demo</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#EDF1F7;padding:34px 18px 60px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 26px;line-height:1.5}
+  .card{background:#fff;border-radius:16px;padding:26px 28px 22px;box-shadow:0 10px 30px -18px rgba(14,27,51,.25);margin-bottom:22px}
+  .card h2{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#1D4FD7;margin-bottom:6px}
+  .card .note{font-size:12.5px;color:var(--muted);margin-bottom:6px;line-height:1.45}
+  pre{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:12.5px;line-height:1.55;overflow-x:auto}
+  .picked{font-size:13px;color:var(--muted);text-align:center;margin-top:10px;min-height:18px}
+  /* themed example: override the widget's CSS vars */
+  .theme-dark{--zvs-cta:#3BA4F4;--zvs-lo:#FFB199;--zvs-hi:#FF6B4A;--zvs-track:#DDE6F2}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>zbValueSlider</h1>
+  <p class="lead">Portable value-curve slider — one dependency-free JS file
+  (<code>assets/value-slider.js</code>, styles self-inject). 1&ndash;6 value anchors with labels;
+  the track is an area chart of the values (span-zoomed over a value floor), the handle
+  snaps to the nearest anchor, and the headline reveals the snapped value. A single
+  anchor renders as a locked, fully-filled static display.</p>
+
+  <div class="card">
+    <h2>4 anchors — the Cash Value Report configuration</h2>
+    <div id="s4"></div>
+    <p class="picked" id="s4pick">drag the handle, or use arrow keys</p>
+  </div>
+
+  <div class="card">
+    <h2>6 anchors — the maximum</h2>
+    <div id="s6"></div>
+  </div>
+
+  <div class="card">
+    <h2>2 anchors — the minimum interactive</h2>
+    <div id="s2"></div>
+  </div>
+
+  <div class="card">
+    <h2>1 anchor — static: locked centered handle, full chart, no end labels</h2>
+    <div id="s1"></div>
+  </div>
+
+  <div class="card">
+    <h2>Themed via CSS variables (2 anchors)</h2>
+    <p class="note">Set <code>--zvs-cta / --zvs-lo / --zvs-hi / --zvs-track / --zvs-dot /
+    --zvs-ink / --zvs-muted</code> on the container or any ancestor.</p>
+    <div id="sTheme" class="theme-dark"></div>
+  </div>
+
+  <div class="card">
+    <h2>Usage</h2>
+<pre>&lt;div id="mySlider"&gt;&lt;/div&gt;
+&lt;script src="value-slider.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  var slider = zbValueSlider(document.getElementById("mySlider"), {
+    anchors: [                        // 1-6 entries; sorted by value for you
+      { value: 312000, label: "Quick cash close" },
+      { value: 371000, label: "Top market value" }
+    ],
+    format:   function (v) { return "$" + v.toLocaleString(); }, // optional
+    headline: true,                   // big number/range above the track
+    endLabels: true,                  // min/max labels under the track
+    onSelect: function (anchor, index) { console.log(anchor.value); }
+  });
+  slider.snapTo(1);                   // programmatic snap (0-based)
+&lt;/script&gt;</pre>
+  </div>
+</div>
+
+<script src="assets/value-slider.js"></script>
+<script>
+  zbValueSlider(document.getElementById("s4"), {
+    anchors: [
+      { value: 312000, label: "Quick cash close" },
+      { value: 345000, label: "Cash+" },
+      { value: 355000, label: "Cash+ with repairs" },
+      { value: 371000, label: "Top market value" }
+    ],
+    onSelect: function (a) {
+      document.getElementById("s4pick").textContent = "picked: " + a.label;
+    }
+  });
+  zbValueSlider(document.getElementById("s6"), {
+    anchors: [
+      { value: 298000, label: "As-is cash" },
+      { value: 312000, label: "Quick cash close" },
+      { value: 330000, label: "Cash, flexible close" },
+      { value: 345000, label: "Cash+" },
+      { value: 355000, label: "Cash+ with repairs" },
+      { value: 371000, label: "Top market value" }
+    ]
+  });
+  zbValueSlider(document.getElementById("s2"), {
+    anchors: [
+      { value: 312000, label: "Quick cash close" },
+      { value: 371000, label: "Top market value" }
+    ]
+  });
+  zbValueSlider(document.getElementById("s1"), {
+    anchors: [{ value: 340000, label: "Cash offer" }]
+  });
+  zbValueSlider(document.getElementById("sTheme"), {
+    anchors: [
+      { value: 1200, label: "Base plan" },
+      { value: 4800, label: "Everything plan" }
+    ],
+    format: function (v) { return "$" + v.toLocaleString() + "/mo"; }
+  });
+</script>
+</body>
+</html>

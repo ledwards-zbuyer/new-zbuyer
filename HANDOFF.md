@@ -379,6 +379,13 @@ load) while values and home stats remain static demo data. The old
     presets it for screenshots. Values labeled at the ends only. Most
     member-protective at rest: interior offers are positions, not numbers, until the
     user chooses to explore.
+    **Portable extraction (2026-07-27):** `mockups/assets/value-slider.js` —
+    dependency-free `zbValueSlider(container, {anchors: 1-6 [{value,label}], format,
+    headline, endLabels, onSelect})`, styles self-inject, themeable via `--zvs-*`
+    CSS vars; ONE anchor = locked centered handle, full-height fully-filled chart,
+    no end labels. Demo/docs: `mockups/value-slider-demo.html`. Built to hand to
+    other teams — the report page keeps its own inline copy, so sync manually if
+    the design evolves.
   - `options` — a range per path (Cash / Cash+ featured / List), expert as
     tie-breaker CTA. Exposes the Cash+ number.
   - `spectrum` — all paths as interval bars on one Speed ⟷ Price axis; the geometry

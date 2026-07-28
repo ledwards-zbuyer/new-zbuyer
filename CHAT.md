@@ -1560,3 +1560,18 @@ maybe a baseline thick enough to imply "value" even for the lowest option
 **Claude:** H_MIN back up to 8px: the curve now rides an 8px value floor, so at the
 $312K anchor there's a solid bar (and the blue fill at snap=0 reads as real money),
 with the 312→371 span still owning the remaining 49px of rise.
+
+**Lucas:** make this slider into something i can easily pass to my coworkers on a
+different project. up to 6 values with labels, only 2 required; if only one is
+supplied, center the handle (disable movement), show one full value across the chart
+and remove the end labels
+
+**Claude:** Extracted to mockups/assets/value-slider.js — a single dependency-free
+file (styles self-inject, unique SVG ids per instance, themeable via --zvs-* CSS
+vars): zbValueSlider(container, {anchors: 1-6 {value,label}, format, headline,
+endLabels, onSelect}) with the full drag/snap/headline/keyboard behavior, anchors
+sorted and positioned proportionally to value, dots with label tooltips on every
+anchor. One anchor = static: locked centered handle, full-height fully-blue chart,
+no dots, no end labels, headline shows the value. Demo with all configs + usage
+snippet at mockups/value-slider-demo.html. The report page keeps its bespoke inline
+copy (noted in HANDOFF to sync manually).
