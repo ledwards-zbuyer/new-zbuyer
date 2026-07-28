@@ -201,7 +201,10 @@ changing the funnel.
     Pro names unbolded, Terms/Privacy links muted gray (they repeat in the footer).
 - Markup carries the Exclusive default; `lead-modal.js` swaps in the Max Sold worst case
   when `?terms=maxsold` is present, and builds the checkbox box for the `inline*`
-  variants. (Default flipped to Exclusive 2026-07-01 for a team demo of the hero-title
+  variants. Forcing a sale model is a DEMO switch (2026-07-27): it skips the live
+  GetContactOptInNames render entirely — otherwise the API names replaced the 6-buyer
+  roster seconds after load on the wired lander — and records no opt-in contacts for
+  that session. (Default flipped to Exclusive 2026-07-01 for a team demo of the hero-title
   comparison.) **Consent wording differences are placeholders**
   pending final legal language.
 

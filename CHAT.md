@@ -1467,3 +1467,12 @@ section on the PII step
 professional…", the inline variant's "from zBuyer and [pros]", and the Max Sold swap
 back to "its real-estate partners" (grammatical again with zBuyer named). This
 closes the audit's biggest finding: zBuyer is a consented party again.
+
+**Lucas:** when i use "terms=inline-maxsold" in the querystring, it does not show 6
+member names
+
+**Claude:** The live GetContactOptInNames render was overwriting the demo roster a
+second after load (the audit's screenshot finding). Forcing a sale model via ?terms=
+is now treated as a demo switch: the API render is skipped, the 6-buyer roster stays
+on screen, and no opt-in contacts are recorded for that session. Un-forced funnels
+keep the live names.

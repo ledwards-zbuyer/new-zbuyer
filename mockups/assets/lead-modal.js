@@ -147,7 +147,10 @@
   //   consent UI — default is the classic implicit paragraph; inline
   //     rebuilds it in first person behind an explicit checkbox (below).
   // Placeholder copy pending final legal language.
-  if (/[?&]terms=(inline-)?maxsold\b/.test(window.location.search)) {
+  // Forcing a sale model is a DEMO switch: the 6-buyer roster must stay on
+  // screen, so the live GetContactOptInNames render is skipped below.
+  var FORCED_MAXSOLD = /[?&]terms=(inline-)?maxsold\b/.test(window.location.search);
+  if (FORCED_MAXSOLD) {
     var matchedEl = modal.querySelector(".lm-matched");
     if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> <b class=\"lm-names\">Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)</b>";
     var consentEl = modal.querySelector(".lm-consent");
@@ -216,8 +219,10 @@
 
     // Live matched pros from GetContactOptInNames (cached once per session —
     // the API returns different sets per call). Falls back silently to the
-    // hard-coded disclosure names if the call fails.
-    P.getOptInContacts().then(function (d) {
+    // hard-coded disclosure names if the call fails. Skipped entirely when a
+    // sale model is forced via ?terms= (demo previews keep their roster; no
+    // opt-in contacts are recorded for those sessions either).
+    if (!FORCED_MAXSOLD) P.getOptInContacts().then(function (d) {
       if (!d || !d.contactOptInNames || !d.contactOptInNames.length) return;
       optInData = d;
       // Record exactly which contact set this user was shown.
