@@ -1745,3 +1745,9 @@ with no demo delivery, so the scrim / marching dashes / pulsing dot / ticker / b
 Z run indefinitely — above the existing 6s arrival demo. Also made the widget's
 default ticker copy dash-free ("Awaiting your cash offer. Usually arrives in under a
 minute."), matching the report's override.
+
+**Lucas:** i'm not seeing the wait-state demo in the first (1. What it is) section
+
+**Claude:** Moved it up — section 1 now shows the draggable range demo and, right
+under it, the live initial-pause demo with a one-line intro pointing at section 5
+for the details. Section 5 keeps the 6s arrival demo with the replay button.

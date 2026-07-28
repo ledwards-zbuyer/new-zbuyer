@@ -54,6 +54,12 @@
       <div id="ex1"></div>
       <p class="picked" id="ex1pick">&nbsp;</p>
     </div>
+    <p>Until the cash offer exists, the same widget renders the <b>initial pause</b> — a
+    wait state that animates until the offer is delivered (details in section 5):</p>
+    <div class="demo">
+      <div class="demo-tag">Live — the initial pause (no delivery configured, so it waits forever)</div>
+      <div id="ex4"></div>
+    </div>
   </div>
 
   <div class="card">
@@ -182,10 +188,6 @@ slider.destroy();    // empty the container</code></pre>
     will become, a pulsing dot marks where the offer will land, a
     quiet ticker crawls along the bottom-right behind the inert handle, and the Z mark bobs
     over the landing spot.</p>
-    <div class="demo">
-      <div class="demo-tag">Live — the initial pause (no delivery configured, so it waits forever)</div>
-      <div id="ex4"></div>
-    </div>
     <p>When the offer arrives — <code>slider.deliver(anchor)</code> from your API handler, or
     the built-in <code>demo</code> timer — the arrival is fully animated: the overlay lifts,
     the mark dives to its spot, the flat chart <b>morphs into the two-anchor curve</b> (the
