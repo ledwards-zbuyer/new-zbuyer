@@ -136,8 +136,9 @@
   .vs-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#8296B9;border:2px solid #fff;box-shadow:0 1px 3px rgba(14,27,51,.3);transform:translate(-50%,-50%);pointer-events:none}
   .vslide{cursor:pointer;touch-action:none}
   /* handle crests ABOVE the curve's tallest point (74px vs 57px) and rests
-     LOW — its rounded bottom tip drops below the curve's baseline */
-  .vs-handle{position:absolute;top:59%;width:26px;height:74px;border-radius:13px;background:var(--cta);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);transform:translate(-50%,-50%);cursor:grab;z-index:2}
+     LOW — its rounded bottom tip drops below the curve's baseline. Muted
+     brass: the pop of color against the slate-navy scheme (not CTA orange). */
+  .vs-handle{position:absolute;top:59%;width:26px;height:74px;border-radius:13px;background:#C49238;border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);transform:translate(-50%,-50%);cursor:grab;z-index:2}
   /* grip ridges — reads as "grab me" at a glance */
   .vs-handle::before{content:"";position:absolute;left:50%;top:50%;width:8px;height:22px;transform:translate(-50%,-50%);border-left:2px solid rgba(255,255,255,.8);border-right:2px solid rgba(255,255,255,.8)}
   .vs-handle.snap{transition:left .18s ease}

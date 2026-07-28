@@ -1642,6 +1642,14 @@ matches our general scheme)
 pressable color, and it pops cleanly off the blue wedge. Matches the report slider's
 old handle language.
 
+**Lucas:** undo that. i was referring to the slider on the reports page (my mistake).
+we don't want that one cta orange though
+
+**Claude:** Funnel dial reverted to var(--c1) blue. The report's value-curve handle
+gets the pop instead: muted brass #C49238 (white border kept) — the classic accent
+against slate navy, clearly visible over both the fill and the track without
+reintroducing the orange.
+
 **Lucas:** change the colors on the report page to something else. it looks too
 sporty and spunky. this is serious business about someone's most prized possession.
 just talking colors — container background should still be white — don't go crazy
