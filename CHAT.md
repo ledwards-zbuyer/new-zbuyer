@@ -1772,3 +1772,10 @@ options row, deliver() in the return-value block, and the whole pending section
 (sections renumbered). The widget itself keeps the pending capability — unused and
 undocumented, noted in HANDOFF with the headless gotcha in case the waiting
 experience elsewhere wants it.
+
+**Lucas:** show 5 anchor points with 5 values — Quick cash close, Sell now - move
+later, Cash+, Cash+ w/ repairs, Estimated market value — in order of value. put this
+on step one of the dev doc
+
+**Claude:** Section 1's live demo now runs those five anchors ($312K / $328K "Sell
+now - move later" / $345K / $355K / $371K), dots positioned by value along the curve.
