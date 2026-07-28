@@ -1575,3 +1575,10 @@ anchor. One anchor = static: locked centered handle, full-height fully-blue char
 no dots, no end labels, headline shows the value. Demo with all configs + usage
 snippet at mockups/value-slider-demo.html. The report page keeps its bespoke inline
 copy (noted in HANDOFF to sync manually).
+
+**Lucas:** make the handle and bg chart able to have their respective colors defined
+via the script
+
+**Claude:** Added a colors option to zbValueSlider — handle / fillLo / fillHi / track
+/ dot, each optional, script colors winning over CSS vars over defaults. Demo gains a
+green example card and the usage snippet shows the object.

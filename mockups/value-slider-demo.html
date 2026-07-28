@@ -61,6 +61,13 @@
   </div>
 
   <div class="card">
+    <h2>Colors defined in the script call (3 anchors)</h2>
+    <p class="note">Pass a <code>colors</code> object — <code>handle / fillLo / fillHi /
+    track / dot</code>. Script colors win over CSS variables.</p>
+    <div id="sColors"></div>
+  </div>
+
+  <div class="card">
     <h2>Usage</h2>
 <pre>&lt;div id="mySlider"&gt;&lt;/div&gt;
 &lt;script src="value-slider.js"&gt;&lt;/script&gt;
@@ -73,7 +80,11 @@
     format:   function (v) { return "$" + v.toLocaleString(); }, // optional
     headline: true,                   // big number/range above the track
     endLabels: true,                  // min/max labels under the track
-    onSelect: function (anchor, index) { console.log(anchor.value); }
+    onSelect: function (anchor, index) { console.log(anchor.value); },
+    colors: {                         // optional; script wins over CSS vars
+      handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
+      track: "#E8EFE9", dot: "#6E9B7F"
+    }
   });
   slider.snapTo(1);                   // programmatic snap (0-based)
 &lt;/script&gt;</pre>
@@ -118,6 +129,17 @@
       { value: 4800, label: "Everything plan" }
     ],
     format: function (v) { return "$" + v.toLocaleString() + "/mo"; }
+  });
+  zbValueSlider(document.getElementById("sColors"), {
+    anchors: [
+      { value: 214000, label: "Trade-in" },
+      { value: 239000, label: "Private sale" },
+      { value: 251000, label: "Certified listing" }
+    ],
+    colors: {
+      handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
+      track: "#E8EFE9", dot: "#6E9B7F"
+    }
   });
 </script>
 </body>

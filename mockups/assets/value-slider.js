@@ -15,7 +15,14 @@
  *       format:   function (v) { ... },   // optional; default $1,234,567
  *       headline: true,                   // big number/range above the track
  *       endLabels: true,                  // min/max labels under the track
- *       onSelect: function (anchor, index) { ... } // fires on every snap
+ *       onSelect: function (anchor, index) { ... }, // fires on every snap
+ *       colors: {                         // optional; all keys optional
+ *         handle: "#FF6B4A",              //   the pill
+ *         fillLo: "#7FC4FF",              //   gradient start of the filled chart
+ *         fillHi: "#1D4FD7",              //   gradient end (rides the handle)
+ *         track:  "#E4EAF3",              //   the unfilled chart
+ *         dot:    "#8296B9"               //   anchor dots
+ *       }
  *     });
  *     slider.snapTo(1);                   // programmatic snap (0-based)
  *   </script>
@@ -34,7 +41,9 @@
  *   ONE anchor = static display: full-height fully-filled chart, handle
  *   locked centered, no dots, no end labels, headline shows the value.
  *
- * THEMING (CSS custom properties on the container or any ancestor)
+ * THEMING (either works; script colors win over CSS vars, vars over defaults)
+ *   script: the colors option above
+ *   CSS custom properties on the container or any ancestor:
  *   --zvs-cta (handle)  --zvs-lo / --zvs-hi (fill gradient)
  *   --zvs-track (unfilled)  --zvs-dot  --zvs-ink  --zvs-muted
  */
@@ -132,13 +141,17 @@
     var grad = svgEl("linearGradient", { id: "zvsGrad" + id, x1: 0, y1: 0, x2: 500, y2: 0, gradientUnits: "userSpaceOnUse" }, defs);
     var lo = svgEl("stop", { offset: 0 }, grad);
     var hi = svgEl("stop", { offset: 1 }, grad);
-    // gradient stops honor the CSS vars at build time (fallbacks = zBuyer blues)
+    // color resolution: script colors option > CSS vars > zBuyer defaults
+    var colors = opts.colors || {};
     var cs = getComputedStyle(container);
-    lo.setAttribute("stop-color", (cs.getPropertyValue("--zvs-lo") || "").trim() || "#7FC4FF");
-    hi.setAttribute("stop-color", (cs.getPropertyValue("--zvs-hi") || "").trim() || "#1D4FD7");
+    function col(scriptColor, varName, fallback) {
+      return scriptColor || (cs.getPropertyValue(varName) || "").trim() || fallback;
+    }
+    lo.setAttribute("stop-color", col(colors.fillLo, "--zvs-lo", "#7FC4FF"));
+    hi.setAttribute("stop-color", col(colors.fillHi, "--zvs-hi", "#1D4FD7"));
     var clip = svgEl("clipPath", { id: "zvsClip" + id }, defs);
     var clipRect = svgEl("rect", { x: 0, y: 0, width: 500, height: CURVE_H }, clip);
-    svgEl("path", { d: d, fill: (cs.getPropertyValue("--zvs-track") || "").trim() || "#E4EAF3" }, svg);
+    svgEl("path", { d: d, fill: col(colors.track, "--zvs-track", "#E4EAF3") }, svg);
     svgEl("path", { d: d, fill: "url(#zvsGrad" + id + ")", "clip-path": "url(#zvsClip" + id + ")" }, svg);
 
     // deepest blue always rides the clip edge (the handle)
@@ -154,6 +167,7 @@
         dot.className = "zvs-dot";
         dot.style.left = a.p + "%";
         dot.style.top = (SLIDE_H - BOTTOM - CURVE_H + ay(a)) + "px";
+        if (colors.dot) dot.style.background = colors.dot;
         dot.title = (a.label ? a.label + " — " : "") + fmt(a.value);
         slide.appendChild(dot);
       });
@@ -161,6 +175,7 @@
 
     var handle = document.createElement("span");
     handle.className = "zvs-handle";
+    if (colors.handle) handle.style.background = colors.handle;
     handle.tabIndex = single ? -1 : 0;
     handle.setAttribute("role", "slider");
     handle.setAttribute("aria-label", opts.ariaLabel || "Explore the value range");
