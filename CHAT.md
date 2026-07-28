@@ -1498,3 +1498,10 @@ written consent to contact me…", "I authorize … to contact me…", and "I co
 receive…". Lucas picked the first; the inline consent now opens "By checking this
 box, I agree to receive calls, texts, and emails from zBuyer and [pros]…" — five
 words of horizontal space before the recipients, no legal substance changed.
+
+**Lucas:** on the text step, integrate "including marketing and AI-generated
+messages" or similar wording into the terms after the "with your report link" text
+
+**Claude:** The SMS disclosure now reads "…you agree to receive automated texts from
+zBuyer with your report link, including marketing and AI-generated messages, at the
+number above." ("an automated text" became plural since it now covers marketing.)
