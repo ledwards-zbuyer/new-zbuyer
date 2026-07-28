@@ -354,6 +354,11 @@ function buildGhost(card, mount){
         head.style.opacity = '0';
         setTimeout(function(){
           head.textContent = '$' + OFFER.toLocaleString('en-US') + ' – $' + VAL.toLocaleString('en-US');
+          head.style.fontSize = '38px'; // same one-line fit as the widget
+          if (head.scrollWidth > head.clientWidth)
+            head.style.fontSize = Math.max(20, Math.floor(38 * head.clientWidth / head.scrollWidth)) + 'px';
+          var sub = mount.querySelector('.zvs-sub');
+          if (sub) sub.textContent = ''; // range selected yet — no single label
           head.style.opacity = '1';
         }, 170);
       }

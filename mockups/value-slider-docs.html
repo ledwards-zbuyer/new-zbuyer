@@ -110,14 +110,18 @@
       <li>The handle drags freely; the blue fill follows it live (deepest blue always at the
           handle). On release it <b>snaps to the nearest anchor</b>.</li>
       <li>The headline starts as the full range ("$312,000 – $371,000") and only swaps to a
-          specific value once the user snaps somewhere. <code>onSelect</code> fires on every
+          specific value once the user snaps somewhere — the snapped anchor's <b>label appears
+          in smaller, quieter type beneath the number</b>. <code>onSelect</code> fires on every
           snap with the anchor object and its index.</li>
+      <li>The headline <b>auto-fits</b>: the number — or the full range — shrinks as needed so
+          it never wraps to a second line.</li>
       <li>Keyboard: the handle is focusable; arrow keys step between anchors.</li>
     </ul>
     <h3>The single-value mode</h3>
     <p>If you pass <b>one anchor</b> (or several that share one value), there is no range to
     explore, so the widget renders a static display: fully-filled full-height chart, handle
-    locked in the center, no dots, no end labels — the headline just shows the value.</p>
+    locked in the center, no dots, no end labels — the headline shows the value with its
+    label beneath.</p>
     <div class="demo">
       <div class="demo-tag">Live — one anchor</div>
       <div id="ex2"></div>
@@ -135,7 +139,8 @@
           <td>Turns a value into display text everywhere it appears (headline, end labels,
           tooltips). E.g. <code>v =&gt; "$" + v.toLocaleString() + "/mo"</code>.</td></tr>
       <tr><td><code>headline</code></td><td>boolean, <code>true</code></td>
-          <td>Render the big number/range above the track. Set <code>false</code> if your
+          <td>Render the big number/range above the track (auto-fits to one line; the snapped
+          anchor's label renders in smaller type beneath). Set <code>false</code> if your
           page already has its own headline — use <code>onSelect</code> to update it.</td></tr>
       <tr><td><code>endLabels</code></td><td>boolean, <code>true</code></td>
           <td>Min and max values + labels under the track ends. Never shown in

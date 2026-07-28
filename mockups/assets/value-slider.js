@@ -36,8 +36,10 @@
  *   anchors. Blue gradient fills to the handle (deepest blue rides it),
  *   gray beyond. The handle drags freely, snaps to the nearest anchor on
  *   release, and only then does the headline swap from the full range to
- *   the snapped anchor's value. Keyboard arrows step anchors. Every anchor
- *   gets a dot with a label tooltip.
+ *   the snapped anchor's value, with the anchor's label in smaller, quieter
+ *   type beneath it. The headline auto-shrinks so the number (or the full
+ *   range) never wraps to a second line. Keyboard arrows step anchors.
+ *   Every anchor gets a dot with a label tooltip.
  *
  *   ONE anchor = static display: full-height fully-filled chart, handle
  *   locked centered, no dots, no end labels, headline shows the value.
@@ -56,7 +58,8 @@
   var uid = 0;
 
   var CSS =
-    ".zvs-headline{font-size:38px;font-weight:800;letter-spacing:-.03em;text-align:center;color:var(--zvs-ink,#14233D);margin:0 0 4px}" +
+    ".zvs-headline{font-size:38px;font-weight:800;letter-spacing:-.03em;text-align:center;color:var(--zvs-ink,#14233D);margin:0 0 2px;white-space:nowrap}" +
+    ".zvs-sub{min-height:19px;font-size:13.5px;font-weight:600;text-align:center;color:var(--zvs-muted,#5C6B82);margin:0 0 2px}" +
     ".zvs-slide{position:relative;height:" + SLIDE_H + "px;margin:14px 2px 2px;cursor:pointer;touch-action:none}" +
     ".zvs-slide.zvs-static{cursor:default}" +
     ".zvs-curve{position:absolute;left:0;right:0;bottom:" + BOTTOM + "px;width:100%;height:" + CURVE_H + "px;display:block}" +
@@ -113,13 +116,25 @@
       return CURVE_H - (H_MIN + frac * (CURVE_H - H_MIN));
     }
 
-    var headlineEl = null;
+    var headlineEl = null, subEl = null;
     if (opts.headline !== false) {
       headlineEl = document.createElement("p");
       headlineEl.className = "zvs-headline";
       container.appendChild(headlineEl);
+      subEl = document.createElement("p");
+      subEl.className = "zvs-sub"; // the snapped anchor's label, quiet, under the number
+      container.appendChild(subEl);
     }
-    function setHeadline(t) { if (headlineEl) headlineEl.textContent = t; }
+    // never let the number (or the full range) wrap: shrink to fit one line
+    function setHeadline(t, label) {
+      if (!headlineEl) return;
+      headlineEl.textContent = t;
+      headlineEl.style.fontSize = "38px";
+      var w = headlineEl.clientWidth;
+      if (w && headlineEl.scrollWidth > w)
+        headlineEl.style.fontSize = Math.max(20, Math.floor(38 * w / headlineEl.scrollWidth)) + "px";
+      subEl.textContent = label || "";
+    }
 
     var slide = document.createElement("div");
     slide.className = "zvs-slide" + (single ? " zvs-static" : "");
@@ -191,7 +206,7 @@
       handle.classList.add("zvs-snap");
       handle.style.left = a.p + "%";
       paintCurve(a.p);
-      setHeadline(fmt(a.value));
+      setHeadline(fmt(a.value), a.label);
       handle.setAttribute("aria-valuetext", fmt(a.value) + (a.label ? " — " + a.label : ""));
       if (typeof opts.onSelect === "function") opts.onSelect(a, idx);
     }
@@ -200,7 +215,7 @@
       var only = anchors[0];
       handle.style.left = "50%";
       handle.setAttribute("aria-valuetext", fmt(only.value) + (only.label ? " — " + only.label : ""));
-      setHeadline(fmt(only.value));
+      setHeadline(fmt(only.value), only.label);
       paintCurve(100);
     } else {
       handle.style.left = "50%";
