@@ -368,29 +368,27 @@ load) while values and home stats remain static demo data. The old
   defaults + value-slider-docs.html were synced back to this palette at the same
   time. design-guide.html is consistent again (it never documented the retone).
 - **`?values=` param — three value-display strategies** (default `combined`):
-  - `combined` — NOW POWERED BY THE PORTABLE WIDGET (2026-07-28): the bespoke inline
-    slider was deleted and `#vSlider` is initialized from `assets/value-slider.js`
-    in PENDING-OFFER mode — the $371K "Estimated market value" (renamed from "Top
-    market value", here and in the spectrum module / demo / docs) shows immediately
-    under the wait overlay (scrim, marching dashed preview, ticker "Awaiting your
-    cash offer. Usually arrives in under a minute.", bobbing Z), then the demo
-    delivers the $312K "Quick cash close" after 4s with the animated arrival and
-    the module re-renders as the live two-anchor range slider. The untouched range
-    headline carries the new default sub-label **"Complete home value range"**
-    (widget option `rangeLabel`). `?snap=0-1` presets the post-arrival snap (wired
-    via `pending.onDeliver`). NOTE: the demo range is now 2 anchors — the Cash+
-    interior dots only exist where a caller passes them.
+  - `combined` — POWERED BY THE PORTABLE WIDGET (2026-07-28): the bespoke inline
+    slider was deleted; `#vSlider` initializes `assets/value-slider.js` with the
+    four selling-path anchors ($312K Quick cash close / $345K Cash+ / $355K Cash+
+    with repairs / $371K "Estimated market value" — renamed from "Top market
+    value" here and in the spectrum module / demo / docs) and renders the live
+    range immediately. The untouched range headline carries the default sub-label
+    **"Complete home value range"** (widget option `rangeLabel`); `?snap=0-3`
+    presets the snapped anchor. The wait-for-offer experience was BUILT and then
+    REMOVED from the report/demo/docs (2026-07-28, "doing the waiting elsewhere") —
+    the widget itself still ships the `pending` mode (single anchor + animated
+    `deliver()` arrival), currently unused and undocumented; if it's ever revived,
+    note the headless gotcha: its infinite rAF loop starves
+    `--virtual-time-budget`, so screenshot delivered states with
+    `--force-prefers-reduced-motion`.
     **Portable widget:** `mockups/assets/value-slider.js` —
     dependency-free `zbValueSlider(container, {anchors: 1-6 [{value,label}], format,
-    headline, rangeLabel, endLabels, onSelect, pending, colors})`, styles
+    headline, rangeLabel, endLabels, onSelect, colors})`, styles
     self-inject, themeable via `--zvs-*` CSS vars or the `colors` option (script
     wins); ONE anchor — or all anchors sharing a value — locks a centered handle
     over a full-height filled chart, no end labels. Demo:
     `mockups/value-slider-demo.html`; developer guide: `mockups/value-slider-docs.html`.
-    **Headless gotcha:** the pending state's infinite rAF loop starves
-    `--virtual-time-budget` (frames eat the budget; the demo timer only fires at
-    budget end), so screenshot the delivered state with
-    `--force-prefers-reduced-motion` (reduced motion delivers instantly).
   - `options` — a range per path (Cash / Cash+ featured / List), expert as
     tie-breaker CTA. Exposes the Cash+ number.
   - `spectrum` — all paths as interval bars on one Speed ⟷ Price axis; the geometry

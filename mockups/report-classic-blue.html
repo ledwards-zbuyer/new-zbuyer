@@ -274,10 +274,8 @@
 
   <section class="card vmod" id="vCombined" hidden>
     <div class="vhead"><span class="eyebrow">Your selling range</span></div>
-    <!-- the portable value-curve slider (assets/value-slider.js) in
-         pending-offer mode: the estimated market value shows immediately,
-         the demo cash offer lands with the animated arrival, and the module
-         re-renders as the live range slider. Init script near the bottom. -->
+    <!-- the portable value-curve slider (assets/value-slider.js), four
+         selling-path anchors. Init script near the bottom. -->
     <div id="vSlider"></div>
     <p class="vnote">This range reflects different ways to sell — it isn't an appraisal of your home. Where you land depends on the path you choose.</p>
     <a class="vask" href="tel:1234567890">Talk through your range with <span class="xName">Jason</span> &rarr;</a>
@@ -482,24 +480,24 @@
      stashes it in sessionStorage across the navigation; inject it here. -->
 <script src="assets/value-slider.js"></script>
 <script>
-/* Combined module: the portable value-curve slider in pending-offer mode.
- * The estimated market value shows immediately; the demo cash offer lands
- * a few seconds later with the animated arrival, and the module re-renders
- * as the live range slider (sub-label: Complete home value range).
- * ?snap=N (0-1) presets the snapped anchor after the arrival (testing). */
+/* Combined module: the portable value-curve slider (assets/value-slider.js)
+ * with the four selling-path anchors — renders the live range immediately
+ * (the wait-for-offer experience lives elsewhere, not on the report).
+ * ?snap=N (0-3) presets the snapped anchor (testing). */
 (function () {
   var el = document.getElementById("vSlider");
   if (!el || document.getElementById("vCombined").hidden) return;
-  var qs = new URLSearchParams(location.search).get("snap");
-  zbValueSlider(el, {
-    anchors: [{ value: 371000, label: "Estimated market value" }],
-    ariaLabel: "Explore your selling range",
-    pending: {
-      ticker: "Awaiting your cash offer. Usually arrives in under a minute.",
-      demo: { value: 312000, label: "Quick cash close" }, // arrives after the default 6s
-      onDeliver: function (s) { if (qs !== null) s.snapTo(parseInt(qs, 10)); }
-    }
+  var slider = zbValueSlider(el, {
+    anchors: [
+      { value: 312000, label: "Quick cash close" },
+      { value: 345000, label: "Cash+" },
+      { value: 355000, label: "Cash+ with repairs" },
+      { value: 371000, label: "Estimated market value" }
+    ],
+    ariaLabel: "Explore your selling range"
   });
+  var qs = new URLSearchParams(location.search).get("snap");
+  if (qs !== null) slider.snapTo(parseInt(qs, 10));
 })();
 </script>
 <div class="pmodal" id="phoneModal" hidden>

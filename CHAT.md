@@ -1760,3 +1760,15 @@ and has a Reset button. Bug fixed along the way: both doc demos now destroy() th
 old instance before re-initializing — previously a replay during the wait left the
 old delivery timer alive, and it would re-render into the container the new
 instance owned.
+
+**Lucas:** remove the wait portion we worked on from the reports, demo, and docs.
+we're not going to use that. doing the waiting elsewhere
+
+**Claude:** Removed from every surface: the report's combined module now initializes
+the widget with the four selling-path anchors and renders the live range immediately
+(?snap=0-3 again — the Cash+ interior dots are back since the pending 1→2 contract no
+longer constrains it), and the dev doc lost the section-1 pause demo, the pending
+options row, deliver() in the return-value block, and the whole pending section
+(sections renumbered). The widget itself keeps the pending capability — unused and
+undocumented, noted in HANDOFF with the headless gotcha in case the waiting
+experience elsewhere wants it.

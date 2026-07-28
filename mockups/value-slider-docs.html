@@ -54,15 +54,6 @@
       <div id="ex1"></div>
       <p class="picked" id="ex1pick">&nbsp;</p>
     </div>
-    <p>Until the cash offer exists, the same widget renders the <b>initial pause</b> — a
-    wait state that animates until the offer is delivered (details in section 5):</p>
-    <div class="demo">
-      <div class="demo-tag">Live — the initial pause (the offer arrives after 8s)</div>
-      <div id="ex4"></div>
-      <p class="picked"><button id="ex4reset" style="font:inherit;font-size:13px;font-weight:700;
-        padding:7px 14px;border-radius:9px;border:1.5px solid #E4EAF3;background:#fff;
-        cursor:pointer">&#8635; Reset</button></p>
-    </div>
   </div>
 
   <div class="card">
@@ -167,56 +158,16 @@
           (unfilled chart), <code>dot</code>.</td></tr>
       <tr><td><code>ariaLabel</code></td><td>string</td>
           <td>Accessible name for the handle. Default "Explore the value range".</td></tr>
-      <tr><td><code>pending</code></td><td>object</td>
-          <td>Wait-for-offer state — needs exactly <b>one</b> anchor. Keys (all optional):
-          <code>ticker</code> (scrolling status line),
-          <code>demo: { value, label, seconds }</code> (auto-delivers after
-          <code>seconds</code>, default 6 — a stand-in for the API response),
-          <code>onDeliver(slider)</code>. See section 5.</td></tr>
     </table>
     <h3>Return value</h3>
 <pre><code>var slider = zbValueSlider(el, { ... });
 slider.snapTo(2);    // snap to an anchor programmatically (0-based, sorted order)
 slider.anchors;      // the sorted anchor array (with computed positions)
-slider.deliver({ value: 412500, label: "Quick cash close" });
-                     // pending mode: the offer arrived (call from the API
-                     // response) — animates the chart into the range
 slider.destroy();    // empty the container</code></pre>
   </div>
 
   <div class="card">
-    <h2>5. The pending-offer state</h2>
-    <p>Pass <b>one anchor plus <code>pending</code></b> and the widget renders the wait state:
-    the fill dims under a scrim, a marching dashed preview shows the exact curve the chart
-    will become, a pulsing dot marks where the offer will land, a
-    quiet ticker crawls along the bottom-right behind the inert handle, and the Z mark bobs
-    over the landing spot.</p>
-    <p>When the offer arrives — <code>slider.deliver(anchor)</code> from your API handler, or
-    the built-in <code>demo</code> timer — the arrival is fully animated: the overlay lifts,
-    the mark dives to its spot, the flat chart <b>morphs into the two-anchor curve</b> (the
-    dashed preview fades as the real curve lands on it), the headline crossfades to the range,
-    and the widget re-renders as a live range slider with the dots and end labels easing in.
-    The morph target is pixel-identical to the re-render, so there is no flash. Reduced-motion
-    users get an instant swap.</p>
-    <div class="demo">
-      <div class="demo-tag">Live — offer arrives after 6s</div>
-      <div id="ex5"></div>
-      <p class="picked"><button id="ex5replay" style="font:inherit;font-size:13px;font-weight:700;
-        padding:7px 14px;border-radius:9px;border:1.5px solid #E4EAF3;background:#fff;
-        cursor:pointer">&#8635; Replay the wait &rarr; arrival</button></p>
-    </div>
-<pre><code>zbValueSlider(el, {
-  anchors: [{ value: 371000, label: "Estimated market value" }],
-  pending: {
-    // demo stand-in for the API; in production omit `demo` and call
-    // slider.deliver({ value, label }) when the offer response lands
-    demo: { value: 312000, label: "Quick cash close", seconds: 6 }
-  }
-});</code></pre>
-  </div>
-
-  <div class="card">
-    <h2>6. Styling &amp; theming</h2>
+    <h2>5. Styling &amp; theming</h2>
     <p>Styles inject themselves once (a <code>&lt;style id="zvs-style"&gt;</code> tag). The
     slider fills its container's width; height is fixed (~96px track plus headline and end
     labels). Font is inherited from the container.</p>
@@ -239,7 +190,7 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
   </div>
 
   <div class="card">
-    <h2>7. Good to know</h2>
+    <h2>6. Good to know</h2>
     <ul>
       <li><b>Call it after the container is in the DOM.</b> Theming reads computed styles at
           build time; a detached container silently falls back to default colors.</li>
@@ -272,28 +223,6 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
   zbValueSlider(document.getElementById("ex2"), {
     anchors: [{ value: 340000, label: "Cash offer" }]
   });
-  // destroy() before re-init: it stops the old instance's pending timer,
-  // which would otherwise deliver into the container the new instance owns
-  var introSlider = null;
-  function initIntroPending() {
-    if (introSlider) introSlider.destroy();
-    introSlider = zbValueSlider(document.getElementById("ex4"), {
-      anchors: [{ value: 371000, label: "Estimated market value" }],
-      pending: { demo: { value: 312000, label: "Quick cash close", seconds: 8 } }
-    });
-  }
-  initIntroPending();
-  document.getElementById("ex4reset").addEventListener("click", initIntroPending);
-  var arriveSlider = null;
-  function initPending() {
-    if (arriveSlider) arriveSlider.destroy();
-    arriveSlider = zbValueSlider(document.getElementById("ex5"), {
-      anchors: [{ value: 371000, label: "Estimated market value" }],
-      pending: { demo: { value: 312000, label: "Quick cash close", seconds: 6 } }
-    });
-  }
-  initPending();
-  document.getElementById("ex5replay").addEventListener("click", initPending);
   zbValueSlider(document.getElementById("ex3"), {
     anchors: [
       { value: 214000, label: "Trade-in" },
