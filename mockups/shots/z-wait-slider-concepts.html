@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Z wait on the value slider — 5 options</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{
+    --c1:#1D4FD7;--navy:#0E1B33;--acc:#3BA4F4;
+    --ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;
+  }
+  *{box-sizing:border-box}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);
+    background:var(--soft);margin:0;padding:28px 18px 60px}
+  .page{max-width:640px;margin:0 auto}
+  h1{font-size:20px;margin:0 0 6px}
+  .note{font-size:13px;color:var(--muted);margin:0 0 24px;line-height:1.5}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:26px}
+  h2{font-size:15px;margin:0 0 4px}
+  .desc{font-size:12.5px;color:var(--muted);margin:0 0 12px;line-height:1.45}
+  .status{font-size:12.5px;color:var(--muted);margin:0 0 2px;min-height:18px}
+  .done-copy{display:none;color:#178A50;font-weight:600}
+  .card.done .wait-copy{display:none}
+  .card.done .done-copy{display:inline}
+  .ell::after{content:'…';animation:dots 1.6s steps(1) infinite}
+  @keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'…'}}
+  .controls{margin-top:14px;display:flex;gap:8px}
+  .btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:10px;padding:9px 16px;
+    cursor:pointer;border:1.5px solid var(--c1);background:var(--c1);color:#fff}
+  .btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+
+  .nohandle .zvs-handle{display:none}
+
+  /* option C: the dashed future-range preview */
+  .march{animation:march 1.1s linear infinite}
+  @keyframes march{to{stroke-dashoffset:-11}}
+  .gpulse{animation:gpulse 1.6s ease-in-out infinite}
+  @keyframes gpulse{0%,100%{opacity:.4}50%{opacity:.95}}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Z wait on the value slider — 5 options</h1>
+  <p class="note">Scenario: the report renders the value slider instantly with <b>one anchor</b>
+    (market value) — the flat, fully-filled chart. While Zoodealio prices the cash offer
+    (30–60s), the flat chart hosts the wait animation. When the offer lands, the widget
+    re-renders as the real two-anchor range — <b>the payoff is the chart itself reshaping</b>.
+    Live widget below in every card: hit <b>Offer arrives</b>, then drag the result.
+    <code>?solo=1..5</code> isolates one, <code>?auto=30</code> feels the real wait.</p>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="softblur"><feGaussianBlur stdDeviation="1"/></filter>
+      <filter id="glow4" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="4"/></filter>
+    </defs>
+  </svg>
+
+  <section class="card" id="o1">
+    <h2>A · The fin</h2>
+    <p class="desc">The Z sails back and forth through the value — crisp where it breaks the
+      surface of the fill, a tinted keel below the waterline. Monochrome sky blue: the two
+      triangles in one color read as a bold Z glyph anywhere. Something is moving through your
+      number the whole wait.</p>
+    <div class="status"><span class="wait-copy ell">Zoodealio cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
+    <div class="slider"></div>
+    <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
+  </section>
+
+  <section class="card" id="o2">
+    <h2>B · The glint</h2>
+    <p class="desc">A translucent Z sweeps through the fill every few seconds like light passing
+      through water — the branded version of a skeleton shimmer. Quietest option; adds nothing
+      to the layout, just a sheen that happens to be the mark.</p>
+    <div class="status"><span class="wait-copy ell">Zoodealio cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
+    <div class="slider"></div>
+    <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
+  </section>
+
+  <section class="card" id="o3">
+    <h2>C · The missing anchor</h2>
+    <p class="desc">Data-native: a marching dashed preview of the future two-anchor curve is
+      drawn onto the flat chart, with a pulsing ghost dot where the cash offer will land and the
+      Z mark hovering over that spot. The wait literally shows what's being computed — and the
+      arrival snaps the real curve into the dashed outline.</p>
+    <div class="status"><span class="wait-copy ell">Zoodealio cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
+    <div class="slider"></div>
+    <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
+  </section>
+
+  <section class="card" id="o4">
+    <h2>D · The messenger</h2>
+    <p class="desc">A tiny locked Z zips along the flat top edge every ~3s with a soft glow —
+      a data packet riding the wire, carrying your offer closer. Small, fast, periodic; the
+      surface never looks idle.</p>
+    <div class="status"><span class="wait-copy ell">Zoodealio cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
+    <div class="slider"></div>
+    <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
+  </section>
+
+  <section class="card" id="o5">
+    <h2>E · The watermark meeting</h2>
+    <p class="desc">Deep in the fill, a large translucent Z slowly breathes — its halves drift
+      apart and glide back together, flaring softly each time they lock. The handle hides during
+      the wait (nothing to drag yet), so the mark owns the center. Most ambient option.</p>
+    <div class="status"><span class="wait-copy ell">Zoodealio cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
+    <div class="slider"></div>
+    <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
+  </section>
+</div>
+
+<script src="../assets/value-slider.js"></script>
+<script>
+var REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var NS = 'http://www.w3.org/2000/svg';
+var VAL = 487300, OFFER = 412500;
+var PW = '40,42 128,42 64,158 39,158 95,68 40,68';       // white "7"
+var PB = '160,158 72,158 136,42 161,42 105,132 160,132'; // blue "L"
+var uid = 0;
+
+function renderSingle(mount){
+  mount.innerHTML = '';
+  return zbValueSlider(mount, { anchors: [{ value: VAL, label: 'Top market value' }] });
+}
+function renderRange(mount){
+  mount.innerHTML = '';
+  return zbValueSlider(mount, { anchors: [
+    { value: OFFER, label: 'Quick cash close' },
+    { value: VAL,   label: 'Top market value' }
+  ]});
+}
+function svgE(n, attrs, parent){
+  var e = document.createElementNS(NS, n);
+  for (var k in attrs) e.setAttribute(k, attrs[k]);
+  parent.appendChild(e);
+  return e;
+}
+/* overlay aligned to the widget's chart svg (.zvs-curve: bottom 8px, 57px
+   tall); extUp extends above the chart top so pieces can break the surface.
+   Chart top = y extUp, chart bottom = y extUp+57 in overlay coords. */
+function makeOverlay(mount, extUp, z){
+  var slide = mount.querySelector('.zvs-slide');
+  var svg = document.createElementNS(NS, 'svg');
+  svg.style.cssText = 'position:absolute;left:0;right:0;bottom:8px;width:100%;height:' +
+    (57 + extUp) + 'px;overflow:visible;pointer-events:none;z-index:' + z;
+  slide.appendChild(svg);
+  return svg;
+}
+function easeInOut(p){ return p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2; }
+
+/* every option: start() renders the single-anchor widget + its overlay,
+   resolve() swaps to the real two-anchor range */
+function makeOption(card, build){
+  var mount = card.querySelector('.slider');
+  var raf = 0, done = false;
+  function stopMotion(){ cancelAnimationFrame(raf); }
+  function start(){
+    stopMotion(); done = false;
+    card.classList.remove('done');
+    renderSingle(mount);
+    var anim = build(card, mount); // draws overlay, returns frame(t) or null
+    if (anim && !REDUCED){
+      var t0 = performance.now();
+      (function loop(now){
+        anim((now - t0) / 1000);
+        raf = requestAnimationFrame(loop);
+      })(t0);
+    }
+  }
+  function resolve(){
+    if (done) return; done = true; stopMotion();
+    card.classList.remove('nohandle');
+    renderRange(mount);
+    card.classList.add('done');
+  }
+  card.querySelector('.go').addEventListener('click', resolve);
+  card.querySelector('.reset').addEventListener('click', start);
+  start();
+  return { start: start, resolve: resolve };
+}
+
+/* ---- A · the fin: the mark sails the fill, ping-pong. Monochrome sky
+   blue — the two triangles in one color read as a bold Z glyph ---- */
+function buildFin(card, mount){
+  var EXT = 26, S = .3;
+  var svg = makeOverlay(mount, EXT, 1), W = svg.clientWidth;
+  var cp = svgE('clipPath', {id: 'zvw' + (++uid)}, svgE('defs', {}, svg));
+  svgE('rect', {x: 0, y: 0, width: W, height: EXT}, cp); // above the surface
+  var keel = svgE('g', {opacity: .35}, svg);             // submerged tint
+  svgE('polygon', {points: PW, fill: '#3BA4F4'}, keel);
+  svgE('polygon', {points: PB, fill: '#3BA4F4'}, keel);
+  // clip stays on a static wrapper; the moving transform lives inside it
+  var sail = svgE('g', {}, svgE('g', {'clip-path': 'url(#zvw' + uid + ')'}, svg));
+  svgE('polygon', {points: PW, fill: '#3BA4F4'}, sail);
+  svgE('polygon', {points: PB, fill: '#3BA4F4'}, sail);
+  var yB = EXT - 140 * S; // waterline crosses the glyph at y=140 of its box
+  function place(x, y){
+    var tr = 'translate(' + x + ' ' + y + ') scale(' + S + ')';
+    keel.setAttribute('transform', tr);
+    sail.setAttribute('transform', tr);
+  }
+  place(W * .35, yB); // sensible static pose for reduced-motion
+  return function(t){
+    var x = 6 + (W - 122 * S - 12) * (0.5 - 0.5 * Math.cos(t / 9 * 2 * Math.PI));
+    place(x, yB + 1.6 * Math.sin(t * 2.1));
+  };
+}
+
+/* ---- B · the glint: translucent Z sweeps the fill ---- */
+function buildGlint(card, mount){
+  var S = .4, T = 4.6, TRAVEL = 2.6;
+  var svg = makeOverlay(mount, 0, 1), W = svg.clientWidth;
+  var cp = svgE('clipPath', {id: 'zvw' + (++uid)}, svgE('defs', {}, svg));
+  svgE('rect', {x: 0, y: 0, width: W, height: 57}, cp);
+  var g = svgE('g', {'clip-path': 'url(#zvw' + uid + ')'}, svg);
+  var z = svgE('g', {filter: 'url(#softblur)'}, g);
+  var pw = svgE('polygon', {points: PW, fill: '#3BA4F4', opacity: .5}, z);
+  var pb = svgE('polygon', {points: PB, fill: '#3BA4F4', opacity: .5}, z);
+  var yB = 28.5 - 100 * S;
+  function place(x){ z.setAttribute('transform', 'translate(' + x + ' ' + yB + ') scale(' + S + ')'); }
+  place(W * .5 - 61 * S);
+  return function(t){
+    var p = Math.min(1, (t % T) / TRAVEL);
+    place(-140 + (W + 280) * easeInOut(p));
+  };
+}
+
+/* ---- C · the missing anchor: dashed future curve + ghost dot + hovering
+   piece. Geometry mirrors value-slider.js: PAD 5%, offer at the 8px value
+   floor (curve top y=49), market at full height (y=0), flat-tangent bezier */
+function buildGhost(card, mount){
+  var EXT = 26, S = .22;
+  var svg = makeOverlay(mount, EXT, 3), W = svg.clientWidth;
+  var xo = .05 * W, xm = .95 * W, dxT = (xm - xo) / 2.2;
+  var yO = EXT + 49, yM = EXT;
+  svgE('path', {
+    d: 'M0 ' + yO + ' L' + xo + ' ' + yO +
+       ' C' + (xo + dxT) + ' ' + yO + ' ' + (xm - dxT) + ' ' + yM + ' ' + xm + ' ' + yM +
+       ' L' + W + ' ' + yM,
+    fill: 'none', stroke: '#FFFFFF', 'stroke-width': 2, opacity: .75,
+    'stroke-dasharray': '5 6', 'class': 'march'
+  }, svg);
+  svgE('line', {x1: xo, y1: EXT, x2: xo, y2: yO - 6, stroke: '#24466E',
+    'stroke-width': 1.5, 'stroke-dasharray': '3 5', opacity: .55}, svg);
+  svgE('circle', {cx: xo, cy: yO, r: 4.5, fill: '#24466E', 'class': 'gpulse'}, svg);
+  var label = svgE('text', {x: xo + 12, y: yO - 5, fill: '#24466E', opacity: .85}, svg);
+  label.style.font = '600 10.5px Inter,system-ui,sans-serif';
+  label.textContent = 'your cash offer';
+  var piece = svgE('g', {}, svg); // monochrome mini Z hovering over the spot
+  svgE('polygon', {points: PW, fill: '#3BA4F4'}, piece);
+  svgE('polygon', {points: PB, fill: '#3BA4F4'}, piece);
+  var yB = (EXT - 2) - 158 * S; // hovers just above the surface
+  function place(bob){
+    piece.setAttribute('transform', 'translate(' + (xo - 100 * S) + ' ' + (yB + bob) + ') scale(' + S + ')');
+  }
+  place(0);
+  return function(t){ place(2.8 * Math.sin(t * 2.4)); };
+}
+
+/* ---- D · the messenger: mini locked Z rides the top edge, periodic ---- */
+function buildMessenger(card, mount){
+  var EXT = 10, S = .11, T = 3.4, TRAVEL = 2.4;
+  var svg = makeOverlay(mount, EXT, 1), W = svg.clientWidth;
+  var lineY = EXT + 7;
+  svgE('line', {x1: 0, y1: lineY, x2: W, y2: lineY, stroke: '#FFFFFF',
+    'stroke-width': 2, opacity: .18}, svg);
+  var g = svgE('g', {}, svg);
+  svgE('circle', {cx: 100, cy: 100, r: 78, fill: '#3BA4F4', opacity: .4, filter: 'url(#glow4)'}, g);
+  svgE('polygon', {points: PW, fill: '#3BA4F4'}, g);
+  svgE('polygon', {points: PB, fill: '#3BA4F4'}, g);
+  var yB = (lineY - 1) - 158 * S;
+  function place(x, op){
+    g.setAttribute('transform', 'translate(' + x + ' ' + yB + ') scale(' + S + ')');
+    g.setAttribute('opacity', op);
+  }
+  place(W * .45, 1);
+  return function(t){
+    var p = Math.min(1, (t % T) / TRAVEL);
+    var x = -30 + (W + 60) * easeInOut(p);
+    var cx = x + 100 * S; // fade by position so it never shows off-chart
+    place(x, Math.max(0, Math.min(1, Math.min(cx, W - cx) / 26)));
+  };
+}
+
+/* ---- E · the watermark meeting: halves breathe apart/together in the fill,
+   flaring softly on each lock; handle hidden (nothing to drag yet) ---- */
+function buildWatermark(card, mount){
+  card.classList.add('nohandle');
+  var S = .42, T = 7;
+  var svg = makeOverlay(mount, 0, 1), W = svg.clientWidth;
+  var cp = svgE('clipPath', {id: 'zvw' + (++uid)}, svgE('defs', {}, svg));
+  svgE('rect', {x: 0, y: 0, width: W, height: 57}, cp);
+  var g = svgE('g', {'clip-path': 'url(#zvw' + uid + ')'}, svg);
+  var pw = svgE('polygon', {points: PW, fill: '#3BA4F4'}, g);
+  var pb = svgE('polygon', {points: PB, fill: '#3BA4F4'}, g);
+  var xB = W / 2 - 100 * S, yB = 28.5 - 100 * S;
+  function place(sep, flare){
+    pw.setAttribute('transform', 'translate(' + (xB - sep) + ' ' + yB + ') scale(' + S + ')');
+    pb.setAttribute('transform', 'translate(' + (xB + sep) + ' ' + yB + ') scale(' + S + ')');
+    pw.setAttribute('opacity', .35 + .3 * flare);
+    pb.setAttribute('opacity', .35 + .3 * flare);
+  }
+  place(0, 0);
+  return function(t){
+    var c = t % T, sep, flare = 0;
+    if (c < 1.6)       sep = 26 * easeInOut(c / 1.6);
+    else if (c < 2.8)  sep = 26;
+    else if (c < 4.4)  sep = 26 * (1 - easeInOut((c - 2.8) / 1.6));
+    else { sep = 0; flare = Math.max(0, 1 - (c - 4.4) / .8); }
+    place(sep, flare);
+  };
+}
+
+var apis = [
+  makeOption(document.getElementById('o1'), buildFin),
+  makeOption(document.getElementById('o2'), buildGlint),
+  makeOption(document.getElementById('o3'), buildGhost),
+  makeOption(document.getElementById('o4'), buildMessenger),
+  makeOption(document.getElementById('o5'), buildWatermark)
+];
+
+var params = new URLSearchParams(location.search);
+var solo = params.get('solo');
+if (solo) document.querySelectorAll('.card').forEach(function(card, idx){
+  if (idx !== solo - 1) card.style.display = 'none';
+});
+var auto = params.get('auto');
+if (auto) setTimeout(function(){ apis.forEach(function(a){ a.resolve(); }); }, parseFloat(auto) * 1000);
+</script>
+</body>
+</html>

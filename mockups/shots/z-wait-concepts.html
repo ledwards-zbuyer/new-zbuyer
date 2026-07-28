@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Z wait concepts — inbound cash offer</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{
+    --c1:#1D4FD7;--navy:#0E1B33;--navy-dd:#0A1426;--acc:#3BA4F4;
+    --ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;
+  }
+  *{box-sizing:border-box}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);
+    background:var(--soft);margin:0;padding:28px 18px 60px}
+  .page{max-width:640px;margin:0 auto}
+  h1{font-size:20px;margin:0 0 6px}
+  .note{font-size:13px;color:var(--muted);margin:0 0 24px;line-height:1.5}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:26px}
+  h2{font-size:15px;margin:0 0 4px}
+  .desc{font-size:12.5px;color:var(--muted);margin:0 0 14px;line-height:1.45}
+
+  /* ---- the wait strip (dark stage chip) ---- */
+  .chip{position:relative;height:88px;border-radius:14px;overflow:hidden;
+    background:radial-gradient(120% 170% at 50% 28%,#172A4E,#0E1B33)}
+  .chip.wide svg{position:absolute;inset:0;width:100%;height:100%}
+  .chip.sq{width:88px;flex:0 0 88px;overflow:visible}
+  .chip.sq svg{display:block;width:100%;height:100%;overflow:visible}
+
+  /* copy overlay (concepts 1 & 2: inside the chip, right side) */
+  .copy{position:absolute;right:16px;top:50%;transform:translateY(-50%);
+    text-align:right;color:#fff;z-index:2;text-shadow:0 1px 6px rgba(10,20,38,.65)}
+  .copy .l1{font-size:14px;font-weight:700}
+  .copy .l2{font-size:11.5px;color:#9FB3D9;margin-top:2px}
+  .copy .amt{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-top:1px}
+
+  /* sonar row: square chip + copy on the white card */
+  .sonarrow{display:flex;align-items:center;gap:16px}
+  .sonarrow .copy2 .l1{font-size:14.5px;font-weight:700;color:var(--ink)}
+  .sonarrow .copy2 .l2{font-size:12px;color:var(--muted);margin-top:2px}
+  .sonarrow .copy2 .amt{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--ink);margin-top:1px}
+
+  /* waiting/done copy toggle lives on the card */
+  .done-copy{display:none}
+  .card.done .wait-copy{display:none}
+  .card.done .done-copy{display:block}
+  .card.done .amt{animation:pop .45s cubic-bezier(.2,1.4,.4,1) both}
+  @keyframes pop{from{transform:scale(.7);opacity:0}}
+
+  /* animated ellipsis (graceful static … where content animation is unsupported) */
+  .ell::after{content:'…';animation:dots 1.6s steps(1) infinite}
+  @keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'…'}}
+
+  /* ---- shared Z motion rules (same discipline as z-dance.html:
+     pieces only ever TRANSLATE; the only rotation is the rigid .pair) ---- */
+  .pair{transform-origin:100px 100px}
+  .pair.spin{animation:lockSpin .9s cubic-bezier(.45,.05,.3,1) both}
+  @keyframes lockSpin{from{transform:rotate(360deg)}to{transform:rotate(0deg)}}
+
+  /* ghost slot: dashed outline of the missing piece at its lock position —
+     makes the destination legible ("a piece belongs HERE") */
+  .ghost{opacity:.3;animation:ghostpulse 2s ease-in-out infinite}
+  @keyframes ghostpulse{50%{opacity:.62}}
+  /* charged tether between the halves; dashes flow toward the slot */
+  .tether{opacity:0;animation:dashflow .55s linear infinite}
+  @keyframes dashflow{to{stroke-dashoffset:14}}
+  .card.locking .ghost,.card.done .ghost{animation:none;opacity:0;transition:opacity .35s}
+  .card.locking .tether,.card.done .tether{opacity:0!important;transition:opacity .3s}
+
+  /* ---- concept 3: sonar rings (ripple out PAST the badge onto the card;
+     the mark beats each time it emits) ---- */
+  .rings circle{transform-origin:100px 100px;opacity:0;animation:ping 2.6s linear infinite}
+  .rings circle:nth-child(2){animation-delay:1.3s}
+  @keyframes ping{
+    0%{transform:scale(.45);opacity:1}
+    60%{opacity:.45}
+    100%{transform:scale(2.35);opacity:0}
+  }
+  .zpulse{transform-origin:100px 100px;animation:zbeat 1.3s ease-out infinite}
+  @keyframes zbeat{0%{transform:scale(1.06)}45%,100%{transform:scale(1)}}
+  .card.resolving .rings circle{animation:none;opacity:0}
+  .card.resolving .zpulse{animation:none}
+  .collapse{transform-origin:100px 100px;opacity:0}
+  .card.resolving .collapse{animation:collapse .62s cubic-bezier(.4,0,.7,1) both}
+  @keyframes collapse{
+    0%{transform:scale(2.35);opacity:0}
+    25%{opacity:1}
+    100%{transform:scale(.45);opacity:0}
+  }
+
+  /* placement context: the valuation card this section sits above */
+  .mockval{margin-top:10px;padding:13px 16px;border:1.5px dashed var(--line);border-radius:12px;
+    color:var(--muted);font-size:11.5px;letter-spacing:.4px;opacity:.75}
+  .mockval b{color:var(--ink);font-size:16px;margin-left:8px;letter-spacing:0}
+
+  .controls{margin-top:14px;display:flex;gap:8px}
+  .btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:10px;padding:9px 16px;
+    cursor:pointer;border:1.5px solid var(--c1);background:var(--c1);color:#fff}
+  .btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Z wait concepts — inbound cash offer</h1>
+  <p class="note">Three wait-state treatments for the 30–60s Zoodealio offer fetch; the strip sits
+    above the (instant) valuation card. Pieces only translate — rotation only ever happens as the
+    rigid pair, same rule as z-dance. Hit <b>Offer arrives</b> to see each payoff, or load with
+    <code>?auto=30</code> to feel the real wait. Reduced-motion gets a static locked Z.</p>
+
+  <!-- shared soft-glow auras for the pieces -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="glowW" x="-70%" y="-70%" width="240%" height="240%">
+        <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#8FC6F8" flood-opacity=".55"/>
+      </filter>
+      <filter id="glowB" x="-70%" y="-70%" width="240%" height="240%">
+        <feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#3BA4F4" flood-opacity=".75"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ============ 1 · THE ALMOST-MEETING ============ -->
+  <section class="card" id="c-meeting">
+    <h2>1 · The almost-meeting</h2>
+    <p class="desc">Your half of the Z waits beside a dashed ghost of its missing partner —
+      the empty slot says what the wandering piece is for. A charged tether links them, dashes
+      flowing toward the slot. When the offer lands the piece commits, fills its outline, and
+      the pair does the brand spin as the amount pops in.</p>
+    <div class="chip wide">
+      <svg viewBox="0 0 760 200" preserveAspectRatio="xMinYMid meet" aria-hidden="true">
+        <polygon class="ghost" points="160,158 72,158 136,42 161,42 105,132 160,132"
+          fill="rgba(59,164,244,.07)" stroke="#3BA4F4" stroke-width="2.5"
+          stroke-dasharray="7 7" stroke-linejoin="round"/>
+        <line class="tether" x1="100" y1="100" x2="100" y2="100"
+          stroke="#3BA4F4" stroke-width="2.5" stroke-dasharray="5 9" stroke-linecap="round"/>
+        <g class="pair">
+          <g class="pw"><polygon filter="url(#glowW)" fill="#FFFFFF" points="40,42 128,42 64,158 39,158 95,68 40,68"/></g>
+          <g class="pb"><polygon filter="url(#glowB)" fill="#3BA4F4" points="160,158 72,158 136,42 161,42 105,132 160,132"/></g>
+        </g>
+      </svg>
+      <div class="copy">
+        <div class="wait-copy">
+          <div class="l1 ell">Cash offer inbound</div>
+          <div class="l2">Usually under a minute</div>
+        </div>
+        <div class="done-copy">
+          <div class="l2">Cash offer received</div>
+          <div class="amt">$412,500</div>
+        </div>
+      </div>
+    </div>
+    <div class="mockval">ESTIMATED MARKET VALUE <b>$487,300</b></div>
+    <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
+  </section>
+
+  <!-- ============ 2 · THE COURIER ============ -->
+  <section class="card" id="c-courier">
+    <h2>2 · The courier</h2>
+    <p class="desc">The buyer's half runs in fast, slows to a creep just short of its slot — then
+      every ~9s it's cast back out to the starting mark and makes the run again. The dashed
+      destination outline and the tether pulling it home keep the goal legible; the response is
+      the arrival — it dashes the last stretch and locks, mid-run or mid-cast.</p>
+    <div class="chip wide">
+      <svg viewBox="0 0 760 200" preserveAspectRatio="xMinYMid meet" aria-hidden="true">
+        <line x1="30" y1="174" x2="740" y2="174" stroke="#24406E" stroke-width="2" stroke-dasharray="2 11" opacity=".8"/>
+        <polygon class="ghost" points="160,158 72,158 136,42 161,42 105,132 160,132"
+          fill="rgba(59,164,244,.07)" stroke="#3BA4F4" stroke-width="2.5"
+          stroke-dasharray="7 7" stroke-linejoin="round"/>
+        <line class="tether" x1="100" y1="100" x2="100" y2="100"
+          stroke="#3BA4F4" stroke-width="2.5" stroke-dasharray="5 9" stroke-linecap="round"/>
+        <g class="pair">
+          <g class="pw"><polygon filter="url(#glowW)" fill="#FFFFFF" points="40,42 128,42 64,158 39,158 95,68 40,68"/></g>
+          <g class="pb"><polygon filter="url(#glowB)" fill="#3BA4F4" points="160,158 72,158 136,42 161,42 105,132 160,132"/></g>
+        </g>
+      </svg>
+      <div class="copy">
+        <div class="wait-copy">
+          <div class="l1 ell">Cash offer inbound</div>
+          <div class="l2">Usually under a minute</div>
+        </div>
+        <div class="done-copy">
+          <div class="l2">Cash offer received</div>
+          <div class="amt">$412,500</div>
+        </div>
+      </div>
+    </div>
+    <div class="mockval">ESTIMATED MARKET VALUE <b>$487,300</b></div>
+    <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
+  </section>
+
+  <!-- ============ 3 · SONAR Z ============ -->
+  <section class="card" id="c-sonar">
+    <h2>3 · Sonar Z</h2>
+    <p class="desc">The locked Z pings for your buyer — the mark beats as it emits, and the rings
+      ripple out past the badge onto the card. The answer is a ring collapsing back <i>into</i>
+      the mark, one celebratory spin, amount.</p>
+    <div class="sonarrow">
+      <div class="chip sq">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <g class="rings" fill="none">
+            <circle cx="100" cy="100" r="68" stroke="#3BA4F4" stroke-width="3" vector-effect="non-scaling-stroke"/>
+            <circle cx="100" cy="100" r="68" stroke="#A6D8FF" stroke-width="3" vector-effect="non-scaling-stroke"/>
+          </g>
+          <circle class="collapse" cx="100" cy="100" r="68" fill="none" stroke="#3BA4F4" stroke-width="3" vector-effect="non-scaling-stroke"/>
+          <g class="zpulse">
+            <g class="pair">
+              <g class="pw"><polygon filter="url(#glowW)" fill="#FFFFFF" points="40,42 128,42 64,158 39,158 95,68 40,68"/></g>
+              <g class="pb"><polygon filter="url(#glowB)" fill="#3BA4F4" points="160,158 72,158 136,42 161,42 105,132 160,132"/></g>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="copy2">
+        <div class="wait-copy">
+          <div class="l1 ell">Cash offer inbound</div>
+          <div class="l2">Pinging your buyer — usually under a minute</div>
+        </div>
+        <div class="done-copy">
+          <div class="l2">Cash offer received</div>
+          <div class="amt">$412,500</div>
+        </div>
+      </div>
+    </div>
+    <div class="mockval">ESTIMATED MARKET VALUE <b>$487,300</b></div>
+    <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
+  </section>
+</div>
+
+<script>
+var REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* CSS transitions interpolate from wherever the piece currently is, so the
+   offer can land mid-approach/mid-retreat and the dock never jump-cuts. */
+function setX(el, dx, ms, ease){
+  el.style.transition = ms ? 'transform ' + ms + 'ms ' + (ease || 'ease') : 'none';
+  el.style.transform = 'translateX(' + dx + 'px)';
+}
+
+/* tether endpoints: the pieces' diagonal edges sit at x≈100 (white, right
+   edge) and x≈102+dx (blue, left edge) at mid-height y=100 */
+function aimTether(tether, dx, dy){
+  tether.setAttribute('x2', 102 + dx);
+  tether.setAttribute('y2', 100 + dy);
+  tether.style.opacity = Math.min(.5, Math.max(0, (dx - 18) / 70));
+}
+
+/* ---- 1 · the almost-meeting: JS state machine, pure translations ---- */
+function conceptMeeting(card){
+  var mover = card.querySelector('.pb'),
+      white = card.querySelector('.pw'),
+      pair  = card.querySelector('.pair'),
+      tether= card.querySelector('.tether');
+  var timers = [], raf = 0, done = false;
+  var NEAR = [54, 36, 66], RET = [230, 300, 260], i = 0;
+
+  function later(fn, ms){ timers.push(setTimeout(fn, ms)); }
+  function stop(){ timers.forEach(clearTimeout); timers = []; cancelAnimationFrame(raf); }
+
+  // the mover runs on CSS transitions, so track its live position each frame
+  function tick(){
+    var tr = getComputedStyle(mover).transform, dx = 0, dy = 0;
+    if (tr && tr !== 'none'){ var m = new DOMMatrixReadOnly(tr); dx = m.m41; dy = m.m42; }
+    aimTether(tether, dx, dy);
+    raf = requestAnimationFrame(tick);
+  }
+
+  function approach(){
+    if (done) return;
+    setX(mover, NEAR[i % 3], 1500, 'cubic-bezier(.25,.7,.25,1)');
+    later(function(){ setX(white, 10, 450, 'ease-out'); }, 900); // lean in
+    later(retreat, 2300);
+  }
+  function retreat(){
+    if (done) return;
+    setX(white, 0, 500, 'ease-in-out');
+    setX(mover, RET[i % 3], 1250, 'cubic-bezier(.5,0,.5,1)');
+    i++;
+    later(approach, 1800);
+  }
+  function start(){
+    stop(); done = false; i = 0;
+    card.classList.remove('done', 'locking'); pair.classList.remove('spin');
+    setX(white, 0, 0); setX(mover, 700, 0);
+    if (REDUCED){ card.classList.add('locking'); setX(mover, 0, 0); return; }
+    mover.getBoundingClientRect(); // flush the jump before the entrance
+    setX(mover, 360, 1100, 'cubic-bezier(.2,.6,.3,1)');
+    later(approach, 1200);
+    raf = requestAnimationFrame(tick);
+  }
+  function resolve(){
+    if (done) return; done = true; stop();
+    card.classList.add('locking'); // field collapses: ghost + tether fade as it commits
+    setX(white, 0, 400, 'ease-out');
+    setX(mover, 0, REDUCED ? 0 : 700, 'cubic-bezier(.55,0,.25,1)');
+    if (REDUCED){ card.classList.add('done'); return; }
+    later(function(){ pair.classList.add('spin'); }, 720);
+    later(function(){ card.classList.add('done'); }, 1450);
+  }
+  return { start: start, resolve: resolve };
+}
+
+/* ---- 2 · the courier: fast first leg, then exponential creep (never
+   arrives on its own), with a small walking bob ---- */
+function conceptCourier(card){
+  var mover = card.querySelector('.pb'),
+      pair  = card.querySelector('.pair'),
+      tether= card.querySelector('.tether');
+  var raf = 0, t0 = 0, done = false, timers = [];
+
+  /* ~8.8s cycle: run in fast, creep to a near-miss, get cast back out to the
+     starting mark, run again — repeats until the offer lands */
+  var CYCLE = 8.8, A_END = 2.4, B_END = 7.4, C_END = 8.2;
+  var START = 740, B_FROM = 260, B_TGT = 34, TAU = 3.2;
+  var castFrom = B_TGT + (B_FROM - B_TGT) * Math.exp(-(B_END - A_END) / TAU);
+  function pos(t){
+    t = t % CYCLE;
+    if (t < A_END){ var p = t / A_END, e = 1 - Math.pow(1 - p, 3); return START - (START - B_FROM) * e; }
+    if (t < B_END) return B_TGT + (B_FROM - B_TGT) * Math.exp(-(t - A_END) / TAU);
+    if (t < C_END){ var p2 = (t - B_END) / (C_END - B_END); return castFrom + (START - castFrom) * p2 * p2; }
+    return START;
+  }
+  function frame(now){
+    var t = (now - t0) / 1000, x = pos(t), bob = Math.sin(t * 7) * 2.2;
+    mover.style.transform = 'translate(' + x + 'px,' + bob + 'px)';
+    aimTether(tether, x, bob);
+    raf = requestAnimationFrame(frame);
+  }
+  function stop(){ cancelAnimationFrame(raf); timers.forEach(clearTimeout); timers = []; }
+  function start(){
+    stop(); done = false;
+    card.classList.remove('done', 'locking'); pair.classList.remove('spin');
+    mover.style.transition = 'none';
+    if (REDUCED){ card.classList.add('locking'); mover.style.transform = 'translate(0,0)'; return; }
+    t0 = performance.now(); raf = requestAnimationFrame(frame);
+  }
+  function resolve(){
+    if (done) return; done = true; stop();
+    card.classList.add('locking');
+    if (REDUCED){ mover.style.transition = 'none'; mover.style.transform = 'translate(0,0)'; card.classList.add('done'); return; }
+    mover.style.transition = 'transform 520ms cubic-bezier(.55,0,.2,1)';
+    mover.style.transform = 'translate(0,0)';
+    timers.push(setTimeout(function(){ pair.classList.add('spin'); }, 540));
+    timers.push(setTimeout(function(){ card.classList.add('done'); }, 1300));
+  }
+  return { start: start, resolve: resolve };
+}
+
+/* ---- 3 · sonar Z: CSS does the pinging; resolve = collapse ring + spin ---- */
+function conceptSonar(card){
+  var pair = card.querySelector('.pair');
+  var timers = [], done = false;
+  function stop(){ timers.forEach(clearTimeout); timers = []; }
+  function start(){
+    stop(); done = false;
+    card.classList.remove('done', 'resolving'); pair.classList.remove('spin');
+  }
+  function resolve(){
+    if (done) return; done = true; stop();
+    card.classList.add('resolving');
+    if (REDUCED){ card.classList.add('done'); return; }
+    timers.push(setTimeout(function(){ pair.classList.add('spin'); }, 620));
+    timers.push(setTimeout(function(){ card.classList.add('done'); }, 1400));
+  }
+  return { start: start, resolve: resolve };
+}
+
+var apis = [
+  conceptMeeting(document.getElementById('c-meeting')),
+  conceptCourier(document.getElementById('c-courier')),
+  conceptSonar(document.getElementById('c-sonar'))
+];
+document.querySelectorAll('.card').forEach(function(card, idx){
+  card.querySelector('.go').addEventListener('click', function(){ apis[idx].resolve(); });
+  card.querySelector('.reset').addEventListener('click', function(){ apis[idx].start(); });
+});
+apis.forEach(function(a){ a.start(); });
+
+// ?solo=1|2|3 — show a single concept (for demos/screenshots)
+var params = new URLSearchParams(location.search);
+var solo = params.get('solo');
+if (solo) document.querySelectorAll('.card').forEach(function(card, idx){
+  if (idx !== solo - 1) card.style.display = 'none';
+});
+
+// ?t=SECONDS — freeze all CSS animations at that moment (screenshots/GIF
+// export), same trick as z-dance.html; respects each element's own delay
+var tFreeze = params.get('t');
+if (tFreeze !== null){
+  var tf = parseFloat(tFreeze);
+  document.querySelectorAll('.page svg *').forEach(function(el){
+    var cs = getComputedStyle(el);
+    if (cs.animationName !== 'none'){
+      el.style.animationDelay = ((parseFloat(cs.animationDelay) || 0) - tf) + 's';
+      el.style.animationPlayState = 'paused';
+    }
+  });
+}
+
+// ?auto=SECONDS — resolve all three after N seconds (feel the real wait)
+var auto = params.get('auto');
+if (auto) setTimeout(function(){ apis.forEach(function(a){ a.resolve(); }); }, parseFloat(auto) * 1000);
+</script>
+</body>
+</html>
