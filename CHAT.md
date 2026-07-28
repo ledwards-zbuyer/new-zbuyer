@@ -1505,3 +1505,11 @@ messages" or similar wording into the terms after the "with your report link" te
 **Claude:** The SMS disclosure now reads "…you agree to receive automated texts from
 zBuyer with your report link, including marketing and AI-generated messages, at the
 number above." ("an automated text" became plural since it now covers marketing.)
+
+**Lucas:** on the question "Any repairs needed?" lets have 10 hammers and 10 steps on
+the slider
+
+**Claude:** Slider now buckets into 10 levels (was 5) over a 37-position track (4x
+granularity kept): sparkle at rest, then 2-10 hammers, with ten RepairsNeeded labels
+from "No repairs — move-in ready" through "A full remodel". Harness slide= now takes
+levels 0-9. Verified: level 9 shows all ten hammers on one row.
