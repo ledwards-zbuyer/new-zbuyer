@@ -1521,3 +1521,19 @@ link..." and "preparing your report" labels entirely... just the animation
 caption-override plumbing (goToReport/runZBeatFinale noteText, the DNC and
 declined-text variants) are gone from both pages + lead-modal.js. Note this departs
 from the design guide's "always caption the beat" rule for the finale specifically.
+
+**Lucas:** on the report, reimagine the slider like the repair slider (gradual,
+consistent background increase), but with the height correlating to the values at
+each point — rounded a bit so it's not connect-the-dots, zoomed so the background
+shows a decent range, and the handle taller than the tallest point. The slider
+still works the same.
+
+**Claude:** Track redrawn as a value curve: a JS-built SVG area chart through the
+four anchors, heights normalized to the $312K–$371K span (zoomed — from $0 it would
+be a flat sliver), flat-tangent beziers for the rounded look, blue gradient to the
+handle (deepest blue riding it, like the repairs wedge) and gray beyond, repainted
+live during drag and on snap. Anchor dots now ride the curve's top edge; end knobs
+retired; handle grew to 74px so it always crests the 44px curve peak. Geometry
+honesty note: the anchor x-positions were originally placed proportionally to the
+values, so a faithful value-height curve is near-linear — the gentle plateaus at
+the dots are what read as "curve". Verified at rest, snap=1, snap=3.

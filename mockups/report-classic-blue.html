@@ -118,18 +118,20 @@
   .vask{display:block;text-align:center;font-size:14.5px;font-weight:700;color:var(--c1);margin-top:12px}
   .vask:hover{text-decoration:underline}
 
-  /* combined: slider-style spectrum — muted outer track with the selected
-     range prominent between two knobs; unlabeled anchor dots mark Cash+
-     ($345K) and Cash+ w/ repairs ($355K) at their proportional positions
-     (title tooltips only); values are labeled at the ends only. */
+  /* combined: value-curve slider (same family as the funnel's repairs
+     wedge) — the track is an area chart whose height tracks the anchor
+     VALUES, normalized to the $312K-$371K span (zoomed so the range reads),
+     smoothed with flat-tangent beziers so it's a curve, not connect-the-
+     dots. Blue gradient fills up to the handle, gray beyond; unlabeled
+     anchor dots ride the curve's top edge (title tooltips only); values
+     are labeled at the ends only. The SVG is built in JS from ANCHORS. */
   .vrange{font-size:38px;font-weight:800;letter-spacing:-.03em;margin-top:10px;text-align:center}
-  .vslide{position:relative;height:76px;margin:14px 2px 2px}
-  .vs-track{position:absolute;left:0;right:0;top:50%;height:8px;transform:translateY(-50%);border-radius:999px;background:var(--line)}
-  .vs-fill{position:absolute;left:5%;right:5%;top:50%;height:14px;transform:translateY(-50%);border-radius:999px;background:linear-gradient(90deg,var(--acc),var(--c1) 55%,var(--navy))}
-  .vs-knob{position:absolute;top:50%;width:22px;height:22px;border-radius:50%;background:var(--c1);border:4px solid #fff;box-shadow:0 2px 8px rgba(14,27,51,.35);transform:translate(-50%,-50%)}
-  .vs-dot{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:#fff;opacity:.85;transform:translate(-50%,-50%)}
+  .vslide{position:relative;height:80px;margin:14px 2px 2px}
+  .vs-curve{position:absolute;left:0;right:0;bottom:2px;width:100%;height:44px;display:block}
+  .vs-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#fff;opacity:.9;box-shadow:0 1px 3px rgba(14,27,51,.3);transform:translate(-50%,-50%);pointer-events:none}
   .vslide{cursor:pointer;touch-action:none}
-  .vs-handle{position:absolute;top:50%;width:26px;height:70px;border-radius:13px;background:var(--cta);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);transform:translate(-50%,-50%);cursor:grab;z-index:2}
+  /* handle must crest ABOVE the curve's tallest point (74px vs 44px) */
+  .vs-handle{position:absolute;top:50%;width:26px;height:74px;border-radius:13px;background:var(--cta);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);transform:translate(-50%,-50%);cursor:grab;z-index:2}
   /* grip ridges — reads as "grab me" at a glance */
   .vs-handle::before{content:"";position:absolute;left:50%;top:50%;width:8px;height:22px;transform:translate(-50%,-50%);border-left:2px solid rgba(255,255,255,.8);border-right:2px solid rgba(255,255,255,.8)}
   .vs-handle.snap{transition:left .18s ease}
@@ -291,16 +293,12 @@
   <section class="card vmod" id="vCombined" hidden>
     <div class="vhead"><span class="eyebrow">Your selling range</span></div>
     <p class="vrange" id="vRangeVal">$312,000 &ndash; $371,000</p>
-    <!-- anchors: $312K quick cash close (knob) · $345K Cash+ (dot, 55.3%) ·
-         $355K Cash+ w/ repairs (dot, 70.6%) · $371K top market value (knob).
-         Dot positions: 5% + (v-312)/(371-312) * 90%. -->
+    <!-- anchors: $312K quick cash close (5%) · $345K Cash+ (55.3%) ·
+         $355K Cash+ w/ repairs (70.6%) · $371K top market value (95%).
+         Positions: 5% + (v-312)/(371-312) * 90%. The curve, its gradient
+         fill, and the anchor dots are built by the slider script below. -->
     <div class="vslide" id="vSlide">
-      <div class="vs-track"></div>
-      <div class="vs-fill"></div>
-      <span class="vs-knob" style="left:5%"></span>
-      <span class="vs-dot" style="left:55.3%" title="Cash+ &mdash; $345,000"></span>
-      <span class="vs-dot" style="left:70.6%" title="Cash+ with repairs &mdash; $355,000"></span>
-      <span class="vs-knob" style="left:95%"></span>
+      <svg class="vs-curve" id="vsCurve" viewBox="0 0 1000 44" preserveAspectRatio="none" aria-hidden="true"></svg>
     </div>
     <div class="vs-ends">
       <div class="vs-end"><b>$312,000</b><span>Quick cash close</span></div>
@@ -516,11 +514,63 @@
   if (!slide) return;
   var rangeEl = document.getElementById("vRangeVal");
   var ANCHORS = [
-    { p: 5,    v: "$312,000", n: "Quick cash close" },
-    { p: 55.3, v: "$345,000", n: "Cash+" },
-    { p: 70.6, v: "$355,000", n: "Cash+ with repairs" },
-    { p: 95,   v: "$371,000", n: "Top market value" }
+    { p: 5,    val: 312000, v: "$312,000", n: "Quick cash close" },
+    { p: 55.3, val: 345000, v: "$345,000", n: "Cash+" },
+    { p: 70.6, val: 355000, v: "$355,000", n: "Cash+ with repairs" },
+    { p: 95,   val: 371000, v: "$371,000", n: "Top market value" }
   ];
+
+  // ---- value curve: the track is an area chart of the anchor values ----
+  // Heights are normalized to the anchor span (zoomed: $312K sits at H_MIN,
+  // $371K at H_MAX — not scaled from $0, or the whole curve would be a
+  // near-flat sliver). Flat-tangent cubic beziers between anchors keep it
+  // monotone and rounded. viewBox x runs 0-1000 (= percent * 10).
+  var CURVE_H = 44, H_MIN = 8, H_MAX = 38;
+  var svg = document.getElementById("vsCurve");
+  var NS = "http://www.w3.org/2000/svg";
+  var vmin = ANCHORS[0].val, vmax = ANCHORS[ANCHORS.length - 1].val;
+  function ay(a) { return CURVE_H - (H_MIN + (a.val - vmin) / (vmax - vmin) * (H_MAX - H_MIN)); }
+  function svgEl(n, attrs, parent) {
+    var e = document.createElementNS(NS, n);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    parent.appendChild(e);
+    return e;
+  }
+  var pts = ANCHORS.map(function (a) { return [a.p * 10, ay(a)]; });
+  var d = "M0 " + CURVE_H + " L0 " + pts[0][1] + " L" + pts[0][0] + " " + pts[0][1];
+  for (var s = 0; s < pts.length - 1; s++) {
+    var dx = (pts[s + 1][0] - pts[s][0]) / 2.2;
+    d += " C" + (pts[s][0] + dx) + " " + pts[s][1] + " " + (pts[s + 1][0] - dx) + " " + pts[s + 1][1] + " " + pts[s + 1][0] + " " + pts[s + 1][1];
+  }
+  d += " L1000 " + pts[pts.length - 1][1] + " L1000 " + CURVE_H + " Z";
+  var defs = svgEl("defs", {}, svg);
+  var grad = svgEl("linearGradient", { id: "vsGrad", x1: 0, y1: 0, x2: 500, y2: 0, gradientUnits: "userSpaceOnUse" }, defs);
+  svgEl("stop", { offset: 0, "stop-color": "#7FC4FF" }, grad);
+  svgEl("stop", { offset: 1, "stop-color": "#1D4FD7" }, grad);
+  var clip = svgEl("clipPath", { id: "vsClip" }, defs);
+  var clipRect = svgEl("rect", { x: 0, y: 0, width: 500, height: CURVE_H }, clip);
+  svgEl("path", { d: d, fill: "#E4EAF3" }, svg);
+  svgEl("path", { d: d, fill: "url(#vsGrad)", "clip-path": "url(#vsClip)" }, svg);
+  // unlabeled anchor dots ride the curve's top edge (DOM, not SVG — the
+  // stretched viewBox would squash circles; tooltips via title)
+  ANCHORS.slice(1, -1).forEach(function (a) {
+    var dot = document.createElement("span");
+    dot.className = "vs-dot";
+    dot.style.left = a.p + "%";
+    dot.style.top = (80 - 2 - CURVE_H + ay(a)) + "px";
+    dot.title = a.n + " — " + a.v;
+    slide.appendChild(dot);
+  });
+  // Blue gradient fills the curve up to the handle; the deepest blue always
+  // sits at the handle (gradient x2 tracks the clip edge, like the funnel's
+  // repairs wedge).
+  function paintCurve(p) {
+    var w = Math.max(40, p * 10);
+    clipRect.setAttribute("width", w);
+    grad.setAttribute("x2", w);
+  }
+  paintCurve(50);
+
   var handle = document.createElement("span");
   handle.className = "vs-handle";
   handle.tabIndex = 0;
@@ -535,6 +585,7 @@
     var a = ANCHORS[idx];
     handle.classList.add("snap");
     handle.style.left = a.p + "%";
+    paintCurve(a.p);
     rangeEl.textContent = a.v;
     handle.setAttribute("aria-valuetext", a.v + " — " + a.n);
   }
@@ -547,11 +598,16 @@
     dragging = true;
     handle.classList.remove("snap"); // free movement while dragging
     try { slide.setPointerCapture(e.pointerId); } catch (err) {}
-    handle.style.left = pctFromX(e.clientX) + "%";
+    var p0 = pctFromX(e.clientX);
+    handle.style.left = p0 + "%";
+    paintCurve(p0);
     e.preventDefault();
   });
   slide.addEventListener("pointermove", function (e) {
-    if (dragging) handle.style.left = pctFromX(e.clientX) + "%";
+    if (!dragging) return;
+    var p = pctFromX(e.clientX);
+    handle.style.left = p + "%";
+    paintCurve(p);
   });
   function endDrag(e) {
     if (!dragging) return;
