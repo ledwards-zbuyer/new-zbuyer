@@ -1476,3 +1476,9 @@ second after load (the audit's screenshot finding). Forcing a sale model via ?te
 is now treated as a demo switch: the API render is skipped, the 6-buyer roster stays
 on screen, and no opt-in contacts are recorded for that session. Un-forced funnels
 keep the live names.
+
+**Lucas:** change "No thanks, I don't want anytime-access" to "No thanks, don't text
+my report"
+
+**Claude:** Done on both pages. (Nice side effect: the old wording was the audit's
+confirmshaming nit — the new one is a plain factual decline.)
