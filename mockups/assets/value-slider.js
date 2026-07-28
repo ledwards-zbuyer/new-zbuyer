@@ -17,12 +17,13 @@
  *       endLabels: true,                  // min/max labels under the track
  *       onSelect: function (anchor, index) { ... }, // fires on every snap
  *       colors: {                         // optional; all keys optional
- *         handle: "#FF6B4A",              //   the pill
- *         fillLo: "#7FC4FF",              //   gradient start of the filled chart
- *         fillHi: "#1D4FD7",              //   gradient end (rides the handle)
+ *         handle: "#24466E",              //   the pill
+ *         fillLo: "#B7C9E0",              //   gradient start of the filled chart
+ *         fillHi: "#44689A",              //   gradient end (rides the handle)
  *         track:  "#E4EAF3",              //   the unfilled chart
  *         dot:    "#8296B9"               //   anchor dots
- *       }
+ *       }                                 // (defaults shown — the slate-navy
+ *                                         //  palette of the Cash Value Report)
  *     });
  *     slider.snapTo(1);                   // programmatic snap (0-based)
  *   </script>
@@ -60,7 +61,7 @@
     ".zvs-slide.zvs-static{cursor:default}" +
     ".zvs-curve{position:absolute;left:0;right:0;bottom:" + BOTTOM + "px;width:100%;height:" + CURVE_H + "px;display:block}" +
     ".zvs-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--zvs-dot,#8296B9);border:2px solid #fff;box-shadow:0 1px 3px rgba(14,27,51,.3);transform:translate(-50%,-50%);pointer-events:none}" +
-    ".zvs-handle{position:absolute;top:59%;width:26px;height:74px;border-radius:13px;background:var(--zvs-cta,#FF6B4A);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);transform:translate(-50%,-50%);cursor:grab;z-index:2}" +
+    ".zvs-handle{position:absolute;top:59%;width:26px;height:74px;border-radius:13px;background:var(--zvs-cta,#24466E);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);transform:translate(-50%,-50%);cursor:grab;z-index:2}" +
     ".zvs-handle::before{content:\"\";position:absolute;left:50%;top:50%;width:8px;height:22px;transform:translate(-50%,-50%);border-left:2px solid rgba(255,255,255,.8);border-right:2px solid rgba(255,255,255,.8)}" +
     ".zvs-handle.zvs-snap{transition:left .18s ease}" +
     ".zvs-handle:focus-visible{outline:none;box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 10px rgba(14,27,51,.4)}" +
@@ -148,8 +149,8 @@
     function col(scriptColor, varName, fallback) {
       return scriptColor || (cs.getPropertyValue(varName) || "").trim() || fallback;
     }
-    lo.setAttribute("stop-color", col(colors.fillLo, "--zvs-lo", "#7FC4FF"));
-    hi.setAttribute("stop-color", col(colors.fillHi, "--zvs-hi", "#1D4FD7"));
+    lo.setAttribute("stop-color", col(colors.fillLo, "--zvs-lo", "#B7C9E0"));
+    hi.setAttribute("stop-color", col(colors.fillHi, "--zvs-hi", "#44689A"));
     var clip = svgEl("clipPath", { id: "zvsClip" + id }, defs);
     var clipRect = svgEl("rect", { x: 0, y: 0, width: 500, height: CURVE_H }, clip);
     svgEl("path", { d: d, fill: col(colors.track, "--zvs-track", "#E4EAF3") }, svg);

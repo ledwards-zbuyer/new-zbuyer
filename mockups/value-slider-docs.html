@@ -45,8 +45,8 @@
     <h2>1. What it is</h2>
     <p>You give it a list of <b>anchors</b> — dollar amounts (or any numbers), each with a
     label. It renders a horizontal track shaped like an area chart: short where the values
-    are low, tall where they're high. The user drags an orange handle along the track; when
-    they let go, it snaps to the nearest anchor and reports which one they picked. Until
+    are low, tall where they're high. The user drags the tall pill handle along the track;
+    when they let go, it snaps to the nearest anchor and reports which one they picked. Until
     they interact, the headline shows the full range so no single number is presented as
     "the" number.</p>
     <div class="demo">
@@ -162,8 +162,10 @@ slider.destroy();    // empty the container</code></pre>
     <p>Styles inject themselves once (a <code>&lt;style id="zvs-style"&gt;</code> tag). The
     slider fills its container's width; height is fixed (~96px track plus headline and end
     labels). Font is inherited from the container.</p>
-    <p>Two ways to recolor — <b>script colors win over CSS variables, variables over
-    defaults</b>:</p>
+    <p>Default colors are the slate-navy palette of the zBuyer Cash Value Report
+    (handle <code>#24466E</code>, fill <code>#B7C9E0 → #44689A</code>, track
+    <code>#E4EAF3</code>, dots <code>#8296B9</code>). Two ways to recolor —
+    <b>script colors win over CSS variables, variables over defaults</b>:</p>
 <pre><code>// per instance, in the call:
 colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
           track: "#E8EFE9", dot: "#6E9B7F" }

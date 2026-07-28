@@ -1626,3 +1626,10 @@ notice bar from peach/orange alert to slate on #F3F6FA, value-curve fill now
 All via the page's :root tokens; cards stay white; layout untouched. Flagged in
 HANDOFF: design-guide.html still shows the old report colors and needs a sync pass if
 this sticks.
+
+**Lucas:** update the value-slider-docs
+
+**Claude:** Synced the portable widget to the retoned report: zbValueSlider's default
+colors are now the slate-navy set (handle #24466E, fill #B7C9E0→#44689A; track/dots
+unchanged), the docs state the defaults explicitly in the theming section, and the
+intro's "orange handle" wording is gone. Custom colors/CSS vars still override.
