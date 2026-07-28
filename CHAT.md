@@ -1723,3 +1723,9 @@ docs also document rangeLabel. Headless gotcha found while verifying: the pendin
 rAF loop starves --virtual-time-budget (the demo timer only fires as the budget
 dies), so delivered-state screenshots need --force-prefers-reduced-motion — noted
 in HANDOFF.
+
+**Lucas:** remove "your offer lands here" from the widget
+
+**Claude:** Gone — the annotation text, its dashed leader line, and the pending.label
+option all removed; the pulsing dot and the Z alone tag the landing spot. Docs
+updated to match.

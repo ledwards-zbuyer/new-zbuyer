@@ -30,7 +30,6 @@
  *       pending: {                        // OPTIONAL wait-for-offer state; needs
  *                                         // exactly ONE anchor. All keys optional:
  *         ticker: "Awaiting your cash offer — usually arrives in under a minute",
- *         label:  "your offer lands here",// tag on the landing dot
  *         demo:   { value: 412500, label: "Quick cash close", delay: 5000 },
  *                                         // stand-in for the API: auto-delivers
  *                                         // after delay ms (default 5000)
@@ -352,12 +351,9 @@
         fill: "none", stroke: "#FFFFFF", "stroke-width": 2, opacity: .6,
         "stroke-dasharray": "5 6", "class": "zvs-march" }, gDash);
       svgEl("circle", { cx: xo, cy: yO, r: 4.5, fill: "#FFFFFF", "class": "zvs-gpulse" }, gDash);
-      var gTop = svgEl("g", {}, ov);   // annotations + ticker + the mark
-      svgEl("line", { x1: xo, y1: EXT, x2: xo, y2: yO - 6, stroke: "#FFFFFF",
-        "stroke-width": 1.5, "stroke-dasharray": "3 5", opacity: .5 }, gTop);
-      var lbl = svgEl("text", { x: xo + 12, y: yO - 5, fill: "#FFFFFF", opacity: .85 }, gTop);
-      lbl.style.font = "600 10.5px Inter,system-ui,sans-serif";
-      lbl.textContent = conf.label || "your offer lands here";
+      var gTop = svgEl("g", {}, ov);   // ticker + the mark
+      // (the pulsing dot + the mark alone tag the landing spot — the old
+      // "your offer lands here" annotation was retired 2026-07-28)
       // ticker: gradient-masked band right of the (inert) handle
       var mx0 = W * .5 + 22, mx1 = W - 4;
       var mdefs = svgEl("defs", {}, ov);
