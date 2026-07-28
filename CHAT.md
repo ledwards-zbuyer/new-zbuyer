@@ -1635,6 +1635,13 @@ as you slide, and at max it hides (visibility, so the right edge stays put) whil
 full remodel" takes the bold-blue highlight. Bold + color together so the highlight
 reads regardless of color perception.
 
+**Lucas:** now the slider looks too drab. maybe the handle needs a pop of color (that
+matches our general scheme)
+
+**Claude:** Dial is CTA orange now (var(--cta), white border kept) — the scheme's one
+pressable color, and it pops cleanly off the blue wedge. Matches the report slider's
+old handle language.
+
 **Lucas:** change the colors on the report page to something else. it looks too
 sporty and spunky. this is serious business about someone's most prized possession.
 just talking colors — container background should still be white — don't go crazy
