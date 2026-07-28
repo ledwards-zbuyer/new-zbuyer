@@ -188,6 +188,12 @@
   .lm-note{font-size:12.5px;font-style:italic;color:var(--muted);text-align:center;margin-top:6px;line-height:1.4}
   .lm-final .lm-cta{display:block;width:100%;margin-top:18px}
   .lm-final .lm-disclosure{margin-top:12px;text-align:left}
+  /* prefilled + centered can read as a static chip — the pencil says
+     "editable"; it bows out once the field is focused */
+  .lm-phone-wrap{position:relative;margin-top:14px}
+  .lm-phone-wrap input{margin-top:0}
+  .lm-phone-edit{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#98A6BC;pointer-events:none}
+  .lm-phone-wrap:focus-within .lm-phone-edit{display:none}
   .lm-final .lm-nothanks{display:block;margin:12px auto 0}
   .lm-final .lm-err{margin-top:8px}
   .lm-nothanks{border:none;background:none;color:var(--muted);font-family:inherit;font-size:14px;cursor:pointer;padding:4px;align-self:center;text-decoration:underline}
@@ -676,7 +682,10 @@
           </svg>
         </div>
         <p class="lm-sub lm-q">Check anytime. We&rsquo;ll text the link.</p>
-        <input id="textPhone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel" aria-label="Mobile number">
+        <div class="lm-phone-wrap">
+          <input id="textPhone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel" aria-label="Mobile number">
+          <svg class="lm-phone-edit" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13.5 6.5l3 3" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
         <p class="lm-err" id="textErr" hidden></p>
         <div class="lm-disclosure">
           <p class="lm-consent">By clicking &ldquo;Text my Report,&rdquo; you agree to receive automated texts from zBuyer with your report link, including marketing and AI-generated messages, at the number above. Msg frequency varies. Msg &amp; data rates may apply. Reply HELP for help or STOP to cancel.</p>

@@ -1671,6 +1671,15 @@ as losing the report, and the cheapest fix would be rewording the decline link t
 comes). Offered that, a reassurance sentence, or leaving it. **Decision: leave it
 alone** — the next step's "View my Report →" resolves any doubt within seconds.
 
+**Lucas:** on the Access your report anytime step, is it obvious enough that the
+phone number is in a textbox, not a container?
+
+**Claude:** Fair worry — the prefill removes the placeholder cue, the centered text
+reads like a chip, and the gray terms box below invites the "container" read (though
+users typed into identical boxes one step earlier). Fix chosen: a muted pencil icon
+inside the input's right edge (pointer-events:none, hides on focus via
+:focus-within) — the universal "you can change this" cue, no added height, no JS.
+
 **Lucas:** change the colors on the report page to something else. it looks too
 sporty and spunky. this is serious business about someone's most prized possession.
 just talking colors — container background should still be white — don't go crazy
