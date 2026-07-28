@@ -172,6 +172,7 @@
   .lm-wedge input:focus-visible ~ .lm-dial{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
   .lm-axis{display:flex;justify-content:space-between;color:#9ba8bb;font-size:11px;margin-top:7px;padding:0 22px}
   .lm-slider-icons{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:5px;min-height:20px;color:var(--c1)}
+  .lm-slider-label{font-size:12px;font-weight:600;color:var(--c1);margin-left:3px;line-height:1}
   .lm-slider-icons.zero{color:#9ba8bb}
   .lm-slider-icons.zero svg{animation:lmTwinkle 1.8s ease-in-out infinite}
   @keyframes lmTwinkle{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.14) rotate(8deg);opacity:.82}}
@@ -622,7 +623,7 @@
           <div class="lm-slider">
             <div class="lm-wedge">
               <div class="wedge" id="repairsWedge"></div>
-              <input type="range" id="repairsSlider" min="0" max="40" step="1" value="0" aria-label="How many repairs does the home need?">
+              <input type="range" id="repairsSlider" min="0" max="20" step="1" value="0" aria-label="How many repairs does the home need?">
               <div class="lm-dial" id="repairsDial"></div>
             </div>
             <div class="lm-axis"><span>none</span><span>a full remodel</span></div>

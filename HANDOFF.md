@@ -50,10 +50,12 @@ API — see §9. The homepage and compare pages remain inert demos.
    sheet: required **"Open to selling?"** chips (Now / Soon / Eventually / No) +
    **"What should your report focus on?"** chips (Fast cash / **Both — ships
    pre-selected**, a visible default that submits unless changed / Top price) +
-   optional **"Any repairs needed?"** wedge slider (41 track positions for smooth
-   dragging, bucketed into 11 display/data levels — "No repairs — move-in ready" →
+   optional **"Any repairs needed?"** wedge slider (21 track positions for smooth
+   dragging, bucketed into 6 display/data levels — "No repairs — move-in ready" →
    "A full remodel"; untouched = nothing sent; display is iconic — the sparkle is
-   strictly ZERO, then hammers equal the level (1-10) as it slides — with labels as
+   strictly ZERO, then hammers equal the level (1-5) with the level's label riding
+   beside them in the same icons row (no extra height; the axis edges none / a full
+   remodel still define the scale) — with labels as
    aria-valuetext and the RepairsNeeded field value). **The visible dial is a custom
    element**, not the native range thumb — iOS Safari ignores custom thumb geometry
    (dial fell short of the wedge tip and sank below its peak); the invisible native

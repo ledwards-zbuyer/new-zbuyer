@@ -1604,3 +1604,13 @@ hammers pop up. the star IS the 1-hammer; we need a 0-star in this design.
 level: the first slid stop shows one hammer, the top stop ten. That makes 11 buckets
 (star + 10) over a 41-position track (4x smoothness kept) with an eleventh
 RepairsNeeded label ("Nearly a full remodel") filling the scale.
+
+**Lucas:** lets take it down to 5 additional levels (above 0-star). also, find an
+elegant way to display the label for X-hammer while still defining the edges (none, a
+full remodel) — all without increasing vertical height
+
+**Claude:** Back to 6 buckets (star + 1-5 hammers, 21-position track) with five
+labels: touch-ups / Some / Several / Major / A full remodel. The level's label now
+rides beside the hammers inside the existing 20px icons row (blue 12px, weight 600) —
+zero added height — and the axis keeps "none" / "a full remodel" at the edges. Level
+0 stays the clean lone star.

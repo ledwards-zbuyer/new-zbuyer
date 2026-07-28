@@ -312,7 +312,7 @@
   // sends nothing — "No repairs" is only data once the user actually says so.
   // Display is iconic (sparkle = move-in ready, then 1-4 hammers); the text
   // labels live on as aria-valuetext and as the RepairsNeeded field value.
-  var REPAIR_LABELS = ["No repairs — move-in ready", "A couple of touch-ups", "A few touch-ups", "Minor repairs", "Some repairs", "Noticeable wear", "Several repairs", "Major repairs", "Extensive repairs", "Nearly a full remodel", "A full remodel"];
+  var REPAIR_LABELS = ["No repairs — move-in ready", "A few touch-ups", "Some repairs", "Several repairs", "Major repairs", "A full remodel"];
   var HAMMER_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M5.245 8.07l2.83-2.827 14.14 14.142-2.828 2.828z"/><path d="M12.317 1l5.657 5.656-2.83 2.83-5.654-5.66z"/><path d="M3.825 9.485l5.657 5.657-2.828 2.828-5.657-5.657z"/></svg>';
   // Gold, not gray: luminance (not hue) carries the "shiny" read, so it
   // stays bright for colorblind users too.
@@ -323,15 +323,17 @@
     var repairsWedge = document.getElementById("repairsWedge");
     var repairsVal = document.getElementById("repairsVal");
     var repairsDial = document.getElementById("repairsDial");
-    // The track has 41 positions (0-40) so dragging feels smooth; display
-    // and data bucket into 11 levels: the sparkle is strictly ZERO, then
-    // hammers equal the level (1-10) — the first slid stop is one hammer.
+    // The track has 21 positions (0-20) so dragging feels smooth; display
+    // and data bucket into 6 levels: the sparkle is strictly ZERO, then
+    // hammers equal the level (1-5), each captioned with its label — the
+    // axis edges (none / a full remodel) define the scale's ends.
     var repairLevel = function () { return Math.round(parseInt(repairsSlider.value, 10) / 4); };
     var paintWedge = function () {
       var v = parseInt(repairsSlider.value, 10);
-      var frac = v / 40;
+      var frac = v / 20;
       var lvl = repairLevel();
-      repairsVal.innerHTML = lvl === 0 ? SPARKLE_SVG : new Array(lvl + 1).join(HAMMER_SVG); // 1..10 hammers across levels 1-10
+      repairsVal.innerHTML = lvl === 0 ? SPARKLE_SVG
+        : new Array(lvl + 1).join(HAMMER_SVG) + '<span class="lm-slider-label">' + REPAIR_LABELS[lvl] + "</span>";
       repairsVal.classList.toggle("zero", lvl === 0);
       repairsSlider.setAttribute("aria-valuetext", REPAIR_LABELS[lvl]);
       // Our own dial (the native thumb is invisible — iOS ignores custom
@@ -360,7 +362,7 @@
       var r = wedgeBox.getBoundingClientRect();
       var frac = (clientX - r.left - 8) / (r.width - 16);
       frac = Math.max(0, Math.min(1, frac));
-      var v = String(Math.round(frac * 40));
+      var v = String(Math.round(frac * 20));
       if (v !== repairsSlider.value) {
         repairsSlider.value = v;
         repairsTouched = true;
