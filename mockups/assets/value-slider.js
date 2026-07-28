@@ -24,8 +24,20 @@
  *         dot:    "#8296B9"               //   anchor dots
  *       }                                 // (defaults shown — the classic-blue
  *                                         //  palette of the Cash Value Report)
+ *       pending: {                        // OPTIONAL wait-for-offer state; needs
+ *                                         // exactly ONE anchor. All keys optional:
+ *         ticker: "Awaiting your cash offer — usually arrives in under a minute",
+ *         label:  "your offer lands here",// tag on the landing dot
+ *         demo:   { value: 412500, label: "Quick cash close", delay: 5000 },
+ *                                         // stand-in for the API: auto-delivers
+ *                                         // after delay ms (default 5000)
+ *         onDeliver: function (slider) {} // fires after the arrival re-render
+ *       }
  *     });
  *     slider.snapTo(1);                   // programmatic snap (0-based)
+ *     slider.deliver({ value: 412500, label: "Quick cash close" });
+ *                                         // the real arrival (call from the API
+ *                                         // response) — animates, then re-renders
  *   </script>
  *
  * BEHAVIOR
@@ -44,6 +56,17 @@
  *   ONE anchor = static display: full-height fully-filled chart, handle
  *   locked centered, no dots, no end labels, headline shows the value.
  *
+ *   ONE anchor + pending = the wait-for-offer state: the fill dims under a
+ *   scrim, a marching dashed preview of the future two-anchor curve is
+ *   drawn with a pulsing dot where the offer will land, a quiet ticker
+ *   crawls along the bottom-right (behind the inert handle), and the Z
+ *   mark bobs over the landing spot. deliver(anchor) — or the pending.demo
+ *   timer — runs the animated arrival: overlay lifts, the flat chart
+ *   morphs into the exact two-anchor curve, headline crossfades to the
+ *   range, and the widget re-renders as a live range slider with dots and
+ *   end labels easing in. No flash: the morph target is pixel-identical
+ *   to the re-render. Reduced-motion swaps instantly.
+ *
  * THEMING (either works; script colors win over CSS vars, vars over defaults)
  *   script: the colors option above
  *   CSS custom properties on the container or any ancestor:
@@ -56,6 +79,12 @@
   var CURVE_H = 57, H_MIN = 8, SLIDE_H = 96, BOTTOM = 8, PAD = 5; // px / % geometry
   var NS = "http://www.w3.org/2000/svg";
   var uid = 0;
+  // the zBuyer Z mark, two triangles in a 200x200 box (monochrome use)
+  var Z_W = "40,42 128,42 64,158 39,158 95,68 40,68";
+  var Z_B = "160,158 72,158 136,42 161,42 105,132 160,132";
+  var REDUCED = typeof global.matchMedia === "function" &&
+    global.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function easeInOut(p) { return p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }
 
   var CSS =
     ".zvs-headline{font-size:38px;font-weight:800;letter-spacing:-.03em;text-align:center;color:var(--zvs-ink,#14233D);margin:0 0 2px;white-space:nowrap}" +
@@ -72,7 +101,18 @@
     ".zvs-ends{display:flex;justify-content:space-between;gap:14px;margin-top:10px}" +
     ".zvs-end b{display:block;font-size:15px;font-weight:800;color:var(--zvs-ink,#14233D)}" +
     ".zvs-end span{display:block;font-size:12px;color:var(--zvs-muted,#5C6B82);margin-top:2px}" +
-    ".zvs-end.zvs-right{text-align:right}";
+    ".zvs-end.zvs-right{text-align:right}" +
+    /* pending-offer wait state + animated arrival */
+    ".zvs-wait{position:absolute;left:0;right:0;bottom:" + BOTTOM + "px;width:100%;overflow:visible;pointer-events:none;z-index:1}" +
+    ".zvs-march{animation:zvsMarch 1.1s linear infinite}" +
+    ".zvs-gpulse{animation:zvsPulse 1.6s ease-in-out infinite}" +
+    ".zvs-arrive .zvs-dot{animation:zvsIn .5s ease both}" +
+    ".zvs-arrive .zvs-ends{overflow:hidden;animation:zvsEndsIn .45s ease both}" +
+    "@keyframes zvsMarch{to{stroke-dashoffset:-11}}" +
+    "@keyframes zvsPulse{0%,100%{opacity:.4}50%{opacity:.95}}" +
+    "@keyframes zvsIn{from{opacity:0}}" +
+    "@keyframes zvsEndsIn{from{max-height:0;opacity:0}to{max-height:56px;opacity:1}}" +
+    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse{animation:none}}";
 
   function injectCSS() {
     if (document.getElementById("zvs-style")) return;
@@ -168,8 +208,8 @@
     hi.setAttribute("stop-color", col(colors.fillHi, "--zvs-hi", "#1D4FD7"));
     var clip = svgEl("clipPath", { id: "zvsClip" + id }, defs);
     var clipRect = svgEl("rect", { x: 0, y: 0, width: 500, height: CURVE_H }, clip);
-    svgEl("path", { d: d, fill: col(colors.track, "--zvs-track", "#E4EAF3") }, svg);
-    svgEl("path", { d: d, fill: "url(#zvsGrad" + id + ")", "clip-path": "url(#zvsClip" + id + ")" }, svg);
+    var trackPath = svgEl("path", { d: d, fill: col(colors.track, "--zvs-track", "#E4EAF3") }, svg);
+    var fillPath = svgEl("path", { d: d, fill: "url(#zvsGrad" + id + ")", "clip-path": "url(#zvsClip" + id + ")" }, svg);
 
     // deepest blue always rides the clip edge (the handle)
     function paintCurve(p) {
@@ -280,12 +320,141 @@
       container.appendChild(ends);
     }
 
-    return {
+    /* ---- pending-offer mode (opts.pending, single anchor only): the chart
+       waits for a second anchor — dimmed fill, marching dashed preview of
+       the future two-anchor curve, pulsing landing dot, ticker, and the Z
+       mark bobbing over the spot. deliver(anchor) (or the built-in demo
+       timer) runs an animated arrival: the overlay lifts, this same chart's
+       path morphs into the exact two-anchor curve, then the widget
+       re-renders as a real range slider — pixel-identical, no flash. ---- */
+    var pend = null;
+    if (single && anchors.length === 1 && opts.pending) pend = buildPending();
+    function buildPending() {
+      var conf = opts.pending === true ? {} : opts.pending;
+      var EXT = 26, S = .22, yFloor = CURVE_H - H_MIN;
+      var ov = svgEl("svg", { "class": "zvs-wait", "aria-hidden": "true" }, slide);
+      ov.style.height = (CURVE_H + EXT) + "px";
+      var W = ov.clientWidth || slide.clientWidth || 600;
+      var xo = .05 * W, xm = .95 * W, dxW = (xm - xo) / 2.2;
+      var yO = EXT + yFloor;
+      var gScrim = svgEl("g", {}, ov); // pending scrim: this chart isn't final
+      svgEl("rect", { x: 0, y: EXT, width: W, height: CURVE_H, fill: "#0E1B33", opacity: .3 }, gScrim);
+      var gDash = svgEl("g", {}, ov);  // future-curve preview + landing dot
+      svgEl("path", { d: "M0 " + yO + " L" + xo + " " + yO +
+        " C" + (xo + dxW) + " " + yO + " " + (xm - dxW) + " " + EXT + " " + xm + " " + EXT +
+        " L" + W + " " + EXT,
+        fill: "none", stroke: "#FFFFFF", "stroke-width": 2, opacity: .6,
+        "stroke-dasharray": "5 6", "class": "zvs-march" }, gDash);
+      svgEl("circle", { cx: xo, cy: yO, r: 4.5, fill: "#FFFFFF", "class": "zvs-gpulse" }, gDash);
+      var gTop = svgEl("g", {}, ov);   // annotations + ticker + the mark
+      svgEl("line", { x1: xo, y1: EXT, x2: xo, y2: yO - 6, stroke: "#FFFFFF",
+        "stroke-width": 1.5, "stroke-dasharray": "3 5", opacity: .5 }, gTop);
+      var lbl = svgEl("text", { x: xo + 12, y: yO - 5, fill: "#FFFFFF", opacity: .85 }, gTop);
+      lbl.style.font = "600 10.5px Inter,system-ui,sans-serif";
+      lbl.textContent = conf.label || "your offer lands here";
+      // ticker: gradient-masked band right of the (inert) handle
+      var mx0 = W * .5 + 22, mx1 = W - 4;
+      var mdefs = svgEl("defs", {}, ov);
+      var mg = svgEl("linearGradient", { id: "zvsTk" + id, gradientUnits: "userSpaceOnUse",
+        x1: mx0, y1: 0, x2: mx1, y2: 0 }, mdefs);
+      [[0, "#000"], [.08, "#fff"], [.92, "#fff"], [1, "#000"]].forEach(function (s) {
+        svgEl("stop", { offset: s[0], "stop-color": s[1] }, mg);
+      });
+      svgEl("rect", { x: mx0, y: EXT + 40, width: mx1 - mx0, height: 16, fill: "url(#zvsTk" + id + ")" },
+        svgEl("mask", { id: "zvsTkm" + id }, mdefs));
+      var mq = svgEl("g", { mask: "url(#zvsTkm" + id + ")" }, gTop);
+      var mts = [0, 1].map(function () { // two copies = seamless loop
+        var t = svgEl("text", { x: mx0 + 8, y: EXT + 51, fill: "#FFFFFF", opacity: .85 }, mq);
+        t.style.font = "600 10.5px Inter,system-ui,sans-serif";
+        t.textContent = conf.ticker || "Awaiting your cash offer — usually arrives in under a minute";
+        return t;
+      });
+      var mper = mts[0].getComputedTextLength() + 70;
+      var piece = svgEl("g", {}, gTop); // the mark, monochrome, over the landing spot
+      svgEl("polygon", { points: Z_W, fill: "#3BA4F4" }, piece);
+      svgEl("polygon", { points: Z_B, fill: "#3BA4F4" }, piece);
+      var yB = (EXT - 2) - 158 * S, lastBob = 0;
+      function place(bob) {
+        lastBob = bob;
+        piece.setAttribute("transform", "translate(" + (xo - 100 * S) + " " + (yB + bob) + ") scale(" + S + ")");
+      }
+      place(0);
+      var raf = 0, t0 = performance.now(), delivered = false, timer = 0;
+      if (!REDUCED) (function loop(now) {
+        var t = (now - t0) / 1000;
+        place(2.8 * Math.sin(t * 2.4));
+        var off = (t * 30) % mper;
+        mts[0].setAttribute("x", mx1 - off);
+        mts[1].setAttribute("x", mx1 - off + mper);
+        raf = requestAnimationFrame(loop);
+      })(t0);
+      if (conf.demo) timer = setTimeout(function () { // stand-in for the API response
+        deliver({ value: conf.demo.value, label: conf.demo.label });
+      }, conf.demo.delay || 5000);
+      function stop() { cancelAnimationFrame(raf); clearTimeout(timer); }
+      function finish(a) {
+        var next = {};
+        for (var k in opts) if (k !== "pending" && k !== "anchors") next[k] = opts[k];
+        next.anchors = [
+          { value: anchors[0].value, label: anchors[0].label },
+          { value: +a.value, label: a.label || "" }
+        ];
+        container.innerHTML = "";
+        container.classList.add("zvs-arrive"); // dots + end labels ease in
+        var inner = zbValueSlider(container, next);
+        setTimeout(function () { container.classList.remove("zvs-arrive"); }, 700);
+        ret.anchors = inner.anchors; // graft the range instance onto the api
+        ret.snapTo = inner.snapTo;
+        if (typeof conf.onDeliver === "function") conf.onDeliver(inner);
+      }
+      function deliver(a) {
+        if (delivered || !a) return;
+        delivered = true; stop();
+        if (REDUCED) { finish(a); return; }
+        var xA = PAD * 10, xB = (100 - PAD) * 10, dxT = (xB - xA) / 2.2;
+        var dived = lastBob, swapped = false, m0 = performance.now();
+        function ph(t, lo, hi) { return Math.max(0, Math.min(1, (t - lo) / (hi - lo))); }
+        (function step(now) {
+          var t = now - m0;
+          var p1 = easeInOut(ph(t, 0, 350));     // wake: scrim + annotations lift
+          gScrim.setAttribute("opacity", 1 - p1);
+          gTop.setAttribute("opacity", 1 - p1);
+          place(dived + 26 * p1);                // the mark dives to its spot
+          var pm = easeInOut(ph(t, 250, 950)), yL = yFloor * pm; // chart reshapes
+          var d2 = "M0 " + CURVE_H + " L0 " + yL + " L" + xA + " " + yL +
+                   " C" + (xA + dxT) + " " + yL + " " + (xB - dxT) + " 0 " + xB + " 0" +
+                   " L1000 0 L1000 " + CURVE_H + " Z";
+          trackPath.setAttribute("d", d2);
+          fillPath.setAttribute("d", d2);
+          var wc = 1000 - 500 * pm;              // fill recedes to the midpoint
+          clipRect.setAttribute("width", wc);
+          grad.setAttribute("x2", wc);
+          gDash.setAttribute("opacity", 1 - ph(t, 850, 1150)); // preview fades as the real curve lands
+          if (!swapped && t >= 850 && headlineEl) {
+            swapped = true;
+            headlineEl.style.transition = "opacity .16s";
+            headlineEl.style.opacity = "0";
+            setTimeout(function () {
+              var lo = Math.min(anchors[0].value, +a.value), hi = Math.max(anchors[0].value, +a.value);
+              setHeadline(fmt(lo) + " – " + fmt(hi));
+              headlineEl.style.opacity = "1";
+            }, 170);
+          }
+          if (t < 1200) requestAnimationFrame(step);
+          else finish(a);
+        })(m0);
+      }
+      return { deliver: deliver, stop: stop };
+    }
+
+    var ret = {
       element: container,
       anchors: anchors,
       snapTo: snapTo,
-      destroy: function () { container.innerHTML = ""; }
+      deliver: function (a) { if (pend) pend.deliver(a); }, // the arrival (API callback)
+      destroy: function () { if (pend) pend.stop(); container.innerHTML = ""; }
     };
+    return ret;
   }
 
   global.zbValueSlider = zbValueSlider;
