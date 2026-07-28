@@ -93,7 +93,7 @@
   .dial-demo{position:relative;height:60px;max-width:340px}
   .dial-demo .track{position:absolute;left:8px;right:8px;top:50%;height:10px;transform:translateY(-50%);border-radius:6px;background:linear-gradient(90deg,var(--tint),var(--c1))}
   .dial-demo .lm-dial{position:absolute;top:8px;left:55%;width:16px;height:44px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4)}
-  .dial-demo .vs-handle{position:absolute;top:-5px;left:20%;width:26px;height:70px;border-radius:13px;background:var(--cta);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);cursor:grab}
+  .dial-demo .vs-handle{position:absolute;top:-7px;left:20%;width:26px;height:74px;border-radius:13px;background:var(--cta);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);cursor:grab}
   .vs-handle::before{content:"";position:absolute;inset:14px 8px;background:repeating-linear-gradient(180deg,rgba(255,255,255,.75) 0 2px,transparent 2px 8px);border-radius:2px}
 
   .radii{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
@@ -285,9 +285,18 @@
         <div class="lm-dial" title="repairs dial"></div>
       </div>
     </div>
+    <div class="demo" style="margin-top:14px">
+      <div id="gValueSlider" style="max-width:560px;margin:0 auto"></div>
+    </div>
     <p class="rule">Two flavors, one language: tall pill handles with a 3px white border and a real shadow —
-       unmistakably grabbable. Funnel repairs dial: 16×44, blue. Report value slider: 26×70, orange, grip ridges.
-       Both slide freely and <b>snap to stops</b> on release. iOS gotcha: the visible handle is a custom element
+       unmistakably grabbable. Funnel repairs dial: 16×44, blue, riding a trapezoid wedge (a value floor keeps
+       the chart under the dial even at "none"; the left axis text is live — hammer-blue "none", then the level's
+       label, and "a full remodel" lights up only at the top stop). Report value slider (live above): 26×74,
+       orange, grip ridges, riding a <b>value curve</b> — the track is an area chart of the anchor values,
+       span-zoomed over an 8px floor, a dot at every stop, and the untouched headline reads the full range over
+       "Complete home value range". Both slide freely and <b>snap to stops</b> on release. The value slider ships
+       as one portable file — <code>assets/value-slider.js</code>, guide at <code>value-slider-docs.html</code>.
+       iOS gotcha: the visible handle is a custom element
        positioned by JS (iOS ignores native thumb styling); pointer events + <code>touch-action:none</code> make
        press-drag work on the whole track.</p>
   </section>
@@ -328,15 +337,14 @@
             </g>
           </g>
         </svg>
-        <p class="zb-note">Sending your report link to your phone&hellip;</p>
       </div>
     </div>
     <p class="rule">The brand beat between funnel steps: the Z's two arrows (white + <code>--acc</code> sky, on the
        navy stage coin) walk in from opposite corners and spin <b>as a rigid pair</b> into the locked Z — the seam
        between them never changes. It plays while a step's API round-trip settles, with a minimum hold so it reads
        as a beat, never a flash. One-way in (~1.5s) between steps; the full in–hold–out cycle behind the finale,
-       where a caption line states what's happening ("Sending your report link to your phone…" — always say what
-       the wait is for). Reduced motion shows the locked Z statically. The same choreography exists as standalone
+       which plays <b>uncaptioned</b> (2026-07-28: the labels came off — the beat itself is the message; captions
+       remain available for beats that genuinely need explaining). Reduced motion shows the locked Z statically. The same choreography exists as standalone
        assets for email/marketing: <code>assets/z-dance.gif</code> / <code>z-dance-transparent.gif</code> /
        <code>z-dance.webp</code> (8s loop). Rules: arrows never rotate independently, never green (see Color),
        and the beat never runs without a reason — it means "we're working," not decoration.</p>
@@ -366,5 +374,18 @@
   </footer>
 </div>
 
+<script src="assets/value-slider.js"></script>
+<script>
+  // live value slider in the Sliders section — the full selling-path lineup
+  zbValueSlider(document.getElementById("gValueSlider"), {
+    anchors: [
+      { value: 312000, label: "Quick cash close" },
+      { value: 328000, label: "Sell now - move later" },
+      { value: 345000, label: "Cash+" },
+      { value: 355000, label: "Cash+ w/ repairs" },
+      { value: 371000, label: "Estimated market value" }
+    ]
+  });
+</script>
 </body>
 </html>

@@ -1779,3 +1779,13 @@ on step one of the dev doc
 
 **Claude:** Section 1's live demo now runs those five anchors ($312K / $328K "Sell
 now - move later" / $345K / $355K / $371K), dots positioned by value along the curve.
+
+**Lucas:** make sure the design guide is updated with these changes (if needed) and
+send me the link after pushing it up
+
+**Claude:** It needed it. Sliders section: handle spec 26×70→26×74, rule text now
+covers the trapezoid repairs wedge with its live axis label and the report's value
+curve (span-zoom, 8px floor, dot per stop, "Complete home value range" sub-label,
+portable-file pointer), plus a LIVE five-anchor zbValueSlider rendered in the guide
+itself. Z-beat section: caption element removed and the "always say what the wait is
+for" rule updated — the finale plays uncaptioned as of 2026-07-28.
