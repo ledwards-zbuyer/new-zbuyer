@@ -1439,3 +1439,9 @@ frequency varies. Msg & data rates may apply"
 
 **Claude:** Dropped the .lm-carrier span from that step's SMS disclosure — the whole
 box reads at one weight now. The contact step's bold carrier line is untouched.
+
+**Lucas:** remove the boldness from the member names ("jason dalbey" in this instance)
+
+**Claude:** Names read plain again everywhere — .lm-names is weight 400 / inherited
+color, and .lm-inline-pros dropped out of the bold rule. Only the "Matched real
+estate pro:" label and the contact step's carrier sentence stay bold.
