@@ -171,8 +171,10 @@
   .lm-dial{position:absolute;top:4px;left:0;width:16px;height:44px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4);pointer-events:none}
   .lm-wedge input:focus-visible ~ .lm-dial{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
   .lm-axis{display:flex;justify-content:space-between;color:#9ba8bb;font-size:11px;margin-top:7px;padding:0 22px}
-  .lm-slider-icons{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:5px;min-height:20px;color:var(--c1)}
-  .lm-slider-label{font-size:12px;font-weight:600;color:var(--c1);margin-left:3px;line-height:1}
+  .lm-slider-icons{position:relative;display:flex;justify-content:center;align-items:center;gap:6px;margin-top:5px;min-height:20px;color:var(--c1)}
+  /* hammers stay dead-center; the label is pinned right so nothing jumps
+     around as the count changes */
+  .lm-slider-label{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:600;color:var(--c1);line-height:1;white-space:nowrap}
   .lm-slider-icons.zero{color:#9ba8bb}
   .lm-slider-icons.zero svg{animation:lmTwinkle 1.8s ease-in-out infinite}
   @keyframes lmTwinkle{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.14) rotate(8deg);opacity:.82}}

@@ -1615,6 +1615,15 @@ rides beside the hammers inside the existing 20px icons row (blue 12px, weight 6
 zero added height — and the axis keeps "none" / "a full remodel" at the edges. Level
 0 stays the clean lone star.
 
+**Lucas:** back to repairs: i don't like the text in line with the hammers — it jumps
+around too much as you slide. maybe hammer-left, text-right? or ideally
+hammers-center, text-right? may not fit
+
+**Claude:** It fits — hammers stay dead-center (flex center as before) and the label
+is absolutely pinned to the row's right edge (right:16px, roughly under the axis's "a
+full remodel"), so the text never moves as the count changes. Verified at desktop
+level 5 and mobile level 4 (longest labels, no overlap).
+
 **Lucas:** change the colors on the report page to something else. it looks too
 sporty and spunky. this is serious business about someone's most prized possession.
 just talking colors — container background should still be white — don't go crazy
