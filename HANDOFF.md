@@ -362,17 +362,18 @@ load) while values and home stats remain static demo data. The old
   - `combined` — one wide range ($312K–$371K demo) drawn as an INTERACTIVE slider
     (2026-07-07; track redrawn 2026-07-27): the track is a VALUE CURVE — a JS-built
     SVG area chart (repairs-wedge family) whose height tracks the anchor values,
-    with the anchor SPAN as the full track height (min value = baseline, max = 44px
+    with the anchor SPAN as the full track height (min value = baseline, max = 57px
     — auto-zoom so any range renders a meaningful rise; scaling from $0 would
     flatten it to a sliver), flat-tangent beziers between anchors (rounded, not
     connect-the-dots),
     blue gradient filled to the handle (deepest blue rides the handle) and gray
     beyond. NOTE: the anchor x-positions were themselves derived from the values, so
     the faithful curve is inherently near-linear — the waviness at the dots is the
-    flat-tangent smoothing. Unlabeled anchor dots (DOM, not SVG — the stretched
-    viewBox would squash circles) ride the curve's top edge at Cash+ ($345K, 55.3%)
-    and Cash+ w/ repairs ($355K, 70.6%). The orange pill handle (74px, always taller
-    than the curve's 44px peak) drags freely and snaps to the nearest of the four
+    flat-tangent smoothing. ALL FOUR stopping points get unlabeled dots (muted slate
+    #8296B9 + white ring; DOM, not SVG — the stretched viewBox would squash circles)
+    riding the curve's top edge. The orange pill handle (74px, taller than the
+    curve's 57px peak, resting low so its rounded tip drops below the baseline)
+    drags freely and snaps to the nearest of the four
     anchors on release; ONLY then does the big headline swap from the full range to
     the snapped anchor's value. Keyboard arrows step between anchors; `?snap=0-3`
     presets it for screenshots. Values labeled at the ends only. Most

@@ -1545,3 +1545,11 @@ difference on the slider background. that is what i meant by zooming in/out.
 **Claude:** Adjusted — H_MIN dropped to 0: the min anchor sits at the baseline (thin
 tip, like the repairs wedge) and the max fills the whole 44px, so the anchor span IS
 the track height and any range auto-zooms to a full-height rise.
+
+**Lucas:** *(screenshot)* the bg chart should be 30% taller, the handle should rest
+lower so its rounded bottom tip is below the chart's baseline, and the stopping-point
+dots should all be visible and not white — some other subtle but more visible color
+
+**Claude:** Curve 44→57px tall, handle dropped to top:59% so its tip rides ~6px below
+the baseline, and all four anchors (ends included) now get dots in muted slate
+#8296B9 with a white ring — visible over both the gray track and the blue fill.
