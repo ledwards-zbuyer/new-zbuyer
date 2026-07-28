@@ -1537,3 +1537,11 @@ retired; handle grew to 74px so it always crests the 44px curve peak. Geometry
 honesty note: the anchor x-positions were originally placed proportionally to the
 values, so a faithful value-height curve is near-linear — the gentle plateaus at
 the dots are what read as "curve". Verified at rest, snap=1, snap=3.
+
+**Lucas:** close. i want the range (min to max value), 312k to 371k here, so 59k to
+be the total height — that way any value range will appear to have a meaningful
+difference on the slider background. that is what i meant by zooming in/out.
+
+**Claude:** Adjusted — H_MIN dropped to 0: the min anchor sits at the baseline (thin
+tip, like the repairs wedge) and the max fills the whole 44px, so the anchor span IS
+the track height and any range auto-zooms to a full-height rise.

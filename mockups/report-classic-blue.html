@@ -521,11 +521,12 @@
   ];
 
   // ---- value curve: the track is an area chart of the anchor values ----
-  // Heights are normalized to the anchor span (zoomed: $312K sits at H_MIN,
-  // $371K at H_MAX — not scaled from $0, or the whole curve would be a
-  // near-flat sliver). Flat-tangent cubic beziers between anchors keep it
-  // monotone and rounded. viewBox x runs 0-1000 (= percent * 10).
-  var CURVE_H = 44, H_MIN = 8, H_MAX = 38;
+  // The anchor SPAN is the full track height (auto-zoom): the min value
+  // ($312K) sits at the baseline like the repairs wedge's thin tip, the max
+  // ($371K) at the full 44px — so ANY range renders a meaningful rise.
+  // Flat-tangent cubic beziers between anchors keep it monotone and
+  // rounded. viewBox x runs 0-1000 (= percent * 10).
+  var CURVE_H = 44, H_MIN = 0, H_MAX = 44;
   var svg = document.getElementById("vsCurve");
   var NS = "http://www.w3.org/2000/svg";
   var vmin = ANCHORS[0].val, vmax = ANCHORS[ANCHORS.length - 1].val;

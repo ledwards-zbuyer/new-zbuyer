@@ -362,8 +362,10 @@ load) while values and home stats remain static demo data. The old
   - `combined` — one wide range ($312K–$371K demo) drawn as an INTERACTIVE slider
     (2026-07-07; track redrawn 2026-07-27): the track is a VALUE CURVE — a JS-built
     SVG area chart (repairs-wedge family) whose height tracks the anchor values,
-    normalized to the $312K–$371K span (zoomed — scaling from $0 would flatten it to
-    a sliver), flat-tangent beziers between anchors (rounded, not connect-the-dots),
+    with the anchor SPAN as the full track height (min value = baseline, max = 44px
+    — auto-zoom so any range renders a meaningful rise; scaling from $0 would
+    flatten it to a sliver), flat-tangent beziers between anchors (rounded, not
+    connect-the-dots),
     blue gradient filled to the handle (deepest blue rides the handle) and gray
     beyond. NOTE: the anchor x-positions were themselves derived from the values, so
     the faithful curve is inherently near-linear — the waviness at the dots is the
