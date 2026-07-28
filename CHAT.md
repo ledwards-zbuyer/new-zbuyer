@@ -1429,3 +1429,7 @@ you can access your updated home value report when you want."
 
 **Claude:** Picked from four candidates: "Check your updated value anytime." The full
 sub is now "Check your updated value anytime. We'll text the link."
+
+**Lucas:** change "Check your updated value anytime" to "check your value anytime"
+
+**Claude:** Done — "Check your value anytime. We'll text the link."
