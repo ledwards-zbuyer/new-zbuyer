@@ -152,7 +152,7 @@
     if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> <b class=\"lm-names\">Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)</b>";
     var consentEl = modal.querySelector(".lm-consent");
     if (consentEl) consentEl.innerHTML = consentEl.innerHTML
-      .replace("your matched real-estate professional", "zBuyer&rsquo;s real-estate partners");
+      .replace("your matched real-estate professional", "its real-estate partners");
   }
 
   // ---- inline-consent variant (?terms=inline / inline-maxsold) ----
@@ -175,7 +175,7 @@
     termsBox.classList.add("lm-inline");
     cInl.innerHTML =
       '<input type="checkbox" class="lm-check" aria-label="I agree to receive calls, texts, and emails as described in the terms">' +
-      'I agree to receive calls, texts, and emails from <span class="lm-inline-pros"></span>,' +
+      'I agree to receive calls, texts, and emails from zBuyer and <span class="lm-inline-pros"></span>,' +
       ' including marketing and AI-generated messages about my property at the number I provided.' +
       ' These may use an autodialer or an artificial, prerecorded, or AI-generated voice, even if my' +
       ' number is on a Do Not Call list. This is my express written consent, and I understand consent' +

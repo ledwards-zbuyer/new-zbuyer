@@ -1459,3 +1459,11 @@ step=questions). Notable finding while shooting: on the wired lander the live
 GetContactOptInNames set replaces the maxsold demo roster in the inline sentence —
 correct behavior (displayed = recorded), but it means ?terms=maxsold demos only show
 the 6-buyer roster on pages without pulse-api.
+
+**Lucas:** put zbuyer back. undo the change i made to remove zbuyer from the terms
+section on the PII step
+
+**Claude:** Reverted in full — "you give zBuyer and your matched real-estate
+professional…", the inline variant's "from zBuyer and [pros]", and the Max Sold swap
+back to "its real-estate partners" (grammatical again with zBuyer named). This
+closes the audit's biggest finding: zBuyer is a consented party again.
