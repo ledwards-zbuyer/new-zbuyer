@@ -1595,3 +1595,12 @@ options + return-value reference table, theming (both routes + precedence), and 
 good-to-know list. Also hardened the widget: all-equal anchor values now fall back to
 the static single display instead of dividing by zero. Demo page cross-links to the
 guide.
+
+**Lucas:** regarding the repairs question: it defaults to the left and the icon is a
+clean star — perfect. the problem is that as i slide right, it stays a star until TWO
+hammers pop up. the star IS the 1-hammer; we need a 0-star in this design.
+
+**Claude:** Fixed — the sparkle is strictly the zero state now, and hammers equal the
+level: the first slid stop shows one hammer, the top stop ten. That makes 11 buckets
+(star + 10) over a 41-position track (4x smoothness kept) with an eleventh
+RepairsNeeded label ("Nearly a full remodel") filling the scale.
