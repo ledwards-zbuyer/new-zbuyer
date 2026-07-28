@@ -1582,3 +1582,16 @@ via the script
 **Claude:** Added a colors option to zbValueSlider — handle / fillLo / fillHi / track
 / dot, each optional, script colors winning over CSS vars over defaults. Demo gains a
 green example card and the usage snippet shows the object.
+
+**Lucas:** similar to the value-slider-demo, make another page i can send to my
+developers explaining how the slider works and how to implement it. don't be afraid
+to start basic. *(mid-build:)* provide links to the assets they need
+
+**Claude:** Built mockups/value-slider-docs.html — a developer guide that starts from
+"what it is" in plain English with a live slider, then quick start (with direct links
+to the live value-slider.js, the GitHub source, and the demo page), how it works
+(anchors/positions/heights, interaction, single-value mode, live examples), a full
+options + return-value reference table, theming (both routes + precedence), and a
+good-to-know list. Also hardened the widget: all-equal anchor values now fall back to
+the static single display instead of dividing by zero. Demo page cross-links to the
+guide.

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>zbValueSlider — developer guide</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;--c1:#1D4FD7}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#EDF1F7;padding:34px 18px 70px;-webkit-font-smoothing:antialiased;line-height:1.55}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 26px}
+  .lead a{color:var(--c1);font-weight:600;text-decoration:underline}
+  .card{background:#fff;border-radius:16px;padding:26px 28px 24px;box-shadow:0 10px 30px -18px rgba(14,27,51,.25);margin-bottom:22px}
+  h2{font-size:17px;font-weight:800;letter-spacing:-.01em;margin-bottom:10px}
+  h3{font-size:13.5px;font-weight:700;color:var(--c1);margin:18px 0 6px}
+  p,li{font-size:14px;color:#33415C}
+  li a,p a{color:var(--c1);font-weight:600;text-decoration:underline}
+  ul,ol{padding-left:22px;margin:6px 0}
+  li{margin:4px 0}
+  code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:12.5px}
+  pre{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:15px 17px;font-size:12.5px;line-height:1.55;overflow-x:auto;margin:10px 0}
+  pre code{background:none;border:none;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+  th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:7px 10px;border-bottom:2px solid var(--line)}
+  td{padding:8px 10px;border-bottom:1px solid var(--soft);vertical-align:top}
+  td code{white-space:nowrap}
+  .demo{border:1px dashed var(--line);border-radius:12px;padding:18px 20px 14px;margin:12px 0}
+  .demo-tag{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .picked{font-size:12.5px;color:var(--muted);text-align:center;margin-top:8px;min-height:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>zbValueSlider — developer guide</h1>
+  <p class="lead">A slider whose track is a tiny chart of your values. One JS file, no
+  dependencies, no build step, no CSS file. Live examples of every configuration:
+  <a href="value-slider-demo.html">value-slider-demo.html</a>.</p>
+
+  <div class="card">
+    <h2>1. What it is</h2>
+    <p>You give it a list of <b>anchors</b> — dollar amounts (or any numbers), each with a
+    label. It renders a horizontal track shaped like an area chart: short where the values
+    are low, tall where they're high. The user drags an orange handle along the track; when
+    they let go, it snaps to the nearest anchor and reports which one they picked. Until
+    they interact, the headline shows the full range so no single number is presented as
+    "the" number.</p>
+    <div class="demo">
+      <div class="demo-tag">Live — try dragging</div>
+      <div id="ex1"></div>
+      <p class="picked" id="ex1pick">&nbsp;</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. Quick start</h2>
+    <h3>Everything you need</h3>
+    <ul>
+      <li>The file (save-as / copy):
+          <a href="https://ledwards-zbuyer.github.io/new-zbuyer/mockups/assets/value-slider.js">value-slider.js</a></li>
+      <li>Source on GitHub:
+          <a href="https://github.com/ledwards-zbuyer/new-zbuyer/blob/main/mockups/assets/value-slider.js">ledwards-zbuyer/new-zbuyer &rarr; mockups/assets/value-slider.js</a></li>
+      <li>Live examples of every configuration:
+          <a href="https://ledwards-zbuyer.github.io/new-zbuyer/mockups/value-slider-demo.html">value-slider-demo.html</a></li>
+    </ul>
+    <ol>
+      <li>Copy <code>value-slider.js</code> into your project. That's the whole install —
+          no package, no build step.</li>
+      <li>Add an empty container element wherever the slider should render.</li>
+      <li>Include the script, then call <code>zbValueSlider(container, options)</code>
+          <b>after the container is in the DOM</b>.</li>
+    </ol>
+<pre><code>&lt;div id="mySlider"&gt;&lt;/div&gt;
+
+&lt;script src="value-slider.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  zbValueSlider(document.getElementById("mySlider"), {
+    anchors: [
+      { value: 312000, label: "Quick cash close" },
+      { value: 371000, label: "Top market value" }
+    ],
+    onSelect: function (anchor, index) {
+      console.log("picked:", anchor.value, anchor.label);
+    }
+  });
+&lt;/script&gt;</code></pre>
+    <p>That's a working slider. Everything below is optional.</p>
+  </div>
+
+  <div class="card">
+    <h2>3. How it works</h2>
+    <h3>Anchors drive everything</h3>
+    <ul>
+      <li>Pass <b>1 to 6</b> anchors. They're sorted by value for you — order doesn't matter.</li>
+      <li>Each anchor's <b>horizontal position</b> is proportional to its value: the lowest
+          sits at the left end, the highest at the right, everything else in between by value.</li>
+      <li>Each anchor's <b>track height</b> is also proportional to its value — but normalized
+          to the min-to-max span ("auto-zoom"), so even a narrow range (say $312K to $371K)
+          renders a full, meaningful rise instead of a flat strip. An 8px floor keeps the
+          lowest anchor looking like value rather than nothing.</li>
+      <li>Between anchors the outline is smoothed with rounded curves, so it reads as a chart,
+          not connect-the-dots. Every anchor gets a small dot with a hover tooltip.</li>
+    </ul>
+    <h3>Interaction</h3>
+    <ul>
+      <li>The handle drags freely; the blue fill follows it live (deepest blue always at the
+          handle). On release it <b>snaps to the nearest anchor</b>.</li>
+      <li>The headline starts as the full range ("$312,000 – $371,000") and only swaps to a
+          specific value once the user snaps somewhere. <code>onSelect</code> fires on every
+          snap with the anchor object and its index.</li>
+      <li>Keyboard: the handle is focusable; arrow keys step between anchors.</li>
+    </ul>
+    <h3>The single-value mode</h3>
+    <p>If you pass <b>one anchor</b> (or several that share one value), there is no range to
+    explore, so the widget renders a static display: fully-filled full-height chart, handle
+    locked in the center, no dots, no end labels — the headline just shows the value.</p>
+    <div class="demo">
+      <div class="demo-tag">Live — one anchor</div>
+      <div id="ex2"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>4. Options</h2>
+    <table>
+      <tr><th>Option</th><th>Type / default</th><th>What it does</th></tr>
+      <tr><td><code>anchors</code></td><td>array, <b>required</b></td>
+          <td>1–6 of <code>{ value: number, label: string }</code>. Label may be empty; it
+          feeds the dot tooltips, end labels, and aria text.</td></tr>
+      <tr><td><code>format</code></td><td>function, <code>$1,234,567</code></td>
+          <td>Turns a value into display text everywhere it appears (headline, end labels,
+          tooltips). E.g. <code>v =&gt; "$" + v.toLocaleString() + "/mo"</code>.</td></tr>
+      <tr><td><code>headline</code></td><td>boolean, <code>true</code></td>
+          <td>Render the big number/range above the track. Set <code>false</code> if your
+          page already has its own headline — use <code>onSelect</code> to update it.</td></tr>
+      <tr><td><code>endLabels</code></td><td>boolean, <code>true</code></td>
+          <td>Min and max values + labels under the track ends. Never shown in
+          single-value mode.</td></tr>
+      <tr><td><code>onSelect</code></td><td>function</td>
+          <td><code>(anchor, index) =&gt;</code> fires on every snap (drag release, arrow
+          key, or <code>snapTo</code>).</td></tr>
+      <tr><td><code>colors</code></td><td>object</td>
+          <td>Per-instance colors, each key optional: <code>handle</code>,
+          <code>fillLo</code> / <code>fillHi</code> (fill gradient), <code>track</code>
+          (unfilled chart), <code>dot</code>.</td></tr>
+      <tr><td><code>ariaLabel</code></td><td>string</td>
+          <td>Accessible name for the handle. Default "Explore the value range".</td></tr>
+    </table>
+    <h3>Return value</h3>
+<pre><code>var slider = zbValueSlider(el, { ... });
+slider.snapTo(2);    // snap to an anchor programmatically (0-based, sorted order)
+slider.anchors;      // the sorted anchor array (with computed positions)
+slider.destroy();    // empty the container</code></pre>
+  </div>
+
+  <div class="card">
+    <h2>5. Styling &amp; theming</h2>
+    <p>Styles inject themselves once (a <code>&lt;style id="zvs-style"&gt;</code> tag). The
+    slider fills its container's width; height is fixed (~96px track plus headline and end
+    labels). Font is inherited from the container.</p>
+    <p>Two ways to recolor — <b>script colors win over CSS variables, variables over
+    defaults</b>:</p>
+<pre><code>// per instance, in the call:
+colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
+          track: "#E8EFE9", dot: "#6E9B7F" }
+
+/* or with CSS variables on the container or any ancestor: */
+.my-theme { --zvs-cta: #128A46; --zvs-lo: #BFE8CF; --zvs-hi: #128A46;
+            --zvs-track: #E8EFE9; --zvs-dot: #6E9B7F;
+            --zvs-ink: #14233D; --zvs-muted: #5C6B82; }</code></pre>
+    <div class="demo">
+      <div class="demo-tag">Live — script colors</div>
+      <div id="ex3"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>6. Good to know</h2>
+    <ul>
+      <li><b>Call it after the container is in the DOM.</b> Theming reads computed styles at
+          build time; a detached container silently falls back to default colors.</li>
+      <li><b>Multiple instances per page are fine</b> — each gets unique internal SVG ids and
+          can carry its own colors.</li>
+      <li><b>All values equal?</b> It falls back to the single-value static display instead
+          of dividing by zero.</li>
+      <li><b>Rebuilding:</b> there is no update method — call <code>destroy()</code> and
+          re-create with new anchors (it's cheap).</li>
+      <li><b>Browser support:</b> anything modern (uses Pointer Events and SVG; no polyfills,
+          no frameworks). Touch, mouse, and keyboard all work.</li>
+      <li><b>Data honesty:</b> positions and heights are both computed from your values —
+          nothing is styled by hand, so the chart never misrepresents the spread.</li>
+    </ul>
+  </div>
+</div>
+
+<script src="assets/value-slider.js"></script>
+<script>
+  zbValueSlider(document.getElementById("ex1"), {
+    anchors: [
+      { value: 312000, label: "Quick cash close" },
+      { value: 345000, label: "Cash+" },
+      { value: 371000, label: "Top market value" }
+    ],
+    onSelect: function (a) {
+      document.getElementById("ex1pick").textContent = "onSelect fired: " + a.label + " (" + a.value.toLocaleString() + ")";
+    }
+  });
+  zbValueSlider(document.getElementById("ex2"), {
+    anchors: [{ value: 340000, label: "Cash offer" }]
+  });
+  zbValueSlider(document.getElementById("ex3"), {
+    anchors: [
+      { value: 214000, label: "Trade-in" },
+      { value: 251000, label: "Certified listing" }
+    ],
+    colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46", track: "#E8EFE9", dot: "#6E9B7F" }
+  });
+</script>
+</body>
+</html>

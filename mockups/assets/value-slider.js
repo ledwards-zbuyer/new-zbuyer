@@ -95,7 +95,8 @@
       .sort(function (a, b) { return a.value - b.value; });
     if (!anchors.length) throw new Error("zbValueSlider: supply 1-6 anchors");
     var fmt = opts.format || fmtDefault;
-    var single = anchors.length === 1;
+    // one anchor — or all anchors sharing one value — renders the static display
+    var single = anchors.length === 1 || anchors[anchors.length - 1].value === anchors[0].value;
     var id = ++uid;
 
     injectCSS();
