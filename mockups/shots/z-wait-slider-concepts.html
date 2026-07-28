@@ -90,9 +90,10 @@
 
   <section class="card" id="o3">
     <h2>C · The missing anchor</h2>
-    <p class="desc">Data-native, now with an unmistakable pending state: the fill dims under a
-      scrim and the chart says <i>Awaiting your cash offer… usually arrives in under a
-      minute</i>, with the handle hidden until there's something to drag. The marching dashed
+    <p class="desc">Data-native, with an unmistakable pending state: the fill dims under a scrim
+      and a quiet ticker crawls along the chart's bottom-right — <i>Awaiting your cash offer —
+      usually arrives in under a minute</i> — in the same voice as the landing label, fading at
+      the band edges. Handle hidden until there's something to drag. The marching dashed
       preview of the future two-anchor curve stays, with a pulsing dot where the offer will land
       and the Z mark hovering over that spot. The arrival is fully animated: the scrim lifts,
       the mark dives to its spot, the live chart sinks into the dashed outline, and only then do
@@ -277,17 +278,27 @@ function buildGhost(card, mount){
   var label = svgE('text', {x: xo + 12, y: yO - 5, fill: '#FFFFFF', opacity: .85}, gTop);
   label.style.font = '600 10.5px Inter,system-ui,sans-serif';
   label.textContent = 'your offer lands here';
-  // the centered wait message — the loudest signal that this chart is waiting
-  var msg1 = svgE('text', {x: W / 2, y: EXT + 21, fill: '#FFFFFF', 'text-anchor': 'middle',
-    stroke: '#0E1B33', 'stroke-width': 3}, gTop);
-  msg1.style.cssText = 'font:700 13px Inter,system-ui,sans-serif;paint-order:stroke';
-  msg1.textContent = 'Awaiting your cash offer';
-  var dots = svgE('tspan', {}, msg1);
-  dots.textContent = '…';
-  var msg2 = svgE('text', {x: W / 2, y: EXT + 38, fill: '#FFFFFF', 'text-anchor': 'middle',
-    opacity: .85, stroke: '#0E1B33', 'stroke-width': 3}, gTop);
-  msg2.style.cssText = 'font:500 10.5px Inter,system-ui,sans-serif;paint-order:stroke';
-  msg2.textContent = 'Usually arrives in under a minute';
+  // wait message: a quiet ticker in the bottom-right band (right of where
+  // the handle sits) — same voice as the landing label, no halo, no shout.
+  // A gradient mask fades the text at the band edges instead of hard-clipping.
+  var mx0 = W * .52, mx1 = W - 4, bandW = mx1 - mx0;
+  var mid = ++uid;
+  var mdefs = svgE('defs', {}, svg);
+  var mgrad = svgE('linearGradient', {id: 'zvmg' + mid, gradientUnits: 'userSpaceOnUse',
+    x1: mx0, y1: 0, x2: mx1, y2: 0}, mdefs);
+  [[0, '#000'], [.08, '#fff'], [.92, '#fff'], [1, '#000']].forEach(function(s){
+    svgE('stop', {offset: s[0], 'stop-color': s[1]}, mgrad);
+  });
+  svgE('rect', {x: mx0, y: EXT + 40, width: bandW, height: 16, fill: 'url(#zvmg' + mid + ')'},
+    svgE('mask', {id: 'zvmm' + mid}, mdefs));
+  var mq = svgE('g', {mask: 'url(#zvmm' + mid + ')'}, gTop);
+  var mts = [0, 1].map(function(){ // two copies = seamless loop, no dead air
+    var tx = svgE('text', {x: mx0 + 8, y: EXT + 51, fill: '#FFFFFF', opacity: .85}, mq);
+    tx.style.font = '600 10.5px Inter,system-ui,sans-serif';
+    tx.textContent = 'Awaiting your cash offer — usually arrives in under a minute';
+    return tx;
+  });
+  var mper = mts[0].getComputedTextLength() + 70;
   var piece = svgE('g', {}, gTop); // monochrome mini Z hovering over the spot
   svgE('polygon', {points: PW, fill: '#3BA4F4'}, piece);
   svgE('polygon', {points: PB, fill: '#3BA4F4'}, piece);
@@ -300,7 +311,9 @@ function buildGhost(card, mount){
   place(0);
   function frame(t){
     place(2.8 * Math.sin(t * 2.4));
-    dots.textContent = '...'.slice(0, 1 + Math.floor(t * 1.6) % 3);
+    var off = (t * 30) % mper; // gentle right-to-left crawl
+    mts[0].setAttribute('x', mx1 - off);
+    mts[1].setAttribute('x', mx1 - off + mper);
   }
   /* animated arrival: morph the live widget's own path from the flat rect to
      the exact two-anchor curve (left side sinks into the dashed preview),
