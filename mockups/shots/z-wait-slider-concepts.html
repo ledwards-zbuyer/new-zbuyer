@@ -47,7 +47,7 @@
 <div class="page">
   <h1>Z wait on the value slider — 5 options</h1>
   <p class="note">Scenario: the report renders the value slider instantly with <b>one anchor</b>
-    (market value) — the flat, fully-filled chart. While Zoodealio prices the cash offer
+    (market value) — the flat, fully-filled chart. While the cash offer is priced
     (30–60s), the flat chart hosts the wait animation. When the offer lands, the widget
     re-renders as the real two-anchor range — <b>the payoff is the chart itself reshaping</b>.
     Live widget below in every card: hit <b>Offer arrives</b>, then drag the result.
@@ -66,7 +66,7 @@
       surface of the fill, a tinted keel below the waterline. Monochrome sky blue: the two
       triangles in one color read as a bold Z glyph anywhere. Something is moving through your
       number the whole wait.</p>
-    <div class="status"><span class="wait-copy ell">Zoodealio cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
+    <div class="status"><span class="wait-copy ell">Cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
     <div class="slider"></div>
     <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
   </section>
@@ -76,18 +76,20 @@
     <p class="desc">A translucent Z sweeps through the fill every few seconds like light passing
       through water — the branded version of a skeleton shimmer. Quietest option; adds nothing
       to the layout, just a sheen that happens to be the mark.</p>
-    <div class="status"><span class="wait-copy ell">Zoodealio cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
+    <div class="status"><span class="wait-copy ell">Cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
     <div class="slider"></div>
     <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
   </section>
 
   <section class="card" id="o3">
     <h2>C · The missing anchor</h2>
-    <p class="desc">Data-native: a marching dashed preview of the future two-anchor curve is
-      drawn onto the flat chart, with a pulsing ghost dot where the cash offer will land and the
-      Z mark hovering over that spot. The wait literally shows what's being computed — and the
-      arrival snaps the real curve into the dashed outline.</p>
-    <div class="status"><span class="wait-copy ell">Zoodealio cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
+    <p class="desc">Data-native, now with an unmistakable pending state: the fill dims under a
+      scrim and the chart says <i>Awaiting your cash offer… usually arrives in under a
+      minute</i>, with the handle hidden until there's something to drag. The marching dashed
+      preview of the future two-anchor curve stays, with a pulsing dot where the offer will land
+      and the Z mark hovering over that spot — the arrival snaps the real curve into the
+      outline.</p>
+    <div class="status"><span class="wait-copy ell">Cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
     <div class="slider"></div>
     <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
   </section>
@@ -97,7 +99,7 @@
     <p class="desc">A tiny locked Z zips along the flat top edge every ~3s with a soft glow —
       a data packet riding the wire, carrying your offer closer. Small, fast, periodic; the
       surface never looks idle.</p>
-    <div class="status"><span class="wait-copy ell">Zoodealio cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
+    <div class="status"><span class="wait-copy ell">Cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
     <div class="slider"></div>
     <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
   </section>
@@ -107,7 +109,7 @@
     <p class="desc">Deep in the fill, a large translucent Z slowly breathes — its halves drift
       apart and glide back together, flaring softly each time they lock. The handle hides during
       the wait (nothing to drag yet), so the mark owns the center. Most ambient option.</p>
-    <div class="status"><span class="wait-copy ell">Zoodealio cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
+    <div class="status"><span class="wait-copy ell">Cash offer inbound</span><span class="done-copy">&#10003; Cash offer received — range updated</span></div>
     <div class="slider"></div>
     <div class="controls"><button class="btn go">Offer arrives</button><button class="btn ghost reset">Reset</button></div>
   </section>
@@ -233,23 +235,37 @@ function buildGlint(card, mount){
    piece. Geometry mirrors value-slider.js: PAD 5%, offer at the 8px value
    floor (curve top y=49), market at full height (y=0), flat-tangent bezier */
 function buildGhost(card, mount){
+  card.classList.add('nohandle'); // nothing to drag until the offer lands
   var EXT = 26, S = .22;
   var svg = makeOverlay(mount, EXT, 3), W = svg.clientWidth;
   var xo = .05 * W, xm = .95 * W, dxT = (xm - xo) / 2.2;
   var yO = EXT + 49, yM = EXT;
+  // pending scrim: dims the fill so the chart clearly isn't final yet
+  svgE('rect', {x: 0, y: EXT, width: W, height: 57, fill: '#0E1B33', opacity: .3}, svg);
   svgE('path', {
     d: 'M0 ' + yO + ' L' + xo + ' ' + yO +
        ' C' + (xo + dxT) + ' ' + yO + ' ' + (xm - dxT) + ' ' + yM + ' ' + xm + ' ' + yM +
        ' L' + W + ' ' + yM,
-    fill: 'none', stroke: '#FFFFFF', 'stroke-width': 2, opacity: .75,
+    fill: 'none', stroke: '#FFFFFF', 'stroke-width': 2, opacity: .6,
     'stroke-dasharray': '5 6', 'class': 'march'
   }, svg);
-  svgE('line', {x1: xo, y1: EXT, x2: xo, y2: yO - 6, stroke: '#24466E',
-    'stroke-width': 1.5, 'stroke-dasharray': '3 5', opacity: .55}, svg);
-  svgE('circle', {cx: xo, cy: yO, r: 4.5, fill: '#24466E', 'class': 'gpulse'}, svg);
-  var label = svgE('text', {x: xo + 12, y: yO - 5, fill: '#24466E', opacity: .85}, svg);
+  svgE('line', {x1: xo, y1: EXT, x2: xo, y2: yO - 6, stroke: '#FFFFFF',
+    'stroke-width': 1.5, 'stroke-dasharray': '3 5', opacity: .5}, svg);
+  svgE('circle', {cx: xo, cy: yO, r: 4.5, fill: '#FFFFFF', 'class': 'gpulse'}, svg);
+  var label = svgE('text', {x: xo + 12, y: yO - 5, fill: '#FFFFFF', opacity: .85}, svg);
   label.style.font = '600 10.5px Inter,system-ui,sans-serif';
-  label.textContent = 'your cash offer';
+  label.textContent = 'your offer lands here';
+  // the centered wait message — the loudest signal that this chart is waiting
+  var msg1 = svgE('text', {x: W / 2, y: EXT + 21, fill: '#FFFFFF', 'text-anchor': 'middle',
+    stroke: '#0E1B33', 'stroke-width': 3}, svg);
+  msg1.style.cssText = 'font:700 13px Inter,system-ui,sans-serif;paint-order:stroke';
+  msg1.textContent = 'Awaiting your cash offer';
+  var dots = svgE('tspan', {}, msg1);
+  dots.textContent = '…';
+  var msg2 = svgE('text', {x: W / 2, y: EXT + 38, fill: '#FFFFFF', 'text-anchor': 'middle',
+    opacity: .85, stroke: '#0E1B33', 'stroke-width': 3}, svg);
+  msg2.style.cssText = 'font:500 10.5px Inter,system-ui,sans-serif;paint-order:stroke';
+  msg2.textContent = 'Usually arrives in under a minute';
   var piece = svgE('g', {}, svg); // monochrome mini Z hovering over the spot
   svgE('polygon', {points: PW, fill: '#3BA4F4'}, piece);
   svgE('polygon', {points: PB, fill: '#3BA4F4'}, piece);
@@ -258,7 +274,10 @@ function buildGhost(card, mount){
     piece.setAttribute('transform', 'translate(' + (xo - 100 * S) + ' ' + (yB + bob) + ') scale(' + S + ')');
   }
   place(0);
-  return function(t){ place(2.8 * Math.sin(t * 2.4)); };
+  return function(t){
+    place(2.8 * Math.sin(t * 2.4));
+    dots.textContent = '...'.slice(0, 1 + Math.floor(t * 1.6) % 3);
+  };
 }
 
 /* ---- D · the messenger: mini locked Z rides the top edge, periodic ---- */
