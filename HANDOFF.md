@@ -360,6 +360,13 @@ load) while values and home stats remain static demo data. The old
 - **Structure:** masthead (title, address, facts, photo) → expert slot **above the
   fold** → value module → property details + net-equity cards → value-history chart
   (inline SVG, 5y/10y toggle) → minimal footer.
+- **Report palette retoned (2026-07-27):** the page's tokens moved from the funnel's
+  bright royal + orange to a quiet slate-navy family (--c1 #2C4A73, --acc #7E9CC4,
+  --cta #24466E, hover #1A3455, tint #E9EEF6; value-curve fill #B7C9E0→#44689A;
+  notice bar slate on #F3F6FA). Cards stay white; only color values changed, and
+  everything routes through :root tokens. NOTE: design-guide.html still documents
+  the OLD report colors — per the guide's own contract the pages win, but the guide
+  needs a sync pass if this palette sticks.
 - **`?values=` param — three value-display strategies** (default `combined`):
   - `combined` — one wide range ($312K–$371K demo) drawn as an INTERACTIVE slider
     (2026-07-07; track redrawn 2026-07-27): the track is a VALUE CURVE — a JS-built

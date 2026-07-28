@@ -14,11 +14,15 @@
    *   ?values=combined|options|spectrum  — value-display strategy (default combined)
    *   ?terms=exclusive|maxsold           — one expert vs 6-buyer carousel (default exclusive)
    * Demo data throughout; compare-report.html is the team jump page. */
+  /* Report palette (2026-07-27): retoned from the funnel's bright royal +
+     orange to a quiet slate-navy family — this page is serious business
+     about someone's most prized possession. Cards stay white; only color
+     values changed, all routed through these tokens. */
   :root{
-    --c1:#1D4FD7;--c1d:#1640A8;--navy:#0E1B33;--navy-dd:#0A1426;
-    --acc:#3BA4F4;--cta:#FF6B4A;--cta-d:#F0572F;
+    --c1:#2C4A73;--c1d:#223A5C;--navy:#0E1B33;--navy-dd:#0A1426;
+    --acc:#7E9CC4;--cta:#24466E;--cta-d:#1A3455;
     --ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;--bg:#FFFFFF;
-    --tint:#E7EEFC;--tintink:#1D4FD7;
+    --tint:#E9EEF6;--tintink:#2C4A73;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);
@@ -47,13 +51,13 @@
                 box-shadow:0 0 0 4px rgba(59,164,244,.22)}
 
   /* "Access anytime" texted-report notice + phone-update modal */
-  .notice{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#FFF4F0;border:2px solid var(--cta);border-radius:14px;padding:13px 44px 13px 16px;font-size:14px;line-height:1.45;box-shadow:0 8px 22px -12px rgba(240,87,47,.45)}
+  .notice{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#F3F6FA;border:2px solid var(--cta);border-radius:14px;padding:13px 44px 13px 16px;font-size:14px;line-height:1.45;box-shadow:0 8px 22px -12px rgba(24,44,74,.3)}
   .notice[hidden]{display:none}
   .notice .nico{flex:none;width:30px;height:30px;border-radius:50%;background:var(--cta);color:#fff;display:flex;align-items:center;justify-content:center}
   .notice b{font-weight:800}
   .notice .nphone{font-weight:800;color:var(--ink)}
   .notice .nupd{border:none;background:none;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--c1);text-decoration:underline;cursor:pointer;padding:0;margin-left:auto}
-  .notice .nclose{position:absolute;top:4px;right:8px;border:none;background:none;font-size:22px;line-height:1;color:#c9856d;cursor:pointer;padding:4px}
+  .notice .nclose{position:absolute;top:4px;right:8px;border:none;background:none;font-size:22px;line-height:1;color:#8CA0BC;cursor:pointer;padding:4px}
   .notice .nclose:hover{color:var(--cta-d)}
   .pmodal{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:20px}
   .pmodal[hidden]{display:none}
@@ -549,8 +553,8 @@
   d += " L1000 " + pts[pts.length - 1][1] + " L1000 " + CURVE_H + " Z";
   var defs = svgEl("defs", {}, svg);
   var grad = svgEl("linearGradient", { id: "vsGrad", x1: 0, y1: 0, x2: 500, y2: 0, gradientUnits: "userSpaceOnUse" }, defs);
-  svgEl("stop", { offset: 0, "stop-color": "#7FC4FF" }, grad);
-  svgEl("stop", { offset: 1, "stop-color": "#1D4FD7" }, grad);
+  svgEl("stop", { offset: 0, "stop-color": "#B7C9E0" }, grad);
+  svgEl("stop", { offset: 1, "stop-color": "#44689A" }, grad);
   var clip = svgEl("clipPath", { id: "vsClip" }, defs);
   var clipRect = svgEl("rect", { x: 0, y: 0, width: 500, height: CURVE_H }, clip);
   svgEl("path", { d: d, fill: "#E4EAF3" }, svg);

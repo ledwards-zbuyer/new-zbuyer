@@ -1614,3 +1614,15 @@ labels: touch-ups / Some / Several / Major / A full remodel. The level's label n
 rides beside the hammers inside the existing 20px icons row (blue 12px, weight 600) —
 zero added height — and the axis keeps "none" / "a full remodel" at the edges. Level
 0 stays the clean lone star.
+
+**Lucas:** change the colors on the report page to something else. it looks too
+sporty and spunky. this is serious business about someone's most prized possession.
+just talking colors — container background should still be white — don't go crazy
+
+**Claude:** Report retoned to a quiet slate-navy family: primary #1D4FD7 → #2C4A73,
+accent #3BA4F4 → #7E9CC4, CTA orange → deep navy #24466E (hover #1A3455), tint cooled,
+notice bar from peach/orange alert to slate on #F3F6FA, value-curve fill now
+#B7C9E0→#44689A with the handle in the darker navy so it still stands off the fill.
+All via the page's :root tokens; cards stay white; layout untouched. Flagged in
+HANDOFF: design-guide.html still shows the old report colors and needs a sync pass if
+this sticks.
