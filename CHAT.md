@@ -1486,3 +1486,15 @@ confirmshaming nit — the new one is a plain factual decline.)
 **Lucas:** instead of "Check your value anytime." use "Check anytime."
 
 **Claude:** Done — "Check anytime. We'll text the link."
+
+**Lucas:** give me some other intros for the main terms besides "I agree to receive
+calls, texts, and emails..." — "by clicking" is taken by the line below the box...
+maybe "by checking here..."? there have to be other standard options without pushing
+legal boundaries
+
+**Claude:** Offered four standard shapes with previews: "By checking this box, I
+agree to receive…" (industry standard), "By checking this box, I give … my express
+written consent to contact me…", "I authorize … to contact me…", and "I consent to
+receive…". Lucas picked the first; the inline consent now opens "By checking this
+box, I agree to receive calls, texts, and emails from zBuyer and [pros]…" — five
+words of horizontal space before the recipients, no legal substance changed.
