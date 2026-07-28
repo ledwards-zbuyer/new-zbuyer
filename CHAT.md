@@ -1661,6 +1661,16 @@ the dial at the default stop.
 
 **Claude:** Done — "Text my Report →" on both pages, matching the other step CTAs.
 
+**Lucas:** on the Access your report anytime step, should it be clearer that they
+will be able to view the report on the following steps? Maybe "Next Step: View"
+nah... i don't like that very much... am i overthinking it?
+
+**Claude:** Mostly overthinking — the one real anxiety is that declining might read
+as losing the report, and the cheapest fix would be rewording the decline link to
+"No thanks, just show my report" (the escape hatch itself says the report still
+comes). Offered that, a reassurance sentence, or leaving it. **Decision: leave it
+alone** — the next step's "View my Report →" resolves any doubt within seconds.
+
 **Lucas:** change the colors on the report page to something else. it looks too
 sporty and spunky. this is serious business about someone's most prized possession.
 just talking colors — container background should still be white — don't go crazy
