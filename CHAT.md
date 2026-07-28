@@ -1650,6 +1650,13 @@ gets the pop instead: muted brass #C49238 (white border kept) — the classic ac
 against slate navy, clearly visible over both the fill and the track without
 reintroducing the orange.
 
+**Lucas:** the repair slider's background graph needs a thicker baseline — at default
+the handle almost looks like it's off the bg chart
+
+**Claude:** Same fix as the report curve: the wedge is a trapezoid now, not a
+triangle — clip-path gains a ~7px left edge (0 78%) so the chart visibly runs under
+the dial at the default stop.
+
 **Lucas:** change the colors on the report page to something else. it looks too
 sporty and spunky. this is serious business about someone's most prized possession.
 just talking colors — container background should still be white — don't go crazy
