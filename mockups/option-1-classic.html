@@ -171,10 +171,11 @@
   .lm-dial{position:absolute;top:4px;left:0;width:16px;height:44px;border-radius:9px;background:var(--c1);border:3px solid #fff;box-shadow:0 3px 12px rgba(20,35,61,.4);pointer-events:none}
   .lm-wedge input:focus-visible ~ .lm-dial{box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 12px rgba(20,35,61,.4)}
   .lm-axis{display:flex;justify-content:space-between;color:#9ba8bb;font-size:11px;margin-top:7px;padding:0 22px}
-  .lm-slider-icons{position:relative;display:flex;justify-content:center;align-items:center;gap:6px;margin-top:5px;min-height:20px;color:var(--c1)}
-  /* hammers stay dead-center; the label is pinned right so nothing jumps
-     around as the count changes */
-  .lm-slider-label{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:600;color:var(--c1);line-height:1;white-space:nowrap}
+  .lm-slider-icons{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:5px;min-height:20px;color:var(--c1)}
+  /* the LEFT axis text is live: hammer-blue "none" at rest, then the
+     current level's label; at max it hides and the right edge lights up
+     (bold + color, so the highlight survives colorblindness) */
+  .lm-axis .on{color:var(--c1);font-weight:700}
   .lm-slider-icons.zero{color:#9ba8bb}
   .lm-slider-icons.zero svg{animation:lmTwinkle 1.8s ease-in-out infinite}
   @keyframes lmTwinkle{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.14) rotate(8deg);opacity:.82}}
@@ -628,7 +629,7 @@
               <input type="range" id="repairsSlider" min="0" max="20" step="1" value="0" aria-label="How many repairs does the home need?">
               <div class="lm-dial" id="repairsDial"></div>
             </div>
-            <div class="lm-axis"><span>none</span><span>a full remodel</span></div>
+            <div class="lm-axis"><span class="on" id="repairsLo">none</span><span id="repairsHi">a full remodel</span></div>
             <div class="lm-slider-icons zero" id="repairsVal"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#F5A623" d="M12 2.5l2.2 6.7L21 11.4l-6.8 2.2L12 20.3l-2.2-6.7L3 11.4l6.8-2.2z"/><path fill="#FFC957" d="M19.2 2l.8 2.3 2.3.8-2.3.8-.8 2.3-.8-2.3-2.3-.8 2.3-.8z"/><path fill="#FFD98A" d="M5.6 16.8l.6 1.7 1.7.6-1.7.6-.6 1.7-.6-1.7-1.7-.6 1.7-.6z"/></svg></div>
           </div>
         </div>

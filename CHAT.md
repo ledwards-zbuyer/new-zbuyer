@@ -1624,6 +1624,17 @@ is absolutely pinned to the row's right edge (right:16px, roughly under the axis
 full remodel"), so the text never moves as the count changes. Verified at desktop
 level 5 and mobile level 4 (longest labels, no overlap).
 
+**Lucas:** better idea: start with "none" highlighted the color of the hammers (i'm
+colorblind so i reference things), and instead of static, the "none" text changes to
+the repair level as you slide. if you reach "a full remodel", it highlights at
+hammer-color and the left text disappears — only at the far right.
+
+**Claude:** Built — the pinned label is gone; the LEFT axis text is live: "none" in
+bold hammer-blue at rest, then the level's label (lowercased to match the axis voice)
+as you slide, and at max it hides (visibility, so the right edge stays put) while "a
+full remodel" takes the bold-blue highlight. Bold + color together so the highlight
+reads regardless of color perception.
+
 **Lucas:** change the colors on the report page to something else. it looks too
 sporty and spunky. this is serious business about someone's most prized possession.
 just talking colors — container background should still be white — don't go crazy

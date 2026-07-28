@@ -325,15 +325,24 @@
     var repairsDial = document.getElementById("repairsDial");
     // The track has 21 positions (0-20) so dragging feels smooth; display
     // and data bucket into 6 levels: the sparkle is strictly ZERO, then
-    // hammers equal the level (1-5), each captioned with its label — the
-    // axis edges (none / a full remodel) define the scale's ends.
+    // hammers equal the level (1-5). The LEFT axis text is live — "none"
+    // in hammer blue at rest, then the level's label; at max it hides and
+    // the right edge ("a full remodel") takes the highlight instead.
     var repairLevel = function () { return Math.round(parseInt(repairsSlider.value, 10) / 4); };
+    var repairsLo = document.getElementById("repairsLo");
+    var repairsHi = document.getElementById("repairsHi");
     var paintWedge = function () {
       var v = parseInt(repairsSlider.value, 10);
       var frac = v / 20;
       var lvl = repairLevel();
-      repairsVal.innerHTML = lvl === 0 ? SPARKLE_SVG
-        : new Array(lvl + 1).join(HAMMER_SVG) + '<span class="lm-slider-label">' + REPAIR_LABELS[lvl] + "</span>";
+      repairsVal.innerHTML = lvl === 0 ? SPARKLE_SVG : new Array(lvl + 1).join(HAMMER_SVG);
+      if (repairsLo && repairsHi) {
+        var maxed = lvl === REPAIR_LABELS.length - 1;
+        // visibility (not display): space-between must keep the right edge put
+        repairsLo.style.visibility = maxed ? "hidden" : "visible";
+        repairsLo.textContent = lvl === 0 ? "none" : REPAIR_LABELS[lvl].toLowerCase();
+        repairsHi.classList.toggle("on", maxed);
+      }
       repairsVal.classList.toggle("zero", lvl === 0);
       repairsSlider.setAttribute("aria-valuetext", REPAIR_LABELS[lvl]);
       // Our own dial (the native thumb is invisible — iOS ignores custom
