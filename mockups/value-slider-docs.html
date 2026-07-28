@@ -81,7 +81,7 @@
   zbValueSlider(document.getElementById("mySlider"), {
     anchors: [
       { value: 312000, label: "Quick cash close" },
-      { value: 371000, label: "Top market value" }
+      { value: 371000, label: "Estimated market value" }
     ],
     onSelect: function (anchor, index) {
       console.log("picked:", anchor.value, anchor.label);
@@ -142,6 +142,10 @@
           <td>Render the big number/range above the track (auto-fits to one line; the snapped
           anchor's label renders in smaller type beneath). Set <code>false</code> if your
           page already has its own headline — use <code>onSelect</code> to update it.</td></tr>
+      <tr><td><code>rangeLabel</code></td><td>string, <code>"Complete home value range"</code></td>
+          <td>The sub-label under the headline while it still shows the untouched full
+          range; anchor labels take over once the user snaps. Pass <code>""</code> to
+          hide it.</td></tr>
       <tr><td><code>endLabels</code></td><td>boolean, <code>true</code></td>
           <td>Min and max values + labels under the track ends. Never shown in
           single-value mode.</td></tr>
@@ -193,7 +197,7 @@ slider.destroy();    // empty the container</code></pre>
         cursor:pointer">&#8635; Replay the wait &rarr; arrival</button></p>
     </div>
 <pre><code>zbValueSlider(el, {
-  anchors: [{ value: 371000, label: "Top market value" }],
+  anchors: [{ value: 371000, label: "Estimated market value" }],
   pending: {
     // demo stand-in for the API; in production omit `demo` and call
     // slider.deliver({ value, label }) when the offer response lands
@@ -250,7 +254,7 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
     anchors: [
       { value: 312000, label: "Quick cash close" },
       { value: 345000, label: "Cash+" },
-      { value: 371000, label: "Top market value" }
+      { value: 371000, label: "Estimated market value" }
     ],
     onSelect: function (a) {
       document.getElementById("ex1pick").textContent = "onSelect fired: " + a.label + " (" + a.value.toLocaleString() + ")";
@@ -263,7 +267,7 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
     var el = document.getElementById("ex5");
     el.innerHTML = "";
     zbValueSlider(el, {
-      anchors: [{ value: 371000, label: "Top market value" }],
+      anchors: [{ value: 371000, label: "Estimated market value" }],
       pending: { demo: { value: 312000, label: "Quick cash close", delay: 5000 } }
     });
   }

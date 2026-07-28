@@ -10,10 +10,13 @@
  *       anchors: [                        // 1-6 entries; sorted by value
  *         { value: 312000, label: "Quick cash close" },
  *         { value: 345000, label: "Cash+" },
- *         { value: 371000, label: "Top market value" }
+ *         { value: 371000, label: "Estimated market value" }
  *       ],
  *       format:   function (v) { ... },   // optional; default $1,234,567
  *       headline: true,                   // big number/range above the track
+ *       rangeLabel: "Complete home value range", // sub-label while the headline
+ *                                         // shows the untouched full range
+ *                                         // (default shown; "" hides it)
  *       endLabels: true,                  // min/max labels under the track
  *       onSelect: function (anchor, index) { ... }, // fires on every snap
  *       colors: {                         // optional; all keys optional
@@ -139,6 +142,9 @@
       .sort(function (a, b) { return a.value - b.value; });
     if (!anchors.length) throw new Error("zbValueSlider: supply 1-6 anchors");
     var fmt = opts.format || fmtDefault;
+    // sub-label under the untouched full-range headline (anchor labels take
+    // over once the user snaps somewhere)
+    var rangeLabel = opts.rangeLabel !== undefined ? opts.rangeLabel : "Complete home value range";
     // one anchor — or all anchors sharing one value — renders the static display
     var single = anchors.length === 1 || anchors[anchors.length - 1].value === anchors[0].value;
     var id = ++uid;
@@ -260,7 +266,7 @@
     } else {
       handle.style.left = "50%";
       handle.setAttribute("aria-valuetext", fmt(vmin) + " to " + fmt(vmax));
-      setHeadline(fmt(vmin) + " – " + fmt(vmax));
+      setHeadline(fmt(vmin) + " – " + fmt(vmax), rangeLabel);
       paintCurve(50);
 
       var dragging = false;
@@ -436,7 +442,7 @@
             headlineEl.style.opacity = "0";
             setTimeout(function () {
               var lo = Math.min(anchors[0].value, +a.value), hi = Math.max(anchors[0].value, +a.value);
-              setHeadline(fmt(lo) + " – " + fmt(hi));
+              setHeadline(fmt(lo) + " – " + fmt(hi), rangeLabel);
               headlineEl.style.opacity = "1";
             }, 170);
           }

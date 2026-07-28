@@ -1698,3 +1698,28 @@ this sticks.
 colors are now the slate-navy set (handle #24466E, fill #B7C9E0→#44689A; track/dots
 unchanged), the docs state the defaults explicitly in the theming section, and the
 intro's "orange handle" wording is gone. Custom colors/CSS vars still override.
+
+*(Parallel session, 2026-07-28: the slate-navy report retone was reverted to the
+classic-blue funnel palette — widget defaults and docs synced back — and
+zbValueSlider grew the pending-offer mode: single-anchor wait state with scrim,
+marching dashed preview, ticker, bobbing Z, and an animated deliver() arrival that
+re-renders into the live range slider. Prototype at shots/z-wait-slider-concepts.html;
+details in HANDOFF.)*
+
+**Lucas:** when the slider defaults to a range, make the label (underneath) read
+"Complete home value range" (capitalized like the other labels). Also, add this to
+the report (classic blue) and make it do the animation on the slider. *(mid-build:)*
+also change the label "Top market value" to "Estimated market value"
+
+**Claude:** Widget: new rangeLabel option (default "Complete home value range") fills
+the headline's sub-line whenever the untouched full range is showing — the initial
+render and the post-arrival crossfade both pass it; anchor labels still take over on
+snap. Report: the bespoke inline slider is deleted — #vSlider now runs the portable
+widget in pending-offer mode ($371K "Estimated market value" waits under the
+scrim/ticker/Z, the demo delivers $312K "Quick cash close" at 4s with the animated
+arrival; ?snap=0-1 re-wired through pending.onDeliver; ticker copy dash-free). "Top
+market value" became "Estimated market value" across the report, demo, and docs;
+docs also document rangeLabel. Headless gotcha found while verifying: the pending
+rAF loop starves --virtual-time-budget (the demo timer only fires as the budget
+dies), so delivered-state screenshots need --force-prefers-reduced-motion — noted
+in HANDOFF.

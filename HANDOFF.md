@@ -368,35 +368,29 @@ load) while values and home stats remain static demo data. The old
   defaults + value-slider-docs.html were synced back to this palette at the same
   time. design-guide.html is consistent again (it never documented the retone).
 - **`?values=` param — three value-display strategies** (default `combined`):
-  - `combined` — one wide range ($312K–$371K demo) drawn as an INTERACTIVE slider
-    (2026-07-07; track redrawn 2026-07-27): the track is a VALUE CURVE — a JS-built
-    SVG area chart (repairs-wedge family) whose height tracks the anchor values,
-    with the anchor SPAN as the full track height (min value = baseline, max = 57px
-    — auto-zoom so any range renders a meaningful rise; scaling from $0 would
-    flatten it to a sliver), flat-tangent beziers between anchors (rounded, not
-    connect-the-dots),
-    blue gradient filled to the handle (deepest blue rides the handle) and gray
-    beyond. NOTE: the anchor x-positions were themselves derived from the values, so
-    the faithful curve is inherently near-linear — the waviness at the dots is the
-    flat-tangent smoothing. ALL FOUR stopping points get unlabeled dots (muted slate
-    #8296B9 + white ring; DOM, not SVG — the stretched viewBox would squash circles)
-    riding the curve's top edge. The orange pill handle (74px, taller than the
-    curve's 57px peak, resting low so its rounded tip drops below the baseline)
-    drags freely and snaps to the nearest of the four
-    anchors on release; ONLY then does the big headline swap from the full range to
-    the snapped anchor's value. Keyboard arrows step between anchors; `?snap=0-3`
-    presets it for screenshots. Values labeled at the ends only. Most
-    member-protective at rest: interior offers are positions, not numbers, until the
-    user chooses to explore.
-    **Portable extraction (2026-07-27):** `mockups/assets/value-slider.js` —
+  - `combined` — NOW POWERED BY THE PORTABLE WIDGET (2026-07-28): the bespoke inline
+    slider was deleted and `#vSlider` is initialized from `assets/value-slider.js`
+    in PENDING-OFFER mode — the $371K "Estimated market value" (renamed from "Top
+    market value", here and in the spectrum module / demo / docs) shows immediately
+    under the wait overlay (scrim, marching dashed preview, ticker "Awaiting your
+    cash offer. Usually arrives in under a minute.", bobbing Z), then the demo
+    delivers the $312K "Quick cash close" after 4s with the animated arrival and
+    the module re-renders as the live two-anchor range slider. The untouched range
+    headline carries the new default sub-label **"Complete home value range"**
+    (widget option `rangeLabel`). `?snap=0-1` presets the post-arrival snap (wired
+    via `pending.onDeliver`). NOTE: the demo range is now 2 anchors — the Cash+
+    interior dots only exist where a caller passes them.
+    **Portable widget:** `mockups/assets/value-slider.js` —
     dependency-free `zbValueSlider(container, {anchors: 1-6 [{value,label}], format,
-    headline, endLabels, onSelect})`, styles self-inject, themeable via `--zvs-*`
-    CSS vars or a script `colors` option (script wins); ONE anchor — or all anchors
-    sharing a value — locks a centered handle over a full-height filled chart, no
-    end labels. Demo: `mockups/value-slider-demo.html`; developer guide (quick
-    start, options table, theming, gotchas): `mockups/value-slider-docs.html`.
-    Built to hand to other teams — the report page keeps its own inline copy, so
-    sync manually if the design evolves.
+    headline, rangeLabel, endLabels, onSelect, pending, colors})`, styles
+    self-inject, themeable via `--zvs-*` CSS vars or the `colors` option (script
+    wins); ONE anchor — or all anchors sharing a value — locks a centered handle
+    over a full-height filled chart, no end labels. Demo:
+    `mockups/value-slider-demo.html`; developer guide: `mockups/value-slider-docs.html`.
+    **Headless gotcha:** the pending state's infinite rAF loop starves
+    `--virtual-time-budget` (frames eat the budget; the demo timer only fires at
+    budget end), so screenshot the delivered state with
+    `--force-prefers-reduced-motion` (reduced motion delivers instantly).
   - `options` — a range per path (Cash / Cash+ featured / List), expert as
     tie-breaker CTA. Exposes the Cash+ number.
   - `spectrum` — all paths as interval bars on one Speed ⟷ Price axis; the geometry

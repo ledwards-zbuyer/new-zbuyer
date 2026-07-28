@@ -76,7 +76,7 @@
   var slider = zbValueSlider(document.getElementById("mySlider"), {
     anchors: [                        // 1-6 entries; sorted by value for you
       { value: 312000, label: "Quick cash close" },
-      { value: 371000, label: "Top market value" }
+      { value: 371000, label: "Estimated market value" }
     ],
     format:   function (v) { return "$" + v.toLocaleString(); }, // optional
     headline: true,                   // big number/range above the track
@@ -99,7 +99,7 @@
       { value: 312000, label: "Quick cash close" },
       { value: 345000, label: "Cash+" },
       { value: 355000, label: "Cash+ with repairs" },
-      { value: 371000, label: "Top market value" }
+      { value: 371000, label: "Estimated market value" }
     ],
     onSelect: function (a) {
       document.getElementById("s4pick").textContent = "picked: " + a.label;
@@ -112,13 +112,13 @@
       { value: 330000, label: "Cash, flexible close" },
       { value: 345000, label: "Cash+" },
       { value: 355000, label: "Cash+ with repairs" },
-      { value: 371000, label: "Top market value" }
+      { value: 371000, label: "Estimated market value" }
     ]
   });
   zbValueSlider(document.getElementById("s2"), {
     anchors: [
       { value: 312000, label: "Quick cash close" },
-      { value: 371000, label: "Top market value" }
+      { value: 371000, label: "Estimated market value" }
     ]
   });
   zbValueSlider(document.getElementById("s1"), {

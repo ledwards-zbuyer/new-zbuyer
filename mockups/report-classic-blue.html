@@ -120,30 +120,9 @@
   .vask{display:block;text-align:center;font-size:14.5px;font-weight:700;color:var(--c1);margin-top:12px}
   .vask:hover{text-decoration:underline}
 
-  /* combined: value-curve slider (same family as the funnel's repairs
-     wedge) — the track is an area chart whose height tracks the anchor
-     VALUES, normalized to the $312K-$371K span (zoomed so the range reads),
-     smoothed with flat-tangent beziers so it's a curve, not connect-the-
-     dots. Blue gradient fills up to the handle, gray beyond; unlabeled
-     anchor dots ride the curve's top edge (title tooltips only); values
-     are labeled at the ends only. The SVG is built in JS from ANCHORS. */
-  .vrange{font-size:38px;font-weight:800;letter-spacing:-.03em;margin-top:10px;text-align:center}
-  .vslide{position:relative;height:96px;margin:14px 2px 2px}
-  .vs-curve{position:absolute;left:0;right:0;bottom:8px;width:100%;height:57px;display:block}
-  /* muted slate + white ring: reads over both the gray track and the blue fill */
-  .vs-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#8296B9;border:2px solid #fff;box-shadow:0 1px 3px rgba(14,27,51,.3);transform:translate(-50%,-50%);pointer-events:none}
-  .vslide{cursor:pointer;touch-action:none}
-  /* handle crests ABOVE the curve's tallest point (74px vs 57px) and rests
-     LOW — its rounded bottom tip drops below the curve's baseline */
-  .vs-handle{position:absolute;top:59%;width:26px;height:74px;border-radius:13px;background:var(--cta);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);transform:translate(-50%,-50%);cursor:grab;z-index:2}
-  /* grip ridges — reads as "grab me" at a glance */
-  .vs-handle::before{content:"";position:absolute;left:50%;top:50%;width:8px;height:22px;transform:translate(-50%,-50%);border-left:2px solid rgba(255,255,255,.8);border-right:2px solid rgba(255,255,255,.8)}
-  .vs-handle.snap{transition:left .18s ease}
-  .vs-handle:focus-visible{outline:none;box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 10px rgba(14,27,51,.4)}
-  .vs-ends{display:flex;justify-content:space-between;gap:14px;margin-top:10px}
-  .vs-end b{display:block;font-size:15px;font-weight:800;color:var(--ink)}
-  .vs-end span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
-  .vs-end.right{text-align:right}
+  /* combined: the slider is the portable widget (assets/value-slider.js) —
+     it injects its own styles; the module init lives near the bottom. */
+  #vSlider{margin-top:10px}
   .vpoles{display:flex;justify-content:space-between;gap:14px;margin-top:12px}
   .vpole{max-width:46%}
   .vpole b{display:block;font-size:13.5px;font-weight:800;color:var(--ink)}
@@ -213,7 +192,6 @@
     .mast .addr{font-size:14px;margin-top:6px}
     .mast .facts{font-size:12px}
     .mast .photo{width:86px;height:86px;border-radius:12px}
-    .vrange{font-size:29px}
     .vnum{font-size:20px}
     .grid2{grid-template-columns:1fr}
     .facts-grid{grid-template-columns:repeat(2,1fr)}
@@ -296,18 +274,11 @@
 
   <section class="card vmod" id="vCombined" hidden>
     <div class="vhead"><span class="eyebrow">Your selling range</span></div>
-    <p class="vrange" id="vRangeVal">$312,000 &ndash; $371,000</p>
-    <!-- anchors: $312K quick cash close (5%) · $345K Cash+ (55.3%) ·
-         $355K Cash+ w/ repairs (70.6%) · $371K top market value (95%).
-         Positions: 5% + (v-312)/(371-312) * 90%. The curve, its gradient
-         fill, and the anchor dots are built by the slider script below. -->
-    <div class="vslide" id="vSlide">
-      <svg class="vs-curve" id="vsCurve" viewBox="0 0 1000 57" preserveAspectRatio="none" aria-hidden="true"></svg>
-    </div>
-    <div class="vs-ends">
-      <div class="vs-end"><b>$312,000</b><span>Quick cash close</span></div>
-      <div class="vs-end right"><b>$371,000</b><span>Top market value</span></div>
-    </div>
+    <!-- the portable value-curve slider (assets/value-slider.js) in
+         pending-offer mode: the estimated market value shows immediately,
+         the demo cash offer lands with the animated arrival, and the module
+         re-renders as the live range slider. Init script near the bottom. -->
+    <div id="vSlider"></div>
     <p class="vnote">This range reflects different ways to sell — it isn't an appraisal of your home. Where you land depends on the path you choose.</p>
     <a class="vask" href="tel:1234567890">Talk through your range with <span class="xName">Jason</span> &rarr;</a>
   </section>
@@ -357,7 +328,7 @@
       <div class="saxis"></div>
       <div class="vpoles">
         <div class="vpole"><b>Fastest sale</b><span>from $312,000</span></div>
-        <div class="vpole right"><b>Top market value</b><span>up to $371,000</span></div>
+        <div class="vpole right"><b>Estimated market value</b><span>up to $371,000</span></div>
       </div>
     </div>
     <p class="vnote">Every way to sell, on one line — the trade is speed for price, and where you land is your call.</p>
@@ -509,130 +480,26 @@
 <!-- Pulse pixel tracking: FinalizeLead (fired on the funnel's last step)
      returns raw HTML that must land in the thank-you page body. The lander
      stashes it in sessionStorage across the navigation; inject it here. -->
+<script src="assets/value-slider.js"></script>
 <script>
-/* Combined-range slider: the handle drags freely, snaps to the nearest
- * anchor on release, and only then does the headline swap from the full
- * range to the snapped anchor's value. ?snap=N (0-3) presets it (testing). */
+/* Combined module: the portable value-curve slider in pending-offer mode.
+ * The estimated market value shows immediately; the demo cash offer lands
+ * a few seconds later with the animated arrival, and the module re-renders
+ * as the live range slider (sub-label: Complete home value range).
+ * ?snap=N (0-1) presets the snapped anchor after the arrival (testing). */
 (function () {
-  var slide = document.getElementById("vSlide");
-  if (!slide) return;
-  var rangeEl = document.getElementById("vRangeVal");
-  var ANCHORS = [
-    { p: 5,    val: 312000, v: "$312,000", n: "Quick cash close" },
-    { p: 55.3, val: 345000, v: "$345,000", n: "Cash+" },
-    { p: 70.6, val: 355000, v: "$355,000", n: "Cash+ with repairs" },
-    { p: 95,   val: 371000, v: "$371,000", n: "Top market value" }
-  ];
-
-  // ---- value curve: the track is an area chart of the anchor values ----
-  // The anchor SPAN owns the track height (auto-zoom): the min value
-  // ($312K) sits on a thick H_MIN baseline — even the lowest option reads
-  // as VALUE, not as nothing — and the max ($371K) hits the full 57px, so
-  // ANY range renders a meaningful rise. Flat-tangent cubic beziers
-  // between anchors keep it monotone and rounded. viewBox x runs 0-1000
-  // (= percent * 10).
-  var CURVE_H = 57, H_MIN = 8, H_MAX = 57, SLIDE_H = 96, CURVE_BOTTOM = 8;
-  var svg = document.getElementById("vsCurve");
-  var NS = "http://www.w3.org/2000/svg";
-  var vmin = ANCHORS[0].val, vmax = ANCHORS[ANCHORS.length - 1].val;
-  function ay(a) { return CURVE_H - (H_MIN + (a.val - vmin) / (vmax - vmin) * (H_MAX - H_MIN)); }
-  function svgEl(n, attrs, parent) {
-    var e = document.createElementNS(NS, n);
-    for (var k in attrs) e.setAttribute(k, attrs[k]);
-    parent.appendChild(e);
-    return e;
-  }
-  var pts = ANCHORS.map(function (a) { return [a.p * 10, ay(a)]; });
-  var d = "M0 " + CURVE_H + " L0 " + pts[0][1] + " L" + pts[0][0] + " " + pts[0][1];
-  for (var s = 0; s < pts.length - 1; s++) {
-    var dx = (pts[s + 1][0] - pts[s][0]) / 2.2;
-    d += " C" + (pts[s][0] + dx) + " " + pts[s][1] + " " + (pts[s + 1][0] - dx) + " " + pts[s + 1][1] + " " + pts[s + 1][0] + " " + pts[s + 1][1];
-  }
-  d += " L1000 " + pts[pts.length - 1][1] + " L1000 " + CURVE_H + " Z";
-  var defs = svgEl("defs", {}, svg);
-  var grad = svgEl("linearGradient", { id: "vsGrad", x1: 0, y1: 0, x2: 500, y2: 0, gradientUnits: "userSpaceOnUse" }, defs);
-  svgEl("stop", { offset: 0, "stop-color": "#7FC4FF" }, grad);
-  svgEl("stop", { offset: 1, "stop-color": "#1D4FD7" }, grad);
-  var clip = svgEl("clipPath", { id: "vsClip" }, defs);
-  var clipRect = svgEl("rect", { x: 0, y: 0, width: 500, height: CURVE_H }, clip);
-  svgEl("path", { d: d, fill: "#E4EAF3" }, svg);
-  svgEl("path", { d: d, fill: "url(#vsGrad)", "clip-path": "url(#vsClip)" }, svg);
-  // every stopping point gets a dot riding the curve's top edge (DOM, not
-  // SVG — the stretched viewBox would squash circles; tooltips via title)
-  ANCHORS.forEach(function (a) {
-    var dot = document.createElement("span");
-    dot.className = "vs-dot";
-    dot.style.left = a.p + "%";
-    dot.style.top = (SLIDE_H - CURVE_BOTTOM - CURVE_H + ay(a)) + "px";
-    dot.title = a.n + " — " + a.v;
-    slide.appendChild(dot);
-  });
-  // Blue gradient fills the curve up to the handle; the deepest blue always
-  // sits at the handle (gradient x2 tracks the clip edge, like the funnel's
-  // repairs wedge).
-  function paintCurve(p) {
-    var w = Math.max(40, p * 10);
-    clipRect.setAttribute("width", w);
-    grad.setAttribute("x2", w);
-  }
-  paintCurve(50);
-
-  var handle = document.createElement("span");
-  handle.className = "vs-handle";
-  handle.tabIndex = 0;
-  handle.setAttribute("role", "slider");
-  handle.setAttribute("aria-label", "Explore your selling range");
-  handle.setAttribute("aria-valuetext", "$312,000 to $371,000");
-  handle.style.left = "50%";
-  slide.appendChild(handle);
-  var idx = -1; // untouched: headline keeps the full range
-  function snapTo(i) {
-    idx = Math.max(0, Math.min(ANCHORS.length - 1, i));
-    var a = ANCHORS[idx];
-    handle.classList.add("snap");
-    handle.style.left = a.p + "%";
-    paintCurve(a.p);
-    rangeEl.textContent = a.v;
-    handle.setAttribute("aria-valuetext", a.v + " — " + a.n);
-  }
-  function pctFromX(clientX) {
-    var r = slide.getBoundingClientRect();
-    return Math.max(5, Math.min(95, ((clientX - r.left) / r.width) * 100));
-  }
-  var dragging = false;
-  slide.addEventListener("pointerdown", function (e) {
-    dragging = true;
-    handle.classList.remove("snap"); // free movement while dragging
-    try { slide.setPointerCapture(e.pointerId); } catch (err) {}
-    var p0 = pctFromX(e.clientX);
-    handle.style.left = p0 + "%";
-    paintCurve(p0);
-    e.preventDefault();
-  });
-  slide.addEventListener("pointermove", function (e) {
-    if (!dragging) return;
-    var p = pctFromX(e.clientX);
-    handle.style.left = p + "%";
-    paintCurve(p);
-  });
-  function endDrag(e) {
-    if (!dragging) return;
-    dragging = false;
-    var p = pctFromX(e.clientX);
-    var best = 0;
-    ANCHORS.forEach(function (a, i) {
-      if (Math.abs(a.p - p) < Math.abs(ANCHORS[best].p - p)) best = i;
-    });
-    snapTo(best);
-  }
-  slide.addEventListener("pointerup", endDrag);
-  slide.addEventListener("pointercancel", endDrag);
-  handle.addEventListener("keydown", function (e) {
-    if (e.key === "ArrowRight" || e.key === "ArrowUp") { snapTo(idx < 0 ? 0 : idx + 1); e.preventDefault(); }
-    else if (e.key === "ArrowLeft" || e.key === "ArrowDown") { snapTo(idx < 0 ? 0 : idx - 1); e.preventDefault(); }
-  });
+  var el = document.getElementById("vSlider");
+  if (!el || document.getElementById("vCombined").hidden) return;
   var qs = new URLSearchParams(location.search).get("snap");
-  if (qs !== null) snapTo(parseInt(qs, 10));
+  zbValueSlider(el, {
+    anchors: [{ value: 371000, label: "Estimated market value" }],
+    ariaLabel: "Explore your selling range",
+    pending: {
+      ticker: "Awaiting your cash offer. Usually arrives in under a minute.",
+      demo: { value: 312000, label: "Quick cash close", delay: 4000 },
+      onDeliver: function (s) { if (qs !== null) s.snapTo(parseInt(qs, 10)); }
+    }
+  });
 })();
 </script>
 <div class="pmodal" id="phoneModal" hidden>
