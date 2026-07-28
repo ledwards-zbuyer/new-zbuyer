@@ -1482,3 +1482,7 @@ my report"
 
 **Claude:** Done on both pages. (Nice side effect: the old wording was the audit's
 confirmshaming nit — the new one is a plain factual decline.)
+
+**Lucas:** instead of "Check your value anytime." use "Check anytime."
+
+**Claude:** Done — "Check anytime. We'll text the link."
