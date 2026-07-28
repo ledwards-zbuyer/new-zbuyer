@@ -210,6 +210,8 @@ f.onload = function () {
     return;
   }
   if (step === "err") { d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true })); return; }
+  // ?check=1 also unblocks later steps under the inline-consent variants
+  if (hp.get("check")) d.querySelector(".lm-disclosure").click();
   d.getElementById("leadForm").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
   if (step === "questions") {
     var sv = new URLSearchParams(location.search).get("slide");

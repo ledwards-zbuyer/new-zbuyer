@@ -1445,3 +1445,17 @@ box reads at one weight now. The contact step's bold carrier line is untouched.
 **Claude:** Names read plain again everywhere — .lm-names is weight 400 / inherited
 color, and .lm-inline-pros dropped out of the bold rule. Only the "Matched real
 estate pro:" label and the contact step's carrier sentence stay bold.
+
+**Lucas:** now. look at this pre-popped link *(inline-maxsold lander with full
+z-params)*: screenshot every step and then take a critical "compliance auditor" look
+at it. give me both perspectives though. so many hoops to jump through... who knows
+whats reasonable long-term
+
+**Claude:** Shot the full path (aud-*.png in mockups/shots: hero prepop, contact
+unchecked/checked/error-gate, questions, notes, access-anytime, all-set, report) and
+delivered the two-sided audit in chat. Harness tweak along the way: ?check=1 now also
+unblocks the later-step flows under the inline variants (the consent gate had blocked
+step=questions). Notable finding while shooting: on the wired lander the live
+GetContactOptInNames set replaces the maxsold demo roster in the inline sentence —
+correct behavior (displayed = recorded), but it means ?terms=maxsold demos only show
+the 6-buyer roster on pages without pulse-api.
