@@ -1553,3 +1553,10 @@ dots should all be visible and not white — some other subtle but more visible 
 **Claude:** Curve 44→57px tall, handle dropped to top:59% so its tip rides ~6px below
 the baseline, and all four anchors (ends included) now get dots in muted slate
 #8296B9 with a white ring — visible over both the gray track and the blue fill.
+
+**Lucas:** make sure the 312 (quick cash close) number does not look like nothing —
+maybe a baseline thick enough to imply "value" even for the lowest option
+
+**Claude:** H_MIN back up to 8px: the curve now rides an 8px value floor, so at the
+$312K anchor there's a solid bar (and the blue fill at snap=0 reads as real money),
+with the 312→371 span still owning the remaining 49px of rise.
