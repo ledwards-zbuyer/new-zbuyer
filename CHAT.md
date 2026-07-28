@@ -1657,6 +1657,10 @@ the handle almost looks like it's off the bg chart
 triangle — clip-path gains a ~7px left edge (0 78%) so the chart visibly runs under
 the dial at the default stop.
 
+**Lucas:** add the right arrow to the end of the text on the "Text my Report" button
+
+**Claude:** Done — "Text my Report →" on both pages, matching the other step CTAs.
+
 **Lucas:** change the colors on the report page to something else. it looks too
 sporty and spunky. this is serious business about someone's most prized possession.
 just talking colors — container background should still be white — don't go crazy
