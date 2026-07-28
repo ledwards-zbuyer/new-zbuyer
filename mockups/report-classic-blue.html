@@ -496,7 +496,7 @@
     ariaLabel: "Explore your selling range",
     pending: {
       ticker: "Awaiting your cash offer. Usually arrives in under a minute.",
-      demo: { value: 312000, label: "Quick cash close", delay: 4000 },
+      demo: { value: 312000, label: "Quick cash close" }, // arrives after the default 6s
       onDeliver: function (s) { if (qs !== null) s.snapTo(parseInt(qs, 10)); }
     }
   });

@@ -160,9 +160,9 @@
           <td>Accessible name for the handle. Default "Explore the value range".</td></tr>
       <tr><td><code>pending</code></td><td>object</td>
           <td>Wait-for-offer state — needs exactly <b>one</b> anchor. Keys (all optional):
-          <code>ticker</code> (scrolling status line), <code>label</code> (tag on the landing
-          dot), <code>demo: { value, label, delay }</code> (auto-delivers after
-          <code>delay</code> ms, default 5000 — a stand-in for the API response),
+          <code>ticker</code> (scrolling status line),
+          <code>demo: { value, label, seconds }</code> (auto-delivers after
+          <code>seconds</code>, default 6 — a stand-in for the API response),
           <code>onDeliver(slider)</code>. See section 5.</td></tr>
     </table>
     <h3>Return value</h3>
@@ -190,7 +190,7 @@ slider.destroy();    // empty the container</code></pre>
     The morph target is pixel-identical to the re-render, so there is no flash. Reduced-motion
     users get an instant swap.</p>
     <div class="demo">
-      <div class="demo-tag">Live — offer arrives after 5s</div>
+      <div class="demo-tag">Live — offer arrives after 6s</div>
       <div id="ex5"></div>
       <p class="picked"><button id="ex5replay" style="font:inherit;font-size:13px;font-weight:700;
         padding:7px 14px;border-radius:9px;border:1.5px solid #E4EAF3;background:#fff;
@@ -201,7 +201,7 @@ slider.destroy();    // empty the container</code></pre>
   pending: {
     // demo stand-in for the API; in production omit `demo` and call
     // slider.deliver({ value, label }) when the offer response lands
-    demo: { value: 312000, label: "Quick cash close", delay: 5000 }
+    demo: { value: 312000, label: "Quick cash close", seconds: 6 }
   }
 });</code></pre>
   </div>
@@ -268,7 +268,7 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
     el.innerHTML = "";
     zbValueSlider(el, {
       anchors: [{ value: 371000, label: "Estimated market value" }],
-      pending: { demo: { value: 312000, label: "Quick cash close", delay: 5000 } }
+      pending: { demo: { value: 312000, label: "Quick cash close", seconds: 6 } }
     });
   }
   initPending();

@@ -30,9 +30,10 @@
  *       pending: {                        // OPTIONAL wait-for-offer state; needs
  *                                         // exactly ONE anchor. All keys optional:
  *         ticker: "Awaiting your cash offer — usually arrives in under a minute",
- *         demo:   { value: 412500, label: "Quick cash close", delay: 5000 },
+ *         demo:   { value: 412500, label: "Quick cash close", seconds: 6 },
  *                                         // stand-in for the API: auto-delivers
- *                                         // after delay ms (default 5000)
+ *                                         // after seconds (default 6; legacy
+ *                                         // delay in ms also honored)
  *         onDeliver: function (slider) {} // fires after the arrival re-render
  *       }
  *     });
@@ -392,7 +393,7 @@
       })(t0);
       if (conf.demo) timer = setTimeout(function () { // stand-in for the API response
         deliver({ value: conf.demo.value, label: conf.demo.label });
-      }, conf.demo.delay || 5000);
+      }, conf.demo.delay || (conf.demo.seconds || 6) * 1000);
       function stop() { cancelAnimationFrame(raf); clearTimeout(timer); }
       function finish(a) {
         var next = {};

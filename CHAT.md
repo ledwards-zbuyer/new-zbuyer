@@ -1729,3 +1729,11 @@ in HANDOFF.
 **Claude:** Gone — the annotation text, its dashed leader line, and the pending.label
 option all removed; the pulsing dot and the Z alone tag the landing spot. Docs
 updated to match.
+
+**Lucas:** on the slider widget, make the initial pause time (seconds) a variable
+that can be defined and default it to 6. *(mid-build:)* update dev doc
+
+**Claude:** pending.demo now takes seconds (default 6; the legacy ms delay key is
+still honored). The report drops its explicit 4s and rides the default; dev doc's
+options table, pending example, and live-demo tag all say seconds/6s, and the stale
+pending.label mention came out of the table while I was in there.
