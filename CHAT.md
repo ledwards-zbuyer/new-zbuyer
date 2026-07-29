@@ -1833,3 +1833,7 @@ sample returned 0 — build the empty state). Workbench copy says fifteen plays 
 
 **Claude:** Done — "Send my Report →" on both pages, and the SMS disclosure's quoted
 button name updated to match ("By clicking 'Send my Report,' …").
+
+**Lucas:** also, change the link below that to "No thanks, don't send my report"
+
+**Claude:** Done on both pages.
