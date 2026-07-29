@@ -1828,3 +1828,8 @@ mock flips from "0 returned" to "4 returned · median $348,450", the confidence
 panel's comps check now PASSES (4 COMPS, 1-of-3, meter lights one segment), and the
 export manifest gains a note that the comps/history are design mocks (the original
 sample returned 0 — build the empty state). Workbench copy says fifteen plays now.
+
+**Lucas:** on the SMS step change the button from "Text my report" to "Send my report"
+
+**Claude:** Done — "Send my Report →" on both pages, and the SMS disclosure's quoted
+button name updated to match ("By clicking 'Send my Report,' …").
