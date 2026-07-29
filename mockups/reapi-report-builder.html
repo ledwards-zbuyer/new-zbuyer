@@ -204,7 +204,7 @@ body.viewing-report #report{display:block}
   <div class="wb-head">
     <div class="wb-eyebrow">zBuyer · REAPI Payload Workbench</div>
     <h1>What earns a place on the report?</h1>
-    <p>Thirteen curated plays built from combinations of REAPI fields, then the full raw catalog. Pick what you want to test, then build a homeowner-facing mockup with sample data from 17 Topeka Pass.</p>
+    <p>Fifteen curated plays built from combinations of REAPI fields, then the full raw catalog. Pick what you want to test, then build a homeowner-facing mockup with sample data from 17 Topeka Pass.</p>
   </div>
 
   <div class="wb-section-label">Curated plays — combinations worth testing</div>
@@ -252,6 +252,16 @@ const SUGGESTIONS = [
  hook:"Instant cash range (88–95% of value) side-by-side with the list-with-agent net.",
  uses:["estimatedValue","openMortgageBalance"],
  why:"This is the Zoodealio frame: speed-vs-price as an honest tradeoff instead of a sales pitch. Letting the homeowner see both paths priced out builds trust and self-qualifies them into one lane.",
+ caveat:""},
+{id:"comps",title:"Comparable Sales",tags:["homeowner","math"],
+ hook:"Four nearby sales in the last nine months, median $348,450 — right on top of the estimate.",
+ uses:["comps","estimatedValue"],
+ why:"Comps are the proof behind the number. Homeowners trust three real addresses more than any AVM, and investors won't move without them. When the payload returns them, this card does more credibility work than everything else combined.",
+ caveat:"Real payloads frequently return zero comps (the original sample did). Design the empty state — and never render stale comps without their sale dates."},
+{id:"salehistory",title:"The Price Story",tags:["homeowner"],
+ hook:"$112,000 in '98 → $148,500 in '12 → $350,000 in '21. The whole chain, then today's estimate.",
+ uses:["saleHistory","lastSalePrice","estimatedValue"],
+ why:"The transfer chain is the property's biography — three recorded sales make today's estimate feel situated instead of conjured. It also quietly anchors the owner's cost basis in the same view as the current value.",
  caveat:""},
 {id:"appreciation",title:"Appreciation Report Card",tags:["math","controversial"],
  hook:"Bought Dec 2021 for $350,000, worth $349,267 today. Annualized: −0.05%. Grade: C.",
@@ -313,6 +323,8 @@ const SUGGESTIONS = [
 const VARIANTS={
 walkaway:[{v:"bar",l:"Hero + cost bar"},{v:"stats",l:"Stat list"},{v:"banner",l:"One-line banner"}],
 twopaths:[{v:"cards",l:"Side-by-side"},{v:"table",l:"Comparison table"},{v:"stack",l:"Sentence pair"}],
+comps:[{v:"table",l:"Comps table"},{v:"line",l:"Sentence"}],
+salehistory:[{v:"table",l:"Sale table"},{v:"line",l:"Sentence"}],
 appreciation:[{v:"grade",l:"Report card"},{v:"chart",l:"Price graph"},{v:"stats",l:"Stat list"}],
 freeclear:[{v:"badge",l:"Badge tile"},{v:"line",l:"Inline sentence"}],
 persona:[{v:"badge",l:"Badge tile"},{v:"line",l:"Inline sentence"}],
@@ -337,7 +349,7 @@ const FIELDS = [
 {k:"equity",g:"Valuation & Equity",l:"Equity (alternate)",d:"A second equity figure that disagrees with estimatedEquity on this record ($274,800 vs $349,267). Pick one source of truth; don't show both.",m:"$274,800 ⚠"},
 {k:"equityPercent",g:"Valuation & Equity",l:"Equity percent",d:"Equity as a share of value. 100 = free and clear — the single strongest close-ability signal in the payload.",m:"100%"},
 {k:"openMortgageBalance",g:"Valuation & Equity",l:"Open mortgage balance",d:"Total outstanding secured debt. $0 means no payoff, no lender in the loop, no rate lock-in.",m:"$0"},
-{k:"comps",g:"Valuation & Equity",l:"Comparable sales",d:"Comp array for sanity-checking the AVM. Empty on this record — the thing investors most want and the payload doesn't deliver.",m:"0 returned",n:1},
+{k:"comps",g:"Valuation & Equity",l:"Comparable sales",d:"Comp array for sanity-checking the AVM. Mocked with four nearby sales here for design — the original sample returned zero, so build the empty state too.",m:"4 returned · median $348,450",n:1},
 /* Sale & History */
 {k:"lastSaleDate",g:"Sale & History",l:"Last sale date",d:"Start of the current ownership clock. Drives tenure, appreciation, and velocity math.",m:"Dec 16, 2021"},
 {k:"lastSalePrice",g:"Sale & History",l:"Last sale price",d:"The owner's cost basis — the psychological floor in every negotiation.",m:"$350,000"},
@@ -402,10 +414,10 @@ const FIELDS = [
 {k:"live",g:"Identifiers & Meta",l:"Live",d:"Whether the response came from live lookup vs cache.",m:"true"},
 {k:"requestExecutionTimeMS",g:"Identifiers & Meta",l:"Request time (ms)",d:"End-to-end API latency for the call.",m:"40ms"},
 {k:"propertyLookupExecutionTimeMS",g:"Identifiers & Meta",l:"Lookup time (ms)",d:"Property-lookup portion of the latency.",m:"40ms"},
-{k:"compsLookupExecutionTimeMS",g:"Identifiers & Meta",l:"Comps time (ms)",d:"Comps-lookup latency. Null here because no comps ran.",m:"null"}
+{k:"compsLookupExecutionTimeMS",g:"Identifiers & Meta",l:"Comps time (ms)",d:"Comps-lookup latency for the call.",m:"62ms"}
 ];
 
-const PRESELECTED = new Set(["walkaway","twopaths","freeclear","landlord"]);
+const PRESELECTED = new Set(["walkaway","twopaths","comps","salehistory","freeclear","landlord"]);
 const selected = new Set(PRESELECTED);
 
 /* ================= WORKBENCH RENDER ================= */
@@ -488,6 +500,8 @@ function fpath(k){
 const DERIVED={
 walkaway:{selling_costs:"round(data.estimatedValue * 0.07) — 7% is an assumption; make configurable",net_proceeds:"data.estimatedValue - data.openMortgageBalance - selling_costs"},
 twopaths:{cash_offer_low:"data.estimatedValue * 0.88",cash_offer_high:"data.estimatedValue * 0.95",list_net:"net_proceeds (see walkaway)"},
+comps:{comp_set:"data.comps[] filtered: same propertyType, ±25% sqft, sold ≤ 12 months, ≤ 1 mile — cap at 4-6 for display",comp_median:"median(comp_set[].lastSaleAmount) (sample $348,450)",price_per_sqft:"each comp: lastSaleAmount / squareFeet"},
+salehistory:{chain:"data.saleHistory[] sorted by recordingDate: {date, amount, documentType}",change_per_leg:"(sale[n].amount - sale[n-1].amount) / sale[n-1].amount",today_row:"append data.estimatedValue as the final, clearly-labeled ESTIMATE row"},
 appreciation:{years_owned:"(today - data.lastSaleDate) / 365.25",total_change_pct:"(data.estimatedValue - data.lastSalePrice) / data.lastSalePrice",annualized_pct:"(data.estimatedValue / data.lastSalePrice) ^ (1 / years_owned) - 1",grade:"letter band over annualized_pct (bands TBD; sample −0.05%/yr → C)"},
 freeclear:{show_badge:"data.equityPercent >= 100 && data.openMortgageBalance == 0 && !data.taxLien && !data.lien"},
 persona:{label:"decision table over data.ownerOccupied, data.absenteeOwner, data.inStateAbsenteeOwner, data.outOfStateAbsenteeOwner, data.corporateOwned, data.cashBuyer, data.inherited (sample resolves to 'Rooted Cash Owner')"},
@@ -543,6 +557,28 @@ table:()=>card("twopaths","table","Two ways to sell","The same tradeoff, as a ta
   <tr><td>Certainty</td><td class="hl">Guaranteed close</td><td>Subject to buyer &amp; appraisal</td></tr></table>`,
   "data.estimatedValue · data.openMortgageBalance · assumptions: 88–95% cash band, 7% listing costs"),
 stack:()=>slim("twopaths","stack",`A cash buyer could put <b data-reapi-derived="cash_offer_range">$307,400 – $331,800</b> in your hands in about two weeks, no showings. Listing traditionally targets <b data-reapi="data.estimatedValue">$349,267</b> — roughly <b data-reapi-derived="list_net">$324,800</b> net after costs — on a 45–90 day timeline.`,"data.estimatedValue · assumptions: 88–95% cash band, 7% listing costs")
+},
+comps:{
+table:()=>card("comps","table","What nearby homes sold for","Four recent sales, all within a mile and 25% of this home's size.",
+  `<table class="ctable" data-reapi="data.comps"><tr><th>Address</th><th>Sold</th><th class="hl">Price</th><th>$/sqft</th></tr>
+  <tr><td>12 Pergola Ln · 0.3 mi</td><td>May 2026</td><td class="hl">$352,000</td><td>$186</td></tr>
+  <tr><td>34 Titan Ct · 0.5 mi</td><td>Mar 2026</td><td class="hl">$339,500</td><td>$189</td></tr>
+  <tr><td>8 Nightingale Ln · 0.7 mi</td><td>Jan 2026</td><td class="hl">$361,000</td><td>$184</td></tr>
+  <tr><td>21 Buttonwood Dr · 0.9 mi</td><td>Nov 2025</td><td class="hl">$344,900</td><td>$196</td></tr></table>
+  <div class="footnote">Median of the set: <b data-reapi-derived="comp_median">$348,450</b> — right in line with this home's <span data-reapi="data.estimatedValue">$349,267</span> estimate at <b>$189/sqft</b>.</div>`,
+  "data.comps · data.estimatedValue · filter: same type, ±25% sqft, ≤12 months, ≤1 mile"),
+line:()=>slim("comps","line",`Four comparable homes within a mile sold in the last nine months for a median of <b data-reapi-derived="comp_median">$348,450</b> — right in line with your <b data-reapi="data.estimatedValue">$349,267</b> estimate.`,"data.comps · data.estimatedValue")
+},
+salehistory:{
+table:()=>card("salehistory","table","The price story","Every recorded sale of this home, then today's estimate.",
+  `<table class="ctable" data-reapi="data.saleHistory"><tr><th>Date</th><th class="hl">Price</th><th>Change</th></tr>
+  <tr><td>Jun 1998</td><td class="hl">$112,000</td><td>—</td></tr>
+  <tr><td>Aug 2012</td><td class="hl">$148,500</td><td data-reapi-derived="change_per_leg">+32.6%</td></tr>
+  <tr><td>Dec 2021 <span style="color:#8a97ab">(you)</span></td><td class="hl">$350,000</td><td data-reapi-derived="change_per_leg">+135.7%</td></tr>
+  <tr><td>Today <span style="color:#8a97ab">(estimate)</span></td><td class="hl" data-reapi="data.estimatedValue">$349,267</td><td data-reapi-derived="change_per_leg">−0.2%</td></tr></table>
+  <div class="footnote">Three recorded transfers since 1998. Today's estimate sits right on your 2021 purchase — the equity story here is the cash position, not appreciation.</div>`,
+  "data.saleHistory · data.lastSalePrice · data.estimatedValue"),
+line:()=>slim("salehistory","line",`This home has sold three times — <b>$112,000</b> in '98, <b>$148,500</b> in '12, and <b data-reapi="data.lastSalePrice">$350,000</b> to you in '21. Today's estimate: <b data-reapi="data.estimatedValue">$349,267</b>.`,"data.saleHistory · data.lastSalePrice · data.estimatedValue")
 },
 appreciation:{
 grade:()=>`<div class="rcard" data-card="appreciation" data-display="grade">
@@ -698,19 +734,19 @@ panel:()=>`<div class="rcard" data-card="confidence" data-display="panel">
   <h2>How much to trust these numbers</h2>
   <div class="sub">We show our work. Three checks run on every report.</div>
   <div class="confrow" data-reapi="data.reapiAvm"><span>Valuation source (native AVM)</span><span class="pass fail">FALLBACK</span></div>
-  <div class="confrow" data-reapi="data.comps"><span>Comparable sales found</span><span class="pass fail">0 COMPS</span></div>
+  <div class="confrow" data-reapi="data.comps"><span>Comparable sales found</span><span class="pass ok">4 COMPS</span></div>
   <div class="confrow" data-reapi="data.demographics.hudAreaCode"><span>Geographic data validation</span><span class="pass fail">MISMATCH</span></div>
-  <div class="footnote">Overall confidence on this sample: <b data-reapi-derived="overall">medium-low</b>. Value shown is a fallback estimate with no comp support, and area rent/income data failed metro validation. A production report would either resolve these or say so, exactly like this.</div>
+  <div class="footnote">Overall confidence on this sample: <b data-reapi-derived="overall">medium-low</b>. The value shown is a fallback estimate — though four comps support it — and area rent/income data failed metro validation. A production report would either resolve these or say so, exactly like this.</div>
   <div class="srcline">src: data.reapi_avm checks — data.reapiAvm · data.comps · data.demographics.hudAreaCode vs input.state</div>
 </div>`,
 meter:()=>card("confidence","meter","How much to trust these numbers","Three data checks run on every report.",
-  `<div class="meter" data-reapi-derived="overall"><span></span><span></span><span></span></div>
-  <div class="sent"><b>0 of 3</b> checks passed on this sample — native AVM missing, no comps returned, and area data failed metro validation. Overall confidence: <b>medium-low</b>.</div>`,
+  `<div class="meter" data-reapi-derived="overall"><span class="lit"></span><span></span><span></span></div>
+  <div class="sent"><b>1 of 3</b> checks passed on this sample — four comps returned, but the native AVM is missing and area data failed metro validation. Overall confidence: <b>medium-low</b>.</div>`,
   "data.reapiAvm · data.comps · data.demographics.hudAreaCode vs input.state · lit segments = passed checks"),
-line:()=>slim("confidence","line",`Data confidence on this report: <b>medium-low</b> — fallback valuation, no comps, and area data failed metro validation.`,"data.reapiAvm · data.comps · data.demographics.hudAreaCode vs input.state")
+line:()=>slim("confidence","line",`Data confidence on this report: <b>medium-low</b> — fallback valuation (supported by 4 comps), and area data failed metro validation.`,"data.reapiAvm · data.comps · data.demographics.hudAreaCode vs input.state")
 }
 };
-const ORDER=["walkaway","twopaths","appreciation","__badges","radar","landlord","rentladder","buyerpool","tenure","velocity","confidence"];
+const ORDER=["walkaway","twopaths","comps","appreciation","salehistory","__badges","radar","landlord","rentladder","buyerpool","tenure","velocity","confidence"];
 const BADGES=["freeclear","persona","ratefree"];
 function dmode(id){return displayChoice[id]||VARIANTS[id][0].v}
 function fmode(k){return fdisplay[k]||"table"}
@@ -784,7 +820,8 @@ function buildManifest(sel){
     data_quality_notes:[
       "data.reapiAvm was null on the sample; data.estimatedValue came from a fallback source. Verify AVM sourcing before display.",
       "data.equity ($274,800) disagreed with data.estimatedEquity ($349,267) on the sample. Treat data.estimatedEquity + data.equityPercent as source of truth; do not display both.",
-      "data.demographics.hudAreaName/hudAreaCode resolved to the wrong metro (Washington DC for a NJ address). Validate HUD area against input.state and SUPPRESS rent/income cards (landlord, rentladder, buyerpool) on mismatch."
+      "data.demographics.hudAreaName/hudAreaCode resolved to the wrong metro (Washington DC for a NJ address). Validate HUD area against input.state and SUPPRESS rent/income cards (landlord, rentladder, buyerpool) on mismatch.",
+      "The 4 comps and the sale-history chain shown are DESIGN MOCKS — the original sample returned 0 comps. Build and test the empty-comps state; never render comps without sale dates."
     ],
     cards,record_detail_fields
   };

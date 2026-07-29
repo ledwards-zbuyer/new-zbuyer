@@ -372,6 +372,11 @@ load) while values and home stats remain static demo data. The old
   picker, builds the report view from the selection, and exports a standalone HTML
   file (the export template carries its own noindex). Already in the classic-blue
   tokens on arrival; the letterhead logo was relativized to `assets/logo-blue-dark.png`.
+  Now FIFTEEN plays: "Comparable Sales" (4 design-mock comps, median $348,450 vs the
+  $349,267 estimate; the confidence panel's comps check flips to 4 COMPS / 1-of-3)
+  and "The Price Story" (the '98 $112K → '12 $148.5K → '21 $350K chain + today's
+  estimate row) were added 2026-07-28, both preselected; the export manifest notes
+  the comps are mocks (original sample returned 0 — build the empty state).
 - **Property Intelligence Report (2026-07-28):** `report-intel-classic-blue.html` — the
   Topeka Pass design mockup (REAPI field-map workbench export) reskinned into the
   classic-blue system, linked from the report's "Go deeper" card above the footer.

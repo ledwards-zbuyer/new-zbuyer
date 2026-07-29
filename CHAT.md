@@ -1814,3 +1814,17 @@ workbench (suggestion cards, field picker, report preview, standalone-HTML expor
 already in our tokens. Two touch-ups on the way in: the letterhead logo now loads
 relatively from assets/ (was hardcoded to the live github.io URL) and the page +
 its export template carry noindex.
+
+**Lucas:** include some made up comps on this new builder. currently 0. also make a
+sales history
+
+**Claude:** Two new curated plays, both preselected: "Comparable Sales" — four mock
+comps within a mile (12 Pergola Ln $352,000 / 34 Titan Ct $339,500 / 8 Nightingale Ln
+$361,000 / 21 Buttonwood Dr $344,900; median $348,450 ≈ the $349,267 estimate at
+~$189/sqft) as a table or sentence — and "The Price Story" — the sale chain the
+appreciation chart already implied ($112,000 '98 → $148,500 '12 → $350,000 '21) as a
+table with per-leg change and a clearly-labeled today-estimate row. The comps field
+mock flips from "0 returned" to "4 returned · median $348,450", the confidence
+panel's comps check now PASSES (4 COMPS, 1-of-3, meter lights one segment), and the
+export manifest gains a note that the comps/history are design mocks (the original
+sample returned 0 — build the empty state). Workbench copy says fifteen plays now.
