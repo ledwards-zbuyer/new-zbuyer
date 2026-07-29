@@ -1837,3 +1837,10 @@ button name updated to match ("By clicking 'Send my Report,' …").
 **Lucas:** also, change the link below that to "No thanks, don't send my report"
 
 **Claude:** Done on both pages.
+
+**Lucas:** push this to git with a different name than the last builder
+(Downloads/reapi-report-builder_3.html)
+
+**Claude:** In as mockups/reapi-report-builder-v3.html (the earlier one stays at
+reapi-report-builder.html), with the same two touch-ups: relative logo path and
+noindex on the page + its export template.
