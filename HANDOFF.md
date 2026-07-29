@@ -367,6 +367,11 @@ load) while values and home stats remain static demo data. The old
   #7FC4FF→#1D4FD7, orange pill handle, warm notice bar. `assets/value-slider.js`
   defaults + value-slider-docs.html were synced back to this palette at the same
   time. design-guide.html is consistent again (it never documented the retone).
+- **REAPI Report Builder (2026-07-28):** `reapi-report-builder.html` — the interactive
+  field workbench behind the intel report: suggestion cards + a full REAPI field
+  picker, builds the report view from the selection, and exports a standalone HTML
+  file (the export template carries its own noindex). Already in the classic-blue
+  tokens on arrival; the letterhead logo was relativized to `assets/logo-blue-dark.png`.
 - **Property Intelligence Report (2026-07-28):** `report-intel-classic-blue.html` — the
   Topeka Pass design mockup (REAPI field-map workbench export) reskinned into the
   classic-blue system, linked from the report's "Go deeper" card above the footer.

@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>zBuyer Report Builder — REAPI Field Workbench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --c1:#1D4FD7; --c1d:#1640A8; --acc:#3BA4F4;
+  --navy:#0E1B33; --navy-dd:#0A1426; --tint:#E7EEFC;
+  --cta:#FF6B4A; --cta-d:#F0572F;
+  --ink:#14233D; --muted:#5C6B82; --line:#E4EAF3; --soft:#F4F8FD;
+  --err:#D8442B; --notice:#FFF4F0;
+  --sans:"Inter",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);color:var(--ink);background:var(--soft);font-size:15px;line-height:1.6}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--c1);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes shimmer{to{background-position:-200% 0}}
+
+/* ---------- WORKBENCH ---------- */
+#workbench{max-width:1060px;margin:0 auto;padding:28px 20px 130px}
+.wb-head{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:26px}
+.wb-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.wb-eyebrow::before{content:"";display:inline-block;width:6px;height:6px;border-radius:999px;background:var(--acc);margin-right:8px;vertical-align:1px}
+.wb-head h1{font-weight:800;font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;line-height:1.12;margin-top:8px}
+.wb-head p{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:640px}
+.wb-section-label{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:34px 0 14px;display:flex;align-items:center;gap:10px}
+.wb-section-label::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--acc);flex-shrink:0}
+.wb-section-label::after{content:"";flex:1;height:1px;background:var(--line)}
+
+.sug-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.sug{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 20px 14px;position:relative;box-shadow:0 10px 26px -20px rgba(14,27,51,.5);transition:border-color .2s,background .2s}
+.sug.selected{border-color:var(--c1);background:var(--tint);box-shadow:0 0 0 1px var(--c1),0 10px 26px -20px rgba(14,27,51,.5)}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
+.chip{font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:3px 9px;border-radius:999px;text-transform:uppercase}
+.chip.homeowner{background:var(--tint);color:var(--c1)}
+.sug.selected .chip.homeowner{background:#fff}
+.chip.agent{background:var(--navy);color:#BBD7FB}
+.chip.controversial{background:var(--notice);color:var(--cta-d);border:1px solid var(--cta)}
+.chip.math{background:var(--soft);color:var(--muted);border:1px solid var(--line)}
+.sug.selected .chip.math{background:#fff}
+.sug h3{font-size:17px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
+.sug .hook{color:var(--muted);font-size:13.5px;margin-top:5px}
+.uses{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.uses code{font-family:var(--sans);font-size:10.5px;font-weight:600;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--muted)}
+.sug.selected .uses code{background:#fff}
+.sug details{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.sug summary{font-size:12.5px;font-weight:500;color:var(--muted);cursor:pointer;user-select:none}
+.sug details p{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+.sug details .caveat{color:var(--cta-d)}
+.pick{position:absolute;top:18px;right:18px;display:flex;align-items:center}
+.pick input{width:18px;height:18px;accent-color:var(--c1);cursor:pointer}
+
+.cat details.group{background:#fff;border:1px solid var(--line);border-radius:18px;margin-bottom:12px;overflow:hidden;box-shadow:0 10px 26px -20px rgba(14,27,51,.5)}
+.cat summary.group-head{padding:15px 20px;font-weight:800;font-size:14.5px;letter-spacing:-.01em;cursor:pointer;user-select:none;display:flex;justify-content:space-between;align-items:center;list-style:none}
+.cat summary.group-head::-webkit-details-marker{display:none}
+.group-count{font-size:12.5px;color:var(--muted);font-weight:500}
+.field-row{border-top:1px solid var(--line);padding:10px 20px}
+.field-line{display:flex;align-items:center;gap:10px}
+.field-line input{width:16px;height:16px;accent-color:var(--c1);cursor:pointer;flex-shrink:0}
+.field-line code{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--ink);background:var(--soft);border-radius:999px;padding:2px 9px}
+.field-line .flabel{color:var(--muted);font-size:12.5px;flex:1}
+.nested-tag{font-size:9px;font-weight:800;letter-spacing:.06em;color:var(--c1);background:var(--tint);border-radius:999px;padding:2px 7px}
+.field-row details{margin:6px 0 0 26px}
+.field-row summary{font-size:11.5px;font-weight:500;color:var(--muted);cursor:pointer;user-select:none}
+.field-row details p{font-size:12.5px;color:var(--muted);margin-top:4px;max-width:640px;line-height:1.55}
+
+.actionbar{position:fixed;bottom:0;left:0;right:0;background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:center;gap:18px;align-items:center;z-index:50}
+.actionbar .count{font-size:13px;font-weight:500;color:#BBD7FB}
+.actionbar button{background:var(--cta);color:#fff;border:none;border-radius:12px;padding:12px 26px;font-weight:800;font-size:15px;letter-spacing:-.01em;transition:background .15s}
+.actionbar button:hover:not(:disabled){background:var(--cta-d)}
+.actionbar button:disabled{background:rgba(255,255,255,.12);color:#8a97ab;cursor:not-allowed}
+
+/* ---------- EXPORT UI ---------- */
+.rp-topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.rp-topbar .backlink{margin-bottom:0}
+.expgroup{display:flex;gap:10px}
+.exportbtn{font-size:13px;font-weight:800;background:#fff;border:1.5px solid var(--c1);border-radius:12px;padding:9px 16px;color:var(--c1);transition:background .15s}
+.exportbtn:hover{background:var(--tint)}
+.exportbtn.primary{background:var(--cta);border-color:var(--cta);color:#fff}
+.exportbtn.primary:hover{background:var(--cta-d);border-color:var(--cta-d)}
+.srcline{display:none;font-size:10.5px;font-weight:500;color:#8a97ab;flex-wrap:wrap;gap:4px;margin-top:12px;border-top:1px dashed var(--line);padding-top:8px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:10px 18px;border-radius:12px;z-index:99;display:none;box-shadow:0 26px 54px -18px rgba(10,20,38,.6)}
+
+/* ---------- REPORT ---------- */
+#report{display:none;background:var(--soft);min-height:100vh;padding:30px 18px 80px}
+body.viewing-report{background:var(--soft)}
+body.viewing-report #workbench,body.viewing-report .actionbar{display:none}
+body.viewing-report #report{display:block}
+.rp{max-width:740px;margin:0 auto}
+.backlink{font-size:13px;font-weight:600;color:var(--c1);background:none;border:none;text-decoration:underline;margin-bottom:26px;padding:0}
+.letterhead{background:linear-gradient(160deg,var(--navy),var(--navy-dd));border-radius:20px;padding:28px 26px;position:relative;box-shadow:0 30px 60px -20px rgba(10,20,38,.55);overflow:hidden}
+.lh-logo{height:26px;display:block;margin-bottom:18px}
+.lh-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#BBD7FB}
+.lh-eyebrow::before{content:"";display:inline-block;width:6px;height:6px;border-radius:999px;background:var(--acc);margin-right:8px;vertical-align:1px}
+.letterhead h1{font-weight:800;font-size:clamp(30px,5vw,44px);letter-spacing:-.03em;margin-top:8px;line-height:1.05;color:#fff}
+.lh-sub{color:#E4ECF6;margin-top:8px;font-size:14px}
+.lh-brand{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#BBD7FB;margin-top:16px}
+.mockstamp{position:absolute;top:16px;right:16px;font-size:10.5px;font-weight:800;letter-spacing:.18em;color:var(--cta);border:2px solid var(--cta);border-radius:8px;padding:4px 10px;transform:rotate(6deg);opacity:.92}
+#reportBody>*{animation:rise .26s ease both}
+.rcard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:16px;box-shadow:0 14px 34px -22px rgba(14,27,51,.5)}
+.rcard h2{font-weight:800;font-size:20px;letter-spacing:-.02em;margin-bottom:4px}
+.rcard .sub{color:var(--muted);font-size:14.5px;margin-bottom:14px}
+.bignum{font-size:clamp(34px,6vw,46px);font-weight:800;letter-spacing:-.02em;color:var(--c1);line-height:1;font-variant-numeric:tabular-nums}
+.settle{display:flex;height:40px;border-radius:12px;overflow:hidden;margin:16px 0 8px;border:1px solid var(--line)}
+.settle .net{background:var(--c1)}
+.settle .costs{background:repeating-linear-gradient(45deg,#DCE5F5,#DCE5F5 5px,#EFF4FC 5px,#EFF4FC 10px)}
+.settle-key{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);gap:10px;flex-wrap:wrap}
+.settle-key b{color:var(--ink);font-variant-numeric:tabular-nums}
+.twopaths{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+@media(max-width:560px){.twopaths{grid-template-columns:1fr}}
+.path{border:1.5px solid var(--line);border-radius:14px;padding:18px}
+.path.cash{border-color:var(--c1);background:var(--tint)}
+.path .pname{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.path.cash .pname{color:var(--c1)}
+.path .pnum{font-size:23px;font-weight:800;letter-spacing:-.02em;margin:6px 0 2px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.path.cash .pnum{background:linear-gradient(100deg,var(--c1) 40%,var(--acc) 50%,var(--c1) 60%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--c1);animation:shimmer 4s linear infinite}
+.path ul{list-style:none;margin-top:10px}
+.path li{font-size:12.5px;color:var(--muted);padding:4px 0;border-top:1px dashed var(--line)}
+.path.cash li{border-top-color:#CFDDF8;color:#3A4C6B}
+.grade{display:flex;gap:18px;align-items:center}
+.gradeletter{font-size:44px;font-weight:800;color:var(--muted);border:1.5px solid var(--line);border-radius:14px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--soft)}
+.statline{display:flex;justify-content:space-between;font-size:13.5px;padding:7px 0;border-bottom:1px dashed var(--line);gap:10px}
+.statline b{font-variant-numeric:tabular-nums;color:var(--c1);font-weight:800}
+.badgerow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px}
+.badge{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;text-align:center;box-shadow:0 14px 34px -22px rgba(14,27,51,.5)}
+.badge .bicon{font-size:22px}
+.badge h3{font-size:16px;font-weight:800;letter-spacing:-.01em;margin:8px 0 4px}
+.badge p{font-size:12px;color:var(--muted)}
+.radar{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px}
+.stamp{border:1px solid var(--line);border-radius:12px;padding:9px 11px;font-size:11.5px;font-weight:500;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:6px;background:var(--soft)}
+.stamp .st{font-size:9.5px;font-weight:800;letter-spacing:.08em;color:var(--c1);background:var(--tint);border-radius:999px;padding:2px 8px}
+.ladder{margin-top:10px}
+.rung{display:flex;align-items:center;gap:10px;margin:7px 0}
+.rung .rl{font-size:12.5px;color:var(--muted);width:92px;flex-shrink:0}
+.rung .rbar{height:16px;background:var(--tint);border-radius:999px}
+.rung.hot .rbar{background:var(--c1)}
+.rung .rv{font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--muted)}
+.rung.hot .rl{color:var(--c1);font-weight:800}
+.rung.hot .rv{color:var(--c1);font-weight:800}
+.dial{height:10px;background:var(--tint);border-radius:999px;position:relative;margin:14px 0 6px}
+.dial .fill{position:absolute;left:0;top:0;bottom:0;background:var(--c1);border-radius:999px}
+.confrow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13.5px;gap:10px}
+.pass{font-size:10px;font-weight:800;letter-spacing:.08em;padding:3px 9px;border-radius:999px}
+.pass.ok{background:var(--tint);color:var(--c1)}
+.pass.fail{background:var(--notice);color:var(--cta-d);border:1px solid var(--cta)}
+.recdet table{width:100%;border-collapse:collapse;font-size:13px}
+.recdet td{padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.recdet td:first-child{color:var(--muted);width:38%}
+.recdet td:last-child{text-align:right;font-size:11px;font-weight:500;color:#8a97ab;width:26%;word-break:break-all}
+.recdet td.val{font-weight:600;font-variant-numeric:tabular-nums}
+.disclaimer{font-size:11px;color:#8a97ab;margin-top:24px;border-top:1px solid var(--line);padding-top:14px;line-height:1.6}
+.footnote{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.55}
+.geoflag{background:var(--notice);color:var(--ink);font-size:12.5px;border:2px solid var(--cta);border-radius:12px;padding:9px 12px;margin-top:12px}
+
+/* ---------- DISPLAY MODES ---------- */
+.dpick{display:none;margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;flex-wrap:wrap;gap:6px;align-items:center}
+.sug.selected .dpick{display:flex}
+.field-row .dpick{margin:8px 0 2px 26px;padding-top:0;border-top:none}
+.field-row.on .dpick{display:flex}
+.dlabel{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.dchip{font-size:11px;font-weight:600;padding:5px 12px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;user-select:none;transition:background .15s,border-color .15s,color .15s}
+.dchip.sel{background:var(--tint);border-color:var(--c1);color:var(--c1);font-weight:800}
+.rcard.slim{padding:16px 22px}
+.sent{font-size:14.5px;line-height:1.6}
+.sent b{color:var(--c1);font-weight:800;font-variant-numeric:tabular-nums}
+.tilegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:16px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 14px 34px -22px rgba(14,27,51,.5)}
+.tile .tv{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--c1);font-variant-numeric:tabular-nums}
+.tile .tl2{font-size:12px;color:var(--muted);margin-top:4px}
+.checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:4px 14px;margin-top:6px}
+.checklist div{font-size:12.5px;color:var(--muted);padding:3px 0}
+.checklist b{color:var(--c1);font-weight:800;margin-right:6px}
+.tl-track{height:8px;background:var(--tint);border-radius:999px;position:relative;margin:26px 8px 12px}
+.tl-fill{position:absolute;left:0;top:0;bottom:0;width:57%;background:var(--c1);border-radius:999px}
+.tl-dot{position:absolute;top:50%;width:14px;height:14px;border-radius:999px;background:#fff;border:3px solid var(--c1);transform:translate(-50%,-50%)}
+.tl-dot.end{border-color:var(--muted)}
+.tl-labels{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);gap:8px}
+.meter{display:flex;gap:6px;margin:14px 0 12px}
+.meter span{flex:1;height:14px;border-radius:999px;background:var(--soft);border:1.5px solid var(--line)}
+.meter span.lit{background:var(--c1);border-color:var(--c1)}
+.chart-wrap{margin-top:12px}
+.chart-wrap text{font-family:var(--sans)}
+.ctable{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.ctable th{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 6px;border-bottom:1.5px solid var(--line)}
+.ctable th.hl{color:var(--c1)}
+.ctable td{padding:9px 6px;border-bottom:1px dashed var(--line);color:var(--muted)}
+.ctable td.hl{color:var(--ink);font-weight:600}
+.ctable td:first-child{width:34%}
+</style>
+</head>
+<body>
+
+<!-- ============ SCREEN 1: WORKBENCH ============ -->
+<div id="workbench">
+  <div class="wb-head">
+    <div class="wb-eyebrow">zBuyer · REAPI Payload Workbench</div>
+    <h1>What earns a place on the report?</h1>
+    <p>Thirteen curated plays built from combinations of REAPI fields, then the full raw catalog. Pick what you want to test, then build a homeowner-facing mockup with sample data from 17 Topeka Pass.</p>
+  </div>
+
+  <div class="wb-section-label">Curated plays — combinations worth testing</div>
+  <div class="sug-grid" id="sugGrid"></div>
+
+  <div class="wb-section-label">Full field catalog — every key in the payload</div>
+  <div class="cat" id="catList"></div>
+</div>
+
+<div class="actionbar">
+  <span class="count" id="countLabel">0 selected</span>
+  <button id="buildBtn" disabled>Build the mockup report →</button>
+</div>
+
+<!-- ============ SCREEN 2: REPORT ============ -->
+<div id="report"><div class="rp">
+  <div class="rp-topbar">
+    <button class="backlink" onclick="showWorkbench()">← Edit selections</button>
+    <div class="expgroup">
+      <button class="exportbtn" id="copyBtn">Copy HTML</button>
+      <button class="exportbtn primary" id="exportBtn">Export HTML ↓</button>
+    </div>
+  </div>
+  <div class="letterhead">
+    <div class="mockstamp">MOCK DATA</div>
+    <img class="lh-logo" src="assets/logo-blue-dark.png" alt="zBuyer">
+    <div class="lh-eyebrow">Property Intelligence Report · July 28, 2026</div>
+    <h1>17 Topeka Pass</h1>
+    <div class="lh-sub">Willingboro, New Jersey 08046 · Single-family · 4 bd · 2 ba · 1,850 sqft · built 1963</div>
+    <div class="lh-brand">Prepared for the current owner · zBuyer × Zoodealio</div>
+  </div>
+  <div id="reportBody"></div>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ================= DATA ================= */
+const SUGGESTIONS = [
+{id:"walkaway",title:"The Walk-Away Number",tags:["homeowner"],
+ hook:"Value minus payoff minus selling costs — the one number every seller actually wants.",
+ uses:["estimatedValue","openMortgageBalance","estimatedEquity"],
+ why:"Homeowners don't think in AVMs, they think in proceeds. Rendering it as a settlement bar (net vs. costs) makes a $349K value feel like $324K in the bank — concrete and personal. This is the strongest opening card for a seller conversation.",
+ caveat:""},
+{id:"twopaths",title:"Two Ways to Sell",tags:["homeowner"],
+ hook:"Instant cash range (88–95% of value) side-by-side with the list-with-agent net.",
+ uses:["estimatedValue","openMortgageBalance"],
+ why:"This is the Zoodealio frame: speed-vs-price as an honest tradeoff instead of a sales pitch. Letting the homeowner see both paths priced out builds trust and self-qualifies them into one lane.",
+ caveat:""},
+{id:"appreciation",title:"Appreciation Report Card",tags:["math","controversial"],
+ hook:"Bought Dec 2021 for $350,000, worth $349,267 today. Annualized: −0.05%. Grade: C.",
+ uses:["lastSalePrice","lastSaleDate","estimatedValue"],
+ why:"CAGR since purchase is the single most concrete personalized stat you can compute from three fields. When it's positive it flatters; here it's flat-to-negative.",
+ caveat:"Policy decision required: do you show a homeowner a negative number? Honest, but it can kill listing enthusiasm — or motivate a cash-offer conversation. Decide before this goes live."},
+{id:"freeclear",title:"Free & Clear Badge",tags:["agent"],
+ hook:"100% equity · $0 mortgage · no liens. The cleanest close an agent will see all month.",
+ uses:["equityPercent","openMortgageBalance","taxLien","lien"],
+ why:"For the buy-side pro this is the whole ballgame: no payoff, no lender friction, full discount flexibility. As a badge it communicates in half a second.",
+ caveat:""},
+{id:"persona",title:"Seller Persona",tags:["agent"],
+ hook:"Five owner booleans collapse into one label: 'Rooted Cash Owner.'",
+ uses:["ownerOccupied","absenteeOwner","corporateOwned","cashBuyer","inherited"],
+ why:"Derived classification: occupied + local + individual + cash purchase + not inherited = a comfortable resident, not a tired landlord. Tells the agent which playbook to run before the first call. Cheap to compute, feels like intelligence.",
+ caveat:""},
+{id:"radar",title:"Distress Radar",tags:["agent","controversial"],
+ hook:"Twelve distress flags rendered as recorder's stamps — all CLEAR on this record.",
+ uses:["preForeclosure","taxLien","lien","vacant","bankOwned","trusteeSale","sheriffsDeed","deedInLieu","death","spousalDeath","inherited","quitClaim"],
+ why:"For agents and investors, the clean sweep is itself the signal: no financial pressure, price accordingly.",
+ caveat:"Showing a homeowner that you screened them for death, foreclosure and liens can read as surveillance. Strong recommendation: agent-facing only."},
+{id:"landlord",title:"Keep-It-As-A-Rental Math",tags:["homeowner","math"],
+ hook:"$3,010/mo fair-market rent → 10.3% gross yield, GRM 9.7. 'Have you considered not selling?'",
+ uses:["suggestedRent","estimatedValue","fmrFourBedroom"],
+ why:"Counterintuitive play: showing the rental alternative makes the report feel like advice instead of a pitch — and for investors it's core underwriting.",
+ caveat:"Known payload bug: the HUD demographics on this record resolve to the wrong metro (DC instead of Philadelphia). Gate this card behind a geo-validity check."},
+{id:"buyerpool",title:"Buyer Pool Depth",tags:["agent","math"],
+ hook:"Median local income $130,336 supports roughly a $380K purchase — this home is inside the pool.",
+ uses:["medianIncome","estimatedValue"],
+ why:"Affordability math turns a census number into a liquidity signal: when the median household can afford the home, the buyer pool is deep and days-on-market drop. Agents can use this line verbatim in a listing appointment.",
+ caveat:""},
+{id:"ratefree",title:"No Rate Handcuffs",tags:["agent"],
+ hook:"$0 mortgage balance means no sub-4% rate lock-in. This owner is free to move.",
+ uses:["openMortgageBalance","adjustableRate","currentMortgages"],
+ why:"The rate lock-in effect is the defining seller-supply story of the decade. Free-and-clear owners are the un-locked movers — a targeting insight most lead platforms never surface.",
+ caveat:""},
+{id:"tenure",title:"The Tenure Clock",tags:["controversial"],
+ hook:"4.6 years in the home vs. a ~8-year typical hold. 'You're past the halfway mark.'",
+ uses:["lastSaleDate"],
+ why:"Tenure vs. the national move cycle is an easy dial visualization and a natural conversation opener.",
+ caveat:"This is manufactured urgency — the 8-year median is a population statistic, not a prediction about this owner. Fine as a talking point, ethically gray as a headline."},
+{id:"velocity",title:"Equity Velocity",tags:["math"],
+ hook:"$349,267 of equity ÷ 4.6 years of ownership = roughly $75,800 per year.",
+ uses:["estimatedEquity","lastSaleDate"],
+ why:"Mathematically curious framing of wealth-per-year-of-ownership. For mortgaged owners it decomposes into paydown + appreciation, which is genuinely interesting.",
+ caveat:"For a cash buyer the number is dominated by the purchase itself — footnote it or it reads as inflated."},
+{id:"rentladder",title:"The Rent Ladder",tags:["homeowner"],
+ hook:"HUD fair-market rents from efficiency to 4BR, with this home sitting on the top rung.",
+ uses:["fmrEfficiency","fmrOneBedroom","fmrTwoBedroom","fmrThreeBedroom","fmrFourBedroom","suggestedRent"],
+ why:"Five FMR fields make a clean bar ladder, and 'your home commands the top of the local rent market' is a flattering, true, visual statement.",
+ caveat:"Same geo-validity dependency as the rental-math card."},
+{id:"confidence",title:"Data Confidence Panel",tags:["controversial","math"],
+ hook:"AVM source, comp count, geo validation — shown to the user, pass or fail.",
+ uses:["reapiAvm","comps","hudAreaName"],
+ why:"The contrarian play: every competitor hides data quality; showing your work (this record: fallback AVM, 0 comps, failed geo check) converts a weakness into credibility. Also keeps your own team honest about what the pipeline is actually returning.",
+ caveat:"Controversial in the other direction — some will argue you never show a homeowner a 'medium-low confidence' label next to their home value."}
+];
+
+const VARIANTS={
+walkaway:[{v:"bar",l:"Hero + cost bar"},{v:"stats",l:"Stat list"},{v:"banner",l:"One-line banner"}],
+twopaths:[{v:"cards",l:"Side-by-side"},{v:"table",l:"Comparison table"},{v:"stack",l:"Sentence pair"}],
+appreciation:[{v:"grade",l:"Report card"},{v:"chart",l:"Price graph"},{v:"stats",l:"Stat list"}],
+freeclear:[{v:"badge",l:"Badge tile"},{v:"line",l:"Inline sentence"}],
+persona:[{v:"badge",l:"Badge tile"},{v:"line",l:"Inline sentence"}],
+ratefree:[{v:"badge",l:"Badge tile"},{v:"line",l:"Inline sentence"}],
+radar:[{v:"stamps",l:"Stamp grid"},{v:"list",l:"Checklist"},{v:"line",l:"Summary line"}],
+landlord:[{v:"stats",l:"Stat list"},{v:"gauge",l:"Yield gauge"},{v:"line",l:"Sentence"}],
+buyerpool:[{v:"stats",l:"Stat list"},{v:"bars",l:"Bar compare"},{v:"line",l:"Sentence"}],
+tenure:[{v:"dial",l:"Progress dial"},{v:"timeline",l:"Timeline"},{v:"line",l:"Sentence"}],
+velocity:[{v:"big",l:"Big number"},{v:"line",l:"Sentence"}],
+rentladder:[{v:"bars",l:"Bar ladder"},{v:"table",l:"Rent table"},{v:"top",l:"Top-rung line"}],
+confidence:[{v:"panel",l:"Check panel"},{v:"meter",l:"Meter"},{v:"line",l:"Footnote line"}]
+};
+const FDISPLAY_OPTS=[{v:"table",l:"Table row"},{v:"stat",l:"Key-facts line"},{v:"tile",l:"Number tile"},{v:"section",l:"Own section"}];
+const displayChoice={};
+const fdisplay={};
+
+const FIELDS = [
+/* Valuation & Equity */
+{k:"estimatedValue",g:"Valuation & Equity",l:"Estimated market value",d:"The headline AVM number — the anchor every offer and conversation is framed against. On this record it suspiciously equals estimatedEquity exactly.",m:"$349,267"},
+{k:"reapiAvm",g:"Valuation & Equity",l:"REAPI native AVM",d:"REAPI's own valuation model output. Null on this record, which means estimatedValue came from a fallback source — worth knowing before you trust it.",m:"null (fallback in use)"},
+{k:"estimatedEquity",g:"Valuation & Equity",l:"Estimated equity ($)",d:"Estimated value minus open liens/mortgages. The negotiating-room number.",m:"$349,267"},
+{k:"equity",g:"Valuation & Equity",l:"Equity (alternate)",d:"A second equity figure that disagrees with estimatedEquity on this record ($274,800 vs $349,267). Pick one source of truth; don't show both.",m:"$274,800 ⚠"},
+{k:"equityPercent",g:"Valuation & Equity",l:"Equity percent",d:"Equity as a share of value. 100 = free and clear — the single strongest close-ability signal in the payload.",m:"100%"},
+{k:"openMortgageBalance",g:"Valuation & Equity",l:"Open mortgage balance",d:"Total outstanding secured debt. $0 means no payoff, no lender in the loop, no rate lock-in.",m:"$0"},
+{k:"comps",g:"Valuation & Equity",l:"Comparable sales",d:"Comp array for sanity-checking the AVM. Empty on this record — the thing investors most want and the payload doesn't deliver.",m:"0 returned",n:1},
+/* Sale & History */
+{k:"lastSaleDate",g:"Sale & History",l:"Last sale date",d:"Start of the current ownership clock. Drives tenure, appreciation, and velocity math.",m:"Dec 16, 2021"},
+{k:"lastSalePrice",g:"Sale & History",l:"Last sale price",d:"The owner's cost basis — the psychological floor in every negotiation.",m:"$350,000"},
+{k:"cashSale",g:"Sale & History",l:"Last sale was cash",d:"Whether the most recent transfer recorded no purchase mortgage.",m:"false"},
+{k:"warrantyDeed",g:"Sale & History",l:"Warranty deed",d:"Whether the last transfer used a full-warranty deed — the 'normal sale' instrument.",m:"false"},
+{k:"last_sale",g:"Sale & History",l:"Last sale detail",d:"Nested object: full detail on the most recent transaction (parties, instrument, amounts).",m:"Deed rec. 2021 · $350,000",n:1},
+{k:"saleHistory",g:"Sale & History",l:"Sale history",d:"Nested array: the full transfer chain. Lets you chart the property's whole price story.",m:"3 records: '98 · '12 · '21",n:1},
+/* Distress & Risk Flags */
+{k:"preForeclosure",g:"Distress & Risk Flags",l:"Pre-foreclosure",d:"Notice of default / lis pendens stage. The classic distress-marketing trigger.",m:"false"},
+{k:"foreclosureInfo",g:"Distress & Risk Flags",l:"Foreclosure detail",d:"Nested array with filing detail when foreclosure activity exists. Empty here.",m:"none",n:1},
+{k:"taxLien",g:"Distress & Risk Flags",l:"Tax lien",d:"Unpaid property-tax lien on record. Financial-pressure signal and a title complication.",m:"false"},
+{k:"lien",g:"Distress & Risk Flags",l:"Lien (any)",d:"Any recorded involuntary lien. Clean here.",m:"false"},
+{k:"vacant",g:"Distress & Risk Flags",l:"Vacant",d:"USPS/utility-derived vacancy. A carrying-cost pain signal and a top investor filter.",m:"false"},
+{k:"bankOwned",g:"Distress & Risk Flags",l:"Bank owned (REO)",d:"Lender took it back at auction. Changes the counterparty entirely.",m:"false"},
+{k:"trusteeSale",g:"Distress & Risk Flags",l:"Trustee sale",d:"Scheduled or completed auction under a deed of trust.",m:"false"},
+{k:"sheriffsDeed",g:"Distress & Risk Flags",l:"Sheriff's deed",d:"Transfer via court-ordered sale — a judicial-foreclosure artifact in the chain.",m:"false"},
+{k:"deedInLieu",g:"Distress & Risk Flags",l:"Deed in lieu",d:"Owner handed the keys to the lender to avoid foreclosure.",m:"false"},
+{k:"quitClaim",g:"Distress & Risk Flags",l:"Quitclaim transfer",d:"No-warranty transfer — often divorce, family shuffle, or estate cleanup. A life-event breadcrumb.",m:"false"},
+{k:"death",g:"Distress & Risk Flags",l:"Owner death",d:"Death associated with the ownership record. High-sensitivity field — handle with care.",m:"false"},
+{k:"deathTransfer",g:"Distress & Risk Flags",l:"Death transfer",d:"Property moved via death (will, TOD deed, estate).",m:"false"},
+{k:"spousalDeath",g:"Distress & Risk Flags",l:"Spousal death",d:"Surviving-spouse situation on record. Sensitive; often precedes downsizing.",m:"false"},
+{k:"inherited",g:"Distress & Risk Flags",l:"Inherited",d:"Current owner acquired by inheritance — a top motivated-seller category (out-of-area heirs, no attachment).",m:"false"},
+/* Owner Profile */
+{k:"ownerInfo",g:"Owner Profile",l:"Owner info",d:"Nested object: owner name(s) and mailing address. The skip-trace starting point.",m:"Owner of record · mail = property",n:1},
+{k:"ownerOccupied",g:"Owner Profile",l:"Owner occupied",d:"Owner lives in the home. Emotional sale, staging matters, homestead rules apply.",m:"true"},
+{k:"absenteeOwner",g:"Owner Profile",l:"Absentee owner",d:"Mailing address differs from the property — the classic landlord/second-home signal.",m:"false"},
+{k:"inStateAbsenteeOwner",g:"Owner Profile",l:"In-state absentee",d:"Absentee but within the state. A 'drives by sometimes' landlord.",m:"false"},
+{k:"outOfStateAbsenteeOwner",g:"Owner Profile",l:"Out-of-state absentee",d:"Absentee across state lines — statistically the most sellable landlord profile.",m:"false"},
+{k:"corporateOwned",g:"Owner Profile",l:"Corporate owned",d:"Titled to an LLC/corp. Spreadsheet sale, no emotion, decision-maker may be hard to reach.",m:"false"},
+{k:"cashBuyer",g:"Owner Profile",l:"Owner is a cash buyer",d:"This owner has purchased with cash historically. Signals liquidity and sophistication.",m:"true"},
+/* Financing */
+{k:"currentMortgages",g:"Financing",l:"Current mortgages",d:"Nested array: open loans with lender, amount, rate type. Empty balance here — none open.",m:"none open",n:1},
+{k:"mortgageHistory",g:"Financing",l:"Mortgage history",d:"Nested array: the full borrowing chain. Empty on this record — consistent with a cash purchase.",m:"none recorded",n:1},
+{k:"adjustableRate",g:"Financing",l:"Adjustable rate",d:"Open ARM on record — a payment-shock / motivation-timing signal when true.",m:"false"},
+{k:"privateLender",g:"Financing",l:"Private lender",d:"A non-institutional lender holds paper — often seller financing or hard money in the chain.",m:"false"},
+/* Property & Lot */
+{k:"propertyType",g:"Property & Lot",l:"Property type",d:"SFR / condo / multi etc. First-pass filter for almost every buyer.",m:"SFR"},
+{k:"mobileHome",g:"Property & Lot",l:"Mobile home",d:"Manufactured-housing flag — changes financing and buyer pool completely.",m:"false"},
+{k:"propertyInfo",g:"Property & Lot",l:"Property detail",d:"Nested object: beds, baths, sqft, year built, construction. Where price-per-sqft math would come from.",m:"4 bd · 2 ba · 1,850 sqft · 1963",n:1},
+{k:"lotInfo",g:"Property & Lot",l:"Lot detail",d:"Nested object: lot size, zoning, land use. Feeds buildability and expansion stories.",m:"0.18 ac · residential",n:1},
+/* Tax */
+{k:"taxInfo",g:"Tax",l:"Tax detail",d:"Nested object: assessed value, annual tax, year. The assessed-vs-market gap can flag appeal potential — or a reassessment risk.",m:"Assessed $228,400 · $8,912/yr",n:1},
+/* Demographics & Rents */
+{k:"demographics.medianIncome",g:"Demographics & Rents",l:"Median household income",d:"Area median income — fuel for affordability and buyer-pool math.",m:"$130,336"},
+{k:"demographics.suggestedRent",g:"Demographics & Rents",l:"Suggested rent",d:"Estimated market rent for this home. The seed of all keep-vs-sell math.",m:"$3,010/mo"},
+{k:"demographics.fmrYear",g:"Demographics & Rents",l:"FMR year",d:"Vintage of the HUD fair-market rent table (2023 here — dated).",m:"2023"},
+{k:"demographics.fmrEfficiency",g:"Demographics & Rents",l:"FMR — efficiency",d:"HUD fair-market rent, studio.",m:"$1,750"},
+{k:"demographics.fmrOneBedroom",g:"Demographics & Rents",l:"FMR — 1BR",d:"HUD fair-market rent, one bedroom.",m:"$1,780"},
+{k:"demographics.fmrTwoBedroom",g:"Demographics & Rents",l:"FMR — 2BR",d:"HUD fair-market rent, two bedroom.",m:"$2,020"},
+{k:"demographics.fmrThreeBedroom",g:"Demographics & Rents",l:"FMR — 3BR",d:"HUD fair-market rent, three bedroom.",m:"$2,530"},
+{k:"demographics.fmrFourBedroom",g:"Demographics & Rents",l:"FMR — 4BR",d:"HUD fair-market rent, four bedroom.",m:"$3,010"},
+{k:"demographics.hudAreaName",g:"Demographics & Rents",l:"HUD area name",d:"The metro the rent data belongs to. On this record it says Washington DC for a New Jersey address — the geo bug. Validate before displaying anything downstream of it.",m:"⚠ DC-VA-MD (wrong metro)"},
+{k:"demographics.hudAreaCode",g:"Demographics & Rents",l:"HUD area code",d:"Machine code for the FMR area — use it for the automated geo-validity check.",m:"METRO47900M47900"},
+/* Identifiers & Meta */
+{k:"input.*",g:"Identifiers & Meta",l:"Input address",d:"Echo of the parsed request address (house, street, city, state, zip).",m:"17 Topeka Pass, Willingboro NJ 08046"},
+{k:"id",g:"Identifiers & Meta",l:"REAPI property ID",d:"Stable identifier for joins and re-pulls.",m:"190787647"},
+{k:"priorId",g:"Identifiers & Meta",l:"Prior ID",d:"Legacy identifier from a previous data vintage — keep for continuity mapping.",m:"1788050590"},
+{k:"reapi_loaded_at",g:"Identifiers & Meta",l:"Loaded-at timestamp",d:"Data vintage marker. '0' here, which is itself a small data-quality tell.",m:"0"},
+{k:"statusCode",g:"Identifiers & Meta",l:"Status code",d:"API response status (200 = success).",m:"200"},
+{k:"statusMessage",g:"Identifiers & Meta",l:"Status message",d:"Human-readable API status.",m:"Success"},
+{k:"credits",g:"Identifiers & Meta",l:"Credits",d:"Billing units consumed by the call.",m:"0"},
+{k:"live",g:"Identifiers & Meta",l:"Live",d:"Whether the response came from live lookup vs cache.",m:"true"},
+{k:"requestExecutionTimeMS",g:"Identifiers & Meta",l:"Request time (ms)",d:"End-to-end API latency for the call.",m:"40ms"},
+{k:"propertyLookupExecutionTimeMS",g:"Identifiers & Meta",l:"Lookup time (ms)",d:"Property-lookup portion of the latency.",m:"40ms"},
+{k:"compsLookupExecutionTimeMS",g:"Identifiers & Meta",l:"Comps time (ms)",d:"Comps-lookup latency. Null here because no comps ran.",m:"null"}
+];
+
+const PRESELECTED = new Set(["walkaway","twopaths","freeclear","landlord"]);
+const selected = new Set(PRESELECTED);
+
+/* ================= WORKBENCH RENDER ================= */
+const sugGrid = document.getElementById("sugGrid");
+SUGGESTIONS.forEach(s=>{
+  const el=document.createElement("div");
+  el.className="sug"+(selected.has(s.id)?" selected":"");
+  el.innerHTML=`
+    <div class="pick"><input type="checkbox" aria-label="Select ${s.title}" ${selected.has(s.id)?"checked":""} data-id="${s.id}"></div>
+    <div class="chips">${s.tags.map(t=>`<span class="chip ${t}">${t}</span>`).join("")}</div>
+    <h3>${s.title}</h3>
+    <div class="hook">${s.hook}</div>
+    <div class="uses">${s.uses.map(u=>`<code>${u}</code>`).join("")}</div>
+    <div class="dpick"><span class="dlabel">Show as</span>${VARIANTS[s.id].map((v,i)=>`<button type="button" class="dchip${i===0?" sel":""}" data-dfor="${s.id}" data-dval="${v.v}">${v.l}</button>`).join("")}</div>
+    <details><summary>Why it works · the math · the catch</summary>
+      <p>${s.why}</p>${s.caveat?`<p class="caveat">⚠ ${s.caveat}</p>`:""}
+    </details>`;
+  sugGrid.appendChild(el);
+});
+
+const catList=document.getElementById("catList");
+const groups=[...new Set(FIELDS.map(f=>f.g))];
+groups.forEach(g=>{
+  const fs=FIELDS.filter(f=>f.g===g);
+  const d=document.createElement("details");
+  d.className="group";
+  d.innerHTML=`<summary class="group-head">${g}<span class="group-count">${fs.length} fields</span></summary>`+
+    fs.map(f=>`
+    <div class="field-row">
+      <div class="field-line">
+        <input type="checkbox" aria-label="Select ${f.k}" data-id="f:${f.k}">
+        <code>${f.k}</code>
+        <span class="flabel">${f.l}</span>
+        ${f.n?`<span class="nested-tag">NESTED</span>`:""}
+      </div>
+      <div class="dpick"><span class="dlabel">Show as</span>${FDISPLAY_OPTS.map((v,i)=>`<button type="button" class="dchip${i===0?" sel":""}" data-dfor="f:${f.k}" data-dval="${v.v}">${v.l}</button>`).join("")}</div>
+      <details><summary>Definition</summary><p>${f.d}</p></details>
+    </div>`).join("");
+  catList.appendChild(d);
+});
+
+/* ================= SELECTION ================= */
+const countLabel=document.getElementById("countLabel");
+const buildBtn=document.getElementById("buildBtn");
+function refreshCount(){
+  const n=selected.size;
+  countLabel.textContent=`${n} selected`;
+  buildBtn.disabled=n===0;
+}
+document.body.addEventListener("change",e=>{
+  if(e.target.matches('input[type="checkbox"][data-id]')){
+    const id=e.target.dataset.id;
+    e.target.checked?selected.add(id):selected.delete(id);
+    const card=e.target.closest(".sug");
+    if(card)card.classList.toggle("selected",e.target.checked);
+    const row=e.target.closest(".field-row");
+    if(row)row.classList.toggle("on",e.target.checked);
+    refreshCount();
+  }
+});
+document.body.addEventListener("click",e=>{
+  const c=e.target.closest(".dchip");
+  if(!c)return;
+  const key=c.dataset.dfor;
+  if(key.startsWith("f:"))fdisplay[key.slice(2)]=c.dataset.dval;
+  else displayChoice[key]=c.dataset.dval;
+  c.parentElement.querySelectorAll(".dchip").forEach(x=>x.classList.toggle("sel",x===c));
+});
+refreshCount();
+
+/* ================= REAPI PATH MAPPING ================= */
+const META_TOP=new Set(["statusCode","statusMessage","credits","live","requestExecutionTimeMS","propertyLookupExecutionTimeMS","compsLookupExecutionTimeMS","input.*"]);
+const DEMO=new Set(["suggestedRent","medianIncome","hudAreaName","hudAreaCode","fmrYear","fmrEfficiency","fmrOneBedroom","fmrTwoBedroom","fmrThreeBedroom","fmrFourBedroom"]);
+function fpath(k){
+  if(k.startsWith("input.")||META_TOP.has(k))return k;
+  if(k.startsWith("demographics."))return "data."+k;
+  if(DEMO.has(k))return "data.demographics."+k;
+  return "data."+k;
+}
+const DERIVED={
+walkaway:{selling_costs:"round(data.estimatedValue * 0.07) — 7% is an assumption; make configurable",net_proceeds:"data.estimatedValue - data.openMortgageBalance - selling_costs"},
+twopaths:{cash_offer_low:"data.estimatedValue * 0.88",cash_offer_high:"data.estimatedValue * 0.95",list_net:"net_proceeds (see walkaway)"},
+appreciation:{years_owned:"(today - data.lastSaleDate) / 365.25",total_change_pct:"(data.estimatedValue - data.lastSalePrice) / data.lastSalePrice",annualized_pct:"(data.estimatedValue / data.lastSalePrice) ^ (1 / years_owned) - 1",grade:"letter band over annualized_pct (bands TBD; sample −0.05%/yr → C)"},
+freeclear:{show_badge:"data.equityPercent >= 100 && data.openMortgageBalance == 0 && !data.taxLien && !data.lien"},
+persona:{label:"decision table over data.ownerOccupied, data.absenteeOwner, data.inStateAbsenteeOwner, data.outOfStateAbsenteeOwner, data.corporateOwned, data.cashBuyer, data.inherited (sample resolves to 'Rooted Cash Owner')"},
+radar:{status_per_flag:"each boolean false → CLEAR, true → FLAGGED"},
+landlord:{gross_annual_rent:"data.demographics.suggestedRent * 12",gross_yield:"gross_annual_rent / data.estimatedValue",grm:"data.estimatedValue / gross_annual_rent",gate:"SUPPRESS entire card unless HUD geo validation passes (see data_quality_notes)"},
+buyerpool:{est_buying_power:"affordability model: 28% front-end of data.demographics.medianIncome / 12, less local taxes+insurance, at prevailing 30yr rate → loan + down payment (sample ≈ $380K)"},
+ratefree:{show_badge:"data.openMortgageBalance == 0 (strengthen with data.currentMortgages empty)"},
+tenure:{years_owned:"(today - data.lastSaleDate) / 365.25",dial_pct:"min(years_owned / 8, 1) — 8yr median hold is a constant; source and update it"},
+velocity:{equity_per_year:"data.estimatedEquity / years_owned",footnote_rule:"if data.cashBuyer or mortgageHistory empty, append cash-purchase caveat"},
+rentladder:{rungs:"data.demographics.fmrEfficiency → fmrFourBedroom",highlight:"rung matching bedroom count from data.propertyInfo; label with data.demographics.suggestedRent"},
+confidence:{avm_check:"data.reapiAvm != null",comps_check:"data.comps.length > 0",geo_check:"data.demographics.hudAreaCode metro consistent with input.state",overall:"3 passes → high, 2 → medium, ≤1 → medium-low/low"}
+};
+
+/* ================= REPORT RENDERERS ================= */
+function card(id,mode,title,sub,inner,src){return `<div class="rcard" data-card="${id}" data-display="${mode}"><h2>${title}</h2>${sub?`<div class="sub">${sub}</div>`:""}${inner}${src?`<div class="srcline">src: ${src}</div>`:""}</div>`}
+function slim(id,mode,html,src,attrs){return `<div class="rcard slim" data-card="${id}" data-display="${mode}"${attrs?` ${attrs}`:""}><div class="sent">${html}</div>${src?`<div class="srcline">src: ${src}</div>`:""}</div>`}
+function slines(rows){return rows.map(([l,v,a])=>`<div class="statline"><span>${l}</span><b${a?` ${a}`:""}>${v}</b></div>`).join("")}
+const RADAR_FLAGS=[["Pre-foreclosure","data.preForeclosure"],["Tax lien","data.taxLien"],["Other liens","data.lien"],["Vacancy","data.vacant"],["Bank owned","data.bankOwned"],["Trustee sale","data.trusteeSale"],["Sheriff's deed","data.sheriffsDeed"],["Deed in lieu","data.deedInLieu"],["Owner death","data.death"],["Spousal death","data.spousalDeath"],["Inherited","data.inherited"],["Quitclaim","data.quitClaim"]];
+
+const R={
+walkaway:{
+bar:()=>`<div class="rcard" data-card="walkaway" data-display="bar">
+  <h2>If you sold today</h2>
+  <div class="sub">Estimated proceeds after typical selling costs — before any mortgage payoff (you have none).</div>
+  <div class="bignum" data-reapi-derived="net_proceeds" data-formula="data.estimatedValue - data.openMortgageBalance - round(data.estimatedValue*0.07)">$324,800</div>
+  <div class="settle"><div class="net" style="width:93%"></div><div class="costs" style="width:7%"></div></div>
+  <div class="settle-key"><span>Net to you <b data-reapi-derived="net_proceeds">$324,800</b></span><span>Est. selling costs (~7%) <b data-reapi-derived="selling_costs" data-formula="round(data.estimatedValue*0.07)">$24,450</b></span></div>
+  <div class="footnote">Estimated value <span data-reapi="data.estimatedValue">$349,267</span> · Mortgage payoff <span data-reapi="data.openMortgageBalance">$0</span> · Your equity position: <span data-reapi="data.equityPercent">100%</span></div>
+  <div class="srcline">src: data.estimatedValue · data.openMortgageBalance · data.equityPercent · assumption: 7% selling costs</div>
+</div>`,
+stats:()=>card("walkaway","stats","If you sold today","The math, line by line.",
+  slines([["Estimated value","$349,267",'data-reapi="data.estimatedValue"'],["Est. selling costs (~7%)","− $24,450",'data-reapi-derived="selling_costs"'],["Mortgage payoff","− $0",'data-reapi="data.openMortgageBalance"'],["Net to you","$324,800",'data-reapi-derived="net_proceeds"']]),
+  "data.estimatedValue · data.openMortgageBalance · assumption: 7% selling costs"),
+banner:()=>slim("walkaway","banner",`If you sold today, you'd walk away with about <b data-reapi-derived="net_proceeds">$324,800</b> after typical selling costs — and you own this home free and clear.`,"data.estimatedValue · data.openMortgageBalance · assumption: 7% selling costs")
+},
+twopaths:{
+cards:()=>`<div class="rcard" data-card="twopaths" data-display="cards">
+  <h2>Two ways to sell</h2>
+  <div class="sub">Both are real options. The difference is what you're trading — time and certainty vs. top-line price.</div>
+  <div class="twopaths">
+    <div class="path cash"><div class="pname">Instant cash offer</div><div class="pnum" data-reapi-derived="cash_offer_range" data-formula="data.estimatedValue*0.88 … data.estimatedValue*0.95">$307,400 – $331,800</div>
+      <ul><li>Close in as few as 14 days</li><li>No showings, no repairs, no contingencies</li><li>Pick your move-out date</li></ul></div>
+    <div class="path"><div class="pname">List with an agent</div><div class="pnum" data-reapi-derived="list_net">≈ $324,800 net</div>
+      <ul><li>Typical timeline 45–90 days</li><li>Showings, inspection, appraisal</li><li>Top-line price ≈ <span data-reapi="data.estimatedValue">$349,267</span> before costs</li></ul></div>
+  </div>
+  <div class="srcline">src: data.estimatedValue · data.openMortgageBalance · assumptions: 88–95% cash band, 7% listing costs</div>
+</div>`,
+table:()=>card("twopaths","table","Two ways to sell","The same tradeoff, as a table.",
+  `<table class="ctable"><tr><th></th><th class="hl">Instant cash</th><th>List with agent</th></tr>
+  <tr><td>You receive</td><td class="hl" data-reapi-derived="cash_offer_range">$307,400 – $331,800</td><td data-reapi-derived="list_net">≈ $324,800 net</td></tr>
+  <tr><td>Timeline</td><td class="hl">As few as 14 days</td><td>45–90 days</td></tr>
+  <tr><td>Showings &amp; repairs</td><td class="hl">None</td><td>Required</td></tr>
+  <tr><td>Certainty</td><td class="hl">Guaranteed close</td><td>Subject to buyer &amp; appraisal</td></tr></table>`,
+  "data.estimatedValue · data.openMortgageBalance · assumptions: 88–95% cash band, 7% listing costs"),
+stack:()=>slim("twopaths","stack",`A cash buyer could put <b data-reapi-derived="cash_offer_range">$307,400 – $331,800</b> in your hands in about two weeks, no showings. Listing traditionally targets <b data-reapi="data.estimatedValue">$349,267</b> — roughly <b data-reapi-derived="list_net">$324,800</b> net after costs — on a 45–90 day timeline.`,"data.estimatedValue · assumptions: 88–95% cash band, 7% listing costs")
+},
+appreciation:{
+grade:()=>`<div class="rcard" data-card="appreciation" data-display="grade">
+  <h2>Appreciation report card</h2>
+  <div class="sub">How this home's value has moved since you bought it.</div>
+  <div class="grade"><div class="gradeletter" data-reapi-derived="grade">C</div>
+    <div style="flex:1">
+      <div class="statline"><span>Purchased <span data-reapi="data.lastSaleDate">Dec 16, 2021</span></span><b data-reapi="data.lastSalePrice">$350,000</b></div>
+      <div class="statline"><span>Estimated value today</span><b data-reapi="data.estimatedValue">$349,267</b></div>
+      <div class="statline"><span>Total change (<span data-reapi-derived="years_owned">4.6 yrs</span>)</span><b data-reapi-derived="total_change_pct">−0.2%</b></div>
+      <div class="statline"><span>Annualized</span><b data-reapi-derived="annualized_pct">−0.05% / yr</b></div>
+    </div></div>
+  <div class="footnote">A flat market isn't a loss — but it means waiting for appreciation isn't the plan. Grade reflects value change only, not your equity position.</div>
+  <div class="srcline">src: data.lastSalePrice · data.lastSaleDate · data.estimatedValue</div>
+</div>`,
+chart:()=>card("appreciation","chart","Your home's price story","Every recorded sale, plus today's estimate.",
+  `<div class="chart-wrap"><svg viewBox="0 0 600 190" width="100%" role="img" aria-label="Price history line chart" data-reapi="data.saleHistory,data.estimatedValue">
+  <path d="M40,153.5 L304,133.9 L474,25.4 L580,25.8 L580,160 L40,160 Z" fill="var(--tint)"/>
+  <polyline points="40,153.5 304,133.9 474,25.4 580,25.8" fill="none" stroke="var(--c1)" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="40" cy="153.5" r="5" fill="#fff" stroke="var(--c1)" stroke-width="3"/>
+  <circle cx="304" cy="133.9" r="5" fill="#fff" stroke="var(--c1)" stroke-width="3"/>
+  <circle cx="474" cy="25.4" r="5" fill="#fff" stroke="var(--c1)" stroke-width="3"/>
+  <circle cx="580" cy="25.8" r="5" fill="var(--c1)" stroke="var(--c1)" stroke-width="3"/>
+  <text x="44" y="145" font-size="11" font-weight="600" fill="var(--muted)">$112K</text>
+  <text x="304" y="122" font-size="11" font-weight="600" fill="var(--muted)" text-anchor="middle">$148.5K</text>
+  <text x="466" y="15" font-size="11" font-weight="800" fill="var(--c1)" text-anchor="middle">$350K</text>
+  <text x="576" y="50" font-size="11" font-weight="600" fill="var(--c1)" text-anchor="end">Est. $349K</text>
+  <text x="40" y="182" font-size="11" fill="var(--muted)">'98</text>
+  <text x="304" y="182" font-size="11" fill="var(--muted)" text-anchor="middle">'12</text>
+  <text x="474" y="182" font-size="11" fill="var(--muted)" text-anchor="middle">'21</text>
+  <text x="580" y="182" font-size="11" fill="var(--muted)" text-anchor="end">Now</text>
+  </svg></div><div class="footnote">Recorded transfers (mock): 1998 · 2012 · 2021, plus today's estimate. Flat since purchase — the equity story here is the cash position, not appreciation.</div>`,
+  "data.saleHistory · data.lastSalePrice · data.estimatedValue"),
+stats:()=>card("appreciation","stats","Value since you bought","",
+  slines([["Purchased Dec 16, 2021","$350,000",'data-reapi="data.lastSalePrice"'],["Estimated value today","$349,267",'data-reapi="data.estimatedValue"'],["Total change (4.6 yrs)","−0.2%",'data-reapi-derived="total_change_pct"'],["Annualized","−0.05% / yr",'data-reapi-derived="annualized_pct"']]),
+  "data.lastSalePrice · data.lastSaleDate · data.estimatedValue")
+},
+freeclear:{
+badge:()=>`<div class="badge" data-card="freeclear" data-display="badge" data-reapi="data.equityPercent,data.openMortgageBalance,data.taxLien,data.lien"><div class="bicon">🛡</div><h3>Free &amp; Clear</h3><p>100% equity · $0 mortgage · no liens on record</p></div>`,
+line:()=>slim("freeclear","line",`This home is owned <b>free and clear</b> — 100% equity, $0 mortgage, no liens on record.`,"data.equityPercent · data.openMortgageBalance · data.taxLien · data.lien",'data-reapi="data.equityPercent,data.openMortgageBalance,data.taxLien,data.lien"')
+},
+persona:{
+badge:()=>`<div class="badge" data-card="persona" data-display="badge" data-reapi="data.ownerOccupied,data.absenteeOwner,data.corporateOwned,data.cashBuyer,data.inherited"><div class="bicon">🏠</div><h3>Rooted Cash Owner</h3><p>Owner-occupied · local · individual · purchased with cash · not inherited</p></div>`,
+line:()=>slim("persona","line",`Seller profile: a <b>rooted cash owner</b> — lives in the home, local, bought with cash, didn't inherit it.`,"data.ownerOccupied · data.absenteeOwner · data.corporateOwned · data.cashBuyer · data.inherited",'data-reapi="data.ownerOccupied,data.absenteeOwner,data.corporateOwned,data.cashBuyer,data.inherited"')
+},
+ratefree:{
+badge:()=>`<div class="badge" data-card="ratefree" data-display="badge" data-reapi="data.openMortgageBalance,data.adjustableRate,data.currentMortgages"><div class="bicon">🔓</div><h3>No Rate Handcuffs</h3><p>$0 balance — no low-rate lock-in holding this move back</p></div>`,
+line:()=>slim("ratefree","line",`No rate handcuffs: with a <b>$0</b> mortgage balance, no locked-in low rate is holding this move back.`,"data.openMortgageBalance · data.adjustableRate · data.currentMortgages",'data-reapi="data.openMortgageBalance,data.adjustableRate,data.currentMortgages"')
+},
+radar:{
+stamps:()=>`<div class="rcard" data-card="radar" data-display="stamps">
+  <h2>Record check</h2>
+  <div class="sub">Twelve public-record flags screened. This property comes back clean on all of them.</div>
+  <div class="radar">${RADAR_FLAGS.map(([x,p])=>`<div class="stamp" data-reapi="${p}"><span>${x}</span><span class="st">CLEAR</span></div>`).join("")}</div>
+  <div class="srcline">src: 12 boolean flags — path on each stamp's data-reapi attribute · false → CLEAR</div>
+</div>`,
+list:()=>card("radar","list","Record check","Twelve public-record flags screened — all clear.",
+  `<div class="checklist">${RADAR_FLAGS.map(([x,p])=>`<div data-reapi="${p}"><b>✓</b>${x}</div>`).join("")}</div>`,
+  "12 boolean flags — path on each row's data-reapi attribute"),
+line:()=>slim("radar","line",`All <b>12</b> public-record distress flags — foreclosure, liens, vacancy, estate transfers and more — come back <b>clear</b> on this property.`,"12 boolean distress flags, all false")
+},
+landlord:{
+stats:()=>`<div class="rcard" data-card="landlord" data-display="stats">
+  <h2>What if you kept it as a rental?</h2>
+  <div class="sub">Before you sell, here's what the numbers say about holding.</div>
+  <div class="statline"><span>Estimated market rent</span><b data-reapi="data.demographics.suggestedRent">$3,010 / mo</b></div>
+  <div class="statline"><span>Gross annual rent</span><b data-reapi-derived="gross_annual_rent" data-formula="data.demographics.suggestedRent * 12">$36,120</b></div>
+  <div class="statline"><span>Gross yield on today's value</span><b data-reapi-derived="gross_yield" data-formula="gross_annual_rent / data.estimatedValue">10.3%</b></div>
+  <div class="statline"><span>Gross rent multiplier</span><b data-reapi-derived="grm" data-formula="data.estimatedValue / gross_annual_rent">9.7</b></div>
+  <div class="geoflag">⚠ Demo note: rent figures on this sample record failed the metro-validation check (HUD area resolved to Washington DC for a NJ address). In production this card would be suppressed.</div>
+  <div class="srcline">src: data.demographics.suggestedRent · data.estimatedValue · GATE: HUD geo validation must pass</div>
+</div>`,
+gauge:()=>card("landlord","gauge","What if you kept it as a rental?","Gross rental yield at today's value.",
+  `<div class="chart-wrap" style="max-width:280px;margin:12px auto 0"><svg viewBox="0 0 200 118" width="100%" role="img" aria-label="Gross yield gauge">
+  <path d="M20,100 A80,80 0 0 1 180,100" fill="none" stroke="var(--tint)" stroke-width="14" stroke-linecap="round"/>
+  <path d="M20,100 A80,80 0 0 1 180,100" fill="none" stroke="var(--c1)" stroke-width="14" stroke-linecap="round" stroke-dasharray="172.6 999" data-reapi-derived="gross_yield"/>
+  <text x="100" y="86" text-anchor="middle" font-size="30" font-weight="800" fill="var(--c1)">10.3%</text>
+  <text x="100" y="104" text-anchor="middle" font-size="11" fill="var(--muted)">gross yield</text>
+  <text x="20" y="116" font-size="10" fill="var(--muted)">0%</text>
+  <text x="180" y="116" text-anchor="end" font-size="10" fill="var(--muted)">15%</text>
+  </svg></div>
+  <div class="statline"><span>Estimated market rent</span><b data-reapi="data.demographics.suggestedRent">$3,010 / mo</b></div>
+  <div class="geoflag">⚠ Demo note: rent figures on this sample failed metro validation — in production this card would be suppressed.</div>`,
+  "data.demographics.suggestedRent · data.estimatedValue · GATE: HUD geo validation must pass"),
+line:()=>slim("landlord","line",`At <b data-reapi="data.demographics.suggestedRent">$3,010/mo</b> fair-market rent, holding this home instead of selling would gross about <b data-reapi-derived="gross_yield">10.3%</b> a year on today's value.<div class="geoflag">⚠ Demo note: rent figures on this sample failed metro validation — in production this line would be suppressed.</div>`,"data.demographics.suggestedRent · data.estimatedValue · GATE: HUD geo validation must pass")
+},
+buyerpool:{
+stats:()=>`<div class="rcard" data-card="buyerpool" data-display="stats">
+  <h2>Who can buy this home?</h2>
+  <div class="sub">Local incomes vs. this home's price — a measure of how deep your buyer pool runs.</div>
+  <div class="statline"><span>Median household income (area)</span><b data-reapi="data.demographics.medianIncome">$130,336</b></div>
+  <div class="statline"><span>Est. purchasing power at that income</span><b data-reapi-derived="est_buying_power">≈ $380,000</b></div>
+  <div class="statline"><span>This home's estimated value</span><b data-reapi="data.estimatedValue">$349,267</b></div>
+  <div class="footnote">The typical local household can afford this home. That's a deep buyer pool — homes priced inside the median's reach tend to move faster.</div>
+  <div class="srcline">src: data.demographics.medianIncome · data.estimatedValue · assumption: 28% front-end affordability model</div>
+</div>`,
+bars:()=>card("buyerpool","bars","Who can buy this home?","This home's price sits inside the local buying-power bar.",
+  `<div class="ladder">
+  <div class="rung"><span class="rl" style="width:150px">Local buying power</span><div class="rbar" style="width:58%;background:var(--tint);border:1.5px solid var(--c1)"></div><span class="rv" style="color:var(--c1);font-weight:800" data-reapi-derived="est_buying_power">≈ $380K</span></div>
+  <div class="rung hot"><span class="rl" style="width:150px">This home</span><div class="rbar" style="width:53%"></div><span class="rv" data-reapi="data.estimatedValue">$349K</span></div>
+  </div><div class="footnote">Estimated from the area's <span data-reapi="data.demographics.medianIncome">$130,336</span> median household income. When the typical household can afford the home, the buyer pool is deep and days-on-market drop.</div>`,
+  "data.demographics.medianIncome · data.estimatedValue · assumption: 28% front-end affordability model"),
+line:()=>slim("buyerpool","line",`The area's median household income of <b data-reapi="data.demographics.medianIncome">$130,336</b> supports roughly a <b data-reapi-derived="est_buying_power">$380,000</b> purchase — this home, at <b data-reapi="data.estimatedValue">$349,267</b>, is inside the pool.`,"data.demographics.medianIncome · data.estimatedValue · assumption: 28% front-end affordability model")
+},
+tenure:{
+dial:()=>`<div class="rcard" data-card="tenure" data-display="dial">
+  <h2>Your tenure clock</h2>
+  <div class="sub"><span data-reapi-derived="years_owned">4.6 years</span> in the home vs. the ~8-year typical American hold.</div>
+  <div class="dial"><div class="fill" data-reapi-derived="dial_pct" style="width:57%"></div></div>
+  <div class="settle-key"><span>Purchased <span data-reapi="data.lastSaleDate">Dec 2021</span></span><span>Typical move window</span></div>
+  <div class="footnote">A population average, not a prediction — but you're past the halfway mark of a typical stay.</div>
+  <div class="srcline">src: data.lastSaleDate · constant: 8yr median hold</div>
+</div>`,
+timeline:()=>card("tenure","timeline","Your tenure clock","Where 4.6 years sits on a typical ownership arc.",
+  `<div class="tl-track"><div class="tl-fill" data-reapi-derived="dial_pct"></div><span class="tl-dot" style="left:0%"></span><span class="tl-dot" style="left:57%;background:var(--c1)"></span><span class="tl-dot end" style="left:100%"></span></div>
+  <div class="tl-labels"><span>Purchased <span data-reapi="data.lastSaleDate">Dec '21</span></span><span>Today · <span data-reapi-derived="years_owned">4.6 yrs</span></span><span>~8-yr typical</span></div>
+  <div class="footnote">A population average, not a prediction — but you're past the halfway mark of a typical stay.</div>`,
+  "data.lastSaleDate · constant: 8yr median hold"),
+line:()=>slim("tenure","line",`You've owned this home for <b data-reapi-derived="years_owned">4.6 years</b> — past the halfway mark of the typical ~8-year American stay.`,"data.lastSaleDate · constant: 8yr median hold")
+},
+velocity:{
+big:()=>`<div class="rcard" data-card="velocity" data-display="big">
+  <h2>Equity velocity</h2>
+  <div class="sub">Equity accumulated per year of ownership.</div>
+  <div class="bignum" style="font-size:34px" data-reapi-derived="equity_per_year" data-formula="data.estimatedEquity / years_owned">$75,800 / yr</div>
+  <div class="footnote"><span data-reapi="data.estimatedEquity">$349,267</span> equity ÷ <span data-reapi-derived="years_owned">4.6 years</span>. Note: this purchase was all-cash, so the figure reflects capital invested up front plus market movement, not mortgage paydown.</div>
+  <div class="srcline">src: data.estimatedEquity · data.lastSaleDate · footnote rule keyed on data.cashBuyer</div>
+</div>`,
+line:()=>slim("velocity","line",`Ownership here has banked about <b data-reapi-derived="equity_per_year">$75,800 per year</b> in equity — though as an all-cash purchase, most of that was capital in up front.`,"data.estimatedEquity · data.lastSaleDate · footnote rule keyed on data.cashBuyer")
+},
+rentladder:{
+bars:()=>`<div class="rcard" data-card="rentladder" data-display="bars">
+  <h2>The local rent ladder</h2>
+  <div class="sub">HUD fair-market rents by size. Your 4-bedroom sits on the top rung.</div>
+  <div class="ladder">
+    ${[["Efficiency",1750,"data.demographics.fmrEfficiency"],["1 bedroom",1780,"data.demographics.fmrOneBedroom"],["2 bedroom",2020,"data.demographics.fmrTwoBedroom"],["3 bedroom",2530,"data.demographics.fmrThreeBedroom"]].map(([l,v,p])=>`<div class="rung" data-reapi="${p}"><span class="rl">${l}</span><div class="rbar" style="width:${Math.round(v/3010*60)}%"></div><span class="rv">$${v.toLocaleString()}</span></div>`).join("")}
+    <div class="rung hot" data-reapi="data.demographics.fmrFourBedroom"><span class="rl">4 bedroom ←</span><div class="rbar" style="width:60%"></div><span class="rv">$3,010</span></div>
+  </div>
+  <div class="srcline">src: data.demographics.fmrEfficiency → fmrFourBedroom · highlight rung from data.propertyInfo bedrooms</div>
+</div>`,
+table:()=>card("rentladder","table","The local rent ladder","HUD fair-market rents by size for this area.",
+  `<table class="ctable"><tr><th>Size</th><th>Fair-market rent</th></tr>
+  <tr><td>Efficiency</td><td data-reapi="data.demographics.fmrEfficiency">$1,750</td></tr>
+  <tr><td>1 bedroom</td><td data-reapi="data.demographics.fmrOneBedroom">$1,780</td></tr>
+  <tr><td>2 bedroom</td><td data-reapi="data.demographics.fmrTwoBedroom">$2,020</td></tr>
+  <tr><td>3 bedroom</td><td data-reapi="data.demographics.fmrThreeBedroom">$2,530</td></tr>
+  <tr><td class="hl">4 bedroom — yours</td><td class="hl" data-reapi="data.demographics.fmrFourBedroom">$3,010</td></tr></table>`,
+  "data.demographics.fmrEfficiency → fmrFourBedroom"),
+top:()=>slim("rentladder","top",`Your four-bedroom commands <b data-reapi="data.demographics.fmrFourBedroom">$3,010/mo</b> — the top rung of the local rent ladder.`,"data.demographics.fmrFourBedroom · data.demographics.suggestedRent")
+},
+confidence:{
+panel:()=>`<div class="rcard" data-card="confidence" data-display="panel">
+  <h2>How much to trust these numbers</h2>
+  <div class="sub">We show our work. Three checks run on every report.</div>
+  <div class="confrow" data-reapi="data.reapiAvm"><span>Valuation source (native AVM)</span><span class="pass fail">FALLBACK</span></div>
+  <div class="confrow" data-reapi="data.comps"><span>Comparable sales found</span><span class="pass fail">0 COMPS</span></div>
+  <div class="confrow" data-reapi="data.demographics.hudAreaCode"><span>Geographic data validation</span><span class="pass fail">MISMATCH</span></div>
+  <div class="footnote">Overall confidence on this sample: <b data-reapi-derived="overall">medium-low</b>. Value shown is a fallback estimate with no comp support, and area rent/income data failed metro validation. A production report would either resolve these or say so, exactly like this.</div>
+  <div class="srcline">src: data.reapi_avm checks — data.reapiAvm · data.comps · data.demographics.hudAreaCode vs input.state</div>
+</div>`,
+meter:()=>card("confidence","meter","How much to trust these numbers","Three data checks run on every report.",
+  `<div class="meter" data-reapi-derived="overall"><span></span><span></span><span></span></div>
+  <div class="sent"><b>0 of 3</b> checks passed on this sample — native AVM missing, no comps returned, and area data failed metro validation. Overall confidence: <b>medium-low</b>.</div>`,
+  "data.reapiAvm · data.comps · data.demographics.hudAreaCode vs input.state · lit segments = passed checks"),
+line:()=>slim("confidence","line",`Data confidence on this report: <b>medium-low</b> — fallback valuation, no comps, and area data failed metro validation.`,"data.reapiAvm · data.comps · data.demographics.hudAreaCode vs input.state")
+}
+};
+const ORDER=["walkaway","twopaths","appreciation","__badges","radar","landlord","rentladder","buyerpool","tenure","velocity","confidence"];
+const BADGES=["freeclear","persona","ratefree"];
+function dmode(id){return displayChoice[id]||VARIANTS[id][0].v}
+function fmode(k){return fdisplay[k]||"table"}
+
+/* ================= BUILD REPORT ================= */
+let lastBuild=new Set(),lastDisplay={},lastFDisplay={};
+function buildReport(){
+  lastBuild=new Set(selected);
+  lastDisplay={...displayChoice};
+  lastFDisplay={...fdisplay};
+  const body=document.getElementById("reportBody");
+  let html="";
+  ORDER.forEach(id=>{
+    if(id==="__badges"){
+      const on=BADGES.filter(b=>selected.has(b));
+      const tiles=on.filter(b=>dmode(b)==="badge");
+      const lines=on.filter(b=>dmode(b)!=="badge");
+      if(tiles.length)html+=`<div class="badgerow">${tiles.map(b=>R[b].badge()).join("")}</div>`;
+      lines.forEach(b=>{html+=R[b].line();});
+    }else if(selected.has(id)){html+=R[id][dmode(id)]();}
+  });
+  const rawSel=FIELDS.filter(f=>selected.has("f:"+f.k));
+  const tiles=rawSel.filter(f=>fmode(f.k)==="tile");
+  const stats=rawSel.filter(f=>fmode(f.k)==="stat");
+  const secs=rawSel.filter(f=>fmode(f.k)==="section");
+  const tab=rawSel.filter(f=>fmode(f.k)==="table");
+  if(tiles.length){
+    html+=`<div class="tilegrid" data-card="number_tiles">${tiles.map(f=>`<div class="tile" data-reapi="${fpath(f.k)}"><div class="tv">${f.m}</div><div class="tl2">${f.l}</div><div class="srcline">${fpath(f.k)}</div></div>`).join("")}</div>`;
+  }
+  if(stats.length){
+    html+=card("key_facts","stats","Key facts","Pulled straight from the property record.",
+      slines(stats.map(f=>[f.l,f.m,`data-reapi="${fpath(f.k)}"`])),
+      stats.map(f=>fpath(f.k)).join(" · "));
+  }
+  secs.forEach(f=>{
+    html+=card("field_"+f.k,"section",f.l,f.d,`<div class="bignum" style="font-size:30px" data-reapi="${fpath(f.k)}">${f.m}</div>`,fpath(f.k));
+  });
+  if(tab.length){
+    html+=`<div class="rcard recdet" data-card="record_details" data-display="table"><h2>Record details</h2><div class="sub">Straight from the property record.</div><table>`+
+      tab.map(f=>`<tr><td>${f.l}</td><td class="val" data-reapi="${fpath(f.k)}">${f.m}</td><td>${fpath(f.k)}</td></tr>`).join("")+`</table></div>`;
+  }
+  html+=`<div class="disclaimer">Sample report generated with mock data for internal design review. Values, rents and derived figures are estimates for discussion purposes only — not an appraisal, broker price opinion, or offer to purchase. Rent and income figures are subject to metro-level validation. © 2026 zBuyer · Zoodealio.</div>`;
+  body.innerHTML=html;
+  document.body.classList.add("viewing-report");
+  window.scrollTo(0,0);
+}
+function showWorkbench(){
+  document.body.classList.remove("viewing-report");
+  window.scrollTo(0,0);
+}
+buildBtn.addEventListener("click",buildReport);
+
+/* ================= EXPORT ================= */
+function buildManifest(sel){
+  const cards=SUGGESTIONS.filter(s=>sel.has(s.id)).map(s=>({
+    card:s.id,title:s.title,
+    display:{mode:lastDisplay[s.id]||VARIANTS[s.id][0].v,options:VARIANTS[s.id].map(v=>v.v)},
+    reapi_fields:s.uses.map(fpath),
+    derived:DERIVED[s.id]||null,
+    caveat:s.caveat||null
+  }));
+  const record_detail_fields=FIELDS.filter(f=>sel.has("f:"+f.k)).map(f=>({
+    path:f.k==="input.*"?"input.{house,street,city,state,zip}":fpath(f.k),
+    label:f.l,mock_value:f.m,nested_object:!!f.n,
+    display:lastFDisplay[f.k]||"table"
+  }));
+  return {
+    spec:"zbuyer-report-field-map",version:2,generated:"2026-07-28",
+    sample_property:"17 Topeka Pass, Willingboro, NJ 08046 (REAPI id 190787647) — ALL VALUES MOCK",
+    convention:"Elements displaying record values carry data-reapi='<REAPI response path>'. Computed values carry data-reapi-derived='<name>' with the expression in data-formula and/or in cards[].derived below. Each rendered card's data-display attribute records the presentation variant the designer chose (cards[].display.mode); record_detail_fields[].display routes raw fields to table row, key-facts stat line, number tile, or standalone section. Replace every mock value from a live REAPI Property Detail response.",
+    data_quality_notes:[
+      "data.reapiAvm was null on the sample; data.estimatedValue came from a fallback source. Verify AVM sourcing before display.",
+      "data.equity ($274,800) disagreed with data.estimatedEquity ($349,267) on the sample. Treat data.estimatedEquity + data.equityPercent as source of truth; do not display both.",
+      "data.demographics.hudAreaName/hudAreaCode resolved to the wrong metro (Washington DC for a NJ address). Validate HUD area against input.state and SUPPRESS rent/income cards (landlord, rentladder, buyerpool) on mismatch."
+    ],
+    cards,record_detail_fields
+  };
+}
+function generateExportDoc(){
+  const css=document.querySelector("style").textContent;
+  const manifest=JSON.stringify(buildManifest(lastBuild),null,2).replace(/<\//g,"<\\/");
+  const letterhead=document.querySelector(".letterhead").outerHTML;
+  const body=document.getElementById("reportBody").innerHTML;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>zBuyer Report Mockup — 17 Topeka Pass (mock data + REAPI field map)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>${css}
+body{background:var(--soft)}
+.srcline{display:flex}
+</style>
+</head>
+<!--
+  zBuyer homeowner report — DESIGN MOCKUP with MOCK DATA.
+  Sample property: 17 Topeka Pass, Willingboro NJ 08046 (REAPI id 190787647).
+
+  FIELD MAPPING FOR IMPLEMENTATION (read this, coding agent):
+  1. Every element that displays a record value carries data-reapi="<path in the REAPI Property Detail response>", e.g. data.estimatedValue.
+  2. Computed values carry data-reapi-derived="<name>" and usually data-formula="<expression over REAPI paths>".
+  3. The complete machine-readable spec (cards, source fields, formulas, display gates, data-quality rules) is in the JSON block: <script type="application/json" id="reapi-field-map"> at the end of <body>.
+  4. Each card prints its sources in a visible .srcline footer; the [data-card] attribute on each card matches cards[].card in the JSON.
+  5. data-display on each card records the presentation variant the designer chose; alternatives are listed in cards[].display.options, and raw-field routing (table / stat line / tile / section) is in record_detail_fields[].display.
+  Replace all mock values with live REAPI values. Honor data_quality_notes — especially the HUD geo-validation gate — before rendering.
+-->
+<body>
+<div id="report" style="display:block"><div class="rp">
+${letterhead}
+${body}
+</div></div>
+<script type="application/json" id="reapi-field-map">
+${manifest}
+<\/script>
+</body>
+</html>`;
+}
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.style.display="block";
+  clearTimeout(t._h);t._h=setTimeout(()=>t.style.display="none",2600);
+}
+document.getElementById("exportBtn").addEventListener("click",()=>{
+  const blob=new Blob([generateExportDoc()],{type:"text/html"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="zbuyer-report-mockup-17-topeka-pass.html";
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  toast("Exported. If no download appeared, use Copy HTML.");
+});
+document.getElementById("copyBtn").addEventListener("click",async()=>{
+  try{await navigator.clipboard.writeText(generateExportDoc());toast("HTML copied — paste into a .html file.");}
+  catch(e){toast("Copy blocked by browser — use Export instead.");}
+});
+</script>
+</body>
+</html>

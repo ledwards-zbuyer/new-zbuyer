@@ -1805,3 +1805,12 @@ history chart's start), 3bd/2ba/1,752 sqft/1965/0.28 ac, rent ladder rebuilt aro
 the 3-bedroom. The REAPI field mapping survived intact (data-reapi attributes,
 srclines, the JSON spec with gates and caveats). The report page gains a "Go deeper"
 card above the footer linking to it, and the intel page links back.
+
+**Lucas:** take this file (Downloads/reapi-report-builder_2.html) and push it to git
+and provide the link
+
+**Claude:** In as mockups/reapi-report-builder.html — the interactive REAPI field
+workbench (suggestion cards, field picker, report preview, standalone-HTML export),
+already in our tokens. Two touch-ups on the way in: the letterhead logo now loads
+relatively from assets/ (was hardcoded to the live github.io URL) and the page +
+its export template carry noindex.
