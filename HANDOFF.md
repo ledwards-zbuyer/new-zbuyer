@@ -395,7 +395,10 @@ load) while values and home stats remain static demo data. The old
   arrival times (report runs `[3, 7, 25]` — cash offer lands at 25s). Chevron
   collapses to a corner pill ("Estimates n/3", live count) that reopens it; after
   all arrive it auto-minimizes (dismissSeconds, 0 = stay). Themeable via `--zet-*`
-  vars; reduced-motion safe.
+  vars; reduced-motion safe. Developer guide (for Besi): `estimate-tray-docs.html` —
+  live launchable demos (default, manual-wiring playground, themed w/ custom items),
+  quick start with the asset links, options table, lifecycle, theming, gotchas;
+  `?run=1|2|3` auto-launches that section's demo (screenshots / share links).
 - **Link references (2026-07-30):** `link-params.html` — INTERNAL reference of every
   querystring variable across the funnel + report + harness (attribution, z-prepop,
   terms/sms/zsv switches, report values/snap/demoPhone/debug, harness steps) with

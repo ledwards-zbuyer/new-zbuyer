@@ -1971,3 +1971,17 @@ floating card pinned bottom-right (radius, border, big shadow) with a header —
 "Gathering your estimates…" flipping to "All estimates in" when done — and the
 minimize chevron in the header. Mobile keeps the edge-to-edge bottom tray.
 Verified desktop card mid-arrival + all-in + 3/3 pill, and the mobile tray.
+
+**Lucas:** put together a dev doc for this tool that i can share with besi, include
+links to everything needed
+
+**Claude:** estimate-tray-docs.html, same shape as the value-slider guide: 1) what it
+is + a Launch-the-demo button (2/4/7s arrivals — the tray is a fixed overlay, so the
+demos are button-launched, one instance at a time); 2) quick start with every link
+Besi needs (live estimate-tray.js, GitHub source, the report page running it, the
+guide itself) and the three-line install; 3) lifecycle + desktop-card/mobile-tray
+behavior; 4) options table + return-value API; 5) theming (--zet-* vars) with a live
+green-themed demo using a raw-SVG icon and custom titles; 6) gotchas (one instance
+at a time, append-after-body, non-blocking, a11y, reduced motion). A manual-wiring
+playground has arrive() buttons so he can play the API. ?run=1|2|3 auto-launches a
+demo for screenshots/share links. Verified all three demos headless.

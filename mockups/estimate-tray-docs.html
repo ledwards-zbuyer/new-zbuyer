@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>zbEstimateTray — developer guide</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;--c1:#1D4FD7}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#EDF1F7;padding:34px 18px 140px;-webkit-font-smoothing:antialiased;line-height:1.55}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 26px}
+  .lead a{color:var(--c1);font-weight:600;text-decoration:underline}
+  .card{background:#fff;border-radius:16px;padding:26px 28px 24px;box-shadow:0 10px 30px -18px rgba(14,27,51,.25);margin-bottom:22px}
+  h2{font-size:17px;font-weight:800;letter-spacing:-.01em;margin-bottom:10px}
+  h3{font-size:13.5px;font-weight:700;color:var(--c1);margin:18px 0 6px}
+  p,li{font-size:14px;color:#33415C}
+  li a,p a{color:var(--c1);font-weight:600;text-decoration:underline}
+  ul,ol{padding-left:22px;margin:6px 0}
+  li{margin:4px 0}
+  code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:12.5px}
+  pre{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:15px 17px;font-size:12.5px;line-height:1.55;overflow-x:auto;margin:10px 0}
+  pre code{background:none;border:none;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+  th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:7px 10px;border-bottom:2px solid var(--line)}
+  td{padding:8px 10px;border-bottom:1px solid var(--soft);vertical-align:top}
+  td code{white-space:nowrap}
+  .demo{border:1px dashed var(--line);border-radius:12px;padding:16px 20px;margin:12px 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .demo-tag{flex:1 1 100%;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .btn{font-family:inherit;font-size:13px;font-weight:700;color:#fff;background:var(--c1);border:none;border-radius:9px;padding:9px 16px;cursor:pointer}
+  .btn:hover{background:#1743B8}
+  .btn.ghost{background:var(--soft);color:var(--c1);border:1px solid var(--line)}
+  .btn.ghost:hover{background:var(--line)}
+  .note{font-size:12.5px;color:var(--muted);flex:1 1 100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>zbEstimateTray — developer guide</h1>
+  <p class="lead">A "which estimates have arrived" status tray that floats over the report while
+  the AI, AVM, and cash-offer values come back. One JS file, no dependencies, no build step,
+  no CSS file. It's live on the
+  <a href="https://ledwards-zbuyer.github.io/new-zbuyer/mockups/report-classic-blue.html">Cash Value Report</a>.</p>
+
+  <div class="card">
+    <h2>1. What it is</h2>
+    <p>Call it when the report loads and it slides in: a <b>floating card bottom-right on
+    desktop</b>, a <b>full-width bottom tray on mobile</b> (&le;720px). Inside are three
+    sections, one per estimate source, each an icon with a small checkbox badge riding its
+    corner. While a source is still processing, the unchecked badge <i>is</i> the spinner —
+    a bright segment chasing its border. When you report a value as arrived, the chase
+    stops, the badge fills, and the check draws itself in. Once all three are in, the header
+    flips from "Gathering your estimates…" to "All estimates in" and the tray auto-minimizes
+    to a corner pill ("Estimates 3/3") that reopens it. The chevron minimizes it manually at
+    any time.</p>
+    <div class="demo">
+      <div class="demo-tag">Live — watch the bottom-right corner (bottom edge on mobile)</div>
+      <button class="btn" id="demo1">Launch the demo</button>
+      <span class="note">Arrivals at 2s / 4s / 7s. The report page runs 3s / 7s / 25s —
+      the cash offer intentionally lands last.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. Quick start</h2>
+    <h3>Everything you need</h3>
+    <ul>
+      <li>The file (save-as / copy):
+          <a href="https://ledwards-zbuyer.github.io/new-zbuyer/mockups/assets/estimate-tray.js">estimate-tray.js</a></li>
+      <li>Source on GitHub:
+          <a href="https://github.com/ledwards-zbuyer/new-zbuyer/blob/main/mockups/assets/estimate-tray.js">ledwards-zbuyer/new-zbuyer &rarr; mockups/assets/estimate-tray.js</a></li>
+      <li>Seen in the wild:
+          <a href="https://ledwards-zbuyer.github.io/new-zbuyer/mockups/report-classic-blue.html">report-classic-blue.html</a>
+          (runs the 3/7/25-second demo on load)</li>
+      <li>This guide:
+          <a href="https://ledwards-zbuyer.github.io/new-zbuyer/mockups/estimate-tray-docs.html">estimate-tray-docs.html</a></li>
+    </ul>
+    <ol>
+      <li>Copy <code>estimate-tray.js</code> into your project. That's the whole install —
+          no package, no build step.</li>
+      <li>Include the script, then call <code>zbEstimateTray(options)</code> once the page
+          (report) is up. No container needed — it appends itself to
+          <code>&lt;body&gt;</code> as a fixed overlay.</li>
+      <li>Call <code>tray.arrive(id)</code> from each API response as the values land.</li>
+    </ol>
+<pre><code>&lt;script src="estimate-tray.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  var tray = zbEstimateTray();       // default items: ai / avm / cash
+
+  // as each backend call resolves:
+  fetchAiEstimate().then(function ()  { tray.arrive("ai");   });
+  fetchAvm().then(function ()         { tray.arrive("avm");  });
+  fetchCashOffer().then(function ()   { tray.arrive("cash"); });
+&lt;/script&gt;</code></pre>
+    <p>That's a working tray. Everything below is optional.</p>
+    <div class="demo">
+      <div class="demo-tag">Live — manual wiring (you are the API)</div>
+      <button class="btn" id="demo2">Launch with no demo</button>
+      <button class="btn ghost" id="a-ai">arrive("ai")</button>
+      <button class="btn ghost" id="a-avm">arrive("avm")</button>
+      <button class="btn ghost" id="a-cash">arrive("cash")</button>
+      <span class="note">Each badge waits until you deliver its value — exactly how the
+      real wiring behaves. Duplicate or unknown ids are safely ignored.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3. How it works</h2>
+    <h3>Lifecycle</h3>
+    <ul>
+      <li><b>Create</b> — the tray slides up over the page (fixed, <code>z-index: 400</code>);
+          every badge is chasing.</li>
+      <li><b><code>arrive(id)</code></b> — that section's chase stops, badge pops and fills,
+          check draws, label darkens. <code>onArrive(id)</code> fires. Calling it again for
+          the same id (or an unknown id) does nothing.</li>
+      <li><b>All in</b> — header text flips to <code>titleDone</code>, <code>onComplete()</code>
+          fires, and after <code>dismissSeconds</code> (default 1.6s) the tray auto-minimizes
+          to the pill. Pass <code>dismissSeconds: 0</code> to leave it up.</li>
+      <li><b>Minimized</b> — the pill shows a live count ("Estimates 2/3") even while
+          arrivals continue, and clicking it reopens the tray. The user can minimize early
+          with the header chevron; nothing is ever lost.</li>
+    </ul>
+    <h3>Desktop vs mobile</h3>
+    <ul>
+      <li>Above 720px it renders as a <b>floating card pinned bottom-right</b> (~430px wide,
+          rounded, shadowed) so it reads clearly on a large viewport.</li>
+      <li>At 720px and below it becomes the <b>edge-to-edge bottom tray</b> with top-only
+          rounding. Same markup — the switch is pure CSS, so resizing mid-flight is fine.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>4. Options</h2>
+    <table>
+      <tr><th>Option</th><th>Type / default</th><th>What it does</th></tr>
+      <tr><td><code>items</code></td><td>array, ai/avm/cash</td>
+          <td>1+ of <code>{ id, label, icon }</code>. <code>id</code> is what you pass to
+          <code>arrive()</code>. <code>icon</code> is a built-in name
+          (<code>"ai"</code> / <code>"avm"</code> / <code>"cash"</code> /
+          <code>"generic"</code>) or a raw <code>"&lt;svg …&gt;"</code> string of your own
+          (drawn at 36px, use <code>currentColor</code> to pick up the theme). Omitted icon
+          falls back to the id, then to the generic gauge.</td></tr>
+      <tr><td><code>demo</code></td><td>object, off</td>
+          <td>Stand-in for the real calls — <b>omit it in production</b>.
+          <code>{ seconds: 8 }</code> staggers the arrivals evenly across 8s;
+          <code>{ seconds: [3, 7, 25] }</code> sets each item's arrival time in order.</td></tr>
+      <tr><td><code>dismissSeconds</code></td><td>number, <code>1.6</code></td>
+          <td>Hold time after ALL arrive before auto-minimizing to the pill.
+          <code>0</code> = stay up until minimized manually.</td></tr>
+      <tr><td><code>title</code></td><td>string, <code>"Gathering your estimates…"</code></td>
+          <td>Header text while anything is still processing.</td></tr>
+      <tr><td><code>titleDone</code></td><td>string, <code>"All estimates in"</code></td>
+          <td>Header text once everything has arrived.</td></tr>
+      <tr><td><code>onArrive</code></td><td>function</td>
+          <td><code>(id) =&gt;</code> fires per estimate as it lands.</td></tr>
+      <tr><td><code>onComplete</code></td><td>function</td>
+          <td>Fires once, when the last estimate lands.</td></tr>
+    </table>
+    <h3>Return value</h3>
+<pre><code>var tray = zbEstimateTray({ ... });
+tray.arrive("avm");   // mark a source as delivered (the real wiring)
+tray.minimize();      // collapse to the corner pill
+tray.open();          // reopen from the pill
+tray.destroy();       // remove tray + pill, cancel timers
+tray.element;         // the tray's root DOM node</code></pre>
+  </div>
+
+  <div class="card">
+    <h2>5. Styling &amp; theming</h2>
+    <p>Styles inject themselves once (a <code>&lt;style id="zet-style"&gt;</code> tag). Font is
+    inherited from <code>&lt;body&gt;</code>. Recolor with CSS variables on
+    <code>&lt;body&gt;</code> or any ancestor — read once at build time:</p>
+<pre><code>body {
+  --zet-check: #1D4FD7;  /* icons, badge chase + fill (default shown)  */
+  --zet-line:  #E4EAF3;  /* borders, dividers, idle badge outline      */
+  --zet-ink:   #14233D;  /* delivered label + pill text                */
+  --zet-muted: #5C6B82;  /* waiting labels + header title              */
+}</code></pre>
+    <div class="demo">
+      <div class="demo-tag">Live — themed (green) with custom items</div>
+      <button class="btn" id="demo3">Launch the themed demo</button>
+      <span class="note">Two custom items: a raw-SVG icon and the built-in gauge, on a
+      green <code>--zet-check</code>.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>6. Good to know</h2>
+    <ul>
+      <li><b>One instance at a time.</b> It's a fixed overlay — a second instance would sit
+          on top of the first. Call <code>destroy()</code> before re-creating (the demo
+          buttons on this page do exactly that).</li>
+      <li><b>Call it after <code>&lt;body&gt;</code> exists</b> (end of body or on
+          DOMContentLoaded) — it appends itself and reads theme variables from computed
+          styles at build time.</li>
+      <li><b>It never blocks anything.</b> Purely a status layer: no overlay backdrop, the
+          page stays scrollable and clickable, and the user can dismiss it whenever.</li>
+      <li><b>Screen readers:</b> the tray is a polite <code>role="status"</code> live region;
+          the chevron and pill are labeled buttons.</li>
+      <li><b>Reduced motion:</b> honors <code>prefers-reduced-motion</code> — no chase, no
+          slide, checks appear instantly.</li>
+      <li><b>Browser support:</b> anything modern (plain DOM + SVG + CSS animations; no
+          frameworks, no polyfills).</li>
+    </ul>
+  </div>
+</div>
+
+<script src="assets/estimate-tray.js"></script>
+<script>
+  // one live instance at a time — every launcher destroys the previous one
+  // (and resets the theme; the themed launcher re-sets it just before building)
+  var live = null;
+  function launch(opts) {
+    if (live) live.destroy();
+    document.body.style.removeProperty("--zet-check");
+    if (opts.themeCheck) document.body.style.setProperty("--zet-check", opts.themeCheck);
+    live = zbEstimateTray(opts);
+    return live;
+  }
+  document.getElementById("demo1").addEventListener("click", function () {
+    launch({ demo: { seconds: [2, 4, 7] } });
+  });
+  document.getElementById("demo2").addEventListener("click", function () {
+    launch({}); // no demo: arrivals come only from the arrive() buttons
+  });
+  ["ai", "avm", "cash"].forEach(function (id) {
+    document.getElementById("a-" + id).addEventListener("click", function () {
+      if (live) live.arrive(id);
+    });
+  });
+  document.getElementById("demo3").addEventListener("click", function () {
+    launch({
+      themeCheck: "#128A46",
+      items: [
+        { id: "list", label: "Listing estimate",
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h9l3.5 3.5v13.5H6z"/><path d="M9 9.5h6M9 13h6M9 16.5h4"/></svg>' },
+        { id: "trade", label: "Trade-in estimate", icon: "generic" }
+      ],
+      title: "Running your numbers…",
+      titleDone: "Both estimates in",
+      demo: { seconds: [2, 5] }
+    });
+  });
+  // ?run=1|2|3 auto-clicks that section's launcher (screenshots / share links)
+  var auto = (location.search.match(/[?&]run=([123])/) || [])[1];
+  if (auto) document.getElementById("demo" + auto).click();
+</script>
+</body>
+</html>
