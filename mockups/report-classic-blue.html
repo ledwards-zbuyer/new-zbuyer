@@ -207,15 +207,17 @@
 
 <main><div class="wrap">
 
-  <!-- ============ TEMP DEBUG (2026-07-30) ============
+  <!-- ============ DEBUG PANEL (2026-07-30) ============
        Session dump so Lucas can cross-check the database: submissionID,
        request counter, and every FieldName = value the funnel saved —
-       the TrustedForm token row is highlighted. REMOVE this section and
-       its script when the cross-check is done. -->
-  <div id="dbgPanel" style="background:#fff;border:2px dashed #D8442B;border-radius:12px;padding:12px 16px;font-family:ui-monospace,Consolas,monospace;font-size:11px;line-height:1.7;word-break:break-all;color:#14233D"></div>
+       the TrustedForm token + TCPATerms rows highlighted. HIDDEN unless
+       the page URL carries ?debug=1 (any truthy value works). -->
+  <div id="dbgPanel" hidden style="background:#fff;border:2px dashed #D8442B;border-radius:12px;padding:12px 16px;font-family:ui-monospace,Consolas,monospace;font-size:11px;line-height:1.7;word-break:break-all;color:#14233D"></div>
   <script>
   (function () {
+    if (!new URLSearchParams(location.search).get("debug")) return; // hidden by default
     var el = document.getElementById("dbgPanel");
+    el.hidden = false;
     function esc(s) { var d = document.createElement("i"); d.textContent = String(s); return d.innerHTML; }
     function line(k, v, hot) {
       return "<div" + (hot ? " style=\"background:#FEF6F4;border-radius:4px;padding:0 4px\"" : "") + "><span style=\"color:#8a97ab\">" + esc(k) + "</span> = " + (hot ? "<b>" : "") + esc(v) + (hot ? "</b>" : "") + "</div>";
@@ -234,7 +236,7 @@
         if (k !== "trustedform.com_TCPATerms" && v.length > 160) v = v.slice(0, 160) + "… (" + v.length + " chars total)";
         rows += line(k, v, k === "trustedform.com_CertURL" || k === "trustedform.com_TCPATerms");
       });
-      el.innerHTML = "<b style=\"color:#D8442B\">TEMP DEBUG — funnel session dump (remove me)</b>" + rows;
+      el.innerHTML = "<b style=\"color:#D8442B\">DEBUG — funnel session dump (?debug=1)</b>" + rows;
     } catch (e) { el.textContent = "TEMP DEBUG: " + e; }
   })();
   </script>

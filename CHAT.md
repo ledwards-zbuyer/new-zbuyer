@@ -1899,3 +1899,9 @@ total. E2E-verified with a real session. Remove when the DB cross-check is done.
 
 **Claude:** That row now renders in full (no truncation) and is highlighted like the
 token row — it's the exact consent text being verified.
+
+**Lucas:** make that debug panel based on a querystring variable (hidden by default)
+
+**Claude:** Gated behind ?debug=1 (any truthy value) — hidden attribute plus an
+early return in the script, so by default the report renders clean and the panel
+only appears when the param is present.
