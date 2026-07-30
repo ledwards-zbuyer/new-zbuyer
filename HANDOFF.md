@@ -79,7 +79,9 @@ API — see §9. The homepage and compare pages remain inert demos.
    cursors; touch untouched — it scrolls natively; harness `?step=spdrag` asserts all
    three). One button, no validation: **"Continue →"**; sends `SomethingSpecial`
    only if the box has content.
-5. **"Access your report anytime" step (2026-07-27)** — clock graphic (sparkle
+5. **"Access your report anytime" step (2026-07-27)** — SWITCHABLE (2026-07-30):
+   `?sms=0|off|no|false` skips it entirely (notes → all-set directly, the rail
+   drops to "Step x of 4"); default shown. Clock graphic (sparkle
    family), "Make sure you can access your updated home value report when you
    want…", phone input prefilled from the contact step (formatted live), a minimal
    no-checkbox SMS disclosure box ("By tapping Text my Report … automated text from

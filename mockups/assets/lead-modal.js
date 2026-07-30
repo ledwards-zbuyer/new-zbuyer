@@ -57,12 +57,22 @@
   // SellingTimeFrame carries the chip's visible text (Now/Soon/Eventually/No).
   var intentLabel = "";
 
+  // ?sms=0|off|no|false skips the Access-anytime (SMS) step — the flow goes
+  // notes -> all-set directly, as in the automatic-texting era. Default: shown.
+  var SMS_STEP = !/[?&]sms=(0|off|no|false)\b/i.test(window.location.search);
+
   // Legal rail below the fold: "Step x of N" + dots (N = dot count in the
   // markup). The zbeat interstitial isn't a step — it keeps the previous
   // reading.
-  var STEP_NUM = { contact: 1, questions: 2, special: 3, textreport: 4, allset: 5 };
+  var STEP_NUM = SMS_STEP
+    ? { contact: 1, questions: 2, special: 3, textreport: 4, allset: 5 }
+    : { contact: 1, questions: 2, special: 3, allset: 4 };
   var progText = modal.querySelector(".lm-prog-text");
   var progDots = modal.querySelectorAll(".lm-prog-dot");
+  if (!SMS_STEP && progDots.length) {
+    progDots[progDots.length - 1].remove(); // the rail counts 4 steps now
+    progDots = modal.querySelectorAll(".lm-prog-dot");
+  }
   function show(name) {
     current = name;
     screens.forEach(function (s) { s.hidden = s.getAttribute("data-screen") !== name; });
@@ -449,7 +459,7 @@
   });
   var backBtn = modal.querySelector("[data-back]");
   // (textPhone is initialized below; clicks only happen after init)
-  if (backBtn) backBtn.addEventListener("click", function () { show(textPhone ? "textreport" : "special"); });
+  if (backBtn) backBtn.addEventListener("click", function () { show(SMS_STEP && textPhone ? "textreport" : "special"); });
 
   // ---- contact step -> advance to report step ----
   form.addEventListener("submit", function (e) {
@@ -643,6 +653,6 @@
     }
     // Access-anytime step opens with the contact step's number in place.
     if (textPhone && !textPhone.value) textPhone.value = phoneEl.value;
-    runZBeat(textPhone ? "textreport" : "allset");
+    runZBeat(SMS_STEP && textPhone ? "textreport" : "allset");
   });
 })();

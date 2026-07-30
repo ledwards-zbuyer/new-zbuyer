@@ -1905,3 +1905,11 @@ token row — it's the exact consent text being verified.
 **Claude:** Gated behind ?debug=1 (any truthy value) — hidden attribute plus an
 early return in the script, so by default the report renders clean and the panel
 only appears when the param is present.
+
+**Lucas:** make the SMS step display or not based on a querystring variable
+
+**Claude:** ?sms=0 (also off/no/false) skips the Access-anytime step — notes goes
+straight to all-set, the rail drops its fifth dot and reads "Step x of 4", and the
+homepage Back button returns to notes instead. Default unchanged (step shown).
+Verified: with sms=0 the flow lands on "You're all set!" where the SMS step would
+have appeared.
