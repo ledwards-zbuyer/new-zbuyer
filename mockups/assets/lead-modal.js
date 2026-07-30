@@ -60,6 +60,13 @@
   // ?sms=0|off|no|false skips the Access-anytime (SMS) step — the flow goes
   // notes -> all-set directly, as in the automatic-texting era. Default: shown.
   var SMS_STEP = !/[?&]sms=(0|off|no|false)\b/i.test(window.location.search);
+  // ?dnc=0|off|no|false hides the all-set step's "Do not contact me" link.
+  // Default: shown. remove(), not [hidden] — .lm-final .lm-nothanks sets
+  // display:block, which would override the hidden attribute.
+  if (/[?&]dnc=(0|off|no|false)\b/i.test(window.location.search)) {
+    var ncLink = document.getElementById("noContact");
+    if (ncLink) ncLink.remove();
+  }
 
   // Legal rail below the fold: "Step x of N" + dots (N = dot count in the
   // markup). The zbeat interstitial isn't a step — it keeps the previous
@@ -573,8 +580,9 @@
     goToReport();
   });
   // "Do not contact me": records DNC=true, fires NO RealtorOpt, still gets
-  // the report.
-  document.getElementById("noContact").addEventListener("click", function () {
+  // the report. (Guarded: ?dnc=0 removes the element above.)
+  var noContactBtn = document.getElementById("noContact");
+  if (noContactBtn) noContactBtn.addEventListener("click", function () {
     if (P) psave(P.F.dnc, "true");
     goToReport();
   });

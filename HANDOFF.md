@@ -95,7 +95,9 @@ API — see §9. The homepage and compare pages remain inert demos.
    local expert will be in touch…", CTA **View my Report →** (fires RealtorOpt="ok"
    and exits through the finale beat — animation only, no caption (2026-07-27) —
    while FinalizeLead posts underneath), quiet **Do not contact me** link (fires
-   DNC="true", same exit). Homepage Back returns to the Access-anytime step. Lands
+   DNC="true", same exit; `?dnc=0|off|no|false` REMOVES the link — 2026-07-30,
+   default shown; removal not [hidden], since `.lm-final .lm-nothanks{display:block}`
+   would override the attribute). Homepage Back returns to the Access-anytime step. Lands
    on `report-classic-blue.html` (§8). Harness: `?step=textreport` / `allset` /
    `dnc`.
 

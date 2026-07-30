@@ -1927,3 +1927,11 @@ placeholder, mid/affid as required campaign parameters, the nine z-prepop fields
 with formats (10-digit phone, %40 emails, + spaces, 2-letter state), a worked
 example, and rules (consumer-provided data only, URL-encode, exact mid/affid). No
 internal switches exposed to publishers.
+
+**Lucas:** also add a querystring param to hide the "Do not contact me" on the
+"You're all set" step. show it by default. update the link docs
+
+**Claude:** ?dnc=0 (also off/no/false) removes the link (remove(), not [hidden] —
+the display:block rule would override the attribute; the click listener is guarded).
+Default shown. link-params.html gains the row. Verified: all-set renders with just
+the View my Report CTA under dnc=0.
