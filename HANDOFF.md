@@ -380,14 +380,21 @@ load) while values and home stats remain static demo data. The old
   time. design-guide.html is consistent again (it never documented the retone).
 - **Estimate-arrival tray (2026-07-30):** `assets/estimate-tray.js` — portable
   single-file widget (like value-slider.js; usage docs in its header).
-  `zbEstimateTray({items, demo:{seconds}, dismissSeconds, onArrive, onComplete})`
-  slides a bottom tray up over the report: one animated checkbox per estimate
-  source (AI / AVM / Cash offer by default) — the UNCHECKED box carries the wait
-  animation (a bright segment chasing its border), the check draws itself on
-  arrival. Real wiring: `tray.arrive(id)` per API response; `demo:{seconds:8}`
-  staggers arrivals evenly (the report page runs this). Minimize chevron collapses
-  it to a corner pill ("Estimates n/3", live count) that reopens it; after all
-  arrive it auto-minimizes (dismissSeconds, 0 = stay). Themeable via `--zet-*`
+  `zbEstimateTray({items, demo:{seconds}, dismissSeconds, title, titleDone,
+  onArrive, onComplete})`. DESKTOP: a floating card bottom-right (a full-width
+  strip was invisible down at the footer on big screens); MOBILE (≤720px): the
+  full-width bottom tray. Header row: live title ("Gathering your estimates…" →
+  "All estimates in", both overridable) + the minimize chevron. Three vertical
+  sections, one per estimate source, each a distinct icon (built-in ICONS map:
+  `ai` sparkles / `avm` house+trend / `cash` circled dollar / `generic` gauge;
+  items also accept a raw `<svg>` string) with the checkbox as an 18px
+  white-backed badge at the icon's corner — the badge carries the wait animation
+  (bright segment chasing its border) and the check draws itself on arrival;
+  11.5px label underneath. Real wiring: `tray.arrive(id)` per API response;
+  `demo:{seconds:N}` staggers evenly, `demo:{seconds:[a,b,c]}` sets per-item
+  arrival times (report runs `[3, 7, 25]` — cash offer lands at 25s). Chevron
+  collapses to a corner pill ("Estimates n/3", live count) that reopens it; after
+  all arrive it auto-minimizes (dismissSeconds, 0 = stay). Themeable via `--zet-*`
   vars; reduced-motion safe.
 - **Link references (2026-07-30):** `link-params.html` — INTERNAL reference of every
   querystring variable across the funnel + report + harness (attribution, z-prepop,

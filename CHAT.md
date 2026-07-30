@@ -1953,3 +1953,21 @@ pill — "Estimates n/3" with a live count — that reopens it; after all three 
 it auto-minimizes (configurable, always recoverable). Reduced-motion swaps to
 static states. Verified mid-arrival (1/3 checked + chasing boxes), all-checked at
 8s, and the 3/3 pill after auto-minimize.
+
+**Lucas:** love the checkbox animation, but i want seperate icons for each value
+type — integrating the checkbox — text smaller and underneath. three horizontal
+sections that can be taller, icon + check + text stacked vertically. also take 25
+seconds for the cash offer estimate to come in on the demo. *(mid-build:)* on
+desktop do something different. it is almost invisible way down at the footer.
+
+**Claude:** Rebuilt the tray rows: per-type icons (sparkles for AI, house+trend
+line for AVM, circled dollar for cash; a generic gauge fallback — or pass raw SVG),
+with the checkbox shrunk to an 18px white-backed badge sitting on the icon's
+corner. The chase animation and self-drawing check moved onto the badge; 11.5px
+labels underneath, divider lines between the three stacks. demo.seconds now takes
+an array — report runs [3, 7, 25] so the cash offer lands at 25s. And the desktop
+fix: above 720px it's no longer a full-width strip at the viewport bottom but a
+floating card pinned bottom-right (radius, border, big shadow) with a header —
+"Gathering your estimates…" flipping to "All estimates in" when done — and the
+minimize chevron in the header. Mobile keeps the edge-to-edge bottom tray.
+Verified desktop card mid-arrival + all-in + 3/3 pill, and the mobile tray.

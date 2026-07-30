@@ -520,11 +520,12 @@
      stashes it in sessionStorage across the navigation; inject it here. -->
 <script src="assets/estimate-tray.js"></script>
 <script>
-/* Estimate-arrival tray (assets/estimate-tray.js): slides up over the
- * report on load, one animated checkbox per estimate source, checks as
- * each arrives (8s demo stagger standing in for the real calls),
- * auto-minimizes to the corner pill, reopenable. */
-zbEstimateTray({ demo: { seconds: 8 } });
+/* Estimate-arrival tray (assets/estimate-tray.js): floating card
+ * bottom-right on desktop / full-width tray on mobile, one icon +
+ * integrated checkbox per estimate source, checks as each arrives.
+ * Demo stand-in for the real calls: AI 3s, AVM 7s, Cash offer 25s.
+ * Auto-minimizes to the corner pill, reopenable. */
+zbEstimateTray({ demo: { seconds: [3, 7, 25] } });
 </script>
 <script src="assets/value-slider.js"></script>
 <script>
