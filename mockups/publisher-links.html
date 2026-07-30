@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>zBuyer — Publisher Link Specification</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;--c1:#1D4FD7;--tint:#E7EEFC;--navy:#0E1B33}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#EDF1F7;padding:34px 18px 70px;-webkit-font-smoothing:antialiased;line-height:1.55}
+  .wrap{max-width:800px;margin:0 auto}
+  .head{background:linear-gradient(160deg,var(--navy),#0A1426);border-radius:18px;padding:28px 30px;color:#fff;margin-bottom:22px}
+  .head img{height:26px;margin-bottom:16px}
+  h1{font-size:24px;font-weight:800;letter-spacing:-.02em;color:#fff}
+  .head p{color:#E4ECF6;font-size:14px;margin-top:8px;max-width:560px}
+  .card{background:#fff;border-radius:16px;padding:26px 28px 24px;box-shadow:0 10px 30px -18px rgba(14,27,51,.25);margin-bottom:22px}
+  h2{font-size:17px;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}
+  .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:7px 10px;border-bottom:2px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid var(--soft);vertical-align:top}
+  td code,p code,li code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px;white-space:nowrap}
+  td:first-child{width:22%}
+  td:nth-child(2){width:20%;color:var(--muted)}
+  pre{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:12px;line-height:1.6;overflow-x:auto;margin:10px 0;word-break:break-all;white-space:pre-wrap}
+  p,li{font-size:14px;color:#33415C}
+  ul,ol{padding-left:22px;margin:6px 0}
+  li{margin:3px 0}
+  .req{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:2px 8px;background:var(--tint);color:var(--c1)}
+  .opt{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:2px 8px;background:var(--soft);color:var(--muted);border:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <img src="assets/logo-blue-dark.png" alt="zBuyer">
+    <h1>Publisher Link Specification</h1>
+    <p>How to build links into the zBuyer home-value funnel: your assigned campaign IDs plus
+    the optional pre-population fields that carry your consumer's details into the form.</p>
+  </div>
+
+  <div class="card">
+    <h2>Link structure</h2>
+    <div class="sub">Your campaign parameters, then any prepop fields, all standard URL querystring format.</div>
+<pre>{BASE_URL}?mid={YOUR_MID}&amp;affid={YOUR_AFFID}&amp;zfname=...&amp;zlastname=...&amp;zphone=...&amp;zemail=...&amp;zstreet=...&amp;zcity=...&amp;zstate=...&amp;zzipcode=...</pre>
+    <p>The base URL and your <code>mid</code> / <code>affid</code> values are assigned by your zBuyer
+    account contact. Every link must carry both.</p>
+  </div>
+
+  <div class="card">
+    <h2>Campaign parameters</h2>
+    <table>
+      <tr><th>Parameter</th><th>Required</th><th>Details</th></tr>
+      <tr><td><code>mid</code></td><td><span class="req">required</span></td><td>Your campaign ID (also called MID), assigned by zBuyer. Identifies the campaign for attribution and payout.</td></tr>
+      <tr><td><code>affid</code></td><td><span class="req">required</span></td><td>Your affiliate / sub-source ID, assigned by zBuyer. Use it to segment your own placements if you run more than one.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Pre-population fields</h2>
+    <div class="sub">All optional — send whichever details the consumer has already provided to you.
+    Prepopped fields appear in the form ready to confirm; the address verifies automatically against
+    USPS data and displays formatted.</div>
+    <table>
+      <tr><th>Parameter</th><th>Format</th><th>Details</th></tr>
+      <tr><td><code>zfname</code></td><td>text</td><td>Consumer's first name.</td></tr>
+      <tr><td><code>zlastname</code></td><td>text</td><td>Consumer's last name.</td></tr>
+      <tr><td><code>zphone</code></td><td>10 digits</td><td>Numbers only, no punctuation — e.g. <code>6238805511</code>. Displays formatted.</td></tr>
+      <tr><td><code>zemail</code></td><td>email</td><td>URL-encode the <code>@</code> as <code>%40</code>.</td></tr>
+      <tr><td><code>zstreet</code></td><td>text</td><td>Street address only (no city/state/zip in this field). Encode spaces as <code>+</code> or <code>%20</code> — e.g. <code>1401+Candlewood+Dr</code>.</td></tr>
+      <tr><td><code>zcity</code></td><td>text</td><td>City.</td></tr>
+      <tr><td><code>zstate</code></td><td>2 letters</td><td>USPS state code — e.g. <code>PA</code>.</td></tr>
+      <tr><td><code>zzipcode</code></td><td>5 digits</td><td>ZIP code.</td></tr>
+      <tr><td><code>zcredit</code></td><td>text</td><td><span class="opt">optional</span> Consumer-stated credit standing, if you collect it.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Worked example</h2>
+<pre>{BASE_URL}?mid=1234&amp;affid=5678&amp;zfname=Alex&amp;zlastname=Smith&amp;zphone=6238805511&amp;zemail=alex%40gmail.com&amp;zstreet=1401+Candlewood+Dr&amp;zcity=Pittsburgh&amp;zstate=PA&amp;zzipcode=15241</pre>
+    <p>Result: the consumer lands with their address already in the search box (verified and
+    formatted), and their name, phone, and email waiting in the contact form to confirm.</p>
+  </div>
+
+  <div class="card">
+    <h2>Rules</h2>
+    <ul>
+      <li><b>Only send data the consumer actually provided to you.</b> Never fabricate, guess, or recycle values across consumers.</li>
+      <li><b>URL-encode every value.</b> Spaces as <code>+</code> or <code>%20</code>, <code>@</code> as <code>%40</code>.</li>
+      <li>Partial prepop is fine — send what you have. Address fields work best as a complete set (street + city + state + zip).</li>
+      <li>Do not append parameters beyond those on this page; unknown parameters are ignored and may break attribution if malformed.</li>
+      <li>Links must carry your assigned <code>mid</code> and <code>affid</code> exactly as provided — attribution and payout depend on them.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

@@ -376,6 +376,13 @@ load) while values and home stats remain static demo data. The old
   #7FC4FF→#1D4FD7, orange pill handle, warm notice bar. `assets/value-slider.js`
   defaults + value-slider-docs.html were synced back to this palette at the same
   time. design-guide.html is consistent again (it never documented the retone).
+- **Link references (2026-07-30):** `link-params.html` — INTERNAL reference of every
+  querystring variable across the funnel + report + harness (attribution, z-prepop,
+  terms/sms/zsv switches, report values/snap/demoPhone/debug, harness steps) with
+  copy-paste examples. `publisher-links.html` — the PUBLISHER-facing spec: mid/affid
+  (assigned; "campaign ID" = MID) + the z-prepop fields with formats, a worked
+  example with {BASE_URL} placeholder, and the rules (consumer-provided data only,
+  URL-encode everything). No internal switches exposed there.
 - **REAPI Report Builder (2026-07-28):** `reapi-report-builder.html` — the interactive
   field workbench behind the intel report: suggestion cards + a full REAPI field
   picker, builds the report view from the selection, and exports a standalone HTML

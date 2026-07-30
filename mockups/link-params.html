@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Link &amp; Variable Reference — zBuyer (internal)</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;--c1:#1D4FD7;--tint:#E7EEFC;--cta:#FF6B4A}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#EDF1F7;padding:34px 18px 70px;-webkit-font-smoothing:antialiased;line-height:1.55}
+  .wrap{max-width:860px;margin:0 auto}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 26px}
+  .card{background:#fff;border-radius:16px;padding:26px 28px 24px;box-shadow:0 10px 30px -18px rgba(14,27,51,.25);margin-bottom:22px}
+  h2{font-size:17px;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}
+  .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:7px 10px;border-bottom:2px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid var(--soft);vertical-align:top}
+  td code,p code,li code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px;white-space:nowrap}
+  td:first-child{width:28%}
+  pre{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:12px;line-height:1.6;overflow-x:auto;margin:10px 0;word-break:break-all;white-space:pre-wrap}
+  p,li{font-size:14px;color:#33415C}
+  ul{padding-left:22px;margin:6px 0}
+  .tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:1px}
+  .tag.pub{background:var(--tint);color:var(--c1)}
+  .tag.int{background:#FFF4F0;color:#F0572F}
+  a{color:var(--c1);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Link &amp; Variable Reference <span class="tag int">internal</span></h1>
+  <p class="lead">Every querystring variable the seller funnel and report understand, and what each
+  one does. Publisher-facing version (prepop spec only): <a href="publisher-links.html">publisher-links.html</a>.
+  Base pages: <code>landing-classic-blue.html</code> (DR lander) · <code>option-1-classic.html</code> (homepage) ·
+  <code>report-classic-blue.html</code> (report).</p>
+
+  <div class="card">
+    <h2>Attribution <span class="tag pub">publisher</span></h2>
+    <div class="sub">Flow to the lead API untouched via the page URL (srcURL on InitNewLead). Test values: <code>mid=56&amp;affid=testing</code>.</div>
+    <table>
+      <tr><th>Variable</th><th>What it does</th></tr>
+      <tr><td><code>mid</code></td><td>The campaign / media ID we assign to the publisher ("campaign ID" and "MID" are the same thing). Required on every paid link.</td></tr>
+      <tr><td><code>affid</code></td><td>The affiliate / sub-source ID we assign. Required on every paid link.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Contact &amp; address prepop <span class="tag pub">publisher</span></h2>
+    <div class="sub">Prefill the funnel from an email/SMS link. Names and address parts land in the lead record twice:
+    the raw claim (<code>queryString*</code> fields) and, after the silent verification chain (Smarty → Google rescue),
+    the verified components.</div>
+    <table>
+      <tr><th>Variable</th><th>What it does</th></tr>
+      <tr><td><code>zfname</code> / <code>zlastname</code></td><td>First / last name → the Full name field.</td></tr>
+      <tr><td><code>zphone</code></td><td>Phone, 10 digits (formats itself on screen). Also prefills the SMS step's box.</td></tr>
+      <tr><td><code>zemail</code></td><td>Email address.</td></tr>
+      <tr><td><code>zstreet</code> / <code>zcity</code> / <code>zstate</code> / <code>zzipcode</code></td><td>Address parts. The composed string fills the hero box instantly, then verifies silently; a verified pick becomes the two-line address chip. Missing parts are recorded as literal <code>"null"</code> in the queryString echoes.</td></tr>
+      <tr><td><code>zcredit</code></td><td>Optional consumer-stated credit value → the <code>credit</code> field.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Funnel switches <span class="tag int">internal</span></h2>
+    <div class="sub">Variant and feature toggles for testing — do not hand these to publishers.</div>
+    <table>
+      <tr><th>Variable</th><th>What it does</th></tr>
+      <tr><td><code>terms=exclusive</code></td><td>Default consent presentation (single matched pro named in the sentence). Same as no param.</td></tr>
+      <tr><td><code>terms=maxsold</code></td><td>Max Sold sale model: the 6-buyer demo roster inlined in the consent sentence. DEMO switch — freezes the roster (skips the live GetContactOptInNames render) and records no opt-in contacts.</td></tr>
+      <tr><td><code>terms=inline</code></td><td>Explicit-consent variant: first-person terms behind a 19px checkbox, tap-anywhere box, Continue blocked until checked.</td></tr>
+      <tr><td><code>terms=inline-maxsold</code></td><td>The inline checkbox with the Max Sold roster.</td></tr>
+      <tr><td><code>sms=0</code></td><td>Skips the "Access your report anytime" (SMS) step — notes goes straight to all-set, the step rail counts 4. Also accepts <code>off</code>/<code>no</code>/<code>false</code>. Default: step shown.</td></tr>
+      <tr><td><code>zsv=1</code></td><td>Street View strip inside the search card once the address verifies (lander).</td></tr>
+      <tr><td><code>v=N</code></td><td>Cache buster — GitHub Pages/browser cache runs ~10 min; bump N while iterating. No functional effect.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Report page (report-classic-blue.html) <span class="tag int">internal</span></h2>
+    <table>
+      <tr><th>Variable</th><th>What it does</th></tr>
+      <tr><td><code>values=combined|options|spectrum</code></td><td>Value-display strategy (default <code>combined</code> — the value-curve slider).</td></tr>
+      <tr><td><code>terms=maxsold</code></td><td>Expert card becomes the 6-buyer carousel instead of the single expert.</td></tr>
+      <tr><td><code>snap=0-3</code></td><td>Presets the value slider's snapped anchor (screenshots/testing).</td></tr>
+      <tr><td><code>demoPhone=##########</code></td><td>Previews the "Access anytime" texted-link notice without a funnel session.</td></tr>
+      <tr><td><code>debug=1</code></td><td>Session-dump panel: submissionID + every saved FieldName/value; TrustedForm token and full TCPATerms highlighted. For DB cross-checks.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Screenshot harness (shots/harness.html) <span class="tag int">internal</span></h2>
+    <div class="sub">Drives the funnel for headless screenshots and assertions.</div>
+    <table>
+      <tr><th>Variable</th><th>What it does</th></tr>
+      <tr><td><code>src=&lt;encoded URL&gt;</code></td><td>Page to load in the iframe (encodeURIComponent the whole thing, params included).</td></tr>
+      <tr><td><code>step=</code></td><td><code>contact · err · questions · qerr · textreport · allset · dnc · sms · finale · ac · acfocus · acpick · clearx · clearx2 · dr · spdrag · pulse</code> (pulse = full live-API E2E with call-log overlay).</td></tr>
+      <tr><td><code>check=1</code></td><td>Ticks the inline consent box (needed to get past contact under <code>terms=inline*</code>).</td></tr>
+      <tr><td><code>slide=0-5</code></td><td>Repairs slider level on the questions step.</td></tr>
+      <tr><td><code>scroll=N|max</code></td><td>Scrolls the modal overlay (mobile legal-rail shots).</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Copy-paste examples</h2>
+    <p>Publisher-style prepopped lander (test attribution):</p>
+<pre>https://ledwards-zbuyer.github.io/new-zbuyer/mockups/landing-classic-blue.html?mid=56&amp;affid=testing&amp;zfname=Alex&amp;zlastname=Smith&amp;zphone=6238805511&amp;zemail=alex%40gmail.com&amp;zstreet=1401+Candlewood+Dr&amp;zcity=Pittsburg&amp;zstate=PA&amp;zzipcode=15240</pre>
+    <p>Inline-consent variant of the same link: append <code>&amp;terms=inline</code>. Skip the SMS step: append <code>&amp;sms=0</code>.</p>
+    <p>Report with the debug dump: <code>report-classic-blue.html?debug=1</code> (after running the funnel in the same tab).</p>
+  </div>
+</div>
+</body>
+</html>

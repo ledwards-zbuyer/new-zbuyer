@@ -1913,3 +1913,17 @@ straight to all-set, the rail drops its fifth dot and reads "Step x of 4", and t
 homepage Back button returns to notes instead. Default unchanged (step shown).
 Verified: with sms=0 the flow lands on "You're all set!" where the SMS step would
 have appeared.
+
+**Lucas:** page with link instructions featuring all of the new variables we have
+added and what they do. also create a separate page that i will send to publishers
+with all of the variables they need to pre-pop (we give them the campaignID or MID)
+
+**Claude:** Two pages. link-params.html (internal): every variable grouped —
+attribution (mid/affid), z-prepop fields, funnel switches (terms variants, sms=0,
+zsv=1, v=N), report params (values/terms/snap/demoPhone/debug), and the screenshot
+harness — with copy-paste examples and publisher/internal tags per section.
+publisher-links.html (external): navy letterhead, link structure with {BASE_URL}
+placeholder, mid/affid as required campaign parameters, the nine z-prepop fields
+with formats (10-digit phone, %40 emails, + spaces, 2-letter state), a worked
+example, and rules (consumer-provided data only, URL-encode, exact mid/affid). No
+internal switches exposed to publishers.
