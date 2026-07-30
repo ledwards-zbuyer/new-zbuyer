@@ -459,8 +459,9 @@ fully static, no backend needed).
   `contactOptInNames_renderAsCheckboxes`, `ContactFormSubmit`), consent record
   (`trustedform.com_TCPATerms` = the exact disclosure+consent text displayed;
   `trustedform.com_CertURL` = the BARE TrustedForm cert token — Lucas 2026-07-30, the
-  URL prefix is stripped client-side and the server rebuilds
-  `https://cert.trustedform.com/<token>` for the Retain claim within ~72h),
+  URL prefix is stripped client-side; the server-side Retain claim (rebuilding
+  `https://cert.trustedform.com/<token>`) and the account's 1:1 advertiser config
+  are CONFIRMED OPERATIONAL per Lucas 2026-07-30),
   `ListedQuestion` (defaults "No" until OnboardAPI is ready), `RealtorOpt` = "ok" on the
   all-set CTA (its "Do not contact me" link instead fires `DNC` = "true" and NO
   RealtorOpt), `SellingTimeFrame` = the chip's visible text (Now/Soon/Eventually/No),

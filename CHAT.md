@@ -1878,3 +1878,9 @@ still fld=trustedform.com_CertURL on contact submit. Full Pulse E2E green:
 SaveLeadData[trustedform.com_CertURL]=200 with a real cert. Nothing else needed from
 Lucas unless TrustedForm's account settings demand specific advertiser display
 names for 1:1 — the dynamic matched-pro names are already tagged.
+
+**Lucas:** 1 and 2 are already operational
+
+**Claude:** Then TrustedForm is wired end to end: tagged capture on every consent
+surface → bare token to the API on contact submit → server-side Retain claim and 1:1
+advertiser config both confirmed operational.
