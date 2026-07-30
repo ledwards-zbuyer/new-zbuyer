@@ -458,11 +458,28 @@ fully static, no backend needed).
   (`AddressSubmitClicked`, `ContactFormDisplayed`, `contactOptInNames` +
   `contactOptInNames_renderAsCheckboxes`, `ContactFormSubmit`), consent record
   (`trustedform.com_TCPATerms` = the exact disclosure+consent text displayed;
-  `trustedform.com_CertURL` from the TrustedForm script now on the lander),
+  `trustedform.com_CertURL` = the BARE TrustedForm cert token — Lucas 2026-07-30, the
+  URL prefix is stripped client-side and the server rebuilds
+  `https://cert.trustedform.com/<token>` for the Retain claim within ~72h),
   `ListedQuestion` (defaults "No" until OnboardAPI is ready), `RealtorOpt` = "ok" on the
   all-set CTA (its "Do not contact me" link instead fires `DNC` = "true" and NO
   RealtorOpt), `SellingTimeFrame` = the chip's visible text (Now/Soon/Eventually/No),
   `SMSOptIn` yes/no on the SMS step (a yes also updates `phone` to the texted number).
+- **TrustedForm tagged consent (2026-07-30), both funnel pages:** the script
+  (`use_tagged_consent=true`, injects `xxTrustedFormCertUrl`) now also loads on the
+  homepage (capture-only there — no Pulse). Every consent surface carries
+  `data-tf-element-role` tags per the ActiveProspect spec: the contact `<form>` and
+  the SMS step are separate `offer`s, each with exactly one `submit` (Continue /
+  Send my Report); `consent-language` on both disclosures + the agree-line;
+  `consent-grantor-name/phone/email` on the inputs (+ the SMS step's phone);
+  advertiser = `consent-advertiser-name` wrapping "zBuyer and [pros]" (`#consAdvertiser`,
+  re-applied by the inline-variant rebuild); waiver spans
+  `consent-grantor-waived-regulated-technologies` / `-dnc` / `-purchase-condition`
+  and `contact-method` inside both consent paragraphs; the inline checkbox is
+  `consent-opt-in`. When GetContactOptInNames renders per-pro checkboxes, the rows
+  get the NUMBERED 1:1 pairs (`consent-opted-advertiser-input-n`/`-name-n`) and the
+  sentence span DROPS its advertiser role (its text goes generic). Docs:
+  developers.activeprospect.com/pages/trustedform/consent-tagging.
 - **WhySelling reworked (2026-07-06):** the legacy "Why are you interested in the cash
   value?" prose list (six options incl. the confessional "Financial Problems") is
   replaced by the "Tune your report" step. Rationale: the legacy answers collapse onto

@@ -336,21 +336,25 @@
       <div class="lm-screen" data-screen="contact">
         <h3 id="lm-title">Request Cash Value Estimate</h3>
         <p class="lm-sub">We combine automated valuation models with local expert knowledge to estimate your home&rsquo;s cash value.</p>
-        <form class="lm-form" id="leadForm" novalidate>
-          <input name="name" type="text" placeholder="Full name" autocomplete="name">
-          <input name="phone" id="leadPhone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel">
-          <input name="email" type="email" placeholder="Email address" autocomplete="email">
+        <!-- TrustedForm tagged consent: the form is the OFFER; inputs, the
+             consent language, waiver spans, advertiser names, and the submit
+             button carry data-tf-element-role tags so the cert certifies
+             exactly what was shown and agreed to. -->
+        <form class="lm-form" id="leadForm" novalidate data-tf-element-role="offer">
+          <input name="name" type="text" placeholder="Full name" autocomplete="name" data-tf-element-role="consent-grantor-name">
+          <input name="phone" id="leadPhone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel" data-tf-element-role="consent-grantor-phone">
+          <input name="email" type="email" placeholder="Email address" autocomplete="email" data-tf-element-role="consent-grantor-email">
           <p class="lm-err" id="leadErr" hidden></p>
-          <div class="lm-disclosure">
+          <div class="lm-disclosure" data-tf-element-role="consent-language">
             <!-- the standalone matched line is hidden by default (2026-07-30):
                  the names live inside the consent sentence (.lm-cons-pros). It
                  returns only when GetContactOptInNames renders per-pro
                  checkboxes — then it IS the selection UI. -->
             <p class="lm-matched" hidden><b>Matched real estate pro:</b> <b class="lm-names">Jason Dalbey (BHHS The Preferred Realty)</b></p>
-            <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give zBuyer and <span class="lm-cons-pros">Jason Dalbey (BHHS The Preferred Realty)</span> your express written consent to contact you by phone, text, and email, including marketing and AI-generated messages about your property at the number provided. This contact may use an autodialer or an artificial, prerecorded, or AI-generated voice, and may occur even if your number is on a Do Not Call list. Consent is not a condition of purchase. <span class="lm-carrier">Msg frequency varies. Msg &amp; data rates may apply.</span></p>
+            <p class="lm-consent">By clicking &ldquo;Continue,&rdquo; you give <span data-tf-element-role="consent-advertiser-name" id="consAdvertiser">zBuyer and <span class="lm-cons-pros">Jason Dalbey (BHHS The Preferred Realty)</span></span> your express written consent to contact you <span data-tf-element-role="contact-method">by phone, text, and email</span>, including marketing and AI-generated messages about your property at the number provided. <span data-tf-element-role="consent-grantor-waived-regulated-technologies">This contact may use an autodialer or an artificial, prerecorded, or AI-generated voice</span>, and <span data-tf-element-role="consent-grantor-waived-dnc">may occur even if your number is on a Do Not Call list</span>. <span data-tf-element-role="consent-grantor-waived-purchase-condition">Consent is not a condition of purchase.</span> <span class="lm-carrier">Msg frequency varies. Msg &amp; data rates may apply.</span></p>
           </div>
-          <p class="lm-agree">By clicking Continue, you agree to the <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a></p>
-          <button type="submit" class="lm-cta">Continue &rarr;</button>
+          <p class="lm-agree" data-tf-element-role="consent-language">By clicking Continue, you agree to the <a href="terms-classic-blue.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy-classic-blue.html" target="_blank" rel="noopener">Privacy Policy</a></p>
+          <button type="submit" class="lm-cta" data-tf-element-role="submit">Continue &rarr;</button>
         </form>
       </div>
 
@@ -406,7 +410,8 @@
         </svg>
       </div>
 
-      <div class="lm-screen lm-final" data-screen="textreport" hidden>
+      <!-- second TrustedForm OFFER: the SMS opt-in is its own consent moment -->
+      <div class="lm-screen lm-final" data-screen="textreport" hidden data-tf-element-role="offer">
         <h3>Access your report anytime</h3>
         <div class="lm-gfx">
           <svg width="170" height="118" viewBox="0 0 170 118" fill="none" aria-hidden="true">
@@ -426,14 +431,14 @@
         </div>
         <p class="lm-sub lm-q">Check anytime. We&rsquo;ll text the link.</p>
         <div class="lm-phone-wrap">
-          <input id="textPhone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel" aria-label="Mobile number">
+          <input id="textPhone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel" aria-label="Mobile number" data-tf-element-role="consent-grantor-phone">
           <svg class="lm-phone-edit" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13.5 6.5l3 3" stroke="currentColor" stroke-width="2"/></svg>
         </div>
         <p class="lm-err" id="textErr" hidden></p>
-        <div class="lm-disclosure">
-          <p class="lm-consent">By clicking &ldquo;Send my Report,&rdquo; you agree to receive automated texts from zBuyer with your report link, including marketing and AI-generated messages, at the number above. Msg frequency varies. Msg &amp; data rates may apply. Reply HELP for help or STOP to cancel.</p>
+        <div class="lm-disclosure" data-tf-element-role="consent-language">
+          <p class="lm-consent">By clicking &ldquo;Send my Report,&rdquo; you agree to receive <span data-tf-element-role="contact-method">automated texts</span> from <span data-tf-element-role="consent-advertiser-name">zBuyer</span> with your report link, including marketing and AI-generated messages, at the number above. Msg frequency varies. Msg &amp; data rates may apply. Reply HELP for help or STOP to cancel.</p>
         </div>
-        <button type="button" class="lm-cta" id="textReport">Send my Report &rarr;</button>
+        <button type="button" class="lm-cta" id="textReport" data-tf-element-role="submit">Send my Report &rarr;</button>
         <button type="button" class="lm-nothanks" id="noText">No thanks, don&rsquo;t send my report</button>
       </div>
 

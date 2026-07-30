@@ -52,7 +52,7 @@
     contactOptInNamesRender: "contactOptInNames_renderAsCheckboxes", // "True"/"False"
     contactFormSubmit: "ContactFormSubmit",
     tcpaTerms: "trustedform.com_TCPATerms",       // the disclosure+consent text displayed
-    tfCertURL: "trustedform.com_CertURL",         // TrustedForm cert, when script present
+    tfCertURL: "trustedform.com_CertURL",         // BARE TrustedForm cert token (server rebuilds the cert URL to claim)
     optInContact: "OptInContactID",               // one save per opted-in contact
     listedQuestion: "ListedQuestion",             // from OnboardAPI later; defaults "No"
     realtorOpt: "RealtorOpt",                     // "ok" on the all-set step's CTA

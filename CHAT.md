@@ -1857,3 +1857,24 @@ estate pros selected above"). Live API names and the forced Max Sold roster both
 flow into the sentence; the inline variant shares the same plumbing. Verified with
 the live API (HousingNow.com in-sentence), maxsold (all six inline), and the static
 homepage.
+
+**Lucas:** I need to add our TrustedForm around all versions of the terms. we will
+also need to fire the API with a FieldName and FieldValue — the fieldvalue should be
+the token we receive after calling TrustedForm. what else do you need from me?
+*(Answers: keep trustedform.com_CertURL as the FieldName; FieldValue = the bare
+token; tag contact-step all variants + SMS step + homepage; fire on contact submit.)*
+
+**Claude:** Tagged Consent wired per the ActiveProspect spec (fetched the docs for
+the exact role vocabulary). Both pages: the contact form and the SMS step are
+separate offers, each with one submit; consent-language on both disclosures and the
+agree-line; grantor name/phone/email roles on the inputs; "zBuyer and [pros]"
+wrapped as consent-advertiser-name (the inline rebuild re-applies it); waiver spans
+for regulated-technologies / DNC / purchase-condition and contact-method inside both
+consent texts; the inline checkbox is consent-opt-in; API per-pro checkbox mode uses
+the numbered 1:1 advertiser pairs and drops the sentence span's role. The homepage
+now loads the TrustedForm script (capture-only). The SaveLeadData value became the
+bare cert token (URL prefix stripped; server rebuilds it to claim within ~72h),
+still fld=trustedform.com_CertURL on contact submit. Full Pulse E2E green:
+SaveLeadData[trustedform.com_CertURL]=200 with a real cert. Nothing else needed from
+Lucas unless TrustedForm's account settings demand specific advertiser display
+names for 1:1 — the dynamic matched-pro names are already tagged.

@@ -175,13 +175,17 @@
     var proNames = mInl.textContent.replace(mLbl ? mLbl.textContent : "", "").replace(/\s+/g, " ").trim();
     mInl.hidden = true;
     termsBox.classList.add("lm-inline");
+    // TrustedForm tagged consent survives the rebuild: the checkbox is the
+    // opt-in control, and the same advertiser/method/waiver spans as the
+    // default paragraph are re-applied here.
     cInl.innerHTML =
-      '<input type="checkbox" class="lm-check" aria-label="I agree to receive calls, texts, and emails as described in the terms">' +
-      'By checking this box, I agree to receive calls, texts, and emails from zBuyer and <span class="lm-inline-pros"></span>,' +
+      '<input type="checkbox" class="lm-check" data-tf-element-role="consent-opt-in" aria-label="I agree to receive calls, texts, and emails as described in the terms">' +
+      'By checking this box, I agree to receive <span data-tf-element-role="contact-method">calls, texts, and emails</span> from' +
+      ' <span data-tf-element-role="consent-advertiser-name" id="consAdvertiser">zBuyer and <span class="lm-inline-pros"></span></span>,' +
       ' including marketing and AI-generated messages about my property at the number I provided.' +
-      ' These may use an autodialer or an artificial, prerecorded, or AI-generated voice, even if my' +
-      ' number is on a Do Not Call list. This is my express written consent, and I understand consent' +
-      ' is not a condition of purchase.' +
+      ' <span data-tf-element-role="consent-grantor-waived-regulated-technologies">These may use an autodialer or an artificial, prerecorded, or AI-generated voice</span>, <span data-tf-element-role="consent-grantor-waived-dnc">even if my' +
+      ' number is on a Do Not Call list</span>. This is my express written consent, and <span data-tf-element-role="consent-grantor-waived-purchase-condition">I understand consent' +
+      ' is not a condition of purchase.</span>' +
       ' <span class="lm-carrier">Msg frequency varies. Msg &amp; data rates may apply.</span>';
     termsCheck = cInl.querySelector(".lm-check");
     inlinePros = cInl.querySelector(".lm-inline-pros");
@@ -238,16 +242,23 @@
       b.textContent = label;
       box.appendChild(b);
       if (d.renderAsCheckboxes) {
-        d.contactOptInNames.forEach(function (c) {
+        // TrustedForm 1:1 tagging: selectable advertisers use the NUMBERED
+        // input/name pairs, and the sentence's generic advertiser span must
+        // drop its role (it reads "the pros selected above", not a name).
+        var advSpan = document.getElementById("consAdvertiser");
+        if (advSpan) advSpan.removeAttribute("data-tf-element-role");
+        d.contactOptInNames.forEach(function (c, i) {
           var row = document.createElement("label");
           row.className = "lm-optin";
           var cb = document.createElement("input");
           cb.type = "checkbox";
           cb.value = c.contactID;
           cb.checked = !!c.preSelected;
+          cb.setAttribute("data-tf-element-role", "consent-opted-advertiser-input-" + (i + 1));
           row.appendChild(cb);
           var nm = document.createElement("b");
           nm.className = "lm-names";
+          nm.setAttribute("data-tf-element-role", "consent-opted-advertiser-name-" + (i + 1));
           nm.textContent = c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
           row.appendChild(nm);
           box.appendChild(row);
@@ -489,8 +500,10 @@
       var mEl = modal.querySelector(".lm-matched"), cEl = modal.querySelector(".lm-consent"),
           aEl = modal.querySelector(".lm-agree");
       psave(P.F.tcpaTerms, (((mEl && !mEl.hidden) ? mEl.textContent : "") + " " + (cEl ? cEl.textContent : "") + " " + (aEl ? aEl.textContent : "")).replace(/\s+/g, " ").trim());
+      // FieldValue is the BARE cert token (Lucas 2026-07-30) — the server
+      // rebuilds https://cert.trustedform.com/<token> for the Retain claim.
       var tf = document.getElementsByName("xxTrustedFormCertUrl")[0];
-      if (tf && tf.value) psave(P.F.tfCertURL, tf.value);
+      if (tf && tf.value) psave(P.F.tfCertURL, tf.value.split("/").pop());
       if (optInData) {
         if (optInData.renderAsCheckboxes) {
           modal.querySelectorAll(".lm-optin input:checked").forEach(function (cb) {
