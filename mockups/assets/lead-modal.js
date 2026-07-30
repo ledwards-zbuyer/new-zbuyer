@@ -142,15 +142,19 @@
   //   consent UI — default is the classic implicit paragraph; inline
   //     rebuilds it in first person behind an explicit checkbox (below).
   // Placeholder copy pending final legal language.
+  // The recipient names live INSIDE the consent sentence (2026-07-30) —
+  // this span carries them in the default variant; the standalone matched
+  // line only returns when the API renders per-pro checkboxes.
+  var consPros = modal.querySelector(".lm-cons-pros");
+
   // Forcing a sale model is a DEMO switch: the 6-buyer roster must stay on
   // screen, so the live GetContactOptInNames render is skipped below.
   var FORCED_MAXSOLD = /[?&]terms=(inline-)?maxsold\b/.test(window.location.search);
+  var MAXSOLD_ROSTER = "Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)";
   if (FORCED_MAXSOLD) {
     var matchedEl = modal.querySelector(".lm-matched");
-    if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> <b class=\"lm-names\">Betty Alexander (Sotheby's Realty); Mariam Chesterfield (Berkshire Hathaway); Denall Johnson (Fave Realty); Bradley Thompson (eXp Realty); Ester Grant (Luxury King Realty); John Taylor Tent (Next Level Acquisitions LLC)</b>";
-    var consentEl = modal.querySelector(".lm-consent");
-    if (consentEl) consentEl.innerHTML = consentEl.innerHTML
-      .replace("your matched real-estate professional", "its real-estate partners");
+    if (matchedEl) matchedEl.innerHTML = "<b>Matched real estate pros:</b> <b class=\"lm-names\">" + MAXSOLD_ROSTER + "</b>";
+    if (consPros) consPros.textContent = MAXSOLD_ROSTER;
   }
 
   // ---- inline-consent variant (?terms=inline / inline-maxsold) ----
@@ -225,6 +229,9 @@
       psave(P.F.contactOptInNamesRender, d.renderAsCheckboxes ? "True" : "False");
       var box = modal.querySelector(".lm-matched");
       if (!box) return;
+      var namesStr = d.contactOptInNames.map(function (c) {
+        return c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
+      }).join("; ");
       var label = d.contactOptInNames.length > 1 ? "Matched real estate pros:" : "Matched real estate pro:";
       box.innerHTML = "";
       var b = document.createElement("b");
@@ -249,24 +256,17 @@
         box.appendChild(document.createTextNode(" "));
         var names = document.createElement("b");
         names.className = "lm-names";
-        names.textContent = d.contactOptInNames.map(function (c) {
-          return c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
-        }).join("; ");
+        names.textContent = namesStr;
         box.appendChild(names);
       }
-      // Inline-consent variant: the live names belong inside the sentence.
-      // With per-pro checkboxes the standalone list returns (it IS the
-      // selection UI) and the sentence points at it instead.
-      if (inlinePros) {
-        if (d.renderAsCheckboxes) {
-          box.hidden = false;
-          inlinePros.textContent = "the real estate pros selected above";
-        } else {
-          inlinePros.textContent = d.contactOptInNames.map(function (c) {
-            return c.displayName + (c.displayCompany ? " (" + c.displayCompany + ")" : "");
-          }).join("; ");
-        }
-      }
+      // The live names belong inside the consent sentence — default variant
+      // (.lm-cons-pros) and inline variant (.lm-inline-pros) alike. The
+      // standalone list only shows when the API renders per-pro checkboxes
+      // (then it IS the selection UI and the sentence points at it).
+      box.hidden = !d.renderAsCheckboxes;
+      var inSentence = d.renderAsCheckboxes ? "the real estate pros selected above" : namesStr;
+      if (consPros) consPros.textContent = inSentence;
+      if (inlinePros) inlinePros.textContent = inSentence;
     });
   }
 

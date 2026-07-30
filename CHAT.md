@@ -1844,3 +1844,16 @@ button name updated to match ("By clicking 'Send my Report,' …").
 **Claude:** In as mockups/reapi-report-builder-v3.html (the earlier one stays at
 reapi-report-builder.html), with the same two touch-ups: relative logo path and
 noindex on the page + its export template.
+
+**Lucas:** on the terms version on the PII page that shows when NOT terms=inline,
+put the member(s) name and company in place of "matched real-estate professional"
+and remove the first "matched real estate pros" line
+
+**Claude:** The default consent now reads "you give zBuyer and Jason Dalbey (BHHS
+The Preferred Realty) your express written consent…" via a .lm-cons-pros span, and
+the standalone matched line is hidden — it returns only when the live API renders
+per-pro checkboxes (it becomes the selection UI and the sentence says "the real
+estate pros selected above"). Live API names and the forced Max Sold roster both
+flow into the sentence; the inline variant shares the same plumbing. Verified with
+the live API (HousingNow.com in-sentence), maxsold (all six inline), and the static
+homepage.

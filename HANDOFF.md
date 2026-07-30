@@ -190,9 +190,13 @@ changing the funnel.
 
 ### 5. Terms comparison tool (`mockups/compare-terms.html`)
 - Internal chooser (noindex) to preview the funnel under each sale model:
-  - **Exclusive Lead** → default (no param, also `?terms=exclusive`): single named pro +
-    consent says "your matched real-estate professional".
-  - **Max Sold** → `?terms=maxsold`: 6-buyer list + "its real-estate partners".
+  - **Exclusive Lead** → default (no param, also `?terms=exclusive`): the pro's
+    name + company sit INSIDE the consent sentence (2026-07-30; `.lm-cons-pros` —
+    "you give zBuyer and Jason Dalbey (BHHS…) your express written consent…"). The
+    standalone "Matched real estate pro:" line is hidden; it returns only when
+    GetContactOptInNames renders per-pro checkboxes (then it IS the selection UI
+    and the sentence says "the real estate pros selected above").
+  - **Max Sold** → `?terms=maxsold`: the 6-buyer roster inlined in the same sentence.
   - **Inline checkbox** (2026-07-25) → `?terms=inline` (Exclusive copy) /
     `?terms=inline-maxsold` (Max Sold copy): explicit-consent variant of the contact
     step — first-person consent paragraph with the matched pro names inline, a 19px
