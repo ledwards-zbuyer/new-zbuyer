@@ -1894,3 +1894,8 @@ check my database
 session snapshot sorted alphabetically — trustedform.com_CertURL (the bare token)
 and submissionID rows highlighted; long values truncated at 160 chars with the
 total. E2E-verified with a real session. Remove when the DB cross-check is done.
+
+**Lucas:** show all of trustedform.com_TCPATerms. its currently minimized
+
+**Claude:** That row now renders in full (no truncation) and is highlighted like the
+token row — it's the exact consent text being verified.
