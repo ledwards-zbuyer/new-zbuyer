@@ -1884,3 +1884,13 @@ names for 1:1 — the dynamic matched-pro names are already tagged.
 **Claude:** Then TrustedForm is wired end to end: tagged capture on every consent
 surface → bare token to the API on contact submit → server-side Retain claim and 1:1
 advertiser config both confirmed operational.
+
+**Lucas:** can you temporarily add a tag on the report page that shows relevant ids
+including the trustedform token along with the FieldName wording, so I can double
+check my database
+
+**Claude:** TEMP DEBUG panel at the top of the report (red dashed border, marked
+"remove me"): submissionID + request counter, then every FieldName = value from the
+session snapshot sorted alphabetically — trustedform.com_CertURL (the bare token)
+and submissionID rows highlighted; long values truncated at 160 chars with the
+total. E2E-verified with a real session. Remove when the DB cross-check is done.
