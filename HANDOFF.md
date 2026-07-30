@@ -111,7 +111,10 @@ changing the funnel.
   contact phone automatically (finale caption says so); the report page carries an
   "Access anytime: we texted your report link to (xxx) xxx-xxxx" notice with an
   "Update my mobile number" modal (pre-popped phone; Update saves `phone` through the
-  same lead session via SaveLeadData; `?demoPhone=` previews it). The notice is styled
+  same lead session via SaveLeadData; `?demoPhone=` previews it; `?debug=1` on the
+  report shows the session-dump panel — submissionID + every saved FieldName/value,
+  TrustedForm token + full TCPATerms highlighted, added 2026-07-30 for DB
+  cross-checks). The notice is styled
   as an alert (icon, 2px CTA border, shadow, role="alert") with an X dismiss that
   hides it for the session (sessionStorage zbNoticeClosed). The step's slot now
   holds the optional SomethingSpecial notes step (see Current funnel #5). History of
