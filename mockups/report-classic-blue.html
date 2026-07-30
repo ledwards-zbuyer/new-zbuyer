@@ -229,8 +229,10 @@
       Object.keys(snap).sort().forEach(function (k) {
         var v = snap[k];
         if (typeof v !== "string") v = JSON.stringify(v);
-        if (v.length > 160) v = v.slice(0, 160) + "… (" + v.length + " chars total)";
-        rows += line(k, v, k === "trustedform.com_CertURL");
+        // TCPATerms shows IN FULL (it's the exact consent text to verify);
+        // everything else truncates to keep the panel scannable
+        if (k !== "trustedform.com_TCPATerms" && v.length > 160) v = v.slice(0, 160) + "… (" + v.length + " chars total)";
+        rows += line(k, v, k === "trustedform.com_CertURL" || k === "trustedform.com_TCPATerms");
       });
       el.innerHTML = "<b style=\"color:#D8442B\">TEMP DEBUG — funnel session dump (remove me)</b>" + rows;
     } catch (e) { el.textContent = "TEMP DEBUG: " + e; }
