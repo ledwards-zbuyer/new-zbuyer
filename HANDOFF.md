@@ -378,6 +378,17 @@ load) while values and home stats remain static demo data. The old
   #7FC4FF→#1D4FD7, orange pill handle, warm notice bar. `assets/value-slider.js`
   defaults + value-slider-docs.html were synced back to this palette at the same
   time. design-guide.html is consistent again (it never documented the retone).
+- **Estimate-arrival tray (2026-07-30):** `assets/estimate-tray.js` — portable
+  single-file widget (like value-slider.js; usage docs in its header).
+  `zbEstimateTray({items, demo:{seconds}, dismissSeconds, onArrive, onComplete})`
+  slides a bottom tray up over the report: one animated checkbox per estimate
+  source (AI / AVM / Cash offer by default) — the UNCHECKED box carries the wait
+  animation (a bright segment chasing its border), the check draws itself on
+  arrival. Real wiring: `tray.arrive(id)` per API response; `demo:{seconds:8}`
+  staggers arrivals evenly (the report page runs this). Minimize chevron collapses
+  it to a corner pill ("Estimates n/3", live count) that reopens it; after all
+  arrive it auto-minimizes (dismissSeconds, 0 = stay). Themeable via `--zet-*`
+  vars; reduced-motion safe.
 - **Link references (2026-07-30):** `link-params.html` — INTERNAL reference of every
   querystring variable across the funnel + report + harness (attribution, z-prepop,
   terms/sms/zsv switches, report values/snap/demoPhone/debug, harness steps) with

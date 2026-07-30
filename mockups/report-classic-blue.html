@@ -518,6 +518,14 @@
 <!-- Pulse pixel tracking: FinalizeLead (fired on the funnel's last step)
      returns raw HTML that must land in the thank-you page body. The lander
      stashes it in sessionStorage across the navigation; inject it here. -->
+<script src="assets/estimate-tray.js"></script>
+<script>
+/* Estimate-arrival tray (assets/estimate-tray.js): slides up over the
+ * report on load, one animated checkbox per estimate source, checks as
+ * each arrives (8s demo stagger standing in for the real calls),
+ * auto-minimizes to the corner pill, reopenable. */
+zbEstimateTray({ demo: { seconds: 8 } });
+</script>
 <script src="assets/value-slider.js"></script>
 <script>
 /* Combined module: the portable value-curve slider (assets/value-slider.js)

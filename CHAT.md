@@ -1935,3 +1935,21 @@ internal switches exposed to publishers.
 the display:block rule would override the attribute; the click listener is guarded).
 Default shown. link-params.html gains the row. Verified: all-set renders with just
 the View my Report CTA under dnc=0.
+
+**Lucas:** make it clearer to the user which estimates have arrived: a bottom footer
+over the report with three animated processing icons/checkboxes — "AI estimate",
+"AVM estimate", "Cash offer estimate" — horizontal, boxes checking as each arrives,
+the unchecked checkbox incorporated into the waiting animation (subtle but clear),
+demo over 8 seconds. build it as a widget to share with Besi. *(mid-build:)* make
+sure the bottom banner can be minimized and opened back up
+
+**Claude:** Built assets/estimate-tray.js — portable one-file widget (usage docs in
+the header, like value-slider.js). The unchecked box IS the wait animation: a faint
+rounded-square border with a bright blue segment chasing its perimeter; on arrival
+the chase stops, the box pops, fills blue, and the check draws itself in, with the
+label going bold-ink. tray.arrive(id) for real API wiring, demo:{seconds:8} for the
+staggered stand-in (report page runs it). Minimize chevron collapses to a corner
+pill — "Estimates n/3" with a live count — that reopens it; after all three arrive
+it auto-minimizes (configurable, always recoverable). Reduced-motion swaps to
+static states. Verified mid-arrival (1/3 checked + chasing boxes), all-checked at
+8s, and the 3/3 pill after auto-minimize.
