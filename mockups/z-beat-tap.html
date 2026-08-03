@@ -239,8 +239,9 @@
     scene.setAttribute('viewBox','0 0 '+VW+' '+VH);
     CX=VW/2; CY=VH/2;
     // bare embeds have no chrome to clear, so the ball fills 96% of the
-    // frame — the same proportion as the flat interstitial loop (r=96/200)
-    K = BARE ? Math.min(0.96*Math.min(VW,VH), 347)/100
+    // frame — the same proportion as the flat interstitial loop (r=96/200).
+    // No max cap in bare: the embedding frame IS the size control
+    K = BARE ? 0.96*Math.min(VW,VH)/100
              : Math.min(0.88*Math.min(VW,VH), 430)/124;
     gSphere.setAttribute('transform','translate('+CX+' '+CY+') scale('+K+')');
   }

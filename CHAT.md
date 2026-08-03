@@ -2111,3 +2111,17 @@ parsing the ANMF headers (6566ms; Pillow coalesces the 650ms opening rest into
 one frame). Design guide's sphere paragraph now links all four .webp exports and
 notes the .gif twins; dev guide + link-params document ?t; file inventory lists
 the exports.
+
+**Lucas:** when i look at z-sphere-primary.webp the sphere is not centered in the
+frame *(screenshot)*
+
+**Claude:** Two capture bugs compounding. (1) Bare mode still carried the
+standalone 347px ball cap, so the 480px capture rendered a 347px ball — 72% fill
+with fat margins. The cap is now standalone-only; bare fills 96% at any frame
+size (the embedding iframe is the size control — guide embeds at 150/56 sit far
+below the old cap either way). (2) 480px is under Chrome's minimum layout-viewport
+width, so the page laid out wider than the bitmap and the ball sat ~15px off-center.
+Re-captured all 392 frames at 640px — single-frame probe measured the ball at
+620px with 10px gaps on all sides — reassembled, and the final webp's first frame
+now shows 3px gaps on all four sides at 320. Both gotchas recorded in HANDOFF's
+re-export recipe; the docs' K-row shows the uncapped bare formula.

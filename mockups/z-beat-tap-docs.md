@@ -47,7 +47,7 @@ Everything intentional lives in named constants near the top of the script.
 | `DBL` | 320 ms | Double-tap detection window |
 | `T` | 2.5 | Idle-beat tempo multiplier (higher = slower) |
 | `PALS` | 4 entries | The colorway roster and order |
-| `K` (in `layout()`) | `min(0.88·min(vw,vh), 430)/124` standalone; `min(0.96·min(vw,vh), 347)/100` bare | Sphere size — the caps bound the max ball at ~347px in both modes |
+| `K` (in `layout()`) | `min(0.88·min(vw,vh), 430)/124` standalone; `0.96·min(vw,vh)/100` bare | Sphere size. Standalone caps the ball at ~347px on big screens; bare has no cap — the embedding frame is the size control |
 
 ## Adding a colorway
 
