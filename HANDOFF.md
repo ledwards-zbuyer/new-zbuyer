@@ -458,6 +458,19 @@ load) while values and home stats remain static demo data. The old
   and "The Price Story" (the '98 $112K → '12 $148.5K → '21 $350K chain + today's
   estimate row) were added 2026-07-28, both preselected; the export manifest notes
   the comps are mocks (original sample returned 0 — build the empty state).
+- **Mortgage Status Classifier (2026-08-03):** `mortgage-status-classifier.md` —
+  spec + dependency-free reference implementation for reading REAPI mortgage
+  truth from the ARRAYS instead of the modeled `openMortgageBalance` scalar
+  (a $0 has three causes: coverage gap, recorded release, or amortized-to-zero
+  model). Five states (HAS_OPEN_MORTGAGE / ZERO_BALANCE_LIEN / CONFIRMED_ and
+  INFERRED_FREE_CLEAR / UNKNOWN_COVERAGE), `resolveMortgageBalance()` that never
+  invents a zero, and a Free & Clear badge gate that admits only the two
+  `*_FREE_CLEAR` states. Dropped in from Lucas's Downloads (verified against 9
+  synthetic cases); sub-field names on mortgage entries are ASSUMED — verify the
+  candidate-key lists against one expanded live Property Detail response before
+  wiring. Both builder workbenches' manifest `freeclear`/`ratefree` gates now
+  carry SUPERSEDED-by pointers to it; the md's "Repo status" section is honest
+  that wiring the states in is still the pipeline's job.
 - **Property Intelligence Report (2026-07-28):** `report-intel-classic-blue.html` — the
   Topeka Pass design mockup (REAPI field-map workbench export) reskinned into the
   classic-blue system, linked from the report's "Go deeper" card above the footer.

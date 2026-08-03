@@ -2125,3 +2125,17 @@ Re-captured all 392 frames at 640px — single-frame probe measured the ball at
 620px with 10px gaps on all sides — reassembled, and the final webp's first frame
 now shows 3px gaps on all four sides at 320. Both gotchas recorded in HANDOFF's
 re-export recipe; the docs' K-row shows the uncapped bare formula.
+
+**Lucas:** C:\Users\lucas\Downloads\mortgage-status-classifier.md — push to git and
+show me the link. add it to any necessary docs
+
+**Claude:** In at mockups/mortgage-status-classifier.md: the five-state REAPI
+mortgage classifier spec (the modeled openMortgageBalance scalar can't distinguish
+coverage-gap / recorded-release / amortized-to-zero — the arrays can) with the
+dependency-free reference implementation and its 9-case test log. Doc wiring: both
+report-builder workbenches' manifest freeclear/ratefree gate strings now carry
+SUPERSEDED-by pointers to it (they still express the raw-scalar test), and the md
+gained a "Repo status" section making that explicit — the source doc's closing
+line claims the manifests already embed the classifier, which is the target state,
+not this repo's. HANDOFF gains the bullet (with the verify-the-candidate-keys
+caveat front and center).
