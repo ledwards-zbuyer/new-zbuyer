@@ -6,7 +6,7 @@
 
 ## What it does
 
-The sphere runs the Z-beat idle loop: the two arrows wind up, whip around the ball in opposite directions, reconnect, and the assembled Z takes a lap — repeating on a ~6.5 second cycle. A **double-tap** (two presses within 320 ms) recolors the entire sphere through the four approved colorways — Primary, Stage Navy, Sky, Porcelain. That's the whole input surface: an easter egg, not a control.
+The sphere runs the Z-beat idle loop: the two arrows wind up, whip around the ball in opposite directions, reconnect, and the assembled Z takes a lap — repeating on a ~6.5 second cycle. A **double-tap** (two presses within 320 ms) recolors the entire sphere through the five approved colorways — Primary, Stage Navy, Sky, Porcelain, and Glass (a translucent ball, arrows in the two Porcelain blues, the page showing through). That's the whole input surface: an easter egg, not a control.
 
 Users with `prefers-reduced-motion` get a static locked Z, and the animation frame loop never starts — zero per-frame work.
 
@@ -36,7 +36,7 @@ Everything intentional lives in named constants near the top of the script.
 | --- | --- | --- |
 | `DBL` | 320 ms | Double-tap detection window |
 | `T` | 2.5 | Idle-beat tempo multiplier (higher = slower) |
-| `PALS` | 4 entries | The colorway roster and order |
+| `PALS` | 5 entries | The colorway roster and order |
 | `K` (in `layout()`) | `min(0.88·min(vw,vh), 430)/124` | Sphere size — change 430 for a different max pixel size |
 
 ## Adding a colorway
@@ -52,7 +52,7 @@ A colorway is one `PALS` entry plus a matching pair of gradients in the SVG `<de
  sheen:1}                    // specular intensity (bright balls want less)
 ```
 
-`glass` and `shade` name `radialGradient` ids in defs — copy an existing pair and recolor the stops. On light balls, keep the arrows readable against the glass (Porcelain runs primary-blue arrows for exactly this reason).
+`glass` and `shade` name `radialGradient` ids in defs — copy an existing pair and recolor the stops. On light balls, keep the arrows readable against the glass (Porcelain runs primary-blue arrows for exactly this reason). For a translucent ball, give the gradient stops `stop-opacity` below 1 — the Glass colorway (`glassG`/`shadeG`) is the worked example: the page background genuinely shows through the sphere, so it pairs naturally with `?bare=1` embeds.
 
 ## How it works, briefly
 

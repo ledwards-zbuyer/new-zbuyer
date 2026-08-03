@@ -2039,3 +2039,16 @@ element (double-tap would otherwise zoom the page on phones). z-beat-tap-docs.md
 rewritten to match (simplification note up top, ?bare embed section, trimmed
 tuning table, no glyph/message sections); link-params' Z-beat card swaps the ?msg
 row for ?bare=1.
+
+**Lucas:** add another color in the double-click that make the ball look like
+translucent glass and the z sections would be the two blue colors like Porcelain.
+update everywhere
+
+**Claude:** Fifth colorway "Glass": the ball's gradient stops carry stop-opacity
+(.14-.60), so the page genuinely shows through the sphere — verified with a harness
+that walks the palette via synthetic taps over a striped background (the stripe
+reads through the ball). Arrows are the Porcelain pair (primary #1D4FD7 + sky
+#3BA4F4), rim slightly stronger to keep the edge, ghost .22, sheen .9. Roster
+references updated everywhere: the dev guide (what-it-does, PALS count, and the
+adding-a-colorway section now documents the stop-opacity trick with Glass as the
+worked example), the design guide rule line, link-params' card, and HANDOFF.
