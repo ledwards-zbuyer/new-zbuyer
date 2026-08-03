@@ -337,6 +337,16 @@
             </g>
           </g>
         </svg>
+        <!-- the same loop at icon scale — reuses the first svg's defs -->
+        <svg viewBox="0 0 200 200" width="56" height="56" aria-hidden="true">
+          <circle cx="100" cy="100" r="96" fill="url(#zbStage)"/>
+          <g clip-path="url(#zbClip)">
+            <g class="zb-pair">
+              <g class="zb-piece zb-w"><polygon fill="#FFFFFF" points="40,42 128,42 64,158 39,158 95,68 40,68"/></g>
+              <g class="zb-piece zb-b"><polygon fill="#3BA4F4" points="160,158 72,158 136,42 161,42 105,132 160,132"/></g>
+            </g>
+          </g>
+        </svg>
       </div>
     </div>
     <p class="rule">The brand beat between funnel steps: the Z's two arrows (white + <code>--acc</code> sky, on the
@@ -348,18 +358,23 @@
        assets for email/marketing: <code>assets/z-dance.gif</code> / <code>z-dance-transparent.gif</code> /
        <code>z-dance.webp</code> (8s loop). Rules: arrows never rotate independently, never green (see Color),
        and the beat never runs without a reason — it means "we're working," not decoration.</p>
-    <div class="demo">
+    <div class="demo" style="display:flex;align-items:center;gap:26px">
       <!-- ?bare=1 = chromeless (no wordmark/caption, transparent bg).
-           touch-action:none stays on this element: without it the parent
-           page claims taps for scroll/double-tap-zoom on phones -->
+           touch-action:none stays on these elements: without it the parent
+           page claims taps for scroll/double-tap-zoom on phones.
+           Two frames, one file — the sphere sizes itself to its frame -->
       <iframe src="z-beat-tap.html?bare=1" title="Z-beat — live loading sphere"
-              style="display:block;width:280px;height:280px;border:0;touch-action:none;-webkit-user-select:none;user-select:none" loading="lazy"></iframe>
+              style="display:block;width:150px;height:150px;border:0;touch-action:none;-webkit-user-select:none;user-select:none" loading="lazy"></iframe>
+      <iframe src="z-beat-tap.html?bare=1" title="Z-beat — live loading sphere, icon scale"
+              style="display:block;width:56px;height:56px;border:0;touch-action:none;-webkit-user-select:none;user-select:none" loading="lazy"></iframe>
     </div>
     <p class="rule"><b>The sphere version</b> (live above): <a href="z-beat-tap.html">z-beat-tap.html</a>, a
        self-contained single file — the beat runs on the glass ball, and a <b>double-tap</b> quietly cycles the
        five approved colorways (Primary, Stage Navy, Sky, Porcelain, and translucent Glass with the two-blue Z) —
        an easter egg, not a control.
-       <code>?bare=1</code> embeds it chromeless like above. Full developer guide:
+       <code>?bare=1</code> embeds it chromeless like above, and it sizes itself to whatever frame it's given —
+       both spheres above are the same file, one in a 150px iframe and one at 56px. Like the flat loop (also shown
+       at icon scale), it reads anywhere from interstitial to button size. Full developer guide:
        <a href="https://github.com/ledwards-zbuyer/new-zbuyer/blob/main/mockups/z-beat-tap-docs.md">z-beat-tap-docs.md</a>.</p>
   </section>
 

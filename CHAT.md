@@ -2052,3 +2052,14 @@ reads through the ball). Arrows are the Porcelain pair (primary #1D4FD7 + sky
 references updated everywhere: the dev guide (what-it-does, PALS count, and the
 adding-a-colorway section now documents the stop-opacity trick with Glass as the
 worked example), the design guide rule line, link-params' card, and HANDOFF.
+
+**Lucas:** on the design guide, make it the same size as the animation above it.
+also, for both animations, show another much smaller version next to both. this is
+show how it can be used in various ways
+
+**Claude:** Both Z-beat demos in the guide are now size pairs: the flat loop at its
+150px interstitial scale plus a 56px icon-scale copy beside it (same svg markup,
+reusing the first svg's gradient/clip defs), and the sphere embed resized from
+280 down to 150 to match, with a second 56px ?bare=1 iframe next to it — same file,
+it sizes itself to its frame. Rule paragraph now says exactly that: reads anywhere
+from interstitial to button size.

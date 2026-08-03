@@ -411,8 +411,10 @@ load) while values and home stats remain static demo data. The old
   wordmark + caption, transparent background so the host page shows through.
   Developer guide beside it: `z-beat-tap-docs.md` (rewritten to match); cross-
   linked from value-slider-docs, estimate-tray-docs, and link-params (?bare row).
-  Embedded LIVE in the design guide's Z-beat section: 280x280 left-aligned
-  `?bare=1` iframe on the demo background. EMBED GOTCHA: `touch-action:none` must
+  Embedded LIVE in the design guide's Z-beat section as a size pair (150px +
+  56px icon-scale, left-aligned `?bare=1` iframes on the demo background) to
+  show it scales; the flat interstitial loop above it shows the same 150+56
+  pair (the small svg reuses the first svg's defs ids). EMBED GOTCHA: `touch-action:none` must
   be on the iframe ELEMENT — the child page's touch-action can't stop the parent
   from claiming gestures (double-tap would become page zoom on phones). The guide's non-interactive interstitial is a separate inline
   SVG loop; the ambient z-beat-sphere/duo files are NOT in this repo. Headless
