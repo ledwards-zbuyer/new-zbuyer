@@ -408,7 +408,10 @@ load) while values and home stats remain static demo data. The old
   interaction and with it the stencil font, typesetter, morph engine, and the
   `?msg=` API (per Lucas — cut complexity/processing). Under reduced motion the
   rAF loop never starts (static locked Z). `?bare=1` = chromeless embed: hides
-  wordmark + caption, transparent background so the host page shows through.
+  wordmark + caption + floor shadow, transparent background so the host page
+  shows through, and the ball fills 96% of the frame (standalone keeps 88%-with-
+  margin) — 96% matches the flat interstitial loop's circle proportion (r=96/200),
+  so sphere and flat read the same size at equal frames.
   Developer guide beside it: `z-beat-tap-docs.md` (rewritten to match); cross-
   linked from value-slider-docs, estimate-tray-docs, and link-params (?bare row).
   Embedded LIVE in the design guide's Z-beat section as a size pair (150px +

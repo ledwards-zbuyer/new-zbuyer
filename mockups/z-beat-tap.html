@@ -38,7 +38,7 @@
   .eyebrow i{width:4px;height:4px;border-radius:50%;background:var(--acc);display:inline-block}
   /* ?bare=1 — chromeless embed: no wordmark, no caption, page shows through */
   body.bare{background:transparent}
-  body.bare .wordmark, body.bare .caption{display:none}
+  body.bare .wordmark, body.bare .caption, body.bare .shadow{display:none}
   #scene{
     position:fixed; inset:0; z-index:4; pointer-events:none;
     width:100%; height:100%; display:block;
@@ -106,7 +106,8 @@
 
 <script>
 (function(){
-  if(/[?&]bare=1/.test(window.location.search)) document.body.className='bare';
+  var BARE=/[?&]bare=1/.test(window.location.search);
+  if(BARE) document.body.className='bare';
 
   var R=50, KA=0.00975, TAU=2*Math.PI;
   var WALK=[-0.8762, 0.4819, 0];
@@ -243,7 +244,10 @@
     VW=window.innerWidth||800; VH=window.innerHeight||600;
     scene.setAttribute('viewBox','0 0 '+VW+' '+VH);
     CX=VW/2; CY=VH/2;
-    K=Math.min(0.88*Math.min(VW,VH), 430)/124;
+    // bare embeds have no chrome to clear, so the ball fills 96% of the
+    // frame — the same proportion as the flat interstitial loop (r=96/200)
+    K = BARE ? Math.min(0.96*Math.min(VW,VH), 347)/100
+             : Math.min(0.88*Math.min(VW,VH), 430)/124;
     gSphere.setAttribute('transform','translate('+CX+' '+CY+') scale('+K+')');
   }
   layout();

@@ -2063,3 +2063,13 @@ reusing the first svg's gradient/clip defs), and the sphere embed resized from
 280 down to 150 to match, with a second 56px ?bare=1 iframe next to it — same file,
 it sizes itself to its frame. Rule paragraph now says exactly that: reads anywhere
 from interstitial to button size.
+
+**Lucas:** on the design guide, the sphere version looks smaller than the flat
+version visually
+
+**Claude:** It was — the sphere kept 12% breathing room in its frame (standalone
+chrome allowance) while the flat circle fills 96% of its box (r=96/200). Bare mode
+now sizes the ball to 96% of the frame too (same ~347px cap), and hides the floor
+shadow (it was always behind the ball at that fill). 150px frame = 144px ball =
+144px flat circle; the 56px pair matches the same way. Docs' K row and the ?bare
+section updated with the two formulas.

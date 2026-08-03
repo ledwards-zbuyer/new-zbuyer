@@ -24,7 +24,7 @@ To embed it in a page, use an iframe with `?bare=1`:
         title="zBuyer loading"></iframe>
 ```
 
-`?bare=1` is the chromeless embed mode: it hides the zBuyer wordmark and the caption and makes the page background transparent, so the embedding page's background shows through the iframe. Without it you get the full standalone page (wordmark, caption, white background).
+`?bare=1` is the chromeless embed mode: it hides the zBuyer wordmark, the caption, and the floor shadow, and makes the page background transparent, so the embedding page's background shows through the iframe. In bare mode the ball also fills **96%** of the frame (instead of the standalone page's 88%-with-breathing-room) — the same proportion as the flat interstitial loop's circle, so the two read as the same size at equal frame sizes. Without the flag you get the full standalone page (wordmark, caption, shadow, white background).
 
 **`touch-action:none` on the iframe element matters on phones.** The widget suppresses text selection, callouts, and context menus within its own page, but the child page's `touch-action` cannot stop the *parent* document from claiming a gesture — without the attribute, a double-tap on the sphere becomes double-tap-zoom on the embedding page. Mouse input is unaffected either way.
 
@@ -37,7 +37,7 @@ Everything intentional lives in named constants near the top of the script.
 | `DBL` | 320 ms | Double-tap detection window |
 | `T` | 2.5 | Idle-beat tempo multiplier (higher = slower) |
 | `PALS` | 5 entries | The colorway roster and order |
-| `K` (in `layout()`) | `min(0.88·min(vw,vh), 430)/124` | Sphere size — change 430 for a different max pixel size |
+| `K` (in `layout()`) | `min(0.88·min(vw,vh), 430)/124` standalone; `min(0.96·min(vw,vh), 347)/100` bare | Sphere size — the caps bound the max ball at ~347px in both modes |
 
 ## Adding a colorway
 
