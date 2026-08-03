@@ -2073,3 +2073,11 @@ now sizes the ball to 96% of the frame too (same ~347px cap), and hides the floo
 shadow (it was always behind the ball at that fill). 150px frame = 144px ball =
 144px flat circle; the 56px pair matches the same way. Docs' K row and the ?bare
 section updated with the two formulas.
+
+**Lucas:** remove "translucent Glass with the two-blue Z" color option
+
+**Claude:** Glass is out — PALS is back to the four colorways and the glassG/shadeG
+gradients are gone from defs. Roster references reverted everywhere (dev guide
+what-it-does + PALS count, design guide rule line, link-params card, HANDOFF); the
+stop-opacity translucency recipe stays in the dev guide's adding-a-colorway section
+as a tip, noted as tried-and-removed 2026-08-03.

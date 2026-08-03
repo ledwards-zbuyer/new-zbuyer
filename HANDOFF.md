@@ -402,9 +402,9 @@ load) while values and home stats remain static demo data. The old
 - **Z-beat sphere widget (2026-08-02, simplified 2026-08-03):** `z-beat-tap.html` —
   the Z-beat on the glass ball: self-contained single file (no deps, no network),
   runs the idle beat (92 sphere-mapped strips, ~6.5s cycle); the ONLY input is the
-  double-tap easter egg cycling the five colorways (Primary / Stage Navy / Sky /
-  Porcelain / Glass — translucent ball via stop-opacity gradient stops, page shows
-  through, arrows in the two Porcelain blues; added 2026-08-03). The 2026-08-03 simplification REMOVED the press-and-hold status-word
+  double-tap easter egg cycling the four colorways (Primary / Stage Navy / Sky /
+  Porcelain; a fifth translucent "Glass" was added and removed same-day
+  2026-08-03 — the stop-opacity recipe survives as a tip in the dev guide). The 2026-08-03 simplification REMOVED the press-and-hold status-word
   interaction and with it the stencil font, typesetter, morph engine, and the
   `?msg=` API (per Lucas — cut complexity/processing). Under reduced motion the
   rAF loop never starts (static locked Z). `?bare=1` = chromeless embed: hides

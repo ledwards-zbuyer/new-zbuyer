@@ -79,12 +79,6 @@
     <radialGradient id="shadeW" cx="36%" cy="30%" r="88%">
       <stop offset="0%" stop-color="#0E1B33" stop-opacity="0"/><stop offset="58%" stop-color="#0E1B33" stop-opacity="0"/><stop offset="82%" stop-color="#0E1B33" stop-opacity=".07"/><stop offset="100%" stop-color="#0E1B33" stop-opacity=".20"/>
     </radialGradient>
-    <radialGradient id="glassG" cx="50%" cy="44%" r="60%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity=".32"/><stop offset="60%" stop-color="#EAF2FE" stop-opacity=".14"/><stop offset="86%" stop-color="#CFE0F8" stop-opacity=".30"/><stop offset="100%" stop-color="#AFC8EE" stop-opacity=".60"/>
-    </radialGradient>
-    <radialGradient id="shadeG" cx="36%" cy="30%" r="88%">
-      <stop offset="0%" stop-color="#0E1B33" stop-opacity="0"/><stop offset="58%" stop-color="#0E1B33" stop-opacity="0"/><stop offset="82%" stop-color="#0E1B33" stop-opacity=".04"/><stop offset="100%" stop-color="#0E1B33" stop-opacity=".12"/>
-    </radialGradient>
     <radialGradient id="sheenG" cx="50%" cy="42%" r="58%">
       <stop offset="0%" stop-color="#FFFFFF" stop-opacity=".5"/><stop offset="60%" stop-color="#FFFFFF" stop-opacity=".10"/><stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
@@ -276,10 +270,7 @@
     {name:'Sky',        glass:'glassS', shade:'shadeS', rim:'rgba(29,79,215,.40)',  rimW:.8,
      A:[255,255,255], B:[22,64,168],   ghost:.32, sheen:.68},
     {name:'Porcelain',  glass:'glassW', shade:'shadeW', rim:'rgba(29,79,215,.34)',  rimW:.9,
-     A:[29,79,215],   B:[59,164,244],  ghost:.26, sheen:1},
-    // translucent glass: low-opacity stops let the page show through the ball
-    {name:'Glass',      glass:'glassG', shade:'shadeG', rim:'rgba(29,79,215,.38)',  rimW:1,
-     A:[29,79,215],   B:[59,164,244],  ghost:.22, sheen:.9}
+     A:[29,79,215],   B:[59,164,244],  ghost:.26, sheen:1}
   ];
   var palIdx=0;
   function applyPalette(i){
