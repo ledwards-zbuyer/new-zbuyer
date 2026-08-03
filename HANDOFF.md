@@ -399,6 +399,18 @@ load) while values and home stats remain static demo data. The old
   live launchable demos (default, manual-wiring playground, themed w/ custom items),
   quick start with the asset links, options table, lifecycle, theming, gotchas;
   `?run=1|2|3` auto-launches that section's demo (screenshots / share links).
+- **Z-beat tap widget (2026-08-02):** `z-beat-tap.html` — the INTERACTIVE Z-beat:
+  self-contained single file (no deps, no network), idles on the animated Z sphere;
+  press-and-hold morphs the Z's 92 strips into a status word wrapped on the sphere,
+  release flies them back and the beat resumes mid-phrase; double-tap cycles the
+  four colorways. `?msg=` overrides the message cycle (`|` = steps, `~` = line
+  break; limited stencil charset). Developer guide beside it:
+  `z-beat-tap-docs.md` (deployment/iframe embed, ?msg API, tuning constants,
+  adding glyphs/colorways/messages, internals) — both dropped in from Lucas's
+  Downloads 2026-08-02 and cross-linked from value-slider-docs, estimate-tray-docs,
+  and link-params (the ?msg row). The design guide's non-interactive interstitial
+  is a separate inline SVG loop; the ambient z-beat-sphere/duo files are NOT in
+  this repo. Headless note: infinite rAF — verify with --force-prefers-reduced-motion.
 - **Link references (2026-07-30):** `link-params.html` — INTERNAL reference of every
   querystring variable across the funnel + report + harness (attribution, z-prepop,
   terms/sms/zsv switches, report values/snap/demoPhone/debug, harness steps) with

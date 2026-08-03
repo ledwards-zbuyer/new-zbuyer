@@ -93,6 +93,17 @@
   </div>
 
   <div class="card">
+    <h2>Z-beat loading widget (z-beat-tap.html) <span class="tag int">internal</span></h2>
+    <div class="sub">The interactive Z-beat loading indicator — self-contained single file, hold for
+    status, double-tap to recolor. Developer guide:
+    <a href="https://github.com/ledwards-zbuyer/new-zbuyer/blob/main/mockups/z-beat-tap-docs.md">z-beat-tap-docs.md</a>.</div>
+    <table>
+      <tr><th>Variable</th><th>What it does</th></tr>
+      <tr><td><code>msg=Please+wait</code></td><td>Overrides the press-cycle messages. <code>|</code> separates cycle steps, <code>~</code> becomes a line break inside a message (e.g. <code>msg=Loading|Still working~on it</code>). Empty/missing = the six defaults. Limited stencil charset — see the guide.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
     <h2>Screenshot harness (shots/harness.html) <span class="tag int">internal</span></h2>
     <div class="sub">Drives the funnel for headless screenshots and assertions.</div>
     <table>

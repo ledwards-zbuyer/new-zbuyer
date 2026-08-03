@@ -1985,3 +1985,15 @@ green-themed demo using a raw-SVG icon and custom titles; 6) gotchas (one instan
 at a time, append-after-body, non-blocking, a11y, reduced motion). A manual-wiring
 playground has arrive() buttons so he can play the API. ?run=1|2|3 auto-launches a
 demo for screenshots/share links. Verified all three demos headless.
+
+**Lucas:** give C:\Users\lucas\Downloads\z-beat-tap-docs.md and z-beat-tap.html —
+add these to the project and include in dev docs.
+
+**Claude:** Both copied into mockups/ (the doc itself recommends that home). Wired
+into the dev-doc set: value-slider-docs and estimate-tray-docs each gained an
+"Other widget guides" line linking the three guides to each other; link-params.html
+gained a Z-beat card documenting the ?msg= API (| = cycle steps, ~ = line break);
+and the md got a Links section (live widget, GitHub source, the design guide's
+non-interactive interstitial, the other guides) with a note that the ambient
+z-beat-sphere/duo files are not in this repo. Verified the widget renders from its
+repo home headless (reduced-motion — it runs an infinite rAF loop).
