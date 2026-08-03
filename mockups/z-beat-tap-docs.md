@@ -6,7 +6,7 @@
 
 ## What it does
 
-The sphere runs the Z-beat idle loop: the two arrows wind up, whip around the ball in opposite directions, reconnect, and the assembled Z takes a lap — repeating on a ~6.5 second cycle. A **double-tap** (two presses within 320 ms) recolors the entire sphere through the four approved colorways — Primary, Stage Navy, Sky, Porcelain. That's the whole input surface: an easter egg, not a control.
+The sphere runs the Z-beat idle loop: the two arrows wind up, whip around the ball in opposite directions, reconnect, and the assembled Z takes a lap — repeating on a ~6.5 second cycle. A **double-tap** (two presses within 320 ms) recolors the entire sphere through the four approved colorways — Primary, Stage Navy, Sky, Porcelain. That's the whole input surface: an easter egg, not a control. To *start* on a particular colorway, pass `?pal=` (see the querystring API below).
 
 Users with `prefers-reduced-motion` get a static locked Z, and the animation frame loop never starts — zero per-frame work.
 
@@ -27,6 +27,15 @@ To embed it in a page, use an iframe with `?bare=1`:
 `?bare=1` is the chromeless embed mode: it hides the zBuyer wordmark, the caption, and the floor shadow, and makes the page background transparent, so the embedding page's background shows through the iframe. In bare mode the ball also fills **96%** of the frame (instead of the standalone page's 88%-with-breathing-room) — the same proportion as the flat interstitial loop's circle, so the two read as the same size at equal frame sizes. Without the flag you get the full standalone page (wordmark, caption, shadow, white background).
 
 **`touch-action:none` on the iframe element matters on phones.** The widget suppresses text selection, callouts, and context menus within its own page, but the child page's `touch-action` cannot stop the *parent* document from claiming a gesture — without the attribute, a double-tap on the sphere becomes double-tap-zoom on the embedding page. Mouse input is unaffected either way.
+
+## The querystring API
+
+| Param | Meaning |
+| --- | --- |
+| `bare=1` | Chromeless embed: no wordmark, no caption, no floor shadow, transparent background, ball fills 96% of the frame |
+| `pal=primary` \| `navy` \| `sky` \| `porcelain` | Starting colorway (also accepts `stage-navy`, or an index `0`–`3`). Unknown values fall back to Primary. The double-tap easter egg still cycles onward from wherever you start |
+
+Combine them freely: `z-beat-tap.html?bare=1&pal=sky`. The design guide's colorway row is exactly that — four small `?bare=1&pal=…` iframes.
 
 ## Tuning knobs
 

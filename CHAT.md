@@ -2081,3 +2081,15 @@ gradients are gone from defs. Roster references reverted everywhere (dev guide
 what-it-does + PALS count, design guide rule line, link-params card, HANDOFF); the
 stop-opacity translucency recipe stays in the dev guide's adding-a-colorway section
 as a tip, noted as tried-and-removed 2026-08-03.
+
+**Lucas:** also, make sure there is a way to set the default color via querystring
+and add that to the dev docs. show the different color options by having 4 small
+animations (one for each color)
+
+**Claude:** ?pal=primary|navy|sky|porcelain (stage-navy and index 0-3 also accepted;
+unknown falls back to Primary) sets the starting colorway — double-tap still cycles
+onward. The dev guide gained a "querystring API" table (bare + pal, combinable:
+?bare=1&pal=sky) and the what-it-does line points at it; link-params' card gained
+the pal row. On the design guide, the sphere demo is now the 150px main plus four
+56px spheres — one per colorway via ?bare=1&pal=… — verified all four render their
+palette (blue / navy / sky / porcelain) in the row.

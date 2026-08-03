@@ -404,7 +404,9 @@ load) while values and home stats remain static demo data. The old
   runs the idle beat (92 sphere-mapped strips, ~6.5s cycle); the ONLY input is the
   double-tap easter egg cycling the four colorways (Primary / Stage Navy / Sky /
   Porcelain; a fifth translucent "Glass" was added and removed same-day
-  2026-08-03 — the stop-opacity recipe survives as a tip in the dev guide). The 2026-08-03 simplification REMOVED the press-and-hold status-word
+  2026-08-03 — the stop-opacity recipe survives as a tip in the dev guide).
+  `?pal=primary|navy|sky|porcelain` (also stage-navy or index 0-3; unknown =
+  Primary) sets the STARTING colorway; double-tap still cycles from there. The 2026-08-03 simplification REMOVED the press-and-hold status-word
   interaction and with it the stencil font, typesetter, morph engine, and the
   `?msg=` API (per Lucas — cut complexity/processing). Under reduced motion the
   rAF loop never starts (static locked Z). `?bare=1` = chromeless embed: hides
@@ -414,10 +416,10 @@ load) while values and home stats remain static demo data. The old
   so sphere and flat read the same size at equal frames.
   Developer guide beside it: `z-beat-tap-docs.md` (rewritten to match); cross-
   linked from value-slider-docs, estimate-tray-docs, and link-params (?bare row).
-  Embedded LIVE in the design guide's Z-beat section as a size pair (150px +
-  56px icon-scale, left-aligned `?bare=1` iframes on the demo background) to
-  show it scales; the flat interstitial loop above it shows the same 150+56
-  pair (the small svg reuses the first svg's defs ids). EMBED GOTCHA: `touch-action:none` must
+  Embedded LIVE in the design guide's Z-beat section: the 150px sphere plus
+  FOUR 56px icon-scale spheres, one per colorway via `?bare=1&pal=…`, all
+  left-aligned on the demo background; the flat interstitial loop above it
+  shows a 150+56 pair (the small svg reuses the first svg's defs ids). EMBED GOTCHA: `touch-action:none` must
   be on the iframe ELEMENT — the child page's touch-action can't stop the parent
   from claiming gestures (double-tap would become page zoom on phones). The guide's non-interactive interstitial is a separate inline
   SVG loop; the ambient z-beat-sphere/duo files are NOT in this repo. Headless

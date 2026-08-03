@@ -272,7 +272,14 @@
     {name:'Porcelain',  glass:'glassW', shade:'shadeW', rim:'rgba(29,79,215,.34)',  rimW:.9,
      A:[29,79,215],   B:[59,164,244],  ghost:.26, sheen:1}
   ];
-  var palIdx=0;
+  // ?pal=primary|navy|sky|porcelain (or 0-3) picks the starting colorway;
+  // the double-tap easter egg still cycles onward from there
+  var PAL_NAMES={primary:0, 'stage-navy':1, stagenavy:1, navy:1, sky:2, porcelain:3};
+  var palIdx=0, qPal=(window.location.search.match(/[?&]pal=([^&]+)/)||[])[1];
+  if(qPal!==undefined){
+    var pv=decodeURIComponent(qPal).toLowerCase();
+    palIdx = PAL_NAMES[pv]!==undefined ? PAL_NAMES[pv] : (PALS[+pv] ? +pv : 0);
+  }
   function applyPalette(i){
     var p=PALS[i];
     A_COL=p.A; B_COL=p.B;
@@ -286,7 +293,7 @@
       s.el.setAttribute('fill', rgb(s.piece===0?A_COL:B_COL));
     });
   }
-  applyPalette(0);
+  applyPalette(palIdx);
 
   var lastDance=null;
   function project(st3, strips){
