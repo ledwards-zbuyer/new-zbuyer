@@ -412,7 +412,11 @@ load) while values and home stats remain static demo data. The old
   section as a compact 280x400 centered iframe below the interstitial writeup —
   the widget sizes its sphere from min(vw,vh) and pins its caption to the page
   bottom, so short-and-wide frames make the two collide; narrow-and-tall is the
-  safe embed shape. The guide's non-interactive interstitial is a separate inline
+  safe embed shape. EMBED GOTCHA (2026-08-03): `touch-action:none` must be on the
+  iframe ELEMENT too — the child page's touch-action can't stop the parent from
+  claiming the gesture as a scroll, so without it phone holds pointercancel
+  instantly ("press and hold not working"); mouse was never affected. Fixed in
+  the guide's embed + documented in z-beat-tap-docs.md. The guide's non-interactive interstitial is a separate inline
   SVG loop; the ambient z-beat-sphere/duo files are NOT in this repo. Headless
   note: infinite rAF — verify with --force-prefers-reduced-motion.
 - **Link references (2026-07-30):** `link-params.html` — INTERNAL reference of every

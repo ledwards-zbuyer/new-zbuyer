@@ -18,11 +18,13 @@ To embed it in a page, use an iframe:
 
 ```html
 <iframe src="/mockups/z-beat-tap.html?msg=Loading listings"
-        style="width:100%;height:520px;border:0"
+        style="width:100%;height:520px;border:0;touch-action:none"
         title="zBuyer loading"></iframe>
 ```
 
-The iframe matters for one reason: the widget claims every pointer gesture on its page (`touch-action:none`, listeners on `document`) so that press-and-hold never scrolls or selects. Inside an iframe that capture is naturally scoped to the widget; pasted inline into a scrolling page, it would eat the page's touch input. If you ever need it inline, scope the pointer listeners to the `.stage` element instead of `document` and restore scrolling outside it — a five-line change, but the iframe is the zero-thought path.
+The iframe matters for one reason: the widget claims every pointer gesture on its page (`touch-action:none`, listeners on `document`) so that press-and-hold never scrolls or selects. Inside an iframe that capture is naturally scoped to the widget; pasted inline into a scrolling page, it would eat the page's touch input.
+
+**`touch-action:none` on the iframe element is required, not optional.** The child page's own `touch-action` cannot stop the *parent* document from claiming a touch gesture as a scroll — without it, holds on phones get `pointercancel`ed the moment the finger drifts and the press appears dead (double-tap becomes double-tap-zoom, too). Mouse input is unaffected either way. If you ever need it inline, scope the pointer listeners to the `.stage` element instead of `document` and restore scrolling outside it — a five-line change, but the iframe is the zero-thought path.
 
 ## The `?msg` querystring API
 

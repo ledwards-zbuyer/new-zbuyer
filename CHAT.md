@@ -2007,3 +2007,16 @@ double-tap / ?msg API / iframe-embed reason / guide link). Sizing: started full-
 (sized from min(vw,vh)) collide with its bottom-pinned caption, so the embed is a
 compact centered 280x400 frame instead: small footprint, sphere ~246px, caption
 clear. That shape rule is noted in a comment and in HANDOFF.
+
+**Lucas:** press and hold is not working on the design guide
+
+**Claude:** Diagnosed in two steps: a synthetic pointerdown dispatched into the
+embedded iframe DID morph the Z (wiring fine), and elementFromPoint at the iframe's
+center on the real guide returned the iframe itself (nothing overlaying; mouse
+fine). That leaves touch: the widget's touch-action:none lives INSIDE its page, but
+the iframe element in the guide had default touch-action auto — so on a phone the
+parent claims the hold as a scroll, the widget gets an instant pointercancel, and
+the press looks dead (double-tap also became double-tap-zoom). Fix: touch-action:
+none (+ user-select:none) on the iframe element itself. Same correction applied to
+the embed snippet in z-beat-tap-docs.md with a warning that it is required, not
+optional.

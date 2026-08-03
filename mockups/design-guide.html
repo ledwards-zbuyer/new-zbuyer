@@ -350,9 +350,12 @@
        and the beat never runs without a reason — it means "we're working," not decoration.</p>
     <div class="demo" style="padding:0;overflow:hidden">
       <!-- the widget sizes its sphere from min(vw,vh) and pins a caption to the
-           page bottom — a narrow, taller frame keeps the two from colliding -->
+           page bottom — a narrow, taller frame keeps the two from colliding.
+           touch-action:none must ALSO be on this element: the child page's own
+           touch-action can't stop the parent from claiming the gesture as a
+           scroll (which pointercancels the hold on phones) -->
       <iframe src="z-beat-tap.html" title="Z-beat tap — interactive loading widget"
-              style="display:block;width:280px;height:400px;border:0;margin:0 auto" loading="lazy"></iframe>
+              style="display:block;width:280px;height:400px;border:0;margin:0 auto;touch-action:none;-webkit-user-select:none;user-select:none" loading="lazy"></iframe>
     </div>
     <p class="rule"><b>The interactive version</b> (live above — <b>press and hold</b> the sphere, release, repeat;
        <b>double-tap</b> cycles the four colorways): <a href="z-beat-tap.html">z-beat-tap.html</a>, a self-contained
