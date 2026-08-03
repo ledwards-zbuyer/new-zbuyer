@@ -348,6 +348,19 @@
        assets for email/marketing: <code>assets/z-dance.gif</code> / <code>z-dance-transparent.gif</code> /
        <code>z-dance.webp</code> (8s loop). Rules: arrows never rotate independently, never green (see Color),
        and the beat never runs without a reason — it means "we're working," not decoration.</p>
+    <div class="demo" style="padding:0;overflow:hidden">
+      <!-- the widget sizes its sphere from min(vw,vh) and pins a caption to the
+           page bottom — a narrow, taller frame keeps the two from colliding -->
+      <iframe src="z-beat-tap.html" title="Z-beat tap — interactive loading widget"
+              style="display:block;width:280px;height:400px;border:0;margin:0 auto" loading="lazy"></iframe>
+    </div>
+    <p class="rule"><b>The interactive version</b> (live above — <b>press and hold</b> the sphere, release, repeat;
+       <b>double-tap</b> cycles the four colorways): <a href="z-beat-tap.html">z-beat-tap.html</a>, a self-contained
+       single file where the Z's strips fly across the sphere and reassemble as a status word while held
+       ("Loading" → "Still loading" → …), then fly home and the beat resumes mid-phrase. <code>?msg=</code>
+       overrides the message cycle (<code>|</code> separates steps, <code>~</code> breaks a line). Embed it in an
+       iframe — it claims every pointer gesture on its page so holds never scroll. Full developer guide:
+       <a href="https://github.com/ledwards-zbuyer/new-zbuyer/blob/main/mockups/z-beat-tap-docs.md">z-beat-tap-docs.md</a>.</p>
   </section>
 
   <section>

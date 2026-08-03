@@ -1997,3 +1997,13 @@ and the md got a Links section (live widget, GitHub source, the design guide's
 non-interactive interstitial, the other guides) with a note that the ambient
 z-beat-sphere/duo files are not in this repo. Verified the widget renders from its
 repo home headless (reduced-motion — it runs an infinite rAF loop).
+
+**Lucas:** add it to the design guide *(mid-build:)* make it smaller
+
+**Claude:** The design guide's Z-beat section now embeds the interactive widget live
+in an iframe under the interstitial writeup, with a rule paragraph (press-and-hold /
+double-tap / ?msg API / iframe-embed reason / guide link). Sizing: started full-width
+420px, took it down per the note — but a short-wide frame makes the widget's sphere
+(sized from min(vw,vh)) collide with its bottom-pinned caption, so the embed is a
+compact centered 280x400 frame instead: small footprint, sphere ~246px, caption
+clear. That shape rule is noted in a comment and in HANDOFF.

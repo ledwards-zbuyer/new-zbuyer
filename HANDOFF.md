@@ -408,9 +408,13 @@ load) while values and home stats remain static demo data. The old
   `z-beat-tap-docs.md` (deployment/iframe embed, ?msg API, tuning constants,
   adding glyphs/colorways/messages, internals) — both dropped in from Lucas's
   Downloads 2026-08-02 and cross-linked from value-slider-docs, estimate-tray-docs,
-  and link-params (the ?msg row). The design guide's non-interactive interstitial
-  is a separate inline SVG loop; the ambient z-beat-sphere/duo files are NOT in
-  this repo. Headless note: infinite rAF — verify with --force-prefers-reduced-motion.
+  and link-params (the ?msg row). Also embedded LIVE in the design guide's Z-beat
+  section as a compact 280x400 centered iframe below the interstitial writeup —
+  the widget sizes its sphere from min(vw,vh) and pins its caption to the page
+  bottom, so short-and-wide frames make the two collide; narrow-and-tall is the
+  safe embed shape. The guide's non-interactive interstitial is a separate inline
+  SVG loop; the ambient z-beat-sphere/duo files are NOT in this repo. Headless
+  note: infinite rAF — verify with --force-prefers-reduced-motion.
 - **Link references (2026-07-30):** `link-params.html` — INTERNAL reference of every
   querystring variable across the funnel + report + harness (attribution, z-prepop,
   terms/sms/zsv switches, report values/snap/demoPhone/debug, harness steps) with
