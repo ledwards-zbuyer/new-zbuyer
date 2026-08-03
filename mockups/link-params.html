@@ -94,12 +94,12 @@
 
   <div class="card">
     <h2>Z-beat loading widget (z-beat-tap.html) <span class="tag int">internal</span></h2>
-    <div class="sub">The interactive Z-beat loading indicator — self-contained single file, hold for
-    status, double-tap to recolor. Developer guide:
+    <div class="sub">The Z-beat loading sphere — self-contained single file; double-tap quietly cycles
+    the four colorways (easter egg). Developer guide:
     <a href="https://github.com/ledwards-zbuyer/new-zbuyer/blob/main/mockups/z-beat-tap-docs.md">z-beat-tap-docs.md</a>.</div>
     <table>
       <tr><th>Variable</th><th>What it does</th></tr>
-      <tr><td><code>msg=Please+wait</code></td><td>Overrides the press-cycle messages. <code>|</code> separates cycle steps, <code>~</code> becomes a line break inside a message (e.g. <code>msg=Loading|Still working~on it</code>). Empty/missing = the six defaults. Limited stencil charset — see the guide.</td></tr>
+      <tr><td><code>bare=1</code></td><td>Chromeless embed mode: hides the zBuyer wordmark and the caption, and makes the page background transparent so the embedding page shows through the iframe (the design guide uses this).</td></tr>
     </table>
   </div>
 

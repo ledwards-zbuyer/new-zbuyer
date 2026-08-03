@@ -36,7 +36,9 @@
     color:var(--muted); white-space:nowrap;
   }
   .eyebrow i{width:4px;height:4px;border-radius:50%;background:var(--acc);display:inline-block}
-  .hint{ font-size:11px; color:#8a97ab; }
+  /* ?bare=1 — chromeless embed: no wordmark, no caption, page shows through */
+  body.bare{background:transparent}
+  body.bare .wordmark, body.bare .caption{display:none}
   #scene{
     position:fixed; inset:0; z-index:4; pointer-events:none;
     width:100%; height:100%; display:block;
@@ -49,7 +51,6 @@
 <div class="shadow"></div>
 <div class="caption">
   <div class="eyebrow"><i></i>Z-beat — Loading</div>
-  <div class="hint">Hold for status — double-tap to recolor</div>
 </div>
 
 <svg id="scene" xmlns="http://www.w3.org/2000/svg">
@@ -95,17 +96,15 @@
     <ellipse id="sheenEl" cx="-13" cy="-21" rx="21" ry="14" opacity=".84"
              transform="rotate(-20 -13 -21)" fill="url(#sheenG)"/>
   </g>
-
-  <g id="gTop">
-    <g id="gLift"></g>
-  </g>
 </svg>
 
 <script>
 (function(){
+  if(/[?&]bare=1/.test(window.location.search)) document.body.className='bare';
+
   var R=50, KA=0.00975, TAU=2*Math.PI;
   var WALK=[-0.8762, 0.4819, 0];
-  var A_COL=[255,255,255], B_COL=[59,164,244], W_COL=[255,255,255], GHOST=.34;
+  var A_COL=[255,255,255], B_COL=[59,164,244];
 
   // ── the Z: exact convex decomposition of the design-guide arrows ──
   var QUADS=[
@@ -114,99 +113,6 @@
     {piece:1, pts:[[160,158],[72,158],[86.34,131.6],[160,131.6]]},
     {piece:1, pts:[[86.34,132],[136,42],[161,42],[105,132]]}
   ];
-
-  // ── a tiny stencil font: every glyph = rects (inflated .35 so abutting
-  //    pieces truly overlap — no hairline seams) plus a couple of quads ──
-  function rw(x,y,w,h){
-    var e=0.35;
-    return [[x-e,y-e],[x+w+e,y-e],[x+w+e,y+h+e],[x-e,y+h+e]];
-  }
-  var GLYPHS={
-    'L':{adv:15, pc:function(x){ return [rw(x,78,6,36), rw(x,108,13,6)]; }},
-    'o':{adv:19, pc:function(x){ return [rw(x,90,17,6), rw(x,108,17,6),
-                                          rw(x,96,6,12), rw(x+11,96,6,12)]; }},
-    'a':{adv:19, pc:function(x){ return [rw(x,90,17,6), rw(x+11,90,6,24),
-                                          rw(x,99,17,5), rw(x,99,6,15), rw(x,108,17,6)]; }},
-    'd':{adv:19, pc:function(x){ return [rw(x+11,78,6,36), rw(x,90,17,6),
-                                          rw(x,96,6,12), rw(x,108,17,6)]; }},
-    'i':{adv:8,  pc:function(x){ return [rw(x,80,6,6), rw(x,90,6,24)]; }},
-    'n':{adv:19, pc:function(x){ return [rw(x,90,6,24), rw(x,90,17,6), rw(x+11,96,6,18)]; }},
-    'g':{adv:19, pc:function(x){ return [rw(x,90,17,6), rw(x,96,6,12), rw(x,108,17,6),
-                                          rw(x+11,90,6,36), rw(x,120,17,6)]; }},
-    'P':{adv:18, pc:function(x){ return [rw(x,78,6,36), rw(x,78,16,6),
-                                          rw(x+10,84,6,12), rw(x,96,16,6)]; }},
-    'l':{adv:8,  pc:function(x){ return [rw(x,78,6,36)]; }},
-    'e':{adv:19, pc:function(x){ return [rw(x,90,17,6), rw(x+11,96,6,4), rw(x,99,17,5),
-                                          rw(x,96,6,18), rw(x,108,17,6)]; }},
-    's':{adv:19, pc:function(x){ return [rw(x,90,17,6), rw(x,96,6,4), rw(x,99,17,5),
-                                          rw(x+11,104,6,4), rw(x,108,17,6)]; }},
-    'S':{adv:19, pc:function(x){ return [rw(x,78,17,6), rw(x,84,6,9), rw(x,93,17,6),
-                                          rw(x+11,99,6,9), rw(x,108,17,6)]; }},
-    'c':{adv:19, pc:function(x){ return [rw(x,90,17,6), rw(x,96,6,12), rw(x,108,17,6)]; }},
-    'p':{adv:19, pc:function(x){ return [rw(x,90,6,36), rw(x,90,17,6),
-                                          rw(x+11,96,6,12), rw(x,108,17,6)]; }},
-    'w':{adv:24, pc:function(x){ return [rw(x,90,5,24), rw(x+8.5,96,5,18),
-                                          rw(x+17,90,5,24), rw(x,108,22,6)]; }},
-    't':{adv:16, pc:function(x){ return [rw(x+4,82,6,32), rw(x,90,14,6)]; }},
-    'r':{adv:15, pc:function(x){ return [rw(x,90,6,24), rw(x,90,13,6)]; }},
-    'k':{adv:18, pc:function(x){ return [rw(x,78,6,36),
-      [[x+5,100],[x+12,90],[x+16,90],[x+9,100]],
-      [[x+5,98],[x+9,98],[x+16,114],[x+12,114]]]; }},
-    'W':{adv:25, pc:function(x){ return [rw(x,78,5,36), rw(x+9,92,5,22),
-                                          rw(x+18,78,5,36), rw(x,108,23,6)]; }},
-    "'":{adv:7,  pc:function(x){ return [rw(x,78,5,9)]; }},
-    '.':{adv:8,  pc:function(x){ return [rw(x,108,6,6)]; }},
-    ' ':{adv:9,  pc:function(x){ return []; }}
-  };
-  var GAP=4, LINEH=46;
-
-  // typeset lines of text into centered, budget-fitted shapes
-  function typeset(text){
-    var lines=text.split('\n'), shapes=[], minY=1e9, maxY=-1e9;
-    lines.forEach(function(line, li){
-      var yOff=(li-(lines.length-1)/2)*LINEH;
-      var x=0, pieces=[];
-      for(var ci=0; ci<line.length; ci++){
-        var G=GLYPHS[line[ci]] || GLYPHS[line[ci].toLowerCase()];
-        if(!G) continue;
-        G.pc(x).forEach(function(p){ pieces.push(p); });
-        x+=G.adv+GAP;
-      }
-      var w=x-GAP, dx=100-w/2;
-      pieces.forEach(function(p){
-        p.forEach(function(pt){
-          pt[0]+=dx; pt[1]+=yOff;
-          if(pt[1]<minY)minY=pt[1]; if(pt[1]>maxY)maxY=pt[1];
-        });
-        shapes.push({piece:0, pts:p, w:w});
-      });
-    });
-    // fit within the sphere's comfortable window
-    var maxW=0;
-    shapes.forEach(function(s){ if(s.w>maxW)maxW=s.w; });
-    var cy=(minY+maxY)/2;
-    var fit=Math.min(1, 150/maxW, 100/Math.max(1,(maxY-minY)));
-    shapes.forEach(function(s){
-      s.pts.forEach(function(pt){
-        pt[0]=100+(pt[0]-100)*fit;
-        pt[1]=cy+(pt[1]-cy)*fit;
-      });
-    });
-    return {shapes:shapes, center:[100,cy]};
-  }
-
-  var MESSAGES=['Loading','Still loading','Working on it',
-                'Still working on it','Processing','Still processing'];
-
-  // ?msg=First|Second~second line  →  | separates cycle steps, ~ breaks lines
-  try{
-    var qp=new URLSearchParams(window.location.search).get('msg');
-    if(qp){
-      var list=qp.split('|').map(function(m){ return m.replace(/~/g,'\n'); })
-                 .filter(function(m){ return m.trim().length>0; });
-      if(list.length) MESSAGES=list;
-    }
-  }catch(e){}
 
   function clipConvex(poly, sign, dx, dy, cv){
     var out=[], n=poly.length;
@@ -278,27 +184,6 @@
   }
   var f2=function(n){ return Math.round(n*100)/100; };
   function rgb(c){ return 'rgb('+Math.round(c[0])+','+Math.round(c[1])+','+Math.round(c[2])+')'; }
-  function mix(a,b,t){ return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t]; }
-  function easeInOut(x){ return x<.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; }
-
-  function resample(poly, n){
-    var lens=[0], total=0, i;
-    for(i=0;i<poly.length;i++){
-      var p=poly[i], q=poly[(i+1)%poly.length];
-      total+=Math.hypot(q[0]-p[0], q[1]-p[1]);
-      lens.push(total);
-    }
-    var out=[], seg=0;
-    for(i=0;i<n;i++){
-      var target=total*i/n;
-      while(seg<poly.length-1 && lens[seg+1]<target) seg++;
-      var p2=poly[seg], q2=poly[(seg+1)%poly.length];
-      var span=lens[seg+1]-lens[seg]||1;
-      var t=(target-lens[seg])/span;
-      out.push([p2[0]+(q2[0]-p2[0])*t, p2[1]+(q2[1]-p2[1])*t]);
-    }
-    return out;
-  }
 
   // ── the idle beat (cartoon snap, gallery tempo) ──
   var T=2.5;
@@ -342,9 +227,8 @@
   // ── DOM & viewport ──
   var NS='http://www.w3.org/2000/svg';
   var scene=document.getElementById('scene');
-  var gSphere=document.getElementById('gSphere'), gTop=document.getElementById('gTop');
+  var gSphere=document.getElementById('gSphere');
   var gBZ=document.getElementById('gBackZ'), gFZ=document.getElementById('gFrontZ');
-  var gLift=document.getElementById('gLift');
   var bodyC=document.getElementById('bodyC'), shadeC=document.getElementById('shadeC');
   var sheenEl=document.getElementById('sheenEl');
 
@@ -354,9 +238,7 @@
     scene.setAttribute('viewBox','0 0 '+VW+' '+VH);
     CX=VW/2; CY=VH/2;
     K=Math.min(0.88*Math.min(VW,VH), 430)/124;
-    var tr='translate('+CX+' '+CY+') scale('+K+')';
-    gSphere.setAttribute('transform',tr);
-    gTop.setAttribute('transform',tr);
+    gSphere.setAttribute('transform','translate('+CX+' '+CY+') scale('+K+')');
   }
   layout();
   window.addEventListener('resize', layout);
@@ -368,8 +250,7 @@
       st.el=document.createElementNS(NS,'path');
       st.el.setAttribute('fill', rgb(st.piece===0?A_COL:B_COL));
       gFZ.appendChild(st.el); st.side=1;
-      st.last=null; st.src=null; st.dst=null;
-      st.wordExact=null; st.frozen=null; st.srcFO=1;
+      st.last=null;
     });
     return set;
   }
@@ -379,18 +260,18 @@
   // ── the top-row colorways; double-tap cycles them ──
   var PALS=[
     {name:'Primary',    glass:'glassP', shade:'shadeP', rim:'rgba(14,27,51,.45)',  rimW:.8,
-     A:[255,255,255], B:[59,164,244],  word:[255,255,255], ghost:.34, sheen:.84},
+     A:[255,255,255], B:[59,164,244],  ghost:.34, sheen:.84},
     {name:'Stage Navy', glass:'glassN', shade:'shadeN', rim:'rgba(59,164,244,.30)', rimW:.7,
-     A:[255,255,255], B:[59,164,244],  word:[255,255,255], ghost:.30, sheen:1},
+     A:[255,255,255], B:[59,164,244],  ghost:.30, sheen:1},
     {name:'Sky',        glass:'glassS', shade:'shadeS', rim:'rgba(29,79,215,.40)',  rimW:.8,
-     A:[255,255,255], B:[22,64,168],   word:[255,255,255], ghost:.32, sheen:.68},
+     A:[255,255,255], B:[22,64,168],   ghost:.32, sheen:.68},
     {name:'Porcelain',  glass:'glassW', shade:'shadeW', rim:'rgba(29,79,215,.34)',  rimW:.9,
-     A:[29,79,215],   B:[59,164,244],  word:[29,79,215],   ghost:.26, sheen:1}
+     A:[29,79,215],   B:[59,164,244],  ghost:.26, sheen:1}
   ];
   var palIdx=0;
   function applyPalette(i){
     var p=PALS[i];
-    A_COL=p.A; B_COL=p.B; W_COL=p.word; GHOST=p.ghost;
+    A_COL=p.A; B_COL=p.B;
     bodyC.setAttribute('fill','url(#'+p.glass+')');
     bodyC.setAttribute('stroke',p.rim);
     bodyC.setAttribute('stroke-width',String(p.rimW));
@@ -402,18 +283,6 @@
     });
   }
   applyPalette(0);
-
-  // prebuild all three messages, strips sorted left→right
-  var WORDS=MESSAGES.map(function(msg){
-    var ts=typeset(msg);
-    var strips=sliceShapes(ts.shapes,1,0,7).sort(function(a,b){
-      var ax=0, bx=0, i;
-      for(i=0;i<a.flat.length;i++) ax+=a.flat[i][0];
-      for(i=0;i<b.flat.length;i++) bx+=b.flat[i][0];
-      return ax/a.flat.length - bx/b.flat.length;
-    });
-    return {strips:strips, center:ts.center};
-  });
 
   var lastDance=null;
   function project(st3, strips){
@@ -448,152 +317,40 @@
     }
   }
 
-  var curWord=null;
-  function wordPoint(p, sc){
-    var c=curWord.center;
-    var q=toSphere(c[0]+(p[0]-c[0])*sc, 100+((c[1]+(p[1]-c[1])*sc)-100));
-    return [q[0], -q[1]];
-  }
-
-  function setupWord(strips, wordIdx){
-    curWord=WORDS[wordIdx];
-    var Nz=strips.length, Nw=curWord.strips.length;
-    for(var i=0;i<Nz;i++){
-      var s=strips[i];
-      var w=curWord.strips[Math.floor(i*Nw/Nz)];
-      s.wordExact=w.flat;
-      var wf=resample(w.flat, s.pts3.length);
-      s.dst=wf.map(function(p){ return wordPoint(p,1); });
-      s.src=s.last.map(function(p){ return p.slice(); });
-      s.srcFO=(s.side<0)?GHOST:1;
-      s.el.setAttribute('fill-opacity', String(s.srcFO));
-      gLift.appendChild(s.el);
-    }
-  }
-  function restoreStrips(strips){
-    strips.forEach(function(s){
-      s.el.setAttribute('fill-opacity','1');
-      s.el.setAttribute('fill', rgb(s.piece===0?A_COL:B_COL));
-      (s.side===1 ? gFZ : gBZ).appendChild(s.el);
-    });
-  }
-
-  function drawMorph(strips, u, toWord){
-    var e=easeInOut(u);
-    for(var i=0;i<strips.length;i++){
-      var s=strips[i], pts=[], from, to;
-      if(toWord){ from=s.src; to=s.dst; } else { from=s.src; to=s.frozen; }
-      for(var j=0;j<from.length;j++){
-        var a=from[j], b=to[j];
-        pts.push([a[0]+(b[0]-a[0])*e, a[1]+(b[1]-a[1])*e]);
-      }
-      s.last=pts;
-      s.el.setAttribute('d', pathOf(pts));
-      var orig=(s.piece===0?A_COL:B_COL);
-      var col = toWord ? mix(orig,W_COL,e) : mix(W_COL,orig,e);
-      s.el.setAttribute('fill', rgb(col));
-      var fo = toWord ? (s.srcFO+(1-s.srcFO)*e)
-                      : (1+(((s.side<0)?GHOST:1)-1)*e);
-      s.el.setAttribute('fill-opacity', f2(fo));
-    }
-  }
-
-  // corner-true render for the held word (resampling is morph-only)
-  var THROB_AMP=0.04, THROB_MS=1000;
-  function drawWord(strips, t, t0){
-    var sc=1+THROB_AMP*Math.sin((t-t0)/THROB_MS*TAU);
-    for(var i=0;i<strips.length;i++){
-      var s=strips[i], pts=[];
-      for(var j=0;j<s.wordExact.length;j++) pts.push(wordPoint(s.wordExact[j], sc));
-      s.last=pts;
-      s.el.setAttribute('d', pathOf(pts));
-    }
-  }
-
-  // ── mode machine: auto → toWord → word → toZ → auto ──
+  // ── input: double-tap cycles the colorways (the easter egg) ──
   var reduce = window.matchMedia &&
                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var TO_WORD = reduce?1:800, TO_Z = reduce?1:650;
-  var mode='auto', autoT0=null, frozenT=0, phaseT0=0, wordT0=0;
-  var frozenState=null, active=null, pressCount=0;
+  var autoT0=null;
 
   document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
   var lastDown=0, DBL=320;
   document.addEventListener('pointerdown', function(e){
     e.preventDefault();
     var now=performance.now();
-    var dbl=(now-lastDown)<DBL;
+    if((now-lastDown)<DBL){ palIdx=(palIdx+1)%PALS.length; applyPalette(palIdx); }
     lastDown=now;
-    if(dbl){ palIdx=(palIdx+1)%PALS.length; applyPalette(palIdx); }
-    if(mode==='auto'){
-      frozenT=(autoT0===null)?0:((now-autoT0)%CYCLE);
-      frozenState=autoState(frozenT);
-      active=frozenState.dance?setDance:setSpin;
-      project(frozenState, active);
-    }
-    var L=MESSAGES.length;
-    var mi = dbl ? (pressCount===0 ? 0 : (pressCount-1)%L)   // color tap: same message
-                 : (pressCount++ % L);
-    setupWord(active, mi);
-    mode='toWord'; phaseT0=now;
   });
-  function release(){
-    if(mode!=='toWord' && mode!=='word') return;
-    var n=active[0].pts3.length;
-    active.forEach(function(s){
-      s.src=(s.last.length===s.pts3.length)
-        ? s.last.map(function(p){ return p.slice(); })
-        : resample(s.last, s.pts3.length);
-    });
-    mode='toZ'; phaseT0=performance.now();
-  }
-  document.addEventListener('pointerup', release);
-  document.addEventListener('pointercancel', release);
 
   function loop(t){
-    if(mode==='auto'){
-      if(autoT0===null) autoT0=t;
-      var st=autoState((t-autoT0)%CYCLE);
-      var strips=st.dance?setDance:setSpin;
-      if(lastDance!==st.dance){
-        (st.dance?setSpin:setDance).forEach(function(s){ s.el.setAttribute('d','M0 0'); });
-        lastDance=st.dance;
-      }
-      project(st, strips);
-      drawAuto(strips);
-    } else if(mode==='toWord'){
-      var u=Math.min((t-phaseT0)/TO_WORD, 1);
-      drawMorph(active, u, true);
-      if(u===1){
-        project(frozenState, active);
-        active.forEach(function(s){ s.frozen=s.last.map(function(p){return p.slice();}); });
-        mode='word'; wordT0=t;
-        drawWord(active, t, wordT0);
-      }
-    } else if(mode==='word'){
-      if(THROB_AMP>0 && !reduce) drawWord(active, t, wordT0);
-    } else { // toZ
-      var u2=Math.min((t-phaseT0)/TO_Z, 1);
-      if(!active[0].frozen){
-        project(frozenState, active);
-        active.forEach(function(s){ s.frozen=s.last.map(function(p){return p.slice();}); });
-      }
-      drawMorph(active, u2, false);
-      if(u2===1){
-        active.forEach(function(s){ s.frozen=null; });
-        restoreStrips(active);
-        autoT0=t-frozenT;
-        mode='auto';
-      }
+    if(autoT0===null) autoT0=t;
+    var st=autoState((t-autoT0)%CYCLE);
+    var strips=st.dance?setDance:setSpin;
+    if(lastDance!==st.dance){
+      (st.dance?setSpin:setDance).forEach(function(s){ s.el.setAttribute('d','M0 0'); });
+      lastDance=st.dance;
     }
+    project(st, strips);
+    drawAuto(strips);
     window.requestAnimationFrame(loop);
   }
 
   if(reduce){
+    // static locked Z — no animation frame loop at all
     project(autoState(0), setDance);
     drawAuto(setDance);
+  } else {
+    window.requestAnimationFrame(loop);
   }
-  window.requestAnimationFrame(loop);
 })();
 </script>
 

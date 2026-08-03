@@ -2020,3 +2020,22 @@ the press looks dead (double-tap also became double-tap-zoom). Fix: touch-action
 none (+ user-select:none) on the iframe element itself. Same correction applied to
 the embed snippet in z-beat-tap-docs.md with a warning that it is required, not
 optional.
+
+**Lucas:** lets remove the click and hold interactivity, but keep the double click
+easter egg. that should remove some complexity/processing usage and generally
+simplify *(mid-build:)* also, on the design guide, remove the zBuyer title and the
+z-beat — loading / hold-for-status section below the animation, and put it on the
+same background instead of switching it to white *(and:)* left align it like the
+animation above it
+
+**Claude:** z-beat-tap.html slimmed: the stencil font, typesetter, word-morph
+engine, mode machine, and ?msg API are gone — what remains is the idle beat plus
+the double-tap colorway easter egg. Reduced motion now genuinely stops: the rAF
+loop never starts (static locked Z), where before it animated regardless. Added
+?bare=1 chromeless mode (no wordmark, no caption, transparent body) and the design
+guide now embeds it that way: 280x280, left-aligned like the flat loop above, sphere
+sitting directly on the soft demo background. touch-action:none stays on the iframe
+element (double-tap would otherwise zoom the page on phones). z-beat-tap-docs.md
+rewritten to match (simplification note up top, ?bare embed section, trimmed
+tuning table, no glyph/message sections); link-params' Z-beat card swaps the ?msg
+row for ?bare=1.

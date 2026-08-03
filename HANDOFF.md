@@ -399,24 +399,21 @@ load) while values and home stats remain static demo data. The old
   live launchable demos (default, manual-wiring playground, themed w/ custom items),
   quick start with the asset links, options table, lifecycle, theming, gotchas;
   `?run=1|2|3` auto-launches that section's demo (screenshots / share links).
-- **Z-beat tap widget (2026-08-02):** `z-beat-tap.html` — the INTERACTIVE Z-beat:
-  self-contained single file (no deps, no network), idles on the animated Z sphere;
-  press-and-hold morphs the Z's 92 strips into a status word wrapped on the sphere,
-  release flies them back and the beat resumes mid-phrase; double-tap cycles the
-  four colorways. `?msg=` overrides the message cycle (`|` = steps, `~` = line
-  break; limited stencil charset). Developer guide beside it:
-  `z-beat-tap-docs.md` (deployment/iframe embed, ?msg API, tuning constants,
-  adding glyphs/colorways/messages, internals) — both dropped in from Lucas's
-  Downloads 2026-08-02 and cross-linked from value-slider-docs, estimate-tray-docs,
-  and link-params (the ?msg row). Also embedded LIVE in the design guide's Z-beat
-  section as a compact 280x400 centered iframe below the interstitial writeup —
-  the widget sizes its sphere from min(vw,vh) and pins its caption to the page
-  bottom, so short-and-wide frames make the two collide; narrow-and-tall is the
-  safe embed shape. EMBED GOTCHA (2026-08-03): `touch-action:none` must be on the
-  iframe ELEMENT too — the child page's touch-action can't stop the parent from
-  claiming the gesture as a scroll, so without it phone holds pointercancel
-  instantly ("press and hold not working"); mouse was never affected. Fixed in
-  the guide's embed + documented in z-beat-tap-docs.md. The guide's non-interactive interstitial is a separate inline
+- **Z-beat sphere widget (2026-08-02, simplified 2026-08-03):** `z-beat-tap.html` —
+  the Z-beat on the glass ball: self-contained single file (no deps, no network),
+  runs the idle beat (92 sphere-mapped strips, ~6.5s cycle); the ONLY input is the
+  double-tap easter egg cycling the four colorways (Primary / Stage Navy / Sky /
+  Porcelain). The 2026-08-03 simplification REMOVED the press-and-hold status-word
+  interaction and with it the stencil font, typesetter, morph engine, and the
+  `?msg=` API (per Lucas — cut complexity/processing). Under reduced motion the
+  rAF loop never starts (static locked Z). `?bare=1` = chromeless embed: hides
+  wordmark + caption, transparent background so the host page shows through.
+  Developer guide beside it: `z-beat-tap-docs.md` (rewritten to match); cross-
+  linked from value-slider-docs, estimate-tray-docs, and link-params (?bare row).
+  Embedded LIVE in the design guide's Z-beat section: 280x280 left-aligned
+  `?bare=1` iframe on the demo background. EMBED GOTCHA: `touch-action:none` must
+  be on the iframe ELEMENT — the child page's touch-action can't stop the parent
+  from claiming gestures (double-tap would become page zoom on phones). The guide's non-interactive interstitial is a separate inline
   SVG loop; the ambient z-beat-sphere/duo files are NOT in this repo. Headless
   note: infinite rAF — verify with --force-prefers-reduced-motion.
 - **Link references (2026-07-30):** `link-params.html` — INTERNAL reference of every
