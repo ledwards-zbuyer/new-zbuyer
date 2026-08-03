@@ -406,7 +406,19 @@ load) while values and home stats remain static demo data. The old
   Porcelain; a fifth translucent "Glass" was added and removed same-day
   2026-08-03 — the stop-opacity recipe survives as a tip in the dev guide).
   `?pal=primary|navy|sky|porcelain` (also stage-navy or index 0-3; unknown =
-  Primary) sets the STARTING colorway; double-tap still cycles from there. The 2026-08-03 simplification REMOVED the press-and-hold status-word
+  Primary) sets the STARTING colorway; double-tap still cycles from there.
+  `?t=SECONDS` freezes the beat at that cycle point (no loop) — the frame-export
+  hook, same idea as z-dance's ?t. EXPORTS (2026-08-03):
+  `assets/z-sphere-{primary|navy|sky|porcelain}.webp` (true alpha, 320px, exact
+  6.57s cycle) + matching `.gif` (flattened on white; ~6.0s after Pillow's
+  centisecond rounding — imperceptible, the loop seam sits in a rest phase).
+  Referenced from the design guide's sphere paragraph. RE-EXPORT RECIPE:
+  `mockups/shots/zsf/` — 98 frames/colorway captured headless at 480px via
+  `?bare=1&pal=X&t=<k*6.55/98>` (+ `--default-background-color=00000000`),
+  assembled by `zsf/assemble.py` (Pillow: webp RGBA q82, gif white-flattened
+  adaptive-256). GOTCHA: `--virtual-time-budget` does NOT step this rAF loop —
+  every budget renders the same pose (the 392-frame first attempt was 4 identical
+  sets); the `?t` freeze is the only reliable frame hook. The 2026-08-03 simplification REMOVED the press-and-hold status-word
   interaction and with it the stencil font, typesetter, morph engine, and the
   `?msg=` API (per Lucas — cut complexity/processing). Under reduced motion the
   rAF loop never starts (static locked Z). `?bare=1` = chromeless embed: hides

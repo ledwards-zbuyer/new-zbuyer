@@ -34,6 +34,7 @@ To embed it in a page, use an iframe with `?bare=1`:
 | --- | --- |
 | `bare=1` | Chromeless embed: no wordmark, no caption, no floor shadow, transparent background, ball fills 96% of the frame |
 | `pal=primary` \| `navy` \| `sky` \| `porcelain` | Starting colorway (also accepts `stage-navy`, or an index `0`–`3`). Unknown values fall back to Primary. The double-tap easter egg still cycles onward from wherever you start |
+| `t=SECONDS` | Freezes the beat at that point in the ~6.55 s cycle (no animation loop). This is the frame-export hook — the shipped GIF/WebP loops were captured headless by stepping `t`, exactly like z-dance's `?t` |
 
 Combine them freely: `z-beat-tap.html?bare=1&pal=sky`. The design guide's colorway row is exactly that — four small `?bare=1&pal=…` iframes.
 
@@ -77,7 +78,7 @@ Targets all evergreen browsers including iOS Safari. `prefers-reduced-motion` re
 
 ## File inventory
 
-`z-beat-tap.html` — the widget, self-contained. Related non-interactive assets from the same system: the exported `z-beat-*.webp` / `.gif` loops for email and marketing. Questions or extensions — new colorways, tempo changes — are localized changes in the sections above.
+`z-beat-tap.html` — the widget, self-contained. Non-interactive exports of the sphere for email/marketing hosts (fixed colorway, no easter egg, 320px, full-cycle loop): `assets/z-sphere-{primary|navy|sky|porcelain}.webp` (true soft alpha — prefer wherever WebP is accepted) and matching `.gif` (flattened on white). The flat top-down mark ships separately as `assets/z-dance.gif` / `z-dance-transparent.gif` / `z-dance.webp`. Questions or extensions — new colorways, tempo changes — are localized changes in the sections above.
 
 ## Links
 

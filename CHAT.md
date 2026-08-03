@@ -2093,3 +2093,21 @@ onward. The dev guide gained a "querystring API" table (bare + pal, combinable:
 the pal row. On the design guide, the sphere demo is now the 150px main plus four
 56px spheres — one per colorway via ?bare=1&pal=… — verified all four render their
 palette (blue / navy / sky / porcelain) in the row.
+
+**Lucas:** create the gif/webP versions of the new sphere in each color (obviously
+won't be double-clickable) and reference them in the text under the sphere version
+in the design guide
+
+**Claude:** Eight exports in assets/: z-sphere-{primary,navy,sky,porcelain}.webp
+(true soft alpha, 320px, exact 6.57s cycle, 278-349KB) + matching .gif (flattened
+on white, 1.3-2.2MB). Pipeline: added a ?t=SECONDS freeze param to the widget
+(same hook z-dance has) after discovering --virtual-time-budget doesn't step the
+rAF loop — the first 392-frame capture produced four sets of identical images.
+Real capture: 98 frames per colorway headless at 480px (?bare=1&pal=X&t=…,
+transparent background), downscaled to 320 and assembled with Pillow
+(shots/zsf/assemble.py); WebP keeps alpha, GIF white-flattened adaptive-256.
+Verified pose variety by hash, colors by frame strips, and loop duration by
+parsing the ANMF headers (6566ms; Pillow coalesces the 650ms opening rest into
+one frame). Design guide's sphere paragraph now links all four .webp exports and
+notes the .gif twins; dev guide + link-params document ?t; file inventory lists
+the exports.

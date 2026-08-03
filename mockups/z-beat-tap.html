@@ -355,10 +355,22 @@
     window.requestAnimationFrame(loop);
   }
 
-  if(reduce){
+  // static single-frame render (?t freeze + the reduced-motion fallback)
+  function drawAt(ms){
+    var st=autoState(ms%CYCLE);
+    var strips=st.dance?setDance:setSpin;
+    (st.dance?setSpin:setDance).forEach(function(s){ s.el.setAttribute('d','M0 0'); });
+    project(st, strips);
+    drawAuto(strips);
+  }
+
+  // ?t=SECONDS freezes the beat at that point in the cycle (frame exports)
+  var qT=(window.location.search.match(/[?&]t=([0-9.]+)/)||[])[1];
+  if(qT!==undefined){
+    drawAt(parseFloat(qT)*1000);
+  } else if(reduce){
     // static locked Z — no animation frame loop at all
-    project(autoState(0), setDance);
-    drawAuto(setDance);
+    drawAt(0);
   } else {
     window.requestAnimationFrame(loop);
   }
