@@ -422,11 +422,18 @@ load) while values and home stats remain static demo data. The old
   362K) = 3 points within 3 ranges on ?ranges=1. COLLISIONS: point-pinned lines
   never move — their LABELS dodge (first clean of left / above-right /
   below-right, with lookahead over all known lines); valueless terrace lines
-  keep the 18px order-preserving stagger. SCENARIO GALLERY:
-  `range-scenarios.html` — eight live circumstances (agreement / disparate /
-  wide / narrow / AI=AVM tie / cash discount / one-uncertain / edge points,
-  incl. an out-of-range point clamping in), jump-pill nav, cross-linked from
-  the docs + demo pages. Ranges with <2 anchors = CHART MODE: no handle,
+  keep the 18px order-preserving stagger. SINGLE-VALUE INPUT (2026-08-03):
+  `{id, value, label}` with no lo/hi synthesizes ±10% around the value, rounded
+  to a magnitude-sensible step (niceRound: 322,417→322,000); a missing side
+  synthesizes independently. Snapping shows the point's RANGE as the headline
+  subtext ("AI estimate · $340,000 – $358,000"), and the headline + sub rows
+  are FIXED-HEIGHT (46px/19px flex) so the number never jumps vertically
+  between the initial full-range state, snaps, and auto-fit shrinks.
+  SCENARIO GALLERY:
+  `range-scenarios.html` — nine live circumstances (agreement / disparate /
+  wide / narrow / AI=AVM tie / cash discount / one-uncertain / edge points
+  incl. an out-of-range point clamping in / single-values-only showing the
+  ±10% synthesis), jump-pill nav, cross-linked from the docs + demo pages. Ranges with <2 anchors = CHART MODE: no handle,
   no snapping, curve stays UNFILLED (gray track — the blue fill drowned
   blue-family lines, learned by screenshot), headline shows the whole domain.
   Report wiring: `?ranges=1` (default view untouched) — one shared EST map keeps

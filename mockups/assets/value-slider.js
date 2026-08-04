@@ -27,10 +27,15 @@
  *                                         // handle's SNAP TARGETS: the handle
  *                                         // appears with the first point,
  *                                         // rides the latest arrival until
- *                                         // grabbed, and the fill (translucent
- *                                         // here) follows it. Valueless ranges
- *                                         // fall back to a terrace line at
- *                                         // their low end's curve height.
+ *                                         // grabbed, the fill (translucent
+ *                                         // here) follows it, and a snap shows
+ *                                         // the point's RANGE under the value.
+ *                                         // lo/hi OPTIONAL when value is
+ *                                         // present: a missing side becomes
+ *                                         // ±10% of the value, rounded
+ *                                         // reasonably. Valueless ranges fall
+ *                                         // back to a terrace line at their
+ *                                         // low end's curve height.
  *       ],                                // color optional (defaults rotate
  *                                         // navy/sky/primary); the value domain
  *                                         // spans anchors + range endpoints.
@@ -129,8 +134,10 @@
   function easeInOut(p) { return p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }
 
   var CSS =
-    ".zvs-headline{font-size:38px;font-weight:800;letter-spacing:-.03em;text-align:center;color:var(--zvs-ink,#14233D);margin:0 0 2px;white-space:nowrap}" +
-    ".zvs-sub{min-height:19px;font-size:13.5px;font-weight:600;text-align:center;color:var(--zvs-muted,#5C6B82);margin:0 0 2px}" +
+    /* fixed-height headline + sub rows: the number never jumps vertically
+       when auto-fit changes its font size or the subtext changes */
+    ".zvs-headline{height:46px;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:800;letter-spacing:-.03em;text-align:center;color:var(--zvs-ink,#14233D);margin:0 0 2px;white-space:nowrap}" +
+    ".zvs-sub{height:19px;line-height:19px;font-size:13.5px;font-weight:600;text-align:center;color:var(--zvs-muted,#5C6B82);margin:0 0 2px;white-space:nowrap}" +
     ".zvs-slide{position:relative;height:" + SLIDE_H + "px;margin:14px 2px 2px;cursor:pointer;touch-action:none}" +
     ".zvs-slide.zvs-static{cursor:default}" +
     ".zvs-curve{position:absolute;left:0;right:0;bottom:" + BOTTOM + "px;width:100%;height:" + CURVE_H + "px;display:block}" +
@@ -174,11 +181,21 @@
 
   function fmtDefault(v) { return "$" + Math.round(v).toLocaleString("en-US"); }
 
+  // round to a sensible increment for the value's magnitude ($322,417 → $322,000)
+  function niceRound(v) {
+    var step = Math.max(1, Math.pow(10, Math.floor(Math.log(Math.abs(v)) / Math.LN10) - 2));
+    return Math.round(v / step) * step;
+  }
+
   function normRange(r) {
-    var lo = Math.min(+r.lo, +r.hi), hi = Math.max(+r.lo, +r.hi);
-    // value: the optional single point estimate inside the range — clamped
-    // in (a point outside its own range is a data error, not a layout job)
-    var v = r.value != null && r.value !== "" ? Math.max(lo, Math.min(hi, +r.value)) : null;
+    var v = r.value != null && r.value !== "" ? +r.value : null;
+    // a single value with no range synthesizes ±10%, rounded reasonably
+    var loIn = r.lo != null && r.lo !== "" ? +r.lo : (v != null ? niceRound(v * 0.9) : NaN);
+    var hiIn = r.hi != null && r.hi !== "" ? +r.hi : (v != null ? niceRound(v * 1.1) : NaN);
+    var lo = Math.min(loIn, hiIn), hi = Math.max(loIn, hiIn);
+    // the point is clamped into the range — a point outside its own range is
+    // a data error, not a layout job
+    if (v != null) v = Math.max(lo, Math.min(hi, v));
     return { id: r.id != null ? String(r.id) : "", lo: lo, hi: hi, value: v,
              label: r.label || "", color: r.color || "" };
   }
@@ -337,8 +354,11 @@
       handle.classList.add("zvs-snap");
       handle.style.left = a.p + "%";
       paintCurve(a.p);
-      setHeadline(fmt(a.value), a.label);
-      handle.setAttribute("aria-valuetext", fmt(a.value) + (a.label ? " — " + a.label : ""));
+      // point snaps show the estimate's RANGE under the value
+      var sub = a.lo != null ? (a.label ? a.label + " · " : "") + fmt(a.lo) + " – " + fmt(a.hi)
+                             : a.label;
+      setHeadline(fmt(a.value), sub);
+      handle.setAttribute("aria-valuetext", fmt(a.value) + (sub ? " — " + sub : ""));
       if (typeof opts.onSelect === "function") opts.onSelect(a, idx);
     }
     var touched = false; // has the user grabbed the handle yet?
@@ -387,7 +407,7 @@
     // the handle (and the fill that rides it) returns with the first point
     function registerPoint(r) {
       var p = pOf(r.value);
-      snaps.push({ value: r.value, label: r.label, p: p });
+      snaps.push({ value: r.value, label: r.label, p: p, lo: r.lo, hi: r.hi });
       snaps.sort(function (a, b) { return a.value - b.value; });
       if (!handle) {
         slide.classList.remove("zvs-static"); // points make it interactive

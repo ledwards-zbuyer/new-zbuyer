@@ -44,6 +44,7 @@
     <a href="#discount">Cash discount</a>
     <a href="#outlier">One uncertain</a>
     <a href="#edges">Points at edges</a>
+    <a href="#solo">Single values only</a>
   </div>
 
   <div class="card" id="agree">
@@ -99,6 +100,14 @@
     OUTSIDE its range, which clamps in) — the dots hold the line ends cleanly.</p>
     <div id="sEdge"></div>
   </div>
+
+  <div class="card" id="solo">
+    <h2>Single values only — no ranges supplied</h2>
+    <p class="note">Each type passed just its number (<code>{ id, value, label }</code>): the
+    widget synthesizes a ±10% range around it, rounded reasonably — snap to a dot and the
+    synthesized range shows under the value.</p>
+    <div id="sSolo"></div>
+  </div>
 </div>
 
 <script src="assets/value-slider.js"></script>
@@ -151,6 +160,12 @@
     ["ai",   340000, 358000, 358000],   // point at its high end
     ["avm",  352000, 371000, 400000]    // outside its range -> clamps to 371K
   ]);
+  // single values only: no lo/hi — the widget synthesizes ±10% around each
+  zbValueSlider(document.getElementById("sSolo"), { ranges: [
+    { id: "cash", value: 322000, label: "Cash offer",   color: C.cash },
+    { id: "ai",   value: 349000, label: "AI estimate",  color: C.ai },
+    { id: "avm",  value: 362000, label: "AVM estimate", color: C.avm }
+  ]});
 </script>
 </body>
 </html>

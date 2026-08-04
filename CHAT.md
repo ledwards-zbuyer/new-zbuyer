@@ -2224,3 +2224,20 @@ the cash label); valueless terrace lines keep the 18px stagger. Verified: report
 10s/28s arrivals, ?snap=2 default regression, all eight gallery cards (the
 clamped edge point even parks the handle at 95%). Docs section 4, options row,
 widget header, gallery lead + tie note all updated.
+
+**Lucas:** if you only receive a single value (no ranges) just put a ~10% range
+on either side (rounded reasonably). Also, show the range under the value (when
+dragged to a dot). adjust vertical spacing so the placement of the value does
+not jump up and down based on the slider or moving from the initial range to the
+single values (with new subtext)
+
+**Claude:** Three pieces. (1) {id, value, label} with no lo/hi synthesizes ±10%
+around the value, rounded via niceRound to a magnitude-sensible step (322,417 →
+322,000; a lone missing side synthesizes independently) — new "Single values
+only" gallery card shows it (cash 322K reads $290,000–$354,000). (2) Snapping to
+a dot puts the estimate's range under the value: "AI estimate · $340,000 –
+$358,000" (middle dot, not a dash). (3) The headline and subtext rows are now
+fixed-height (46px flex + 19px), so the number sits at the same y in the initial
+full-range state, every snap, and any auto-fit shrink — verified with a
+three-instance harness (initial vs snapped vs synthesized-snapped: identical
+card geometry). Docs section 4 + options row, widget header, HANDOFF updated.

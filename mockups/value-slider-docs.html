@@ -148,7 +148,15 @@
     the curve starts unfilled and the point values are the snap targets — the pill handle returns
     with the first point (riding the latest arrival until the user grabs it), dragging snaps to
     the nearest point, arrow keys step between them, and the fill — translucent here so the
-    colored lines stay readable inside it — follows the handle.</p>
+    colored lines stay readable inside it — follows the handle. On snap, the headline shows the
+    point value with <b>its range as the subtext</b> ("AI estimate · $340,000 – $358,000"); the
+    headline rows are fixed-height, so the number never shifts vertically between the initial
+    full-range state and snapped states.</p>
+    <p><b>Single values welcome:</b> a range passed as just <code>{ id, value, label }</code> —
+    no <code>lo</code>/<code>hi</code> — synthesizes a <b>±10% range</b> around the value,
+    rounded to a sensible increment for its magnitude (a $349,000 AI estimate becomes
+    $314,000 – $384,000). See "Single values only" on the
+    <a href="range-scenarios.html#solo">scenario gallery</a>.</p>
     <p><b>Collisions:</b> point-pinned lines can't move (the dot fixes them to the curve), so their
     <b>labels</b> dodge instead — each label takes the first clean spot of: above the line's left
     end, above its right end, below its right end (the widget looks ahead at every known line
@@ -190,8 +198,10 @@ zbEstimateTray({
           <td>0–4 of <code>{ id, lo, hi, value, label, color }</code> — estimate ranges drawn
           inside the curve (section 4). <code>value</code> optional: the point estimate — a dot
           pinned to the curve edge with the line running through it (clamped into
-          [lo,&nbsp;hi]); it also becomes a handle snap target. <code>color</code> optional
-          (defaults rotate navy / sky / primary).</td></tr>
+          [lo,&nbsp;hi]); it also becomes a handle snap target. <code>lo</code>/<code>hi</code>
+          optional when <code>value</code> is present: a missing side synthesizes ±10% around
+          the value, rounded reasonably. <code>color</code> optional (defaults rotate
+          navy / sky / primary).</td></tr>
       <tr><td><code>domain</code></td><td><code>{ lo, hi }</code></td>
           <td>Pins the value scale with no visuals, so later <code>addRange()</code> arrivals
           draw in place instead of rescaling. Alone (no anchors/ranges) it renders the empty
