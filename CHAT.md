@@ -2311,3 +2311,11 @@ cash and AVM chips) and 10s (cash alone, still at its original left spot).
 carousel — one slot, variant-switched) moved from above the value module to
 directly below it: hero → selling range → expert → supporting grid. Verified on
 the default and ?ranges=1 views.
+
+**Lucas:** for the AI, AVM, and Cash range bars, remove the dotted vertical lines
+
+**Claude:** The estimate lines' dashed end-projections (.zvs-rcon — the down-at-lo
+/ up-at-hi verticals onto the curve) are gone: element creation, CSS, fade
+wiring, and every doc/gallery/header mention. The complete-range bar's dotted
+risers stay (separately requested). Verified: clean line ends on all three
+ranges, risers intact.

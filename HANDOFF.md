@@ -411,9 +411,10 @@ load) while values and home stats remain static demo data. The old
   place; `addRange(r)` draws a line in (rebuilds on a wider scale if outside the
   domain); anchors now OPTIONAL. Each range also takes `value` (2026-08-03): the
   single POINT estimate — its dot PINNED TO THE CURVE EDGE at x(value) (clamped
-  into [lo,hi]), the range line running horizontally THROUGH the dot lo→hi,
-  dashed verticals projecting each end onto the curve (down at lo, up at hi;
-  reworked same day from dot-rides-terrace-line per Lucas). The points are the
+  into [lo,hi]), the range line running horizontally THROUGH the dot lo→hi
+  (reworked same day from dot-rides-terrace-line per Lucas; the lines' dashed
+  end-projections onto the curve were added then REMOVED 2026-08-04 — the
+  complete-range bar's dotted risers remain). The points are the
   HANDLE's snap targets in chart mode — the handle is back: appears with the
   first point, rides the latest arrival until the user grabs it, drag snaps to
   the nearest point, arrows step, and the fill follows it at 35% opacity

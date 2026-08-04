@@ -19,10 +19,9 @@
  *                                         // value = the single point estimate:
  *                                         // its dot is PINNED TO THE CURVE at
  *                                         // x(value) (clamped into [lo,hi]),
- *                                         // the range line runs horizontally
- *                                         // THROUGH the dot lo→hi, and dashed
- *                                         // verticals project the ends onto
- *                                         // the curve (down at lo, up at hi).
+ *                                         // and the range line runs
+ *                                         // horizontally THROUGH the dot
+ *                                         // lo→hi.
  *                                         // With <2 anchors the points are the
  *                                         // handle's SNAP TARGETS: the handle
  *                                         // appears with the first point and
@@ -169,6 +168,7 @@
     /* drag highlight: the estimate under the handle bolds, its dot pops */
     ".zvs-rlabel.zvs-hot{font-weight:800}" +
     ".zvs-rdot.zvs-hot{transform:translate(-50%,-50%) scale(1.35)}" +
+    /* (the ranges' own dashed end-projections were removed 2026-08-04) */
     /* the complete-range bar under the chart: the union of arrived values */
     ".zvs-cwrap{position:relative;height:24px;margin:6px 2px 0}" +
     ".zvs-crange{position:absolute;top:3px;height:5px;border-radius:3px;background:linear-gradient(90deg,#7FC4FF,#1D4FD7);opacity:.5;transition:left .5s cubic-bezier(.2,.7,.3,1),width .5s cubic-bezier(.2,.7,.3,1)}" +
@@ -184,8 +184,6 @@
     ".zvs-chip path{transition:stroke-dashoffset .3s ease .05s}" +
     ".zvs-crun{animation:zvsChase 1.4s linear infinite}" +
     "@keyframes zvsChase{to{stroke-dashoffset:-72}}" +
-    /* dashed verticals projecting the range ends onto the curve */
-    ".zvs-rcon{position:absolute;width:0;border-left:2px dashed;opacity:.55;pointer-events:none;z-index:1;transition:opacity .3s ease .3s}" +
     /* pending-offer wait state + animated arrival */
     ".zvs-wait{position:absolute;left:0;right:0;bottom:" + BOTTOM + "px;width:100%;overflow:visible;pointer-events:none;z-index:1}" +
     ".zvs-march{animation:zvsMarch 1.1s linear infinite}" +
@@ -196,7 +194,7 @@
     "@keyframes zvsPulse{0%,100%{opacity:.4}50%{opacity:.95}}" +
     "@keyframes zvsIn{from{opacity:0}}" +
     "@keyframes zvsEndsIn{from{max-height:0;opacity:0}to{max-height:56px;opacity:1}}" +
-    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse,.zvs-crun{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-rcon,.zvs-crange,.zvs-ccon,.zvs-chip path{transition:none}}";
+    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse,.zvs-crun{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-crange,.zvs-ccon,.zvs-chip path{transition:none}}";
 
   function injectCSS() {
     if (document.getElementById("zvs-style")) return;
@@ -569,11 +567,9 @@
     }
 
     /* ---- estimate ranges. WITH a point value: the dot is pinned to the
-       curve edge at x(value), the range line runs horizontally THROUGH it
-       from x(lo) to x(hi), and dashed verticals project each end onto the
-       curve (down at the low end — the curve is lower there — and up at the
-       high end). WITHOUT a value: legacy terrace at the low end's curve
-       height. HTML elements, not SVG: the curve svg stretches
+       curve edge at x(value) and the range line runs horizontally THROUGH
+       it from x(lo) to x(hi). WITHOUT a value: legacy terrace at the low
+       end's curve height. HTML elements, not SVG: the curve svg stretches
        (preserveAspectRatio none) and would distort strokes. ---- */
     var RANGE_COLS = ["#16408F", "#3BA4F4", "#1D4FD7", "#8296B9"];
     var rangeCount = 0, R_INSET = 3, placedLines = [];
@@ -744,29 +740,9 @@
       line.style.background = r.color;
       line.title = tip;
       slide.appendChild(line);
-      var dot = null, conA = null, conB = null;
+      var dot = null;
       if (hasPt) {
         var cy = top + 2; // the line's center — and the curve edge at x(value)
-        // dashed projections: range ends onto the curve (down at lo, up at hi)
-        var yLo = BASE_Y + yOf(r.lo), yHi = BASE_Y + yOf(r.hi);
-        if (yLo - cy > 3) {
-          conA = document.createElement("span");
-          conA.className = "zvs-rcon";
-          conA.style.left = "calc(" + x0 + "% - 1px)";
-          conA.style.top = cy + "px";
-          conA.style.height = (yLo - cy) + "px";
-          conA.style.borderColor = r.color;
-          slide.appendChild(conA);
-        }
-        if (cy - yHi > 3) {
-          conB = document.createElement("span");
-          conB.className = "zvs-rcon";
-          conB.style.left = "calc(" + x1 + "% - 1px)";
-          conB.style.top = yHi + "px";
-          conB.style.height = (cy - yHi) + "px";
-          conB.style.borderColor = r.color;
-          slide.appendChild(conB);
-        }
         // the point estimate, pinned to the curve edge
         dot = document.createElement("span");
         dot.className = "zvs-rdot";
@@ -778,7 +754,7 @@
         registerPoint(r);
       }
       var w = (x1 - x0) + "%";
-      var fades = [lab, dot, conA, conB];
+      var fades = [lab, dot];
       if (animate && !REDUCED) {
         line.style.width = "0%";
         if (lab) lab.style.transition = "opacity .4s ease .25s";
