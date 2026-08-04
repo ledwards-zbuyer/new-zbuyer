@@ -2327,3 +2327,25 @@ after the AVM
 three seconds after the AVM. Updated in both report tray calls (default +
 ranges view), the tray header example, the tray dev guide's two mentions, and
 link-params' ?ranges row. Verified all three ranges + retired chips at 13s.
+
+**Lucas:** create a jump page showing me 5 completely different ways to display
+this information. at the base level, i want to avoid upsetting our agent members
+who are not used to leads having been shown a number — my partner and father
+Steven Edwards is concerned members will be upset if a seller has unreasonable
+expectations based on an errant valuation. that's why i was focused on ranges /
+the slider to drive home variance and that there cannot be a true offer until
+verification and inspection. open to other ways — just values, a diff graph,
+something outside the box.
+
+**Claude:** value-display-concepts.html — five structurally different takes, each
+with the rationale tied to the brief and a live mock: (1) Brackets, not numbers —
+"The $300Ks" with Low/Mid/Mid-upper rows, zero digits, "exact figures unlock with
+your expert"; (2) Value forecast — weather framing with H/L pairs and per-source
+confidence meters ("a forecast, not an appraisal"); (3) The path to a real
+number — a cone that starts $312-371K wide and visibly narrows through expert
+review and walkthrough/inspection into a locked, deliberately empty "your real
+number" slot; (4) Your home among the market — nearby sales as anonymous dots
+with a homes-like-yours band, value as a distribution condition decides; (5)
+Spread-first dials — each source's headline stat is its ± wiggle, endpoints in
+small type. Every concept carries the same verification disclaimer line. Pill
+nav, same demo data as ?ranges=1, cross-linked both ways.

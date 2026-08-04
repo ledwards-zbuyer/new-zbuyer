@@ -453,6 +453,20 @@ load) while values and home stats remain static demo data. The old
   "Cash offer estimate" everywhere (report EST, gallery, docs, demo, harnesses).
   Report passes expected (chips + tray + lines all color-synced); docs replay
   demo (exR2) passes it too.
+  VALUE DISPLAY CONCEPTS (2026-08-04): `value-display-concepts.html` — jump page
+  of FIVE structurally different ways to show the estimates, all designed around
+  the member-relations brief (Steven's concern: agents receiving leads who've
+  anchored on one errant automated number). 1 Brackets-not-numbers ("The $300Ks",
+  no digits, exact figures "unlock with your expert"); 2 Value forecast (weather
+  framing, H/L pairs, per-source confidence meters); 3 Path-to-a-real-number
+  (cone narrowing through expert review → walkthrough/inspection to a locked,
+  deliberately EMPTY "verified offer" slot); 4 Your-home-among-the-market
+  (nearby-sales dot strip with a homes-like-yours band — value as a
+  distribution); 5 Spread-first dials (the headline stat is each source's ±
+  wiggle, endpoints in small type). Every concept repeats the same ground truth:
+  a real number only exists after verification and an inspection. Self-contained
+  page (inline SVG/JS mocks, fixed dot positions — no randomness), same demo
+  data as ?ranges=1, cross-links to the ranges view + scenario gallery.
   SCENARIO GALLERY:
   `range-scenarios.html` — nine live circumstances (agreement / disparate /
   wide / narrow / AI=AVM tie / cash discount / one-uncertain / edge points
