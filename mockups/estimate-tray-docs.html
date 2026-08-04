@@ -62,7 +62,7 @@
     <div class="demo">
       <div class="demo-tag">Live — watch the bottom-right corner (bottom edge on mobile)</div>
       <button class="btn" id="demo1">Launch the demo</button>
-      <span class="note">Arrivals at 2s / 4s / 7s. The report page runs 3s / 7s / 25s —
+      <span class="note">Arrivals at 2s / 4s / 7s. The report page runs 3s / 7s / 10s —
       the cash offer intentionally lands last.</span>
     </div>
   </div>
@@ -77,7 +77,7 @@
           <a href="https://github.com/ledwards-zbuyer/new-zbuyer/blob/main/mockups/assets/estimate-tray.js">ledwards-zbuyer/new-zbuyer &rarr; mockups/assets/estimate-tray.js</a></li>
       <li>Seen in the wild:
           <a href="https://ledwards-zbuyer.github.io/new-zbuyer/mockups/report-classic-blue.html">report-classic-blue.html</a>
-          (runs the 3/7/25-second demo on load)</li>
+          (runs the 3/7/10-second demo on load)</li>
       <li>This guide:
           <a href="https://ledwards-zbuyer.github.io/new-zbuyer/mockups/estimate-tray-docs.html">estimate-tray-docs.html</a></li>
     </ul>
@@ -153,7 +153,7 @@
       <tr><td><code>demo</code></td><td>object, off</td>
           <td>Stand-in for the real calls — <b>omit it in production</b>.
           <code>{ seconds: 8 }</code> staggers the arrivals evenly across 8s;
-          <code>{ seconds: [3, 7, 25] }</code> sets each item's arrival time in order.</td></tr>
+          <code>{ seconds: [3, 7, 10] }</code> sets each item's arrival time in order.</td></tr>
       <tr><td><code>dismissSeconds</code></td><td>number, <code>1.6</code></td>
           <td>Hold time after ALL arrive before auto-minimizing to the pill.
           <code>0</code> = stay up until minimized manually.</td></tr>

@@ -2319,3 +2319,11 @@ the default and ?ranges=1 views.
 wiring, and every doc/gallery/header mention. The complete-range bar's dotted
 risers stay (separately requested). Verified: clean line ends on all three
 ranges, risers intact.
+
+**Lucas:** on the demo, make the cash offer estimate arrive just a few seconds
+after the AVM
+
+**Claude:** Demo timing is now 3 / 7 / 10 seconds (was 3 / 7 / 25) — cash lands
+three seconds after the AVM. Updated in both report tray calls (default +
+ranges view), the tray header example, the tray dev guide's two mentions, and
+link-params' ?ranges row. Verified all three ranges + retired chips at 13s.

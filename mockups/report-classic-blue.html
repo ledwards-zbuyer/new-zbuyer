@@ -524,7 +524,7 @@
 <script>
 /* Estimate tray + value module wiring.
  * DEFAULT: the four-anchor selling-path slider, and the tray demo (AI 3s,
- * AVM 7s, Cash offer 25s) with the theme-blue badges. ?snap=N (0-3)
+ * AVM 7s, Cash offer 10s) with the theme-blue badges. ?snap=N (0-3)
  * presets the snapped anchor (testing).
  * ?ranges=1 — ALTERNATE view under evaluation: the slider renders as a
  * static chart pinned to the full domain, and each estimate is a value
@@ -537,7 +537,7 @@
   var rangesMode = /[?&]ranges=(1|on|yes|true)\b/.test(location.search) && combinedOn;
 
   if (!rangesMode) {
-    zbEstimateTray({ demo: { seconds: [3, 7, 25] } });
+    zbEstimateTray({ demo: { seconds: [3, 7, 10] } });
     if (!combinedOn) return;
     var slider = zbValueSlider(el, {
       anchors: [
@@ -577,7 +577,7 @@
       { id: "avm",  label: "AVM estimate",        icon: "avm",  color: EST.avm.color },
       { id: "cash", label: "Cash offer estimate", icon: "cash", color: EST.cash.color }
     ],
-    demo: { seconds: [3, 7, 25] },
+    demo: { seconds: [3, 7, 10] },
     onArrive: function (id) { if (EST[id]) chart.addRange(EST[id]); }
   });
 })();

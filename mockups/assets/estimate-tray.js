@@ -28,7 +28,7 @@
  *                                         // (pair with the value slider's
  *                                         // range colors); omitted = the
  *                                         // --zet-check theme color
- *       demo: { seconds: [3, 7, 25] },    // OPTIONAL stand-in for the real
+ *       demo: { seconds: [3, 7, 10] },    // OPTIONAL stand-in for the real
  *                                         // calls: per-item arrival seconds
  *                                         // (a single number staggers evenly)
  *       dismissSeconds: 1.6,              // hold after ALL arrive, then
