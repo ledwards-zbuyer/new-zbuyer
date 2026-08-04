@@ -2379,3 +2379,11 @@ behind the lanes, plus a small legend ("thin lines = weeks · shaded bands =
 months") next to the day ruler. Month labels were moved to the band bottoms
 after the first pass collided with the cash lane's title. The strips now read
 as two calendars sharing one wall.
+
+**Lucas:** on #7 make the values more prominent
+
+**Claude:** The money chips at each finish line went from small outlined pills to
+solid lane-colored badges — 152px wide, 16px 900-weight white numerals (navy
+$312–335K after the cash lane, primary $348–371K at the listing finish). The
+payoff is now the loudest thing on each road. *(follow-up:)* the on-market
+segment's white in-bar label changed from "ZIP 65802 average" to "65802 avg 54d".
