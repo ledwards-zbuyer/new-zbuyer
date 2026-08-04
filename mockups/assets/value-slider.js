@@ -15,7 +15,7 @@
  *       ranges: [                         // 0-4 estimate ranges INSIDE the
  *                                         // shaded curve:
  *         { id: "cash", lo: 312000, hi: 335000, value: 322000,
- *           label: "Cash offer range", color: "#16408F" }
+ *           label: "Cash offer estimate", color: "#16408F" }
  *                                         // value = the single point estimate:
  *                                         // its dot is PINNED TO THE CURVE at
  *                                         // x(value) (clamped into [lo,hi]),
@@ -176,6 +176,14 @@
     /* dotted risers from the bar's ends up to the chart's baseline
        (bar top at +3, 6px wrap margin + 8px slide bottom gap above = 17px) */
     ".zvs-ccon{position:absolute;top:-14px;width:0;height:17px;border-left:2px dotted;opacity:.5;transition:left .5s cubic-bezier(.2,.7,.3,1)}" +
+    /* loading chips: one per EXPECTED estimate, tray-style chase checkbox +
+       label across the top of the chart; checks + flies down on arrival */
+    ".zvs-chips{position:absolute;top:2px;left:0;right:0;display:flex;justify-content:center;gap:18px;pointer-events:none;z-index:2}" +
+    ".zvs-chip{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;white-space:nowrap}" +
+    ".zvs-chip svg{width:14px;height:14px;overflow:visible;flex:none}" +
+    ".zvs-chip path{transition:stroke-dashoffset .3s ease .05s}" +
+    ".zvs-crun{animation:zvsChase 1.4s linear infinite}" +
+    "@keyframes zvsChase{to{stroke-dashoffset:-72}}" +
     /* dashed verticals projecting the range ends onto the curve */
     ".zvs-rcon{position:absolute;width:0;border-left:2px dashed;opacity:.55;pointer-events:none;z-index:1;transition:opacity .3s ease .3s}" +
     /* pending-offer wait state + animated arrival */
@@ -188,7 +196,7 @@
     "@keyframes zvsPulse{0%,100%{opacity:.4}50%{opacity:.95}}" +
     "@keyframes zvsIn{from{opacity:0}}" +
     "@keyframes zvsEndsIn{from{max-height:0;opacity:0}to{max-height:56px;opacity:1}}" +
-    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-rcon,.zvs-crange,.zvs-ccon{transition:none}}";
+    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse,.zvs-crun{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-rcon,.zvs-crange,.zvs-ccon,.zvs-chip path{transition:none}}";
 
   function injectCSS() {
     if (document.getElementById("zvs-style")) return;
@@ -570,6 +578,62 @@
     var RANGE_COLS = ["#16408F", "#3BA4F4", "#1D4FD7", "#8296B9"];
     var rangeCount = 0, R_INSET = 3, placedLines = [];
     var BASE_Y = SLIDE_H - BOTTOM - CURVE_H; // slide-y of the curve's top edge
+
+    /* ---- loading chips (opts.expected, chart mode): one chase-checkbox +
+       label per estimate still on its way, across the top of the chart.
+       On arrival the box checks, then the chip flies DOWN to where the
+       range lands and the real line/label/dot take over — loading stays
+       visibly alive inside the chart itself. ---- */
+    var chips = {};
+    if (chartMode && opts.expected && opts.expected.length) {
+      var crow = document.createElement("div");
+      crow.className = "zvs-chips";
+      opts.expected.forEach(function (x) {
+        var id2 = String(x.id);
+        var already = ranges.some(function (q) { return q.id === id2; });
+        if (already) return; // pre-supplied ranges never chip
+        var chip = document.createElement("span");
+        chip.className = "zvs-chip";
+        if (x.color) chip.style.color = x.color;
+        var svg = svgEl("svg", { viewBox: "0 0 22 22" }, chip);
+        svgEl("rect", { x: 2, y: 2, width: 18, height: 18, rx: 5, fill: "none", stroke: "rgba(20,35,61,.18)", "stroke-width": 2.4 }, svg);
+        var run = svgEl("rect", { x: 2, y: 2, width: 18, height: 18, rx: 5, fill: "none", stroke: "currentColor", "stroke-width": 2.4, "stroke-dasharray": "16 56", "stroke-linecap": "round", "class": "zvs-crun" }, svg);
+        var fill = svgEl("rect", { x: 2, y: 2, width: 18, height: 18, rx: 5, fill: "currentColor", stroke: "currentColor", "stroke-width": 2.4, opacity: 0 }, svg);
+        var tick = svgEl("path", { d: "M6.5 11.6l3.1 3.1 5.9-6.4", fill: "none", stroke: "#fff", "stroke-width": 2.6, "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-dasharray": 16, "stroke-dashoffset": 16 }, svg);
+        var lbl = document.createElement("span");
+        lbl.textContent = x.label || id2;
+        chip.appendChild(lbl);
+        crow.appendChild(chip);
+        chips[id2] = { el: chip, run: run, fill: fill, tick: tick };
+      });
+      if (crow.children.length) slide.appendChild(crow);
+    }
+    function retireChip(r, x0, top) {
+      var c = chips[r.id];
+      if (!c) return;
+      delete chips[r.id];
+      if (REDUCED) { c.el.parentNode.removeChild(c.el); return; }
+      // the box checks...
+      if (c.run.parentNode) c.run.parentNode.removeChild(c.run);
+      c.fill.setAttribute("opacity", "1");
+      c.tick.setAttribute("stroke-dashoffset", "0");
+      // ...then the chip flies down to where its range just landed
+      var sr = slide.getBoundingClientRect(), cr = c.el.getBoundingClientRect();
+      var curX = cr.left - sr.left, curY = cr.top - sr.top, el = c.el;
+      setTimeout(function () {
+        el.style.position = "absolute"; // out of the flex row, onto the slide
+        el.style.left = curX + "px";
+        el.style.top = curY + "px";
+        el.style.margin = "0";
+        slide.appendChild(el);
+        el.style.transition = "transform .55s cubic-bezier(.2,.7,.3,1), opacity .4s ease .25s";
+        requestAnimationFrame(function () {
+          el.style.transform = "translate(" + ((x0 / 100) * sr.width - curX) + "px," + ((top - 12) - curY) + "px)";
+          el.style.opacity = "0";
+        });
+        setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 750);
+      }, 350);
+    }
     // lookahead for label placement: every point-pinned line's geometry is
     // known before anything draws (lines can't dodge — the dot pins them to
     // the curve — so the LABELS do the dodging, and they need to see lines
@@ -711,6 +775,7 @@
       }
       drawn.push({ r: r, lab: lab, dot: dot });
       updateUnion(r);
+      retireChip(r, x0, top);
     }
     ranges.forEach(function (r) { drawRange(r, false); });
 

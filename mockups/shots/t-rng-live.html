@@ -1,0 +1,30 @@
+<!doctype html>
+<html><head><meta charset="utf-8"></head><body style="margin:0;background:#fff;font-family:Inter,system-ui,sans-serif;padding:24px">
+<div style="max-width:700px;margin:0 auto">
+  <p style="font:700 12px sans-serif">A: resting — union bar + handle centered on the complete range</p>
+  <div id="a" style="outline:1px dotted #ccc"></div>
+  <p style="font:700 12px sans-serif">B: HELD inside the AI range (off-point) — live value, subtext, bold label</p>
+  <div id="b" style="outline:1px dotted #ccc"></div>
+  <p style="font:700 12px sans-serif">C: HELD over the AI point — dot popped</p>
+  <div id="c" style="outline:1px dotted #ccc"></div>
+  <p style="font:700 12px sans-serif">D: released near cash — snapped, bold persists</p>
+  <div id="d" style="outline:1px dotted #ccc"></div>
+</div>
+<script src="../assets/value-slider.js"></script>
+<script>
+  var RS = [
+    { id: "cash", lo: 312000, hi: 335000, value: 322000, label: "Cash offer estimate", color: "#16408F" },
+    { id: "ai",   lo: 340000, hi: 358000, value: 349000, label: "AI estimate",      color: "#3BA4F4" },
+    { id: "avm",  lo: 352000, hi: 371000, value: 362000, label: "AVM estimate",     color: "#1D4FD7" }
+  ];
+  function mk(id) { zbValueSlider(document.getElementById(id), { ranges: RS }); return document.querySelector("#" + id + " .zvs-slide"); }
+  function pev(type, el, frac) {
+    var r = el.getBoundingClientRect();
+    el.dispatchEvent(new PointerEvent(type, { clientX: r.left + frac * r.width, bubbles: true, cancelable: true, pointerId: 7 }));
+  }
+  mk("a");
+  var sb = mk("b"); pev("pointerdown", sb, 0.52);
+  var sc = mk("c"); pev("pointerdown", sc, 0.40); pev("pointermove", sc, 0.614);
+  var sd = mk("d"); pev("pointerdown", sd, 0.60); pev("pointermove", sd, 0.22); pev("pointerup", sd, 0.22);
+</script>
+</body></html>

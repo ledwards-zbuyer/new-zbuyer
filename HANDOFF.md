@@ -441,6 +441,15 @@ load) while values and home stats remain static demo data. The old
   HEADLESS NOTE: the bar's left/width transitions freeze at their from-state
   under virtual time mid-run (same artifact genre as the CSS-animation note) —
   verify bar growth with --force-prefers-reduced-motion; real browsers animate.
+  LOADING CHIPS (2026-08-04): `expected: [{id,label,color}]` renders one chip
+  per estimate still on its way across the CHART TOP — tray-style chase
+  checkbox + label, color coded; on addRange with a matching id the box checks
+  (350ms beat) then the chip FLIES DOWN to where its range landed and fades
+  (reduced-motion: instant removal). Ids already in `ranges` never chip; the
+  rebuild path re-skips arrived ids. Cash label renamed "Cash offer range" →
+  "Cash offer estimate" everywhere (report EST, gallery, docs, demo, harnesses).
+  Report passes expected (chips + tray + lines all color-synced); docs replay
+  demo (exR2) passes it too.
   SCENARIO GALLERY:
   `range-scenarios.html` — nine live circumstances (agreement / disparate /
   wide / narrow / AI=AVM tie / cash discount / one-uncertain / edge points

@@ -176,15 +176,22 @@
       <div class="demo-tag">Live — three estimate ranges, chart mode</div>
       <div id="exR1"></div>
     </div>
-    <h3>Arrivals: addRange()</h3>
+    <h3>Arrivals: addRange() + loading chips</h3>
     <p>Pass <code>domain</code> to pin the scale up front, then call
     <code>slider.addRange(range)</code> as each estimate comes back — the line draws in (a range
-    outside the current domain rebuilds the widget on the wider scale). This pairs 1:1 with the
+    outside the current domain rebuilds the widget on the wider scale). Add <code>expected</code>
+    — the roster of estimates on their way — and the chart shows a <b>loading chip per pending
+    estimate</b> across its top: the same chase-checkbox animation as the estimate tray, color
+    coded per type. When that estimate lands, the box checks and the chip <b>flies down to its
+    range on the graph</b>. This pairs 1:1 with the
     <a href="estimate-tray-docs.html">estimate tray</a>: give the tray items the same
     <code>color</code> per estimate type and wire <code>onArrive</code> to <code>addRange</code> —
-    the line draws in, in its color, the moment the same-colored badge checks. The Cash Value
-    Report runs exactly that behind <code>?ranges=1</code>.</p>
-<pre><code>var chart = zbValueSlider(el, { domain: { lo: 312000, hi: 371000 } });
+    chip, badge, and line all speak the same color. The Cash Value Report runs exactly that
+    behind <code>?ranges=1</code>.</p>
+<pre><code>var chart = zbValueSlider(el, {
+  domain: { lo: 312000, hi: 371000 },
+  expected: [{ id: "ai", label: "AI estimate", color: "#3BA4F4" }, ...]
+});
 zbEstimateTray({
   items: [{ id: "ai", label: "AI estimate", icon: "ai", color: "#3BA4F4" }, ...],
   onArrive: function (id) { chart.addRange(EST[id]); }   // EST: your shared map
@@ -216,6 +223,12 @@ zbEstimateTray({
           <td>Pins the value scale with no visuals, so later <code>addRange()</code> arrivals
           draw in place instead of rescaling. Alone (no anchors/ranges) it renders the empty
           static chart, ready for arrivals.</td></tr>
+      <tr><td><code>expected</code></td><td>array</td>
+          <td>Chart mode: the roster of estimates on their way — <code>{ id, label, color }</code>
+          each. Renders a loading chip per pending estimate (chase checkbox + label, color
+          coded) across the chart top; on <code>addRange()</code> with a matching
+          <code>id</code>, the box checks and the chip flies down to the landed range. Ids
+          already present in <code>ranges</code> never chip.</td></tr>
       <tr><td><code>format</code></td><td>function, <code>$1,234,567</code></td>
           <td>Turns a value into display text everywhere it appears (headline, end labels,
           tooltips). E.g. <code>v =&gt; "$" + v.toLocaleString() + "/mo"</code>.</td></tr>
@@ -317,7 +330,7 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
   });
   // section 4: static ranges chart (value = the point-estimate dot)
   var EST_DEMO = [
-    { id: "cash", lo: 312000, hi: 335000, value: 322000, label: "Cash offer range", color: "#16408F" },
+    { id: "cash", lo: 312000, hi: 335000, value: 322000, label: "Cash offer estimate", color: "#16408F" },
     { id: "ai",   lo: 340000, hi: 358000, value: 349000, label: "AI estimate",      color: "#3BA4F4" },
     { id: "avm",  lo: 352000, hi: 371000, value: 362000, label: "AVM estimate",     color: "#1D4FD7" }
   ];
@@ -328,7 +341,10 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
     function run() {
       timers.forEach(clearTimeout); timers = [];
       if (chart) chart.destroy();
-      chart = zbValueSlider(el, { domain: { lo: 312000, hi: 371000 } });
+      chart = zbValueSlider(el, {
+        domain: { lo: 312000, hi: 371000 },
+        expected: EST_DEMO.map(function (r) { return { id: r.id, label: r.label, color: r.color }; })
+      });
       EST_DEMO.forEach(function (r, i) {
         timers.push(setTimeout(function () { chart.addRange(r); }, 900 + i * 1300));
       });

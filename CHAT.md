@@ -2274,3 +2274,24 @@ through the wrap margin and slide gap to land exactly on the chart's baseline �
 left riser tinted the bar gradient's sky end, right riser its primary end, both
 at the bar's opacity and moving with the union as it grows (same transition,
 reduced-motion disabled). Verified on the resting harness card.
+
+**Lucas:** change "cash offer range" to "cash offer estimate" on the bar. Also,
+while the different value types are loading (similar to the footer loading
+animation) show each type — cash offer estimate, AI estimate, AVM estimate —
+each with a checkbox loading animation (like the footer) and color coded. when
+the value loads, animate down to the graph range. this gives a better sense that
+loading is still happening
+
+**Claude:** Renamed everywhere (report EST map, gallery incl. the solo card,
+docs, demo, harnesses). New `expected: [{id,label,color}]` option: chart mode
+renders a loading chip per estimate still on its way, centered across the chart
+top — the tray's chase-checkbox animation at 14px + the type label, in the
+type's color. On addRange with a matching id the chase stops, the box fills and
+the tick draws (350ms beat), then the chip flies down to where its range just
+landed and fades out as the real line/label/dot finish drawing (reduced-motion
+removes it instantly; pre-supplied range ids never chip, and the wider-domain
+rebuild path re-skips arrived ids). Report passes expected so chips, tray
+badges, and chart lines are all color-synced; the docs replay demo showcases it
+too, and the options table documents it. Verified pre-arrival (three chasing
+chips), 5s reduced-motion (AI chip retired, line landed), 28s (all chips gone,
+three labeled ranges).

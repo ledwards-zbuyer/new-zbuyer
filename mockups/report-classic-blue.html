@@ -555,12 +555,19 @@
   // the shared per-type map: tray badge color == slider line color.
   // value = the single point estimate (the dot riding each range line)
   var EST = {
-    cash: { id: "cash", lo: 312000, hi: 335000, value: 322000, label: "Cash offer range", color: "#16408F" },
-    ai:   { id: "ai",   lo: 340000, hi: 358000, value: 349000, label: "AI estimate",      color: "#3BA4F4" },
-    avm:  { id: "avm",  lo: 352000, hi: 371000, value: 362000, label: "AVM estimate",     color: "#1D4FD7" }
+    cash: { id: "cash", lo: 312000, hi: 335000, value: 322000, label: "Cash offer estimate", color: "#16408F" },
+    ai:   { id: "ai",   lo: 340000, hi: 358000, value: 349000, label: "AI estimate",         color: "#3BA4F4" },
+    avm:  { id: "avm",  lo: 352000, hi: 371000, value: 362000, label: "AVM estimate",        color: "#1D4FD7" }
   };
   var chart = zbValueSlider(el, {
     domain: { lo: 312000, hi: 371000 }, // pin the scale so arrivals draw in place
+    // loading chips across the chart top: each checks + flies down to its
+    // range as the estimate lands (color-synced with the tray badges)
+    expected: [
+      { id: "cash", label: EST.cash.label, color: EST.cash.color },
+      { id: "ai",   label: EST.ai.label,   color: EST.ai.color },
+      { id: "avm",  label: EST.avm.label,  color: EST.avm.color }
+    ],
     ariaLabel: "Your estimate ranges"
   });
   zbEstimateTray({

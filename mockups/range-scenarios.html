@@ -119,7 +119,7 @@
   function draw(id, rs) {
     zbValueSlider(document.getElementById(id), { ranges: rs.map(function (r) {
       return { id: r[0], lo: r[1], hi: r[2], value: r[3],
-               label: r[4] || (r[0] === "cash" ? "Cash offer range" : r[0].toUpperCase() + " estimate"),
+               label: r[4] || (r[0] === "cash" ? "Cash offer estimate" : r[0].toUpperCase() + " estimate"),
                color: C[r[0]] };
     }) });
   }
@@ -165,9 +165,9 @@
   ]);
   // single values only: no lo/hi — the widget synthesizes ±10% around each
   zbValueSlider(document.getElementById("sSolo"), { ranges: [
-    { id: "cash", value: 322000, label: "Cash offer",   color: C.cash },
-    { id: "ai",   value: 349000, label: "AI estimate",  color: C.ai },
-    { id: "avm",  value: 362000, label: "AVM estimate", color: C.avm }
+    { id: "cash", value: 322000, label: "Cash offer estimate", color: C.cash },
+    { id: "ai",   value: 349000, label: "AI estimate",         color: C.ai },
+    { id: "avm",  value: 362000, label: "AVM estimate",        color: C.avm }
   ]});
 </script>
 </body>

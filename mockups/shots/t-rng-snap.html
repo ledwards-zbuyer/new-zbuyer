@@ -1,0 +1,26 @@
+<!doctype html>
+<html><head><meta charset="utf-8"></head><body style="margin:0;background:#fff;font-family:Inter,system-ui,sans-serif;padding:24px">
+<div style="max-width:700px;margin:0 auto">
+  <p style="font:700 12px sans-serif">A: initial (untouched — full range headline)</p>
+  <div id="a" style="outline:1px dotted #ccc"></div>
+  <p style="font:700 12px sans-serif">B: snapped to the AI point (range subtext)</p>
+  <div id="b" style="outline:1px dotted #ccc"></div>
+  <p style="font:700 12px sans-serif">C: single values only (synthesized ±10%), snapped to cash</p>
+  <div id="c" style="outline:1px dotted #ccc"></div>
+</div>
+<script src="../assets/value-slider.js"></script>
+<script>
+  var RS = [
+    { id: "cash", lo: 312000, hi: 335000, value: 322000, label: "Cash offer estimate", color: "#16408F" },
+    { id: "ai",   lo: 340000, hi: 358000, value: 349000, label: "AI estimate",      color: "#3BA4F4" },
+    { id: "avm",  lo: 352000, hi: 371000, value: 362000, label: "AVM estimate",     color: "#1D4FD7" }
+  ];
+  zbValueSlider(document.getElementById("a"), { ranges: RS });
+  zbValueSlider(document.getElementById("b"), { ranges: RS }).snapTo(1);
+  zbValueSlider(document.getElementById("c"), { ranges: [
+    { id: "cash", value: 322000, label: "Cash offer",   color: "#16408F" },
+    { id: "ai",   value: 349000, label: "AI estimate",  color: "#3BA4F4" },
+    { id: "avm",  value: 362000, label: "AVM estimate", color: "#1D4FD7" }
+  ]}).snapTo(0);
+</script>
+</body></html>

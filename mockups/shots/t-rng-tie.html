@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"></head><body style="margin:0;background:#fff;font-family:Inter,system-ui,sans-serif;padding:24px">
+<div style="max-width:700px;margin:0 auto">
+  <p style="font:700 12px sans-serif">1: AI range == AVM range (exact tie)</p>
+  <div id="a"></div>
+  <p style="font:700 12px sans-serif">2: same lo, different hi</p>
+  <div id="b"></div>
+  <p style="font:700 12px sans-serif">3: tie at the domain floor (worst case)</p>
+  <div id="c"></div>
+</div>
+<script src="../assets/value-slider.js"></script>
+<script>
+  zbValueSlider(document.getElementById("a"), { ranges: [
+    { id: "cash", lo: 312000, hi: 335000, label: "Cash offer estimate", color: "#16408F" },
+    { id: "ai",   lo: 345000, hi: 365000, label: "AI estimate",      color: "#3BA4F4" },
+    { id: "avm",  lo: 345000, hi: 365000, label: "AVM estimate",     color: "#1D4FD7" }
+  ]});
+  zbValueSlider(document.getElementById("b"), { ranges: [
+    { id: "cash", lo: 312000, hi: 335000, label: "Cash offer estimate", color: "#16408F" },
+    { id: "ai",   lo: 345000, hi: 358000, label: "AI estimate",      color: "#3BA4F4" },
+    { id: "avm",  lo: 345000, hi: 371000, label: "AVM estimate",     color: "#1D4FD7" }
+  ]});
+  zbValueSlider(document.getElementById("c"), { ranges: [
+    { id: "ai",   lo: 312000, hi: 340000, label: "AI estimate",  color: "#3BA4F4" },
+    { id: "avm",  lo: 312000, hi: 340000, label: "AVM estimate", color: "#1D4FD7" },
+    { id: "top",  lo: 350000, hi: 371000, label: "Market",       color: "#16408F" }
+  ]});
+</script>
+</body></html>
