@@ -2369,3 +2369,13 @@ The effort ledger — a receipt of what each path asks (days, showings, repairs,
 financing risk, who picks the close date) under free-shown range headers. Fixed
 two mock collisions (map annotation vs cloud caption; cash lane stage labels →
 one arrow line). All verified by render.
+
+**Lucas:** on #7 do something to make the background appear more like a calendar
+(possibly) or really anything to help clarify that the x axis is a timeline
+
+**Claude:** Concept 7 got a calendar backdrop: alternating shaded month bands
+(MONTH 1-4 labeled at the band feet) with a thin weekly gridline every 7 days
+behind the lanes, plus a small legend ("thin lines = weeks · shaded bands =
+months") next to the day ruler. Month labels were moved to the band bottoms
+after the first pass collided with the cash lane's title. The strips now read
+as two calendars sharing one wall.

@@ -286,6 +286,30 @@
     <div class="mock">
       <span class="eyebrow">If you accepted today &middot; ZIP 65802</span>
       <svg viewBox="0 0 720 235" style="width:100%;display:block" aria-hidden="true" font-family="Inter,sans-serif">
+        <!-- calendar backdrop: alternating month bands + a weekly grid, so
+             the x-axis unmistakably reads as time -->
+        <g>
+          <rect x="20" y="24" width="187" height="166" fill="#F4F8FD"/>
+          <rect x="207" y="24" width="187" height="166" fill="#fff"/>
+          <rect x="394" y="24" width="187" height="166" fill="#F4F8FD"/>
+          <rect x="581" y="24" width="119" height="166" fill="#fff"/>
+        </g>
+        <g font-size="9" font-weight="800" fill="#8296B9" letter-spacing=".08em">
+          <text x="113" y="187" text-anchor="middle">MONTH 1</text>
+          <text x="300" y="187" text-anchor="middle">MONTH 2</text>
+          <text x="487" y="187" text-anchor="middle">MONTH 3</text>
+          <text x="640" y="187" text-anchor="middle">MONTH 4</text>
+        </g>
+        <g stroke="#E4EAF3" stroke-width="1">
+          <line x1="63.7" y1="44" x2="63.7" y2="178"/><line x1="107.3" y1="44" x2="107.3" y2="178"/>
+          <line x1="151" y1="44" x2="151" y2="178"/><line x1="194.7" y1="44" x2="194.7" y2="178"/>
+          <line x1="238.4" y1="44" x2="238.4" y2="178"/><line x1="282" y1="44" x2="282" y2="178"/>
+          <line x1="325.7" y1="44" x2="325.7" y2="178"/><line x1="369.4" y1="44" x2="369.4" y2="178"/>
+          <line x1="413.1" y1="44" x2="413.1" y2="178"/><line x1="456.7" y1="44" x2="456.7" y2="178"/>
+          <line x1="500.4" y1="44" x2="500.4" y2="178"/><line x1="544.1" y1="44" x2="544.1" y2="178"/>
+          <line x1="587.7" y1="44" x2="587.7" y2="178"/><line x1="631.4" y1="44" x2="631.4" y2="178"/>
+          <line x1="675.1" y1="44" x2="675.1" y2="178"/>
+        </g>
         <!-- ruler -->
         <line x1="20" y1="196" x2="700" y2="196" stroke="#E4EAF3" stroke-width="2"/>
         <g font-size="10.5" font-weight="700" fill="#5C6B82">
@@ -295,6 +319,7 @@
           <text x="581" y="214" text-anchor="middle">90</text>
           <text x="700" y="214" text-anchor="end">109</text>
         </g>
+        <text x="700" y="232" font-size="9" font-weight="600" fill="#8296B9" text-anchor="end">thin lines = weeks &middot; shaded bands = months</text>
         <!-- cash lane: 14 days -->
         <text x="20" y="38" font-size="11.5" font-weight="800" fill="#16408F">CASH OFFER &middot; ~14 days</text>
         <rect x="20" y="46" width="12" height="24" rx="5" fill="#16408F"/>
