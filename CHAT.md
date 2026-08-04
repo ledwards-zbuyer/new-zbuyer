@@ -2295,3 +2295,12 @@ badges, and chart lines are all color-synced; the docs replay demo showcases it
 too, and the options table documents it. Verified pre-arrival (three chasing
 chips), 5s reduced-motion (AI chip retired, line landed), 28s (all chips gone,
 three labeled ranges).
+
+**Lucas:** make the chips hold a static position instead of shifting to the
+center as each one flies down
+
+**Claude:** After the flex row's first layout, every chip's offset is measured
+and frozen as an absolute percentage (all measured before any is repositioned,
+so the conversion can't cascade) — a retiring chip now leaves a gap where it
+was and the survivors never move. Verified at 5s (AI gap between the unmoved
+cash and AVM chips) and 10s (cash alone, still at its original left spot).

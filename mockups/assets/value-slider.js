@@ -606,7 +606,25 @@
         crow.appendChild(chip);
         chips[id2] = { el: chip, run: run, fill: fill, tick: tick };
       });
-      if (crow.children.length) slide.appendChild(crow);
+      if (crow.children.length) {
+        slide.appendChild(crow);
+        // freeze every chip where the centered row laid it out — retiring
+        // one must leave a gap, not re-center the survivors
+        requestAnimationFrame(function () {
+          var rw = crow.getBoundingClientRect();
+          if (!rw.width) return;
+          var pos = [], ci;
+          for (ci = 0; ci < crow.children.length; ci++) {
+            pos.push((crow.children[ci].getBoundingClientRect().left - rw.left) / rw.width * 100);
+          }
+          for (ci = 0; ci < crow.children.length; ci++) {
+            var cel = crow.children[ci];
+            cel.style.position = "absolute";
+            cel.style.left = pos[ci] + "%";
+            cel.style.top = "0";
+          }
+        });
+      }
     }
     function retireChip(r, x0, top) {
       var c = chips[r.id];

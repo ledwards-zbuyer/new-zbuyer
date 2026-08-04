@@ -445,8 +445,10 @@ load) while values and home stats remain static demo data. The old
   per estimate still on its way across the CHART TOP — tray-style chase
   checkbox + label, color coded; on addRange with a matching id the box checks
   (350ms beat) then the chip FLIES DOWN to where its range landed and fades
-  (reduced-motion: instant removal). Ids already in `ranges` never chip; the
-  rebuild path re-skips arrived ids. Cash label renamed "Cash offer range" →
+  (reduced-motion: instant removal). Chips FREEZE at their initial centered
+  layout positions (measured once post-layout, converted to absolute %), so a
+  retiring chip leaves a gap instead of re-centering the survivors. Ids
+  already in `ranges` never chip; the rebuild path re-skips arrived ids. Cash label renamed "Cash offer range" →
   "Cash offer estimate" everywhere (report EST, gallery, docs, demo, harnesses).
   Report passes expected (chips + tray + lines all color-synced); docs replay
   demo (exR2) passes it too.
