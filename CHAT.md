@@ -2349,3 +2349,23 @@ with a homes-like-yours band, value as a distribution condition decides; (5)
 Spread-first dials — each source's headline stat is its ± wiggle, endpoints in
 small type. Every concept carries the same verification disclaimer line. Pill
 nav, same demo data as ?ranges=1, cross-linked both ways.
+
+**Lucas:** 5 more. go ahead and show values/ranges freely, and also we will
+utilize zipcode level stats to provide an avg days on market. use that info to
+help integrate the main tradeoff with selling via a cash offer... Time. it's
+slower and more difficult to sell traditionally. cash offer is fast and easy.
+
+**Claude:** Round two (6-10) appended to the same jump page, pills 1-10, second
+brief block. Shared demo stats: ZIP 65802 avg 54 days on market + ~40-day
+financed close ≈ 109 days listing-to-keys vs ~14 cash; list $348-371K vs cash
+$312-335K. (6) Money×time map — value vs days scatter, each path a cloud (cash
+high-left fast/less, listing right more/longer/wider), dashed DOM marker, orange
+"more money costs more time" arc; (7) Two timelines — day-scaled segmented
+strips from the same start date, the ZIP average as the slow lane's long middle,
+money chips at each finish; (8) The wait, priced — +$38K premium / +95 days /
+≈$400 per day of waiting, ≈$306 after ~$94/day carrying costs; (9) Days-to-keys
+race — 14 vs ~109 with the DOM tick on the slow lane and ~7× faster chip; (10)
+The effort ledger — a receipt of what each path asks (days, showings, repairs,
+financing risk, who picks the close date) under free-shown range headers. Fixed
+two mock collisions (map annotation vs cloud caption; cash lane stage labels →
+one arrow line). All verified by render.

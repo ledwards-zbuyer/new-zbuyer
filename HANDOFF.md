@@ -454,9 +454,10 @@ load) while values and home stats remain static demo data. The old
   Report passes expected (chips + tray + lines all color-synced); docs replay
   demo (exR2) passes it too.
   VALUE DISPLAY CONCEPTS (2026-08-04): `value-display-concepts.html` — jump page
-  of FIVE structurally different ways to show the estimates, all designed around
-  the member-relations brief (Steven's concern: agents receiving leads who've
-  anchored on one errant automated number). 1 Brackets-not-numbers ("The $300Ks",
+  of TEN concepts in two rounds. ROUND ONE (1-5): structurally different ways to
+  show the estimates designed around the member-relations brief (Steven's
+  concern: agents receiving leads who've anchored on one errant automated
+  number). 1 Brackets-not-numbers ("The $300Ks",
   no digits, exact figures "unlock with your expert"); 2 Value forecast (weather
   framing, H/L pairs, per-source confidence meters); 3 Path-to-a-real-number
   (cone narrowing through expert review → walkthrough/inspection to a locked,
@@ -464,9 +465,18 @@ load) while values and home stats remain static demo data. The old
   (nearby-sales dot strip with a homes-like-yours band — value as a
   distribution); 5 Spread-first dials (the headline stat is each source's ±
   wiggle, endpoints in small type). Every concept repeats the same ground truth:
-  a real number only exists after verification and an inspection. Self-contained
-  page (inline SVG/JS mocks, fixed dot positions — no randomness), same demo
-  data as ?ranges=1, cross-links to the ranges view + scenario gallery.
+  a real number only exists after verification and an inspection. ROUND TWO
+  (6-10, same day): values/ranges shown FREELY + ZIP-level avg days-on-market
+  telling the TIME tradeoff (traditional = slower/harder for a stronger price,
+  cash = fast/easy; demo stats: ZIP 65802 avg 54 DOM + ~40d financed close ≈
+  109 days listing-to-keys vs ~14 cash). 6 Money×time map (value vs days
+  scatter, paths as clouds); 7 Two timelines (segmented day-scaled strips, DOM
+  the long middle); 8 The wait, priced (+$38K / +95 days / ≈$400/day gross,
+  ≈$306 after ~$94/day carrying); 9 Days-to-keys race (14 vs ~109, DOM tick on
+  the slow lane); 10 The effort ledger (receipt of what each path asks:
+  showings, repairs, financing risk, close-date control). Self-contained page
+  (inline SVG/JS mocks, fixed dot positions — no randomness), same demo data as
+  ?ranges=1, cross-links to the ranges view + scenario gallery.
   SCENARIO GALLERY:
   `range-scenarios.html` — nine live circumstances (agreement / disparate /
   wide / narrow / AI=AVM tie / cash discount / one-uncertain / edge points

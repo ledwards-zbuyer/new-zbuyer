@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Value display concepts — five ways</title>
+<title>Value display concepts — ten ways</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -68,11 +68,14 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>Value display concepts — five ways</h1>
-  <p class="lead"><b>The brief:</b> show the estimates without handing the seller one precise
-  number to anchor on — protecting agent members from leads with fixed expectations built on an
-  errant automated valuation. Every concept below is variance-forward and repeats the same
+  <h1>Value display concepts — ten ways</h1>
+  <p class="lead"><b>Round one (1–5):</b> show the estimates without handing the seller one
+  precise number to anchor on — protecting agent members from leads with fixed expectations
+  built on an errant automated valuation. Variance-forward, and every concept repeats the same
   ground truth: <i>a real number only exists after verification and an inspection.</i>
+  <b><a href="#round2">Round two (6–10)</a>:</b> values shown freely, with ZIP-level
+  days-on-market stats telling the time tradeoff — traditional is slower and harder for a
+  stronger price; cash is fast and easy.
   Compare with the current
   <a href="report-classic-blue.html?ranges=1">curve + ranges view</a> ·
   <a href="range-scenarios.html">range scenarios</a>. Demo data throughout: Cash $312–335K
@@ -84,6 +87,11 @@
     <a href="#cone">3 · Path to a real number</a>
     <a href="#market">4 · Your home among the market</a>
     <a href="#spread">5 · Spread-first dials</a>
+    <a href="#map">6 · Money × time map</a>
+    <a href="#timelines">7 · Two timelines</a>
+    <a href="#perday">8 · The wait, priced</a>
+    <a href="#race">9 · Days-to-keys race</a>
+    <a href="#ledger">10 · The effort ledger</a>
   </div>
 
   <div class="card" id="brackets">
@@ -215,6 +223,186 @@
       <div class="dials" id="dials"></div>
       <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
       Spreads shrink to a single verified number after your walkthrough and inspection.</p>
+    </div>
+  </div>
+
+  <h1 style="font-size:21px;margin-top:38px" id="round2">Round two — the time tradeoff</h1>
+  <p class="lead">Values and ranges shown <b>freely</b>, plus ZIP-level stats (average days on
+  market) to put the real cost of the traditional path — <b>time</b> — next to the cash offer's
+  speed. The story in every concept: <i>traditional is slower and harder for a stronger price;
+  cash is fast and easy.</i> Demo stats: ZIP 65802 averages <b>54 days on market</b> + ~40-day
+  financed close (~94 days listing-to-keys); a cash offer closes in ~14. List range $348–371K,
+  cash range $312–335K.</p>
+
+  <div class="card" id="map">
+    <h2>6 · The money &times; time map</h2>
+    <p class="why"><b>The tradeoff as geometry:</b> value on one axis, days-to-keys on the other.
+    Each path is a cloud, not a point — cash sits high-left (fast, a little less), traditional
+    sits right (more, much longer, wider spread because the market decides). One glance explains
+    the whole decision.</p>
+    <div class="mock">
+      <span class="eyebrow">Every way to sell, placed &middot; ZIP 65802</span>
+      <svg viewBox="0 0 720 258" style="width:100%;display:block" aria-hidden="true" font-family="Inter,sans-serif">
+        <line x1="60" y1="200" x2="690" y2="200" stroke="#E4EAF3" stroke-width="2"/>
+        <line x1="60" y1="20" x2="60" y2="200" stroke="#E4EAF3" stroke-width="2"/>
+        <text x="52" y="204" font-size="10.5" font-weight="700" fill="#5C6B82" text-anchor="end">$300K</text>
+        <text x="52" y="114" font-size="10.5" font-weight="700" fill="#5C6B82" text-anchor="end">$340K</text>
+        <text x="52" y="26" font-size="10.5" font-weight="700" fill="#5C6B82" text-anchor="end">$380K</text>
+        <text x="60" y="218" font-size="10.5" font-weight="700" fill="#5C6B82">0 days</text>
+        <text x="217" y="218" font-size="10.5" font-weight="700" fill="#5C6B82" text-anchor="middle">30</text>
+        <text x="375" y="218" font-size="10.5" font-weight="700" fill="#5C6B82" text-anchor="middle">60</text>
+        <text x="532" y="218" font-size="10.5" font-weight="700" fill="#5C6B82" text-anchor="middle">90</text>
+        <text x="690" y="218" font-size="10.5" font-weight="700" fill="#5C6B82" text-anchor="end">120</text>
+        <!-- zip DOM marker -->
+        <line x1="343" y1="24" x2="343" y2="200" stroke="#8296B9" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <text x="349" y="193" font-size="10" font-weight="700" fill="#8296B9">avg 54 days on market &middot; ZIP 65802</text>
+        <!-- cash cloud: fast, a little less -->
+        <ellipse cx="134" cy="150" rx="26" ry="27" fill="#16408F" opacity=".16"/>
+        <ellipse cx="134" cy="150" rx="26" ry="27" fill="none" stroke="#16408F" stroke-width="2"/>
+        <circle cx="134" cy="151" r="5" fill="#16408F"/>
+        <text x="134" y="106" font-size="11.5" font-weight="800" fill="#16408F" text-anchor="middle">Cash offer</text>
+        <text x="134" y="119" font-size="10.5" font-weight="600" fill="#16408F" text-anchor="middle">$312–335K &middot; ~14 days</text>
+        <!-- traditional cloud: more, much longer, wider -->
+        <ellipse cx="554" cy="65" rx="105" ry="27" fill="#1D4FD7" opacity=".14"/>
+        <ellipse cx="554" cy="65" rx="105" ry="27" fill="none" stroke="#1D4FD7" stroke-width="2"/>
+        <circle cx="554" cy="63" r="5" fill="#1D4FD7"/>
+        <text x="554" y="24" font-size="11.5" font-weight="800" fill="#1D4FD7" text-anchor="middle">List with an agent</text>
+        <text x="554" y="37" font-size="10.5" font-weight="600" fill="#1D4FD7" text-anchor="middle">$348–371K &middot; ~75–115 days</text>
+        <!-- the tradeoff arrow -->
+        <path d="M180 138 C 300 95 380 88 436 76" fill="none" stroke="#FF6B4A" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>
+        <text x="300" y="128" font-size="10.5" font-weight="800" fill="#FF6B4A">more money costs more time</text>
+      </svg>
+      <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l5-11 4 7 3-4 4 8"/></svg>
+      Clouds, not points — exact figures firm up after verification and an inspection.</p>
+    </div>
+  </div>
+
+  <div class="card" id="timelines">
+    <h2>7 · Two timelines</h2>
+    <p class="why"><b>Walk both roads week by week:</b> the same start date, two very different
+    calendars. The traditional strip is dominated by the ZIP's average time on market and a
+    financed close; the cash strip is over before the other one gets its photos taken. Money
+    waits at the end of each road.</p>
+    <div class="mock">
+      <span class="eyebrow">If you accepted today &middot; ZIP 65802</span>
+      <svg viewBox="0 0 720 235" style="width:100%;display:block" aria-hidden="true" font-family="Inter,sans-serif">
+        <!-- ruler -->
+        <line x1="20" y1="196" x2="700" y2="196" stroke="#E4EAF3" stroke-width="2"/>
+        <g font-size="10.5" font-weight="700" fill="#5C6B82">
+          <text x="20" y="214">day 0</text>
+          <text x="207" y="214" text-anchor="middle">30</text>
+          <text x="394" y="214" text-anchor="middle">60</text>
+          <text x="581" y="214" text-anchor="middle">90</text>
+          <text x="700" y="214" text-anchor="end">109</text>
+        </g>
+        <!-- cash lane: 14 days -->
+        <text x="20" y="38" font-size="11.5" font-weight="800" fill="#16408F">CASH OFFER &middot; ~14 days</text>
+        <rect x="20" y="46" width="12" height="24" rx="5" fill="#16408F"/>
+        <rect x="36" y="46" width="44" height="24" rx="5" fill="#16408F" opacity=".75"/>
+        <rect x="84" y="46" width="43" height="24" rx="5" fill="#16408F" opacity=".5"/>
+        <text x="20" y="84" font-size="9.5" font-weight="600" fill="#5C6B82">accept &rarr; inspection &rarr; close</text>
+        <rect x="135" y="44" width="106" height="28" rx="9" fill="#FFF4F0" stroke="#FF6B4A" stroke-width="1.5"/>
+        <text x="188" y="62" font-size="11" font-weight="800" fill="#FF6B4A" text-anchor="middle">$312–335K</text>
+        <!-- traditional lane: ~109 days -->
+        <text x="20" y="128" font-size="11.5" font-weight="800" fill="#1D4FD7">LIST WITH AN AGENT &middot; ~109 days</text>
+        <rect x="20" y="136" width="93" height="24" rx="5" fill="#1D4FD7" opacity=".35"/>
+        <rect x="117" y="136" width="337" height="24" rx="5" fill="#1D4FD7" opacity=".75"/>
+        <rect x="458" y="136" width="242" height="24" rx="5" fill="#1D4FD7" opacity=".5"/>
+        <g font-size="9.5" font-weight="600" fill="#5C6B82">
+          <text x="20" y="174">prep &amp; photos &middot; 15d</text>
+          <text x="285" y="174" text-anchor="middle">on the market &middot; avg 54d &middot; showings &amp; weekends</text>
+          <text x="579" y="174" text-anchor="middle">financed close &middot; ~40d</text>
+        </g>
+        <text x="285" y="152" font-size="9.5" font-weight="800" fill="#fff" text-anchor="middle">ZIP 65802 average</text>
+        <rect x="594" y="103" width="106" height="28" rx="9" fill="#E7EEFC" stroke="#1D4FD7" stroke-width="1.5"/>
+        <text x="647" y="121" font-size="11" font-weight="800" fill="#1D4FD7" text-anchor="middle">$348–371K</text>
+      </svg>
+      <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+      Timelines are ZIP averages, ranges are estimates — both firm up after verification and inspection.</p>
+    </div>
+  </div>
+
+  <div class="card" id="perday">
+    <h2>8 · The wait, priced</h2>
+    <p class="why"><b>Time as arithmetic:</b> the traditional path's premium divided by the extra
+    days it takes, minus what those days cost to carry. The seller sees exactly what waiting
+    earns per day — and that "more money" and "more, after costs" are different numbers. No
+    villain, just math the member can walk through.</p>
+    <div class="mock">
+      <span class="eyebrow">What the wait is worth &middot; midpoints, ZIP 65802 averages</span>
+      <div class="fc-grid">
+        <div class="fc">
+          <h4 style="color:#1D4FD7">The premium</h4>
+          <p style="font-size:26px;font-weight:900;margin-top:8px">+$38K</p>
+          <p class="fc-note">listing midpoint $360K vs cash midpoint $322K</p>
+        </div>
+        <div class="fc">
+          <h4 style="color:#16408F">The wait</h4>
+          <p style="font-size:26px;font-weight:900;margin-top:8px">+95 days</p>
+          <p class="fc-note">~109 days listed vs ~14 days cash (avg 54 DOM here)</p>
+        </div>
+        <div class="fc">
+          <h4 style="color:#FF6B4A">Per day of waiting</h4>
+          <p style="font-size:26px;font-weight:900;margin-top:8px">&asymp;$400<span style="font-size:13px;font-weight:700;color:#5C6B82">/day</span></p>
+          <p class="fc-note">&asymp;$306/day after ~$94/day carrying costs (mortgage, taxes, utilities)</p>
+        </div>
+      </div>
+      <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8h9a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Some homes earn their wait, some don't — your expert runs this math with your real numbers.</p>
+    </div>
+  </div>
+
+  <div class="card" id="race">
+    <h2>9 · The days-to-keys race</h2>
+    <p class="why"><b>One stat, told as a race:</b> days until the sale is done. Cash finishes
+    before the traditional path leaves prep, and the ZIP's average time-on-market is the long
+    middle of the slow lane. The payoff chips at each finish line keep the money visible without
+    making it the headline.</p>
+    <div class="mock">
+      <span class="eyebrow">Days to keys &middot; ZIP 65802</span>
+      <div style="display:flex;align-items:center;gap:14px;margin:6px 0 4px">
+        <b style="flex:none;width:96px;font-size:12px;color:#16408F">CASH OFFER</b>
+        <div style="flex:1;position:relative;height:18px;background:var(--soft);border-radius:9px">
+          <span style="position:absolute;left:0;top:0;height:18px;width:13%;background:#16408F;border-radius:9px"></span>
+        </div>
+        <b style="flex:none;font-size:13px">14 days</b>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin:0 0 14px 110px">done before the other path finishes photos &middot; <b style="color:#FF6B4A">~7&times; faster</b> &middot; $312–335K at the finish</p>
+      <div style="display:flex;align-items:center;gap:14px;margin:0 0 4px">
+        <b style="flex:none;width:96px;font-size:12px;color:#1D4FD7">LIST &amp; SELL</b>
+        <div style="flex:1;position:relative;height:18px;background:var(--soft);border-radius:9px">
+          <span style="position:absolute;left:0;top:0;height:18px;width:100%;background:linear-gradient(90deg,#7FC4FF,#1D4FD7);border-radius:9px"></span>
+          <span style="position:absolute;left:63%;top:-4px;height:26px;width:2px;background:#fff;box-shadow:0 0 0 1px #1D4FD7"></span>
+        </div>
+        <b style="flex:none;font-size:13px">~109 days</b>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin:0 0 2px 110px">the tick is this ZIP's <b>average 54 days on market</b>, then a ~40-day financed close &middot; $348–371K at the finish</p>
+      <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l-8 11h6l-2 7 8-11h-6z"/></svg>
+      Speed is the cash offer's whole trade — the exact figure still takes verification and an inspection.</p>
+    </div>
+  </div>
+
+  <div class="card" id="ledger">
+    <h2>10 · The effort ledger</h2>
+    <p class="why"><b>Itemize "harder":</b> money is only half the tradeoff — the other half is
+    what each path asks of the seller. A receipt-style ledger makes the slow path's hidden work
+    (showings, strangers, repair negotiations, financing risk) as visible as its stronger price.</p>
+    <div class="mock">
+      <span class="eyebrow">What each path asks of you</span>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <tr>
+          <th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)"></th>
+          <th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--line)"><span style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#16408F">Cash offer</span><br><b style="font-size:14.5px">$312–335K</b></th>
+          <th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--line)"><span style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#1D4FD7">List &amp; sell</span><br><b style="font-size:14.5px">$348–371K</b></th>
+        </tr>
+        <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Days to keys</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>~14</b></td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>~109</b> <span style="color:var(--muted)">(avg 54 on market in 65802)</span></td></tr>
+        <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Showings &amp; open houses</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>None</b></td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)">~15–25 walkthroughs</td></tr>
+        <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Repairs before sale</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>Sold as-is</b></td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)">Often negotiated after inspection</td></tr>
+        <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Deal risk</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>Minimal</b> — no financing</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)">Buyer financing can fall through</td></tr>
+        <tr><td style="padding:9px 10px;color:var(--muted);font-weight:600">Your close date</td><td style="padding:9px 10px"><b>You pick it</b></td><td style="padding:9px 10px">The market picks it</td></tr>
+      </table>
+      <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>
+      Stronger price or an easier road — both are wins. Ranges firm up after verification and inspection.</p>
     </div>
   </div>
 </div>
