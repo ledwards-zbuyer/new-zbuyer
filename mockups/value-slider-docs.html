@@ -131,26 +131,29 @@
   </div>
 
   <div class="card">
-    <h2>4. Estimate ranges — terrace lines inside the curve</h2>
+    <h2>4. Estimate ranges — points on the curve, ranges through them</h2>
     <p>Estimates that are <b>ranges</b> (an AI estimate, an AVM band, a cash-offer band) render as
-    horizontal colored lines <b>inside the shaded chart</b>. Each line spans its range on the
-    x-axis and sits at the curve height of its <b>own low value</b>, hugging the underside of the
-    curve — so vertical position carries meaning, and because the curve rises monotonically,
-    lines stacked lowest→highest always fit. Each range also takes an optional single
-    <code>value</code> — <b>the point estimate, drawn as a dot riding its line</b> at that value's
-    x-position (clamped into the range). The value domain stretches to cover every range endpoint
-    (plus any anchors and the optional <code>domain</code> pin).
+    horizontal colored lines <b>inside the shaded chart</b>. With a <code>value</code> — the single
+    point estimate — <b>the dot is pinned to the curve's edge</b> at that value's x-position
+    (clamped into the range), the range line runs horizontally <b>through the dot</b> from
+    <code>lo</code> to <code>hi</code>, and dashed verticals project each end onto the curve:
+    down at the low end (the curve is lower there), up at the high end. Vertical position is the
+    value mapping itself. Without a <code>value</code>, the line falls back to a terrace at its
+    low end's curve height. The value domain stretches to cover every range endpoint (plus any
+    anchors and the optional <code>domain</code> pin).
     Eight real-world shapes — agreement, disparate, wide, narrow, ties, cash discount, mixed
     confidence, edge points — render live on the
     <a href="range-scenarios.html">scenario gallery</a>.</p>
-    <p>With fewer than 2 anchors this is <b>chart mode</b>: no handle, no snapping, the curve stays
-    unfilled (the gray track — a blue fill would drown blue-family lines), and the headline shows
-    the whole domain.</p>
-    <p><b>Ties are handled:</b> two ranges with the same (or nearly the same) low value would share
-    a terrace, so the newcomer staggers 7px below the incumbent — or 7px above, if below runs out
-    of chart at the domain floor — and its label anchors to the opposite end of its line, so
-    neither the lines nor the labels ever overprint. Identical AI and AVM ranges render as a
-    clean stacked pair.</p>
+    <p><b>The handle snaps to the points.</b> With fewer than 2 anchors this is <b>chart mode</b>:
+    the curve starts unfilled and the point values are the snap targets — the pill handle returns
+    with the first point (riding the latest arrival until the user grabs it), dragging snaps to
+    the nearest point, arrow keys step between them, and the fill — translucent here so the
+    colored lines stay readable inside it — follows the handle.</p>
+    <p><b>Collisions:</b> point-pinned lines can't move (the dot fixes them to the curve), so their
+    <b>labels</b> dodge instead — each label takes the first clean spot of: above the line's left
+    end, above its right end, below its right end (the widget looks ahead at every known line
+    before placing). Valueless terrace lines still stagger apart as before. Identical AI and AVM
+    ranges read as a tight stack whose labels sit at opposite ends.</p>
     <div class="demo">
       <div class="demo-tag">Live — three estimate ranges, chart mode</div>
       <div id="exR1"></div>
@@ -184,10 +187,11 @@ zbEstimateTray({
           feeds the dot tooltips, end labels, and aria text. Optional when <code>ranges</code>
           or <code>domain</code> is supplied.</td></tr>
       <tr><td><code>ranges</code></td><td>array</td>
-          <td>0–4 of <code>{ id, lo, hi, value, label, color }</code> — estimate ranges drawn as
-          terrace lines inside the curve (section 4). <code>value</code> optional: the single
-          point estimate, a dot riding the line (clamped into [lo,&nbsp;hi]). <code>color</code>
-          optional (defaults rotate navy / sky / primary).</td></tr>
+          <td>0–4 of <code>{ id, lo, hi, value, label, color }</code> — estimate ranges drawn
+          inside the curve (section 4). <code>value</code> optional: the point estimate — a dot
+          pinned to the curve edge with the line running through it (clamped into
+          [lo,&nbsp;hi]); it also becomes a handle snap target. <code>color</code> optional
+          (defaults rotate navy / sky / primary).</td></tr>
       <tr><td><code>domain</code></td><td><code>{ lo, hi }</code></td>
           <td>Pins the value scale with no visuals, so later <code>addRange()</code> arrivals
           draw in place instead of rescaling. Alone (no anchors/ranges) it renders the empty

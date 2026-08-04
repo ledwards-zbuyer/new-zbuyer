@@ -410,14 +410,19 @@ load) while values and home stats remain static demo data. The old
   band); `domain:{lo,hi}` pins the scale with no visuals so arrivals draw in
   place; `addRange(r)` draws a line in (rebuilds on a wider scale if outside the
   domain); anchors now OPTIONAL. Each range also takes `value` (2026-08-03): the
-  single POINT estimate, drawn as a dot riding its line at x(value), clamped
-  into [lo,hi] — the report EST map carries all three (Cash 322K / AI 349K /
-  AVM 362K), so ?ranges=1 shows 3 points within 3 ranges. COINCIDENT/x-
-  overlapping ranges keep 18px vertical separation (labels ride ~13px above
-  lines, so lines must clear labels too): the newcomer walks UP when its
-  natural terrace is at/above the incumbent (preserves value order) and DOWN
-  otherwise, flipping direction at the chart edges, its label anchoring to the
-  other end of its line — lines and labels never overprint. SCENARIO GALLERY:
+  single POINT estimate — its dot PINNED TO THE CURVE EDGE at x(value) (clamped
+  into [lo,hi]), the range line running horizontally THROUGH the dot lo→hi,
+  dashed verticals projecting each end onto the curve (down at lo, up at hi;
+  reworked same day from dot-rides-terrace-line per Lucas). The points are the
+  HANDLE's snap targets in chart mode — the handle is back: appears with the
+  first point, rides the latest arrival until the user grabs it, drag snaps to
+  the nearest point, arrows step, and the fill follows it at 35% opacity
+  (full-strength fill drowned the blue-family lines; unfilled until the first
+  point). Report EST map carries all three points (Cash 322K / AI 349K / AVM
+  362K) = 3 points within 3 ranges on ?ranges=1. COLLISIONS: point-pinned lines
+  never move — their LABELS dodge (first clean of left / above-right /
+  below-right, with lookahead over all known lines); valueless terrace lines
+  keep the 18px order-preserving stagger. SCENARIO GALLERY:
   `range-scenarios.html` — eight live circumstances (agreement / disparate /
   wide / narrow / AI=AVM tie / cash discount / one-uncertain / edge points,
   incl. an out-of-range point clamping in), jump-pill nav, cross-linked from

@@ -12,25 +12,33 @@
  *         { value: 345000, label: "Cash+" },
  *         { value: 371000, label: "Estimated market value" }
  *       ],                                // OPTIONAL when ranges are supplied
- *       ranges: [                         // 0-4 estimate ranges drawn as
- *                                         // horizontal terrace lines INSIDE the
- *                                         // shaded curve, each at the curve
- *                                         // height of its own low value:
+ *       ranges: [                         // 0-4 estimate ranges INSIDE the
+ *                                         // shaded curve:
  *         { id: "cash", lo: 312000, hi: 335000, value: 322000,
  *           label: "Cash offer range", color: "#16408F" }
- *                                         // value: OPTIONAL single point
- *                                         // estimate — a dot riding the line
- *                                         // at x(value), clamped into [lo,hi]
+ *                                         // value = the single point estimate:
+ *                                         // its dot is PINNED TO THE CURVE at
+ *                                         // x(value) (clamped into [lo,hi]),
+ *                                         // the range line runs horizontally
+ *                                         // THROUGH the dot lo→hi, and dashed
+ *                                         // verticals project the ends onto
+ *                                         // the curve (down at lo, up at hi).
+ *                                         // With <2 anchors the points are the
+ *                                         // handle's SNAP TARGETS: the handle
+ *                                         // appears with the first point,
+ *                                         // rides the latest arrival until
+ *                                         // grabbed, and the fill (translucent
+ *                                         // here) follows it. Valueless ranges
+ *                                         // fall back to a terrace line at
+ *                                         // their low end's curve height.
  *       ],                                // color optional (defaults rotate
  *                                         // navy/sky/primary); the value domain
  *                                         // spans anchors + range endpoints.
- *                                         // Coincident ranges (equal lo = the
- *                                         // same terrace) auto-stagger 7px
- *                                         // apart, the newcomer's label moving
- *                                         // to its other end.
- *                                         // Ranges with <2 anchors = a static
- *                                         // CHART: no handle, no snapping,
- *                                         // headline shows the whole domain.
+ *                                         // Pinned lines never move — LABELS
+ *                                         // dodge collisions (left, then
+ *                                         // above-right, then below-right,
+ *                                         // with lookahead over known lines);
+ *                                         // valueless terraces stagger 18px.
  *       domain: { lo: 312000, hi: 371000 }, // OPTIONAL scale pin (no visuals):
  *                                         // fixes the chart's span up front so
  *                                         // addRange() arrivals draw in place
@@ -127,7 +135,7 @@
     ".zvs-slide.zvs-static{cursor:default}" +
     ".zvs-curve{position:absolute;left:0;right:0;bottom:" + BOTTOM + "px;width:100%;height:" + CURVE_H + "px;display:block}" +
     ".zvs-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--zvs-dot,#8296B9);border:2px solid #fff;box-shadow:0 1px 3px rgba(14,27,51,.3);transform:translate(-50%,-50%);pointer-events:none}" +
-    ".zvs-handle{position:absolute;top:59%;width:26px;height:74px;border-radius:13px;background:var(--zvs-cta,#FF6B4A);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);transform:translate(-50%,-50%);cursor:grab;z-index:2}" +
+    ".zvs-handle{position:absolute;top:59%;width:26px;height:74px;border-radius:13px;background:var(--zvs-cta,#FF6B4A);border:3px solid #fff;box-shadow:0 4px 14px rgba(14,27,51,.45);transform:translate(-50%,-50%);cursor:grab;z-index:3}" +
     ".zvs-handle::before{content:\"\";position:absolute;left:50%;top:50%;width:8px;height:22px;transform:translate(-50%,-50%);border-left:2px solid rgba(255,255,255,.8);border-right:2px solid rgba(255,255,255,.8)}" +
     ".zvs-handle.zvs-snap{transition:left .18s ease}" +
     ".zvs-handle:focus-visible{outline:none;box-shadow:0 0 0 5px rgba(29,79,215,.28),0 3px 10px rgba(14,27,51,.4)}" +
@@ -136,11 +144,14 @@
     ".zvs-end b{display:block;font-size:15px;font-weight:800;color:var(--zvs-ink,#14233D)}" +
     ".zvs-end span{display:block;font-size:12px;color:var(--zvs-muted,#5C6B82);margin-top:2px}" +
     ".zvs-end.zvs-right{text-align:right}" +
-    /* estimate range terraces: colored lines inside the shaded curve */
-    ".zvs-range{position:absolute;height:4px;border-radius:2px;pointer-events:none;z-index:1;transition:width .55s cubic-bezier(.2,.7,.3,1)}" +
-    ".zvs-rlabel{position:absolute;transform:translateY(-100%);font-size:10.5px;font-weight:700;letter-spacing:.01em;white-space:nowrap;pointer-events:none;z-index:1}" +
-    /* the point estimate: a dot riding its range line */
-    ".zvs-rdot{position:absolute;width:11px;height:11px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(14,27,51,.35);transform:translate(-50%,-50%);pointer-events:none;z-index:2;transition:opacity .3s ease .3s}" +
+    /* estimate ranges: colored lines inside the shaded curve (white halo so
+       they read over the blue fill once the handle brings it back) */
+    ".zvs-range{position:absolute;height:4px;border-radius:2px;pointer-events:none;z-index:1;box-shadow:0 0 0 1.5px rgba(255,255,255,.85);transition:width .55s cubic-bezier(.2,.7,.3,1)}" +
+    ".zvs-rlabel{position:absolute;transform:translateY(-100%);font-size:10.5px;font-weight:700;letter-spacing:.01em;white-space:nowrap;pointer-events:none;z-index:1;text-shadow:0 1px 0 rgba(255,255,255,.7),0 -1px 0 rgba(255,255,255,.7)}" +
+    /* the point estimate: a dot pinned to the curve edge at x(value) */
+    ".zvs-rdot{position:absolute;width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(14,27,51,.35);transform:translate(-50%,-50%);pointer-events:none;z-index:2;transition:opacity .3s ease .3s}" +
+    /* dashed verticals projecting the range ends onto the curve */
+    ".zvs-rcon{position:absolute;width:0;border-left:2px dashed;opacity:.55;pointer-events:none;z-index:1;transition:opacity .3s ease .3s}" +
     /* pending-offer wait state + animated arrival */
     ".zvs-wait{position:absolute;left:0;right:0;bottom:" + BOTTOM + "px;width:100%;overflow:visible;pointer-events:none;z-index:1}" +
     ".zvs-march{animation:zvsMarch 1.1s linear infinite}" +
@@ -151,7 +162,7 @@
     "@keyframes zvsPulse{0%,100%{opacity:.4}50%{opacity:.95}}" +
     "@keyframes zvsIn{from{opacity:0}}" +
     "@keyframes zvsEndsIn{from{max-height:0;opacity:0}to{max-height:56px;opacity:1}}" +
-    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot{transition:none}}";
+    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-rcon{transition:none}}";
 
   function injectCSS() {
     if (document.getElementById("zvs-style")) return;
@@ -303,22 +314,26 @@
       });
     }
 
-    var handle = null;
-    if (!chartMode) {
+    // snap targets: the anchors when interactive; in chart mode the ranges'
+    // POINT values snap instead (they register as ranges render/arrive)
+    var snaps = interactive ? anchors : [];
+
+    var handle = null, idx = -1, dragWired = false;
+    function buildHandle(locked) {
       handle = document.createElement("span");
       handle.className = "zvs-handle";
       if (colors.handle) handle.style.background = colors.handle;
-      handle.tabIndex = single ? -1 : 0;
+      handle.tabIndex = locked ? -1 : 0;
       handle.setAttribute("role", "slider");
       handle.setAttribute("aria-label", opts.ariaLabel || "Explore the value range");
+      handle.style.left = "50%";
       slide.appendChild(handle);
+      if (!locked) wireDrag();
     }
-
-    var idx = -1; // untouched: headline keeps the full range
     function snapTo(i) {
-      if (!interactive) return;
-      idx = Math.max(0, Math.min(anchors.length - 1, i));
-      var a = anchors[idx];
+      if (!snaps.length || !handle) return;
+      idx = Math.max(0, Math.min(snaps.length - 1, i));
+      var a = snaps[idx];
       handle.classList.add("zvs-snap");
       handle.style.left = a.p + "%";
       paintCurve(a.p);
@@ -326,25 +341,10 @@
       handle.setAttribute("aria-valuetext", fmt(a.value) + (a.label ? " — " + a.label : ""));
       if (typeof opts.onSelect === "function") opts.onSelect(a, idx);
     }
-
-    if (chartMode) {
-      // static chart: the curve stays UNFILLED (gray track) so the colored
-      // terrace lines carry the color story — the blue gradient would drown
-      // blue-family lines. Headline shows the whole domain.
-      setHeadline(fmt(vmin) + " – " + fmt(vmax), rangeLabel);
-      clipRect.setAttribute("width", 0);
-    } else if (single) {
-      var only = anchors[0];
-      handle.style.left = "50%";
-      handle.setAttribute("aria-valuetext", fmt(only.value) + (only.label ? " — " + only.label : ""));
-      setHeadline(fmt(only.value), only.label);
-      paintCurve(100);
-    } else {
-      handle.style.left = "50%";
-      handle.setAttribute("aria-valuetext", fmt(vmin) + " to " + fmt(vmax));
-      setHeadline(fmt(vmin) + " – " + fmt(vmax), rangeLabel);
-      paintCurve(50);
-
+    var touched = false; // has the user grabbed the handle yet?
+    function wireDrag() {
+      if (dragWired) return;
+      dragWired = true;
       var dragging = false;
       function pctFromX(clientX) {
         var r = slide.getBoundingClientRect();
@@ -352,6 +352,7 @@
       }
       slide.addEventListener("pointerdown", function (e) {
         dragging = true;
+        touched = true;
         handle.classList.remove("zvs-snap"); // free movement while dragging
         try { slide.setPointerCapture(e.pointerId); } catch (err) {}
         var p0 = pctFromX(e.clientX);
@@ -369,17 +370,55 @@
         if (!dragging) return;
         dragging = false;
         var p = pctFromX(e.clientX), best = 0;
-        anchors.forEach(function (a, i) {
-          if (Math.abs(a.p - p) < Math.abs(anchors[best].p - p)) best = i;
+        snaps.forEach(function (a, i) {
+          if (Math.abs(a.p - p) < Math.abs(snaps[best].p - p)) best = i;
         });
         snapTo(best);
       }
       slide.addEventListener("pointerup", endDrag);
       slide.addEventListener("pointercancel", endDrag);
       handle.addEventListener("keydown", function (e) {
+        touched = true;
         if (e.key === "ArrowRight" || e.key === "ArrowUp") { snapTo(idx < 0 ? 0 : idx + 1); e.preventDefault(); }
         else if (e.key === "ArrowLeft" || e.key === "ArrowDown") { snapTo(idx < 0 ? 0 : idx - 1); e.preventDefault(); }
       });
+    }
+    // chart mode: each range's point value becomes a snap target as it lands;
+    // the handle (and the fill that rides it) returns with the first point
+    function registerPoint(r) {
+      var p = pOf(r.value);
+      snaps.push({ value: r.value, label: r.label, p: p });
+      snaps.sort(function (a, b) { return a.value - b.value; });
+      if (!handle) {
+        slide.classList.remove("zvs-static"); // points make it interactive
+        buildHandle(false);
+      }
+      if (!touched) { // until the user grabs it, ride the latest arrival
+        handle.classList.add("zvs-snap");
+        handle.style.left = p + "%";
+        paintCurve(p);
+      }
+    }
+
+    if (chartMode) {
+      // the curve starts UNFILLED (gray track) so the colored range lines
+      // carry the color story; the fill comes back with the handle once a
+      // point value registers — TRANSLUCENT here, so lines and labels stay
+      // readable inside it (full-strength blue drowned the blue family).
+      setHeadline(fmt(vmin) + " – " + fmt(vmax), rangeLabel);
+      clipRect.setAttribute("width", 0);
+      fillPath.setAttribute("opacity", ".35");
+    } else if (single) {
+      buildHandle(true);
+      var only = anchors[0];
+      handle.setAttribute("aria-valuetext", fmt(only.value) + (only.label ? " — " + only.label : ""));
+      setHeadline(fmt(only.value), only.label);
+      paintCurve(100);
+    } else {
+      buildHandle(false);
+      handle.setAttribute("aria-valuetext", fmt(vmin) + " to " + fmt(vmax));
+      setHeadline(fmt(vmin) + " – " + fmt(vmax), rangeLabel);
+      paintCurve(50);
     }
 
     // end labels: the domain extremes, labeled by whichever anchor or range
@@ -409,46 +448,76 @@
       container.appendChild(ends);
     }
 
-    /* ---- estimate range terraces: each line spans x(lo)→x(hi) at the curve
-       height of its OWN low value (inset a few px below the curve top there).
-       The curve rises monotonically, so a line that clears its left end
-       clears its whole span — stacking lowest→highest is automatic. HTML
-       elements, not SVG: the curve svg stretches (preserveAspectRatio none)
-       and would distort strokes. ---- */
+    /* ---- estimate ranges. WITH a point value: the dot is pinned to the
+       curve edge at x(value), the range line runs horizontally THROUGH it
+       from x(lo) to x(hi), and dashed verticals project each end onto the
+       curve (down at the low end — the curve is lower there — and up at the
+       high end). WITHOUT a value: legacy terrace at the low end's curve
+       height. HTML elements, not SVG: the curve svg stretches
+       (preserveAspectRatio none) and would distort strokes. ---- */
     var RANGE_COLS = ["#16408F", "#3BA4F4", "#1D4FD7", "#8296B9"];
     var rangeCount = 0, R_INSET = 3, placedLines = [];
+    var BASE_Y = SLIDE_H - BOTTOM - CURVE_H; // slide-y of the curve's top edge
+    // lookahead for label placement: every point-pinned line's geometry is
+    // known before anything draws (lines can't dodge — the dot pins them to
+    // the curve — so the LABELS do the dodging, and they need to see lines
+    // that haven't drawn yet)
+    var knownLines = [];
+    function planRange(r) {
+      if (r.value != null) knownLines.push({ r: r, x0: pOf(r.lo), x1: pOf(r.hi), top: BASE_Y + yOf(r.value) - 2 });
+    }
+    ranges.forEach(planRange);
     function drawRange(r, animate) {
       if (!r.color) r.color = RANGE_COLS[rangeCount % RANGE_COLS.length];
       rangeCount++;
       var x0 = pOf(r.lo), x1 = pOf(r.hi);
-      var top = (SLIDE_H - BOTTOM - CURVE_H) + yOf(r.lo) + R_INSET;
-      // coincident/near-coincident ranges: x-overlapping lines keep 18px of
-      // vertical separation (a label rides ~13px above every line, so lines
-      // must clear labels too, not just each other). The newcomer walks UP
-      // when its natural terrace is at or above the incumbent's (preserves
-      // the value order — higher lo stays higher) and DOWN otherwise;
-      // running off either edge of the chart flips the direction. Staggered
-      // lines anchor their label to the OTHER end of the line.
-      var BAND = 18, FLOOR_Y = SLIDE_H - BOTTOM - 4, CEIL_Y = SLIDE_H - BOTTOM - CURVE_H + 2;
-      function collide(t) {
+      var hasPt = r.value != null;
+      // line height: through the point-on-curve when there is one, else the
+      // legacy terrace at the low end's curve height
+      var top = hasPt ? BASE_Y + yOf(r.value) - 2 : BASE_Y + yOf(r.lo) + R_INSET;
+      function collide(t, band) {
         for (var pi = 0; pi < placedLines.length; pi++) {
           var o = placedLines[pi];
-          if (x0 < o.x1 && x1 > o.x0 && Math.abs(t - o.top) < BAND) return o;
+          if (x0 < o.x1 && x1 > o.x0 && Math.abs(t - o.top) < band) return o;
         }
         return null;
       }
-      var orig = top, labelPos = "left";
-      if (collide(top)) {
-        var walk = function (goUp) {
-          var t = orig, h;
-          while ((h = collide(t)) && t >= CEIL_Y && t <= FLOOR_Y) t = h.top + (goUp ? -BAND : BAND);
-          return (t >= CEIL_Y && t <= FLOOR_Y) ? t : null;
+      var labelPos = "left";
+      if (hasPt) {
+        // a label zone is dirty when any OTHER known line crosses it; try
+        // left, then above the right end, then below the right end
+        var zoneDirty = function (zx0, zx1, zy0, zy1) {
+          var all = knownLines.concat(placedLines.filter(function (o) { return !o.r; }));
+          for (var zi = 0; zi < all.length; zi++) {
+            var o = all[zi];
+            if (o.r === r) continue;
+            if (zx0 < o.x1 && zx1 > o.x0 && o.top + 4 >= zy0 && o.top <= zy1) return true;
+          }
+          return false;
         };
-        var preferUp = orig <= collide(orig).top;
-        var settled = walk(preferUp);
-        if (settled === null) settled = walk(!preferUp);
-        top = settled === null ? Math.max(CEIL_Y, Math.min(FLOOR_Y, orig)) : settled;
-        labelPos = top < orig ? "above-right" : "below-right";
+        var LAB_W = 17; // label x-extent, in track %
+        if (!zoneDirty(x0, x0 + LAB_W, top - 13, top - 2)) labelPos = "left";
+        else if (!zoneDirty(x1 - LAB_W, x1, top - 13, top - 2)) labelPos = "above-right";
+        else labelPos = "below-right";
+      } else {
+        // terrace stagger: x-overlapping lines keep 18px vertical separation
+        // (a label rides ~13px above every line). The newcomer walks UP when
+        // its natural terrace is at or above the incumbent's (preserves the
+        // value order) and DOWN otherwise; chart edges flip the direction.
+        var BAND = 18, FLOOR_Y = SLIDE_H - BOTTOM - 4, CEIL_Y = BASE_Y + 2;
+        var orig = top;
+        if (collide(top, BAND)) {
+          var walk = function (goUp) {
+            var t = orig, h;
+            while ((h = collide(t, BAND)) && t >= CEIL_Y && t <= FLOOR_Y) t = h.top + (goUp ? -BAND : BAND);
+            return (t >= CEIL_Y && t <= FLOOR_Y) ? t : null;
+          };
+          var preferUp = orig <= collide(orig, BAND).top;
+          var settled = walk(preferUp);
+          if (settled === null) settled = walk(!preferUp);
+          top = settled === null ? Math.max(CEIL_Y, Math.min(FLOOR_Y, orig)) : settled;
+          labelPos = top < orig ? "above-right" : "below-right";
+        }
       }
       placedLines.push({ x0: x0, x1: x1, top: top });
       var lab = null;
@@ -472,8 +541,8 @@
         slide.appendChild(lab);
       }
       var tip = (r.label ? r.label + " — " : "") +
-        (r.value != null ? fmt(r.value) + " (range " + fmt(r.lo) + " – " + fmt(r.hi) + ")"
-                         : fmt(r.lo) + " – " + fmt(r.hi));
+        (hasPt ? fmt(r.value) + " (range " + fmt(r.lo) + " – " + fmt(r.hi) + ")"
+               : fmt(r.lo) + " – " + fmt(r.hi));
       var line = document.createElement("span");
       line.className = "zvs-range";
       line.style.left = x0 + "%";
@@ -481,26 +550,49 @@
       line.style.background = r.color;
       line.title = tip;
       slide.appendChild(line);
-      // the point estimate: a dot riding the line at x(value)
-      var dot = null;
-      if (r.value != null) {
+      var dot = null, conA = null, conB = null;
+      if (hasPt) {
+        var cy = top + 2; // the line's center — and the curve edge at x(value)
+        // dashed projections: range ends onto the curve (down at lo, up at hi)
+        var yLo = BASE_Y + yOf(r.lo), yHi = BASE_Y + yOf(r.hi);
+        if (yLo - cy > 3) {
+          conA = document.createElement("span");
+          conA.className = "zvs-rcon";
+          conA.style.left = "calc(" + x0 + "% - 1px)";
+          conA.style.top = cy + "px";
+          conA.style.height = (yLo - cy) + "px";
+          conA.style.borderColor = r.color;
+          slide.appendChild(conA);
+        }
+        if (cy - yHi > 3) {
+          conB = document.createElement("span");
+          conB.className = "zvs-rcon";
+          conB.style.left = "calc(" + x1 + "% - 1px)";
+          conB.style.top = yHi + "px";
+          conB.style.height = (cy - yHi) + "px";
+          conB.style.borderColor = r.color;
+          slide.appendChild(conB);
+        }
+        // the point estimate, pinned to the curve edge
         dot = document.createElement("span");
         dot.className = "zvs-rdot";
         dot.style.left = pOf(r.value) + "%";
-        dot.style.top = (top + 2) + "px"; // line is 4px tall — dead center
+        dot.style.top = cy + "px";
         dot.style.background = r.color;
         dot.title = tip;
         slide.appendChild(dot);
+        registerPoint(r);
       }
       var w = (x1 - x0) + "%";
+      var fades = [lab, dot, conA, conB];
       if (animate && !REDUCED) {
         line.style.width = "0%";
-        if (lab) { lab.style.opacity = "0"; lab.style.transition = "opacity .4s ease .25s"; }
-        if (dot) dot.style.opacity = "0";
+        if (lab) lab.style.transition = "opacity .4s ease .25s";
+        fades.forEach(function (el) { if (el) el.style.opacity = "0"; });
         requestAnimationFrame(function () { requestAnimationFrame(function () {
           line.style.width = w;
-          if (lab) lab.style.opacity = "1";
-          if (dot) dot.style.opacity = "1";
+          // clear the inline 0 → each element eases to its stylesheet opacity
+          fades.forEach(function (el) { if (el) el.style.opacity = ""; });
         }); });
       } else {
         line.style.width = w;
@@ -516,6 +608,7 @@
       r = normRange(r);
       if (!single && r.lo >= vmin && r.hi <= vmax) {
         ranges.push(r);
+        planRange(r);
         drawRange(r, true);
         return ret;
       }

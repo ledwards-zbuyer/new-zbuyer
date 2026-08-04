@@ -26,10 +26,11 @@
 <body>
 <div class="wrap">
   <h1>Estimate ranges — scenario gallery</h1>
-  <p class="lead">The three estimate types as <b>ranges + point values</b> (the dot on each line is
-  that type's single number) under different real-world circumstances, all live renders of
-  <code>assets/value-slider.js</code> chart mode. Colors are the shared map: Cash navy, AI sky,
-  AVM primary. See it arriving live on the
+  <p class="lead">The three estimate types as <b>ranges + point values</b> — each dot is pinned to
+  the curve at its type's single number, the range runs horizontally through it, and dashed
+  verticals project the ends onto the curve. The handle is live: <b>drag it</b> — it snaps
+  between the three points. All cards are live renders of <code>assets/value-slider.js</code>.
+  Colors are the shared map: Cash navy, AI sky, AVM primary. See it arriving live on the
   <a href="report-classic-blue.html?ranges=1">report (?ranges=1)</a> ·
   <a href="value-slider-docs.html">developer guide</a> ·
   <a href="value-slider-demo.html">slider demo page</a>.</p>
@@ -74,8 +75,8 @@
 
   <div class="card" id="tie">
     <h2>AI = AVM — the exact tie</h2>
-    <p class="note">Identical ranges auto-stagger into a stacked pair (the second label anchors
-    to the other end); only the points differ.</p>
+    <p class="note">Identical ranges: each line still sits at its own point's curve height, so the
+    pair reads as a tight stack; the labels find opposite ends. Only the points differ.</p>
     <div id="sTie"></div>
   </div>
 

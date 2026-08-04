@@ -2201,3 +2201,26 @@ vertical separation, the newcomer walking UP when its natural terrace is at or
 above the incumbent (preserves value order — the earlier down-first version
 inverted AVM below AI) and down otherwise, flipping at chart edges. All eight
 scenarios verified clean; docs/demo updated with value + gallery links.
+
+**Lucas:** add the slider handle back (its gone still). and make the single
+number value for each type a point on the edge of the graph (with the range
+extending horizontally) (possibly with vertical dashed lines extending from each
+end (one up, one down) to meet the graph line
+
+**Claude:** Rebuilt the range geometry to the sketch: each point dot is pinned to
+the curve's edge at x(value), the range line runs horizontally THROUGH the dot
+lo→hi, and dashed verticals project the ends onto the curve — down at the low
+end (curve is lower there), up at the high end, exactly the one-up-one-down. The
+handle is back: in chart mode the point values are the snap targets — it appears
+with the first point, rides the latest arrival until the user grabs it (fixed it
+squatting at 50% over the AI label), drag snaps to the nearest point, arrows
+step, headline shows the snapped estimate. Fill returns with the handle at 35%
+opacity — full-strength drowned the blue-family lines mid-demo (AVM vanished
+into its own color at the 10s state); lines also got white halos and labels
+white text-shadows. Collision model split: pinned lines never move, so LABELS
+dodge instead (first clean of left / above-right / below-right, with lookahead
+over every known line — fixed the agreement scenario striking a line through
+the cash label); valueless terrace lines keep the 18px stagger. Verified: report
+10s/28s arrivals, ?snap=2 default regression, all eight gallery cards (the
+clamped edge point even parks the handle at 95%). Docs section 4, options row,
+widget header, gallery lead + tie note all updated.
