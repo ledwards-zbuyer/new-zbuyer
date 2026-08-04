@@ -2304,3 +2304,10 @@ and frozen as an absolute percentage (all measured before any is repositioned,
 so the conversion can't cascade) — a retiring chip now leaves a gap where it
 was and the survivors never move. Verified at 5s (AI gap between the unmoved
 cash and AVM chips) and 10s (cash alone, still at its original left spot).
+
+**Lucas:** move the your local expert tile below the value range tile
+
+**Claude:** Both expert slots (the exclusive Jason card and the maxsold 6-pro
+carousel — one slot, variant-switched) moved from above the value module to
+directly below it: hero → selling range → expert → supporting grid. Verified on
+the default and ?ranges=1 views.
