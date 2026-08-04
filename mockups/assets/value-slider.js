@@ -21,6 +21,10 @@
  *       ],                                // color optional (defaults rotate
  *                                         // navy/sky/primary); the value domain
  *                                         // spans anchors + range endpoints.
+ *                                         // Coincident ranges (equal lo = the
+ *                                         // same terrace) auto-stagger 7px
+ *                                         // apart, the newcomer's label moving
+ *                                         // to its other end.
  *                                         // Ranges with <2 anchors = a static
  *                                         // CHART: no handle, no snapping,
  *                                         // headline shows the whole domain.
@@ -404,20 +408,46 @@
        elements, not SVG: the curve svg stretches (preserveAspectRatio none)
        and would distort strokes. ---- */
     var RANGE_COLS = ["#16408F", "#3BA4F4", "#1D4FD7", "#8296B9"];
-    var rangeCount = 0, R_INSET = 3;
+    var rangeCount = 0, R_INSET = 3, placedLines = [];
     function drawRange(r, animate) {
       if (!r.color) r.color = RANGE_COLS[rangeCount % RANGE_COLS.length];
       rangeCount++;
       var x0 = pOf(r.lo), x1 = pOf(r.hi);
       var top = (SLIDE_H - BOTTOM - CURVE_H) + yOf(r.lo) + R_INSET;
+      // coincident ranges (equal/near-equal lo → the same terrace height):
+      // stagger the newcomer 7px below whatever already holds that slot; if
+      // that runs out of chart (a tie at the domain floor), go 7px above the
+      // original instead. Staggered lines anchor their label to the OTHER
+      // end so labels never collide with the first line's label.
+      var orig = top, labelPos = "left", moved = true;
+      while (moved) {
+        moved = false;
+        for (var pi = 0; pi < placedLines.length; pi++) {
+          var o = placedLines[pi];
+          if (x0 < o.x1 && x1 > o.x0 && Math.abs(top - o.top) < 7) { top = o.top + 7; moved = true; }
+        }
+      }
+      if (top !== orig) labelPos = "below-right";
+      if (top > SLIDE_H - BOTTOM - 4) { top = orig - 7; labelPos = "above-right"; }
+      placedLines.push({ x0: x0, x1: x1, top: top });
       var lab = null;
       if (r.label) {
         lab = document.createElement("span");
         lab.className = "zvs-rlabel";
-        lab.style.left = x0 + "%";
-        lab.style.top = (top - 2) + "px";
         lab.style.color = r.color;
         lab.textContent = r.label;
+        if (labelPos === "left") {
+          lab.style.left = x0 + "%";
+          lab.style.top = (top - 2) + "px";
+        } else if (labelPos === "below-right") {
+          lab.style.left = x1 + "%";
+          lab.style.top = (top + 6) + "px";
+          lab.style.transform = "translateX(-100%)";
+        } else { // above-right
+          lab.style.left = x1 + "%";
+          lab.style.top = (top - 2) + "px";
+          lab.style.transform = "translate(-100%,-100%)";
+        }
         slide.appendChild(lab);
       }
       var line = document.createElement("span");

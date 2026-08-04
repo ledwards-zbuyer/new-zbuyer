@@ -409,7 +409,10 @@ load) while values and home stats remain static demo data. The old
   lowest→highest stacking always fits; the lowest range rides the 8px floor
   band); `domain:{lo,hi}` pins the scale with no visuals so arrivals draw in
   place; `addRange(r)` draws a line in (rebuilds on a wider scale if outside the
-  domain); anchors now OPTIONAL. Ranges with <2 anchors = CHART MODE: no handle,
+  domain); anchors now OPTIONAL. COINCIDENT ranges (equal/near-equal lo = same
+  terrace, e.g. AI range == AVM range) auto-stagger 7px below the incumbent
+  (above, if below runs off the chart at the domain floor) with the newcomer's
+  label anchored to its other end — lines and labels never overprint. Ranges with <2 anchors = CHART MODE: no handle,
   no snapping, curve stays UNFILLED (gray track — the blue fill drowned
   blue-family lines, learned by screenshot), headline shows the whole domain.
   Report wiring: `?ranges=1` (default view untouched) — one shared EST map keeps

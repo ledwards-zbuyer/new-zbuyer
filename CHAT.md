@@ -2167,3 +2167,15 @@ chart, colored badges chasing), 10s (AI+AVM terraced in), 28s (all three + pill)
 and the no-param default is pixel-identical. Docs: value-slider-docs section 4
 with a static demo + replayable arrivals demo (sections renumbered), demo-page
 card, tray-docs color row, link-params ?ranges row.
+
+**Lucas:** what if ai range = avm range
+
+**Claude:** As shipped they'd overprint — same lo means the same terrace height,
+so the second line hid the first and both labels mashed (proved with a three-case
+harness: exact tie, same-lo-different-hi, tie at the domain floor). Fix: coincident
+lines auto-stagger — the newcomer drops 7px below the incumbent (or goes 7px above
+when below would run off the chart at the floor) and anchors its label to the
+OTHER end of its line, so neither lines nor labels ever collide. All three cases
+re-shot clean; the normal report ranges view is unchanged (its los differ, no
+collision triggers). Behavior noted in the widget header, docs section 4, and
+HANDOFF.

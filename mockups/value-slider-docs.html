@@ -141,6 +141,11 @@
     <p>With fewer than 2 anchors this is <b>chart mode</b>: no handle, no snapping, the curve stays
     unfilled (the gray track — a blue fill would drown blue-family lines), and the headline shows
     the whole domain.</p>
+    <p><b>Ties are handled:</b> two ranges with the same (or nearly the same) low value would share
+    a terrace, so the newcomer staggers 7px below the incumbent — or 7px above, if below runs out
+    of chart at the domain floor — and its label anchors to the opposite end of its line, so
+    neither the lines nor the labels ever overprint. Identical AI and AVM ranges render as a
+    clean stacked pair.</p>
     <div class="demo">
       <div class="demo-tag">Live — three estimate ranges, chart mode</div>
       <div id="exR1"></div>
