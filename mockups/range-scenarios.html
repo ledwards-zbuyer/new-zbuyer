@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Estimate ranges — scenario gallery</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#14233D;--muted:#5C6B82;--line:#E4EAF3;--soft:#F4F8FD;--c1:#1D4FD7}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#EDF1F7;padding:34px 18px 70px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .lead{color:var(--muted);font-size:14.5px;margin:8px 0 14px;line-height:1.5}
+  .lead a,.note a{color:var(--c1);font-weight:600;text-decoration:underline}
+  .jump{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px}
+  .jump a{font-size:12px;font-weight:700;color:var(--c1);background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 13px;text-decoration:none}
+  .jump a:hover{background:var(--c1);color:#fff;border-color:var(--c1)}
+  .card{background:#fff;border-radius:16px;padding:26px 28px 22px;box-shadow:0 10px 30px -18px rgba(14,27,51,.25);margin-bottom:22px;scroll-margin-top:14px}
+  .card h2{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--c1);margin-bottom:6px}
+  .note{font-size:12.5px;color:var(--muted);margin-bottom:6px;line-height:1.45}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Estimate ranges — scenario gallery</h1>
+  <p class="lead">The three estimate types as <b>ranges + point values</b> (the dot on each line is
+  that type's single number) under different real-world circumstances, all live renders of
+  <code>assets/value-slider.js</code> chart mode. Colors are the shared map: Cash navy, AI sky,
+  AVM primary. See it arriving live on the
+  <a href="report-classic-blue.html?ranges=1">report (?ranges=1)</a> ·
+  <a href="value-slider-docs.html">developer guide</a> ·
+  <a href="value-slider-demo.html">slider demo page</a>.</p>
+
+  <div class="jump">
+    <a href="#agree">Agreement</a>
+    <a href="#disparate">Disparate</a>
+    <a href="#wide">Wide ranges</a>
+    <a href="#narrow">Narrow ranges</a>
+    <a href="#tie">AI = AVM tie</a>
+    <a href="#discount">Cash discount</a>
+    <a href="#outlier">One uncertain</a>
+    <a href="#edges">Points at edges</a>
+  </div>
+
+  <div class="card" id="agree">
+    <h2>Agreement — all three types land close together</h2>
+    <p class="note">Heavily overlapping ranges, points within ~$7K of each other. The stagger
+    logic keeps near-tied terraces legible.</p>
+    <div id="sAgree"></div>
+  </div>
+
+  <div class="card" id="disparate">
+    <h2>Disparate — the three disagree</h2>
+    <p class="note">Little to no overlap; the domain stretches to hold everything and each
+    terrace sits clearly apart.</p>
+    <div id="sDisp"></div>
+  </div>
+
+  <div class="card" id="wide">
+    <h2>Wide ranges — low confidence</h2>
+    <p class="note">$45–60K spans. Long overlapping lines; the points do the talking.</p>
+    <div id="sWide"></div>
+  </div>
+
+  <div class="card" id="narrow">
+    <h2>Narrow ranges — high confidence</h2>
+    <p class="note">$6–10K spans. Short dashes with their dots — reads almost like three
+    point estimates.</p>
+    <div id="sNarrow"></div>
+  </div>
+
+  <div class="card" id="tie">
+    <h2>AI = AVM — the exact tie</h2>
+    <p class="note">Identical ranges auto-stagger into a stacked pair (the second label anchors
+    to the other end); only the points differ.</p>
+    <div id="sTie"></div>
+  </div>
+
+  <div class="card" id="discount">
+    <h2>Cash discount — the classic shape</h2>
+    <p class="note">Cash offer clearly below the AI/AVM pair — the expected report shape
+    (this is what <code>?ranges=1</code> on the report demos).</p>
+    <div id="sDisc"></div>
+  </div>
+
+  <div class="card" id="outlier">
+    <h2>One uncertain — AVM wide, the others tight</h2>
+    <p class="note">Mixed confidence: a sprawling AVM band against tight Cash and AI ranges.</p>
+    <div id="sOut"></div>
+  </div>
+
+  <div class="card" id="edges">
+    <h2>Points at the edges</h2>
+    <p class="note">Point values sitting exactly on a range's low or high end (and one passed
+    OUTSIDE its range, which clamps in) — the dots hold the line ends cleanly.</p>
+    <div id="sEdge"></div>
+  </div>
+</div>
+
+<script src="assets/value-slider.js"></script>
+<script>
+  var C = { cash: "#16408F", ai: "#3BA4F4", avm: "#1D4FD7" };
+  function draw(id, rs) {
+    zbValueSlider(document.getElementById(id), { ranges: rs.map(function (r) {
+      return { id: r[0], lo: r[1], hi: r[2], value: r[3],
+               label: r[4] || (r[0] === "cash" ? "Cash offer range" : r[0].toUpperCase() + " estimate"),
+               color: C[r[0]] };
+    }) });
+  }
+  draw("sAgree", [
+    ["cash", 338000, 356000, 344000],
+    ["ai",   340000, 359000, 348000],
+    ["avm",  343000, 362000, 351000]
+  ]);
+  draw("sDisp", [
+    ["cash", 298000, 318000, 308000],
+    ["ai",   336000, 356000, 347000],
+    ["avm",  372000, 392000, 383000]
+  ]);
+  draw("sWide", [
+    ["cash", 295000, 340000, 318000],
+    ["ai",   315000, 375000, 344000],
+    ["avm",  330000, 388000, 359000]
+  ]);
+  draw("sNarrow", [
+    ["cash", 318000, 324000, 321000],
+    ["ai",   342000, 352000, 347000],
+    ["avm",  356000, 364000, 360000]
+  ]);
+  draw("sTie", [
+    ["cash", 312000, 335000, 322000],
+    ["ai",   345000, 368000, 353000],
+    ["avm",  345000, 368000, 360000]
+  ]);
+  draw("sDisc", [
+    ["cash", 312000, 335000, 322000],
+    ["ai",   340000, 358000, 349000],
+    ["avm",  352000, 371000, 362000]
+  ]);
+  draw("sOut", [
+    ["cash", 316000, 328000, 322000],
+    ["ai",   344000, 356000, 350000],
+    ["avm",  318000, 386000, 355000]
+  ]);
+  draw("sEdge", [
+    ["cash", 312000, 335000, 312000],   // point at its low end
+    ["ai",   340000, 358000, 358000],   // point at its high end
+    ["avm",  352000, 371000, 400000]    // outside its range -> clamps to 371K
+  ]);
+</script>
+</body>
+</html>

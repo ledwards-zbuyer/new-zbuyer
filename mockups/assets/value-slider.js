@@ -16,8 +16,11 @@
  *                                         // horizontal terrace lines INSIDE the
  *                                         // shaded curve, each at the curve
  *                                         // height of its own low value:
- *         { id: "cash", lo: 312000, hi: 335000,
+ *         { id: "cash", lo: 312000, hi: 335000, value: 322000,
  *           label: "Cash offer range", color: "#16408F" }
+ *                                         // value: OPTIONAL single point
+ *                                         // estimate — a dot riding the line
+ *                                         // at x(value), clamped into [lo,hi]
  *       ],                                // color optional (defaults rotate
  *                                         // navy/sky/primary); the value domain
  *                                         // spans anchors + range endpoints.
@@ -136,6 +139,8 @@
     /* estimate range terraces: colored lines inside the shaded curve */
     ".zvs-range{position:absolute;height:4px;border-radius:2px;pointer-events:none;z-index:1;transition:width .55s cubic-bezier(.2,.7,.3,1)}" +
     ".zvs-rlabel{position:absolute;transform:translateY(-100%);font-size:10.5px;font-weight:700;letter-spacing:.01em;white-space:nowrap;pointer-events:none;z-index:1}" +
+    /* the point estimate: a dot riding its range line */
+    ".zvs-rdot{position:absolute;width:11px;height:11px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(14,27,51,.35);transform:translate(-50%,-50%);pointer-events:none;z-index:2;transition:opacity .3s ease .3s}" +
     /* pending-offer wait state + animated arrival */
     ".zvs-wait{position:absolute;left:0;right:0;bottom:" + BOTTOM + "px;width:100%;overflow:visible;pointer-events:none;z-index:1}" +
     ".zvs-march{animation:zvsMarch 1.1s linear infinite}" +
@@ -146,7 +151,7 @@
     "@keyframes zvsPulse{0%,100%{opacity:.4}50%{opacity:.95}}" +
     "@keyframes zvsIn{from{opacity:0}}" +
     "@keyframes zvsEndsIn{from{max-height:0;opacity:0}to{max-height:56px;opacity:1}}" +
-    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse{animation:none}.zvs-range,.zvs-rlabel{transition:none}}";
+    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot{transition:none}}";
 
   function injectCSS() {
     if (document.getElementById("zvs-style")) return;
@@ -160,7 +165,10 @@
 
   function normRange(r) {
     var lo = Math.min(+r.lo, +r.hi), hi = Math.max(+r.lo, +r.hi);
-    return { id: r.id != null ? String(r.id) : "", lo: lo, hi: hi,
+    // value: the optional single point estimate inside the range — clamped
+    // in (a point outside its own range is a data error, not a layout job)
+    var v = r.value != null && r.value !== "" ? Math.max(lo, Math.min(hi, +r.value)) : null;
+    return { id: r.id != null ? String(r.id) : "", lo: lo, hi: hi, value: v,
              label: r.label || "", color: r.color || "" };
   }
 
@@ -414,21 +422,34 @@
       rangeCount++;
       var x0 = pOf(r.lo), x1 = pOf(r.hi);
       var top = (SLIDE_H - BOTTOM - CURVE_H) + yOf(r.lo) + R_INSET;
-      // coincident ranges (equal/near-equal lo → the same terrace height):
-      // stagger the newcomer 7px below whatever already holds that slot; if
-      // that runs out of chart (a tie at the domain floor), go 7px above the
-      // original instead. Staggered lines anchor their label to the OTHER
-      // end so labels never collide with the first line's label.
-      var orig = top, labelPos = "left", moved = true;
-      while (moved) {
-        moved = false;
+      // coincident/near-coincident ranges: x-overlapping lines keep 18px of
+      // vertical separation (a label rides ~13px above every line, so lines
+      // must clear labels too, not just each other). The newcomer walks UP
+      // when its natural terrace is at or above the incumbent's (preserves
+      // the value order — higher lo stays higher) and DOWN otherwise;
+      // running off either edge of the chart flips the direction. Staggered
+      // lines anchor their label to the OTHER end of the line.
+      var BAND = 18, FLOOR_Y = SLIDE_H - BOTTOM - 4, CEIL_Y = SLIDE_H - BOTTOM - CURVE_H + 2;
+      function collide(t) {
         for (var pi = 0; pi < placedLines.length; pi++) {
           var o = placedLines[pi];
-          if (x0 < o.x1 && x1 > o.x0 && Math.abs(top - o.top) < 7) { top = o.top + 7; moved = true; }
+          if (x0 < o.x1 && x1 > o.x0 && Math.abs(t - o.top) < BAND) return o;
         }
+        return null;
       }
-      if (top !== orig) labelPos = "below-right";
-      if (top > SLIDE_H - BOTTOM - 4) { top = orig - 7; labelPos = "above-right"; }
+      var orig = top, labelPos = "left";
+      if (collide(top)) {
+        var walk = function (goUp) {
+          var t = orig, h;
+          while ((h = collide(t)) && t >= CEIL_Y && t <= FLOOR_Y) t = h.top + (goUp ? -BAND : BAND);
+          return (t >= CEIL_Y && t <= FLOOR_Y) ? t : null;
+        };
+        var preferUp = orig <= collide(orig).top;
+        var settled = walk(preferUp);
+        if (settled === null) settled = walk(!preferUp);
+        top = settled === null ? Math.max(CEIL_Y, Math.min(FLOOR_Y, orig)) : settled;
+        labelPos = top < orig ? "above-right" : "below-right";
+      }
       placedLines.push({ x0: x0, x1: x1, top: top });
       var lab = null;
       if (r.label) {
@@ -450,20 +471,36 @@
         }
         slide.appendChild(lab);
       }
+      var tip = (r.label ? r.label + " — " : "") +
+        (r.value != null ? fmt(r.value) + " (range " + fmt(r.lo) + " – " + fmt(r.hi) + ")"
+                         : fmt(r.lo) + " – " + fmt(r.hi));
       var line = document.createElement("span");
       line.className = "zvs-range";
       line.style.left = x0 + "%";
       line.style.top = top + "px";
       line.style.background = r.color;
-      line.title = (r.label ? r.label + " — " : "") + fmt(r.lo) + " – " + fmt(r.hi);
+      line.title = tip;
       slide.appendChild(line);
+      // the point estimate: a dot riding the line at x(value)
+      var dot = null;
+      if (r.value != null) {
+        dot = document.createElement("span");
+        dot.className = "zvs-rdot";
+        dot.style.left = pOf(r.value) + "%";
+        dot.style.top = (top + 2) + "px"; // line is 4px tall — dead center
+        dot.style.background = r.color;
+        dot.title = tip;
+        slide.appendChild(dot);
+      }
       var w = (x1 - x0) + "%";
       if (animate && !REDUCED) {
         line.style.width = "0%";
         if (lab) { lab.style.opacity = "0"; lab.style.transition = "opacity .4s ease .25s"; }
+        if (dot) dot.style.opacity = "0";
         requestAnimationFrame(function () { requestAnimationFrame(function () {
           line.style.width = w;
           if (lab) lab.style.opacity = "1";
+          if (dot) dot.style.opacity = "1";
         }); });
       } else {
         line.style.width = w;

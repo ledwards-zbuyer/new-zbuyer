@@ -2179,3 +2179,25 @@ OTHER end of its line, so neither lines nor labels ever collide. All three cases
 re-shot clean; the normal report ranges view is unchanged (its los differ, no
 collision triggers). Behavior noted in the widget header, docs section 4, and
 HANDOFF.
+
+**Lucas:** now assume you can accept a range for each value type AND a single
+value for each value type. that single number will be the point on the slider
+(needs to be re-added) — 3 points within 3 ranges. I would like to see a jump
+page that shows or links to different potential circumstances for the values
+(similar values across all 3 types, disparate values, wide ranges, small ranges,
+etc)
+
+**Claude:** Ranges now take value — the point estimate, drawn as an 11px dot
+riding its line at x(value), clamped into [lo,hi], sharing the line's color and
+tooltip, fading in with arrivals. Report EST map carries all three points (Cash
+322K / AI 349K / AVM 362K) so ?ranges=1 shows 3 dots in 3 lines. New jump page:
+range-scenarios.html — eight live chart-mode renders with pill nav (agreement,
+disparate, wide, narrow, AI=AVM tie, cash discount, one-uncertain, points at
+edges incl. an out-of-range point clamping in), cross-linked from the docs, demo
+page, and the report variant. Building the agreement scenario exposed that the
+7px stagger avoided line-line but not line-LABEL collisions (the AI line struck
+through the cash label) — rewrote placement: x-overlapping lines keep 18px
+vertical separation, the newcomer walking UP when its natural terrace is at or
+above the incumbent (preserves value order — the earlier down-first version
+inverted AVM below AI) and down otherwise, flipping at chart edges. All eight
+scenarios verified clean; docs/demo updated with value + gallery links.

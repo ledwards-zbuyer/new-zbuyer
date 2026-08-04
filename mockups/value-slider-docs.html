@@ -132,12 +132,17 @@
 
   <div class="card">
     <h2>4. Estimate ranges — terrace lines inside the curve</h2>
-    <p>Estimates that are <b>ranges</b> rather than points (an AI estimate, an AVM band, a cash-offer
-    band) render as horizontal colored lines <b>inside the shaded chart</b>. Each line spans its
-    range on the x-axis and sits at the curve height of its <b>own low value</b>, hugging the
-    underside of the curve — so vertical position carries meaning, and because the curve rises
-    monotonically, lines stacked lowest→highest always fit. The value domain stretches to cover
-    every range endpoint (plus any anchors and the optional <code>domain</code> pin).</p>
+    <p>Estimates that are <b>ranges</b> (an AI estimate, an AVM band, a cash-offer band) render as
+    horizontal colored lines <b>inside the shaded chart</b>. Each line spans its range on the
+    x-axis and sits at the curve height of its <b>own low value</b>, hugging the underside of the
+    curve — so vertical position carries meaning, and because the curve rises monotonically,
+    lines stacked lowest→highest always fit. Each range also takes an optional single
+    <code>value</code> — <b>the point estimate, drawn as a dot riding its line</b> at that value's
+    x-position (clamped into the range). The value domain stretches to cover every range endpoint
+    (plus any anchors and the optional <code>domain</code> pin).
+    Eight real-world shapes — agreement, disparate, wide, narrow, ties, cash discount, mixed
+    confidence, edge points — render live on the
+    <a href="range-scenarios.html">scenario gallery</a>.</p>
     <p>With fewer than 2 anchors this is <b>chart mode</b>: no handle, no snapping, the curve stays
     unfilled (the gray track — a blue fill would drown blue-family lines), and the headline shows
     the whole domain.</p>
@@ -179,9 +184,10 @@ zbEstimateTray({
           feeds the dot tooltips, end labels, and aria text. Optional when <code>ranges</code>
           or <code>domain</code> is supplied.</td></tr>
       <tr><td><code>ranges</code></td><td>array</td>
-          <td>0–4 of <code>{ id, lo, hi, label, color }</code> — estimate ranges drawn as
-          terrace lines inside the curve (section 4). <code>color</code> optional (defaults
-          rotate navy / sky / primary).</td></tr>
+          <td>0–4 of <code>{ id, lo, hi, value, label, color }</code> — estimate ranges drawn as
+          terrace lines inside the curve (section 4). <code>value</code> optional: the single
+          point estimate, a dot riding the line (clamped into [lo,&nbsp;hi]). <code>color</code>
+          optional (defaults rotate navy / sky / primary).</td></tr>
       <tr><td><code>domain</code></td><td><code>{ lo, hi }</code></td>
           <td>Pins the value scale with no visuals, so later <code>addRange()</code> arrivals
           draw in place instead of rescaling. Alone (no anchors/ranges) it renders the empty
@@ -285,11 +291,11 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
     ],
     colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46", track: "#E8EFE9", dot: "#6E9B7F" }
   });
-  // section 4: static ranges chart
+  // section 4: static ranges chart (value = the point-estimate dot)
   var EST_DEMO = [
-    { id: "cash", lo: 312000, hi: 335000, label: "Cash offer range", color: "#16408F" },
-    { id: "ai",   lo: 340000, hi: 358000, label: "AI estimate",      color: "#3BA4F4" },
-    { id: "avm",  lo: 352000, hi: 371000, label: "AVM estimate",     color: "#1D4FD7" }
+    { id: "cash", lo: 312000, hi: 335000, value: 322000, label: "Cash offer range", color: "#16408F" },
+    { id: "ai",   lo: 340000, hi: 358000, value: 349000, label: "AI estimate",      color: "#3BA4F4" },
+    { id: "avm",  lo: 352000, hi: 371000, value: 362000, label: "AVM estimate",     color: "#1D4FD7" }
   ];
   zbValueSlider(document.getElementById("exR1"), { ranges: EST_DEMO });
   // section 4: pinned domain + staggered addRange() arrivals, replayable

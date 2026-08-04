@@ -409,10 +409,19 @@ load) while values and home stats remain static demo data. The old
   lowest→highest stacking always fits; the lowest range rides the 8px floor
   band); `domain:{lo,hi}` pins the scale with no visuals so arrivals draw in
   place; `addRange(r)` draws a line in (rebuilds on a wider scale if outside the
-  domain); anchors now OPTIONAL. COINCIDENT ranges (equal/near-equal lo = same
-  terrace, e.g. AI range == AVM range) auto-stagger 7px below the incumbent
-  (above, if below runs off the chart at the domain floor) with the newcomer's
-  label anchored to its other end — lines and labels never overprint. Ranges with <2 anchors = CHART MODE: no handle,
+  domain); anchors now OPTIONAL. Each range also takes `value` (2026-08-03): the
+  single POINT estimate, drawn as a dot riding its line at x(value), clamped
+  into [lo,hi] — the report EST map carries all three (Cash 322K / AI 349K /
+  AVM 362K), so ?ranges=1 shows 3 points within 3 ranges. COINCIDENT/x-
+  overlapping ranges keep 18px vertical separation (labels ride ~13px above
+  lines, so lines must clear labels too): the newcomer walks UP when its
+  natural terrace is at/above the incumbent (preserves value order) and DOWN
+  otherwise, flipping direction at the chart edges, its label anchoring to the
+  other end of its line — lines and labels never overprint. SCENARIO GALLERY:
+  `range-scenarios.html` — eight live circumstances (agreement / disparate /
+  wide / narrow / AI=AVM tie / cash discount / one-uncertain / edge points,
+  incl. an out-of-range point clamping in), jump-pill nav, cross-linked from
+  the docs + demo pages. Ranges with <2 anchors = CHART MODE: no handle,
   no snapping, curve stays UNFILLED (gray track — the blue fill drowned
   blue-family lines, learned by screenshot), headline shows the whole domain.
   Report wiring: `?ranges=1` (default view untouched) — one shared EST map keeps
