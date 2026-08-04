@@ -431,7 +431,8 @@ load) while values and home stats remain static demo data. The old
   between the initial full-range state, snaps, and auto-fit shrinks.
   COMPLETE-RANGE BAR + LIVE DRAG (2026-08-04): a labeled bar under the chart
   spans the UNION of arrived values (lowest lo → highest hi, growing per
-  arrival); the untouched handle parks at the union's CENTER with the headline
+  arrival), with dotted risers at each end climbing to the chart baseline
+  (tinted to the bar gradient's ends); the untouched handle parks at the union's CENTER with the headline
   showing the union (replaces ride-the-latest-arrival — the resting state IS
   the complete range). While HELD the headline ticks the value under the
   handle live (niceRound), the subtext names whichever estimate range it's

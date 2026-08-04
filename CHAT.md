@@ -2265,3 +2265,12 @@ held-off-point / held-on-point / released) and the report arrivals; found the
 union bar "not growing" in animated headless shots — it's the documented
 virtual-time transition freeze, proven by a reduced-motion shot showing the bar
 edge-to-edge (noted in HANDOFF).
+
+**Lucas:** on the bottom (complete home value range) bar add dotted lines at
+each end that go up vertically to reach the bottom of the graph background
+
+**Claude:** Dotted risers at both bar ends, climbing the 17px from the bar top
+through the wrap margin and slide gap to land exactly on the chart's baseline —
+left riser tinted the bar gradient's sky end, right riser its primary end, both
+at the bar's opacity and moving with the union as it grows (same transition,
+reduced-motion disabled). Verified on the resting harness card.
