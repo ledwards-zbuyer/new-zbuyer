@@ -22,7 +22,12 @@
  *         { id: "avm",  label: "AVM estimate",        icon: "avm"  },
  *         { id: "cash", label: "Cash offer estimate", icon: "cash" }
  *       ],                                // icon: "ai"|"avm"|"cash" or a raw
- *                                         // "<svg ...>" string of your own
+ *                                         // "<svg ...>" string of your own.
+ *                                         // items also take color: "#16408F" —
+ *                                         // that item's icon + badge use it
+ *                                         // (pair with the value slider's
+ *                                         // range colors); omitted = the
+ *                                         // --zet-check theme color
  *       demo: { seconds: [3, 7, 25] },    // OPTIONAL stand-in for the real
  *                                         // calls: per-item arrival seconds
  *                                         // (a single number staggers evenly)
@@ -129,7 +134,8 @@
       { id: "avm", label: "AVM estimate", icon: "avm" },
       { id: "cash", label: "Cash offer estimate", icon: "cash" }
     ]).map(function (it) {
-      return { id: String(it.id), label: it.label || String(it.id), icon: it.icon || it.id };
+      return { id: String(it.id), label: it.label || String(it.id), icon: it.icon || it.id,
+               color: it.color || "" };
     });
     var dismissSeconds = opts.dismissSeconds === undefined ? 1.6 : +opts.dismissSeconds;
     var id = ++uid;
@@ -160,8 +166,10 @@
       var el = document.createElement("div");
       el.className = "zet-item";
       // the source icon, with the checkbox badge riding its corner
+      var itCol = it.color || CHECK; // per-item color: icon + badge together
       var ico = document.createElement("span");
       ico.className = "zet-ico";
+      if (it.color) ico.style.color = it.color;
       ico.innerHTML = String(it.icon).indexOf("<svg") === 0 ? it.icon : (ICONS[it.icon] || ICONS.generic);
       var box = document.createElement("span");
       box.className = "zet-box";
@@ -169,8 +177,8 @@
       // bright segment chasing its ~72px perimeter (18x18 rx5 @2,2 in a 22 box)
       var svg = svgEl("svg", { viewBox: "0 0 22 22" }, box);
       svgEl("rect", { x: 2, y: 2, width: 18, height: 18, rx: 5, fill: "none", stroke: LINE, "stroke-width": 2.4 }, svg);
-      var run = svgEl("rect", { x: 2, y: 2, width: 18, height: 18, rx: 5, fill: "none", stroke: CHECK, "stroke-width": 2.4, "stroke-dasharray": "16 56", "stroke-linecap": "round", "class": "zet-run" }, svg);
-      svgEl("rect", { x: 2, y: 2, width: 18, height: 18, rx: 5, fill: CHECK, stroke: CHECK, "stroke-width": 2.4, "class": "zet-fill" }, svg);
+      var run = svgEl("rect", { x: 2, y: 2, width: 18, height: 18, rx: 5, fill: "none", stroke: itCol, "stroke-width": 2.4, "stroke-dasharray": "16 56", "stroke-linecap": "round", "class": "zet-run" }, svg);
+      svgEl("rect", { x: 2, y: 2, width: 18, height: 18, rx: 5, fill: itCol, stroke: itCol, "stroke-width": 2.4, "class": "zet-fill" }, svg);
       svgEl("path", { d: "M6.5 11.6l3.1 3.1 5.9-6.4", fill: "none", stroke: "#fff", "stroke-width": 2.6, "stroke-linecap": "round", "stroke-linejoin": "round", "class": "zet-tick" }, svg);
       ico.appendChild(box);
       var lbl = document.createElement("span");

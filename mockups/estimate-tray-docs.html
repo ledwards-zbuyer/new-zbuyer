@@ -140,12 +140,16 @@
     <table>
       <tr><th>Option</th><th>Type / default</th><th>What it does</th></tr>
       <tr><td><code>items</code></td><td>array, ai/avm/cash</td>
-          <td>1+ of <code>{ id, label, icon }</code>. <code>id</code> is what you pass to
+          <td>1+ of <code>{ id, label, icon, color }</code>. <code>id</code> is what you pass to
           <code>arrive()</code>. <code>icon</code> is a built-in name
           (<code>"ai"</code> / <code>"avm"</code> / <code>"cash"</code> /
           <code>"generic"</code>) or a raw <code>"&lt;svg …&gt;"</code> string of your own
           (drawn at 36px, use <code>currentColor</code> to pick up the theme). Omitted icon
-          falls back to the id, then to the generic gauge.</td></tr>
+          falls back to the id, then to the generic gauge. <code>color</code> (optional) colors
+          that item's icon + badge — pair it with the
+          <a href="value-slider-docs.html">value slider</a>'s range colors so the tray badge and
+          the chart's range line match per estimate type (the report's <code>?ranges=1</code>
+          view does exactly this). Omitted = the <code>--zet-check</code> theme color.</td></tr>
       <tr><td><code>demo</code></td><td>object, off</td>
           <td>Stand-in for the real calls — <b>omit it in production</b>.
           <code>{ seconds: 8 }</code> staggers the arrivals evenly across 8s;

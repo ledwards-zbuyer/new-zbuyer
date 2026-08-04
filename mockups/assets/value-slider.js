@@ -11,7 +11,25 @@
  *         { value: 312000, label: "Quick cash close" },
  *         { value: 345000, label: "Cash+" },
  *         { value: 371000, label: "Estimated market value" }
- *       ],
+ *       ],                                // OPTIONAL when ranges are supplied
+ *       ranges: [                         // 0-4 estimate ranges drawn as
+ *                                         // horizontal terrace lines INSIDE the
+ *                                         // shaded curve, each at the curve
+ *                                         // height of its own low value:
+ *         { id: "cash", lo: 312000, hi: 335000,
+ *           label: "Cash offer range", color: "#16408F" }
+ *       ],                                // color optional (defaults rotate
+ *                                         // navy/sky/primary); the value domain
+ *                                         // spans anchors + range endpoints.
+ *                                         // Ranges with <2 anchors = a static
+ *                                         // CHART: no handle, no snapping,
+ *                                         // headline shows the whole domain.
+ *       domain: { lo: 312000, hi: 371000 }, // OPTIONAL scale pin (no visuals):
+ *                                         // fixes the chart's span up front so
+ *                                         // addRange() arrivals draw in place
+ *                                         // instead of rescaling. domain alone
+ *                                         // (no anchors/ranges) renders the
+ *                                         // static chart, empty, ready.
  *       format:   function (v) { ... },   // optional; default $1,234,567
  *       headline: true,                   // big number/range above the track
  *       rangeLabel: "Complete home value range", // sub-label while the headline
@@ -41,6 +59,12 @@
  *     slider.deliver({ value: 412500, label: "Quick cash close" });
  *                                         // the real arrival (call from the API
  *                                         // response) — animates, then re-renders
+ *     slider.addRange({ id: "avm", lo: 352000, hi: 371000,
+ *                       label: "AVM estimate", color: "#1D4FD7" });
+ *                                         // estimate-arrival wiring (e.g. the
+ *                                         // estimate tray's onArrive): draws the
+ *                                         // line in when it fits the current
+ *                                         // scale, or rebuilds on a wider one
  *   </script>
  *
  * BEHAVIOR
@@ -105,6 +129,9 @@
     ".zvs-end b{display:block;font-size:15px;font-weight:800;color:var(--zvs-ink,#14233D)}" +
     ".zvs-end span{display:block;font-size:12px;color:var(--zvs-muted,#5C6B82);margin-top:2px}" +
     ".zvs-end.zvs-right{text-align:right}" +
+    /* estimate range terraces: colored lines inside the shaded curve */
+    ".zvs-range{position:absolute;height:4px;border-radius:2px;pointer-events:none;z-index:1;transition:width .55s cubic-bezier(.2,.7,.3,1)}" +
+    ".zvs-rlabel{position:absolute;transform:translateY(-100%);font-size:10.5px;font-weight:700;letter-spacing:.01em;white-space:nowrap;pointer-events:none;z-index:1}" +
     /* pending-offer wait state + animated arrival */
     ".zvs-wait{position:absolute;left:0;right:0;bottom:" + BOTTOM + "px;width:100%;overflow:visible;pointer-events:none;z-index:1}" +
     ".zvs-march{animation:zvsMarch 1.1s linear infinite}" +
@@ -115,7 +142,7 @@
     "@keyframes zvsPulse{0%,100%{opacity:.4}50%{opacity:.95}}" +
     "@keyframes zvsIn{from{opacity:0}}" +
     "@keyframes zvsEndsIn{from{max-height:0;opacity:0}to{max-height:56px;opacity:1}}" +
-    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse{animation:none}}";
+    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse{animation:none}.zvs-range,.zvs-rlabel{transition:none}}";
 
   function injectCSS() {
     if (document.getElementById("zvs-style")) return;
@@ -126,6 +153,12 @@
   }
 
   function fmtDefault(v) { return "$" + Math.round(v).toLocaleString("en-US"); }
+
+  function normRange(r) {
+    var lo = Math.min(+r.lo, +r.hi), hi = Math.max(+r.lo, +r.hi);
+    return { id: r.id != null ? String(r.id) : "", lo: lo, hi: hi,
+             label: r.label || "", color: r.color || "" };
+  }
 
   function svgEl(n, attrs, parent) {
     var e = document.createElementNS(NS, n);
@@ -140,27 +173,43 @@
       .slice(0, 6)
       .map(function (a) { return { value: +a.value, label: a.label || "" }; })
       .sort(function (a, b) { return a.value - b.value; });
-    if (!anchors.length) throw new Error("zbValueSlider: supply 1-6 anchors");
+    // estimate ranges: horizontal terrace lines inside the shaded curve
+    var ranges = (opts.ranges || [])
+      .slice(0, 4)
+      .map(normRange)
+      .sort(function (a, b) { return a.lo - b.lo; });
+    var dom = opts.domain && opts.domain.lo != null ? opts.domain : null;
+    if (!anchors.length && !ranges.length && !dom) throw new Error("zbValueSlider: supply anchors, ranges, or a domain");
     var fmt = opts.format || fmtDefault;
     // sub-label under the untouched full-range headline (anchor labels take
     // over once the user snaps somewhere)
     var rangeLabel = opts.rangeLabel !== undefined ? opts.rangeLabel : "Complete home value range";
-    // one anchor — or all anchors sharing one value — renders the static display
-    var single = anchors.length === 1 || anchors[anchors.length - 1].value === anchors[0].value;
+    // the value domain spans everything supplied: anchors + range endpoints
+    // (+ the optional explicit domain pin)
+    var vals = anchors.map(function (a) { return a.value; });
+    ranges.forEach(function (r) { vals.push(r.lo, r.hi); });
+    if (dom) vals.push(+dom.lo, +dom.hi);
+    var vmin = Math.min.apply(null, vals), vmax = Math.max.apply(null, vals);
+    var span = vmax - vmin;
+    // one anchor — or one shared value across everything — renders static
+    var single = !span || (!ranges.length && !dom && anchors.length === 1);
+    if (single && !anchors.length) anchors = [{ value: vmin, label: ranges.length ? ranges[0].label : "" }];
+    // ranges (or a pinned domain) with <2 anchors: a static CHART — curve +
+    // terrace lines, no handle, no snapping
+    var chartMode = !single && anchors.length < 2 && (ranges.length > 0 || !!dom);
+    var interactive = !single && !chartMode;
     var id = ++uid;
 
     injectCSS();
 
-    // x-position per anchor: proportional to value within [PAD, 100-PAD]
-    var vmin = anchors[0].value, vmax = anchors[anchors.length - 1].value;
-    anchors.forEach(function (a) {
-      a.p = single ? 50 : PAD + (a.value - vmin) / (vmax - vmin) * (100 - 2 * PAD);
-    });
-    // curve height per anchor: value floor + span-zoomed rise
-    function ay(a) {
-      var frac = single ? 1 : (a.value - vmin) / (vmax - vmin);
+    // x-position / curve-top height at any value, both value-proportional
+    function pOf(v) { return single ? 50 : PAD + (v - vmin) / span * (100 - 2 * PAD); }
+    function yOf(v) {
+      var frac = single ? 1 : (v - vmin) / span;
       return CURVE_H - (H_MIN + frac * (CURVE_H - H_MIN));
     }
+    anchors.forEach(function (a) { a.p = pOf(a.value); });
+    function ay(a) { return yOf(a.value); }
 
     var headlineEl = null, subEl = null;
     if (opts.headline !== false) {
@@ -183,7 +232,7 @@
     }
 
     var slide = document.createElement("div");
-    slide.className = "zvs-slide" + (single ? " zvs-static" : "");
+    slide.className = "zvs-slide" + (single || chartMode ? " zvs-static" : "");
     container.appendChild(slide);
 
     var svg = svgEl("svg", { "class": "zvs-curve", viewBox: "0 0 1000 " + CURVE_H, preserveAspectRatio: "none", "aria-hidden": "true" }, slide);
@@ -192,7 +241,13 @@
       // one value: the whole chart IS that value — full height, edge to edge
       d = "M0 " + CURVE_H + " L0 0 L1000 0 L1000 " + CURVE_H + " Z";
     } else {
-      var pts = anchors.map(function (a) { return [a.p * 10, ay(a)]; });
+      // curve control points: every distinct supplied value (anchors + range
+      // endpoints), so each terrace line's left end sits exactly on the curve
+      var cvals = [];
+      vals.slice().sort(function (x, y) { return x - y; }).forEach(function (v) {
+        if (!cvals.length || v > cvals[cvals.length - 1]) cvals.push(v);
+      });
+      var pts = cvals.map(function (v) { return [pOf(v) * 10, yOf(v)]; });
       d = "M0 " + CURVE_H + " L0 " + pts[0][1] + " L" + pts[0][0] + " " + pts[0][1];
       for (var s = 0; s < pts.length - 1; s++) {
         var dx = (pts[s + 1][0] - pts[s][0]) / 2.2; // flat tangents: rounded, monotone
@@ -224,7 +279,7 @@
       grad.setAttribute("x2", w);
     }
 
-    if (!single) {
+    if (interactive) {
       anchors.forEach(function (a) {
         var dot = document.createElement("span");
         dot.className = "zvs-dot";
@@ -236,17 +291,20 @@
       });
     }
 
-    var handle = document.createElement("span");
-    handle.className = "zvs-handle";
-    if (colors.handle) handle.style.background = colors.handle;
-    handle.tabIndex = single ? -1 : 0;
-    handle.setAttribute("role", "slider");
-    handle.setAttribute("aria-label", opts.ariaLabel || "Explore the value range");
-    slide.appendChild(handle);
+    var handle = null;
+    if (!chartMode) {
+      handle = document.createElement("span");
+      handle.className = "zvs-handle";
+      if (colors.handle) handle.style.background = colors.handle;
+      handle.tabIndex = single ? -1 : 0;
+      handle.setAttribute("role", "slider");
+      handle.setAttribute("aria-label", opts.ariaLabel || "Explore the value range");
+      slide.appendChild(handle);
+    }
 
     var idx = -1; // untouched: headline keeps the full range
     function snapTo(i) {
-      if (single) return;
+      if (!interactive) return;
       idx = Math.max(0, Math.min(anchors.length - 1, i));
       var a = anchors[idx];
       handle.classList.add("zvs-snap");
@@ -257,7 +315,13 @@
       if (typeof opts.onSelect === "function") opts.onSelect(a, idx);
     }
 
-    if (single) {
+    if (chartMode) {
+      // static chart: the curve stays UNFILLED (gray track) so the colored
+      // terrace lines carry the color story — the blue gradient would drown
+      // blue-family lines. Headline shows the whole domain.
+      setHeadline(fmt(vmin) + " – " + fmt(vmax), rangeLabel);
+      clipRect.setAttribute("width", 0);
+    } else if (single) {
       var only = anchors[0];
       handle.style.left = "50%";
       handle.setAttribute("aria-valuetext", fmt(only.value) + (only.label ? " — " + only.label : ""));
@@ -306,11 +370,18 @@
       });
     }
 
-    // end labels: min + max with their anchor labels (never for single)
+    // end labels: the domain extremes, labeled by whichever anchor or range
+    // endpoint owns each extreme (never for single)
+    function labelAt(v, isLo) {
+      for (var i = 0; i < anchors.length; i++) if (anchors[i].value === v) return anchors[i].label;
+      for (var j = 0; j < ranges.length; j++) if ((isLo ? ranges[j].lo : ranges[j].hi) === v) return ranges[j].label;
+      return "";
+    }
     if (!single && opts.endLabels !== false) {
       var ends = document.createElement("div");
       ends.className = "zvs-ends";
-      [anchors[0], anchors[anchors.length - 1]].forEach(function (a, i) {
+      [{ value: vmin, label: labelAt(vmin, true) },
+       { value: vmax, label: labelAt(vmax, false) }].forEach(function (a, i) {
         var end = document.createElement("div");
         end.className = "zvs-end" + (i ? " zvs-right" : "");
         var b = document.createElement("b");
@@ -324,6 +395,77 @@
         ends.appendChild(end);
       });
       container.appendChild(ends);
+    }
+
+    /* ---- estimate range terraces: each line spans x(lo)→x(hi) at the curve
+       height of its OWN low value (inset a few px below the curve top there).
+       The curve rises monotonically, so a line that clears its left end
+       clears its whole span — stacking lowest→highest is automatic. HTML
+       elements, not SVG: the curve svg stretches (preserveAspectRatio none)
+       and would distort strokes. ---- */
+    var RANGE_COLS = ["#16408F", "#3BA4F4", "#1D4FD7", "#8296B9"];
+    var rangeCount = 0, R_INSET = 3;
+    function drawRange(r, animate) {
+      if (!r.color) r.color = RANGE_COLS[rangeCount % RANGE_COLS.length];
+      rangeCount++;
+      var x0 = pOf(r.lo), x1 = pOf(r.hi);
+      var top = (SLIDE_H - BOTTOM - CURVE_H) + yOf(r.lo) + R_INSET;
+      var lab = null;
+      if (r.label) {
+        lab = document.createElement("span");
+        lab.className = "zvs-rlabel";
+        lab.style.left = x0 + "%";
+        lab.style.top = (top - 2) + "px";
+        lab.style.color = r.color;
+        lab.textContent = r.label;
+        slide.appendChild(lab);
+      }
+      var line = document.createElement("span");
+      line.className = "zvs-range";
+      line.style.left = x0 + "%";
+      line.style.top = top + "px";
+      line.style.background = r.color;
+      line.title = (r.label ? r.label + " — " : "") + fmt(r.lo) + " – " + fmt(r.hi);
+      slide.appendChild(line);
+      var w = (x1 - x0) + "%";
+      if (animate && !REDUCED) {
+        line.style.width = "0%";
+        if (lab) { lab.style.opacity = "0"; lab.style.transition = "opacity .4s ease .25s"; }
+        requestAnimationFrame(function () { requestAnimationFrame(function () {
+          line.style.width = w;
+          if (lab) lab.style.opacity = "1";
+        }); });
+      } else {
+        line.style.width = w;
+      }
+    }
+    ranges.forEach(function (r) { drawRange(r, false); });
+
+    // estimate-arrival wiring (e.g. the estimate tray's onArrive): draw the
+    // new line in place when it fits the current scale; a range outside the
+    // domain rebuilds the widget on the union scale (colors stay pinned —
+    // defaults are written back onto each range as they're assigned)
+    function addRange(r) {
+      r = normRange(r);
+      if (!single && r.lo >= vmin && r.hi <= vmax) {
+        ranges.push(r);
+        drawRange(r, true);
+        return ret;
+      }
+      var next = {};
+      for (var k in opts) if (k !== "anchors" && k !== "ranges") next[k] = opts[k];
+      next.anchors = opts.anchors ? anchors.map(function (a) { return { value: a.value, label: a.label }; }) : [];
+      next.ranges = ranges.concat([r]).map(function (q) {
+        return { id: q.id, lo: q.lo, hi: q.hi, label: q.label, color: q.color };
+      });
+      if (pend) pend.stop();
+      container.innerHTML = "";
+      var inner = zbValueSlider(container, next);
+      ret.anchors = inner.anchors;
+      ret.ranges = inner.ranges;
+      ret.snapTo = inner.snapTo;
+      ret.addRange = inner.addRange;
+      return ret;
     }
 
     /* ---- pending-offer mode (opts.pending, single anchor only): the chart
@@ -453,7 +595,9 @@
     var ret = {
       element: container,
       anchors: anchors,
+      ranges: ranges,
       snapTo: snapTo,
+      addRange: function (r) { return addRange(r); }, // estimate-arrival wiring
       deliver: function (a) { if (pend) pend.deliver(a); }, // the arrival (API callback)
       destroy: function () { if (pend) pend.stop(); container.innerHTML = ""; }
     };

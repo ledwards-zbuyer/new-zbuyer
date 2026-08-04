@@ -395,10 +395,31 @@ load) while values and home stats remain static demo data. The old
   arrival times (report runs `[3, 7, 25]` — cash offer lands at 25s). Chevron
   collapses to a corner pill ("Estimates n/3", live count) that reopens it; after
   all arrive it auto-minimizes (dismissSeconds, 0 = stay). Themeable via `--zet-*`
-  vars; reduced-motion safe. Developer guide (for Besi): `estimate-tray-docs.html` —
+  vars; reduced-motion safe. Items also take per-item `color` (2026-08-03): that
+  item's icon + badge chase/fill — pair with the slider's range colors below.
+  Developer guide (for Besi): `estimate-tray-docs.html` —
   live launchable demos (default, manual-wiring playground, themed w/ custom items),
   quick start with the asset links, options table, lifecycle, theming, gotchas;
   `?run=1|2|3` auto-launches that section's demo (screenshots / share links).
+- **Estimate RANGES view (2026-08-03, alternate — `?ranges=1` on the report):**
+  the three estimates as VALUE RANGES terraced inside the value-curve chart.
+  Widget side (`assets/value-slider.js`): new `ranges` option (0-4 of
+  `{id, lo, hi, label, color}`) drawn as colored horizontal lines INSIDE the
+  shaded curve — each at the curve height of its OWN low value (monotone curve →
+  lowest→highest stacking always fits; the lowest range rides the 8px floor
+  band); `domain:{lo,hi}` pins the scale with no visuals so arrivals draw in
+  place; `addRange(r)` draws a line in (rebuilds on a wider scale if outside the
+  domain); anchors now OPTIONAL. Ranges with <2 anchors = CHART MODE: no handle,
+  no snapping, curve stays UNFILLED (gray track — the blue fill drowned
+  blue-family lines, learned by screenshot), headline shows the whole domain.
+  Report wiring: `?ranges=1` (default view untouched) — one shared EST map keeps
+  tray badge color == line color per type (Cash navy #16408F 312-335K / AI sky
+  #3BA4F4 340-358K / AVM primary #1D4FD7 352-371K), slider pinned to
+  312-371K, tray `onArrive` → `chart.addRange(EST[id])` so each line draws in
+  when its same-colored badge checks (3/7/25s demo). Docs: value-slider-docs
+  section 4 (two live demos incl. replayable arrivals; later sections renumbered
+  5-7), value-slider-demo ranges card, estimate-tray-docs color row, link-params
+  ?ranges row.
 - **Z-beat sphere widget (2026-08-02, simplified 2026-08-03):** `z-beat-tap.html` —
   the Z-beat on the glass ball: self-contained single file (no deps, no network),
   runs the idle beat (92 sphere-mapped strips, ~6.5s cycle); the ONLY input is the

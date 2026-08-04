@@ -131,12 +131,56 @@
   </div>
 
   <div class="card">
-    <h2>4. Options</h2>
+    <h2>4. Estimate ranges — terrace lines inside the curve</h2>
+    <p>Estimates that are <b>ranges</b> rather than points (an AI estimate, an AVM band, a cash-offer
+    band) render as horizontal colored lines <b>inside the shaded chart</b>. Each line spans its
+    range on the x-axis and sits at the curve height of its <b>own low value</b>, hugging the
+    underside of the curve — so vertical position carries meaning, and because the curve rises
+    monotonically, lines stacked lowest→highest always fit. The value domain stretches to cover
+    every range endpoint (plus any anchors and the optional <code>domain</code> pin).</p>
+    <p>With fewer than 2 anchors this is <b>chart mode</b>: no handle, no snapping, the curve stays
+    unfilled (the gray track — a blue fill would drown blue-family lines), and the headline shows
+    the whole domain.</p>
+    <div class="demo">
+      <div class="demo-tag">Live — three estimate ranges, chart mode</div>
+      <div id="exR1"></div>
+    </div>
+    <h3>Arrivals: addRange()</h3>
+    <p>Pass <code>domain</code> to pin the scale up front, then call
+    <code>slider.addRange(range)</code> as each estimate comes back — the line draws in (a range
+    outside the current domain rebuilds the widget on the wider scale). This pairs 1:1 with the
+    <a href="estimate-tray-docs.html">estimate tray</a>: give the tray items the same
+    <code>color</code> per estimate type and wire <code>onArrive</code> to <code>addRange</code> —
+    the line draws in, in its color, the moment the same-colored badge checks. The Cash Value
+    Report runs exactly that behind <code>?ranges=1</code>.</p>
+<pre><code>var chart = zbValueSlider(el, { domain: { lo: 312000, hi: 371000 } });
+zbEstimateTray({
+  items: [{ id: "ai", label: "AI estimate", icon: "ai", color: "#3BA4F4" }, ...],
+  onArrive: function (id) { chart.addRange(EST[id]); }   // EST: your shared map
+});</code></pre>
+    <div class="demo">
+      <div class="demo-tag">Live — pinned domain, ranges arriving (replayable)</div>
+      <div id="exR2"></div>
+      <p class="picked"><a href="#" id="exR2go" style="color:var(--c1);font-weight:700">&#9654; Replay the arrivals</a></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>5. Options</h2>
     <table>
       <tr><th>Option</th><th>Type / default</th><th>What it does</th></tr>
-      <tr><td><code>anchors</code></td><td>array, <b>required</b></td>
+      <tr><td><code>anchors</code></td><td>array</td>
           <td>1–6 of <code>{ value: number, label: string }</code>. Label may be empty; it
-          feeds the dot tooltips, end labels, and aria text.</td></tr>
+          feeds the dot tooltips, end labels, and aria text. Optional when <code>ranges</code>
+          or <code>domain</code> is supplied.</td></tr>
+      <tr><td><code>ranges</code></td><td>array</td>
+          <td>0–4 of <code>{ id, lo, hi, label, color }</code> — estimate ranges drawn as
+          terrace lines inside the curve (section 4). <code>color</code> optional (defaults
+          rotate navy / sky / primary).</td></tr>
+      <tr><td><code>domain</code></td><td><code>{ lo, hi }</code></td>
+          <td>Pins the value scale with no visuals, so later <code>addRange()</code> arrivals
+          draw in place instead of rescaling. Alone (no anchors/ranges) it renders the empty
+          static chart, ready for arrivals.</td></tr>
       <tr><td><code>format</code></td><td>function, <code>$1,234,567</code></td>
           <td>Turns a value into display text everywhere it appears (headline, end labels,
           tooltips). E.g. <code>v =&gt; "$" + v.toLocaleString() + "/mo"</code>.</td></tr>
@@ -164,12 +208,14 @@
     <h3>Return value</h3>
 <pre><code>var slider = zbValueSlider(el, { ... });
 slider.snapTo(2);    // snap to an anchor programmatically (0-based, sorted order)
+slider.addRange({ id, lo, hi, label, color });  // draw an estimate range in
 slider.anchors;      // the sorted anchor array (with computed positions)
+slider.ranges;       // the range list (colors materialized as assigned)
 slider.destroy();    // empty the container</code></pre>
   </div>
 
   <div class="card">
-    <h2>5. Styling &amp; theming</h2>
+    <h2>6. Styling &amp; theming</h2>
     <p>Styles inject themselves once (a <code>&lt;style id="zvs-style"&gt;</code> tag). The
     slider fills its container's width; height is fixed (~96px track plus headline and end
     labels). Font is inherited from the container.</p>
@@ -192,7 +238,7 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
   </div>
 
   <div class="card">
-    <h2>6. Good to know</h2>
+    <h2>7. Good to know</h2>
     <ul>
       <li><b>Call it after the container is in the DOM.</b> Theming reads computed styles at
           build time; a detached container silently falls back to default colors.</li>
@@ -234,6 +280,29 @@ colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46",
     ],
     colors: { handle: "#128A46", fillLo: "#BFE8CF", fillHi: "#128A46", track: "#E8EFE9", dot: "#6E9B7F" }
   });
+  // section 4: static ranges chart
+  var EST_DEMO = [
+    { id: "cash", lo: 312000, hi: 335000, label: "Cash offer range", color: "#16408F" },
+    { id: "ai",   lo: 340000, hi: 358000, label: "AI estimate",      color: "#3BA4F4" },
+    { id: "avm",  lo: 352000, hi: 371000, label: "AVM estimate",     color: "#1D4FD7" }
+  ];
+  zbValueSlider(document.getElementById("exR1"), { ranges: EST_DEMO });
+  // section 4: pinned domain + staggered addRange() arrivals, replayable
+  (function () {
+    var el = document.getElementById("exR2"), chart = null, timers = [];
+    function run() {
+      timers.forEach(clearTimeout); timers = [];
+      if (chart) chart.destroy();
+      chart = zbValueSlider(el, { domain: { lo: 312000, hi: 371000 } });
+      EST_DEMO.forEach(function (r, i) {
+        timers.push(setTimeout(function () { chart.addRange(r); }, 900 + i * 1300));
+      });
+    }
+    document.getElementById("exR2go").addEventListener("click", function (e) {
+      e.preventDefault(); run();
+    });
+    run();
+  })();
 </script>
 </body>
 </html>

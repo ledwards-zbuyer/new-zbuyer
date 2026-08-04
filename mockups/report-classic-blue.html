@@ -519,34 +519,58 @@
      returns raw HTML that must land in the thank-you page body. The lander
      stashes it in sessionStorage across the navigation; inject it here. -->
 <script src="assets/estimate-tray.js"></script>
-<script>
-/* Estimate-arrival tray (assets/estimate-tray.js): floating card
- * bottom-right on desktop / full-width tray on mobile, one icon +
- * integrated checkbox per estimate source, checks as each arrives.
- * Demo stand-in for the real calls: AI 3s, AVM 7s, Cash offer 25s.
- * Auto-minimizes to the corner pill, reopenable. */
-zbEstimateTray({ demo: { seconds: [3, 7, 25] } });
-</script>
 <script src="assets/value-slider.js"></script>
 <script>
-/* Combined module: the portable value-curve slider (assets/value-slider.js)
- * with the four selling-path anchors — renders the live range immediately
- * (the wait-for-offer experience lives elsewhere, not on the report).
- * ?snap=N (0-3) presets the snapped anchor (testing). */
+/* Estimate tray + value module wiring.
+ * DEFAULT: the four-anchor selling-path slider, and the tray demo (AI 3s,
+ * AVM 7s, Cash offer 25s) with the theme-blue badges. ?snap=N (0-3)
+ * presets the snapped anchor (testing).
+ * ?ranges=1 — ALTERNATE view under evaluation: the slider renders as a
+ * static chart pinned to the full domain, and each estimate is a value
+ * RANGE terraced inside the shaded curve — the line draws in, in its
+ * color, the moment the same-colored tray badge checks. One EST map keeps
+ * tray badge color == slider line color per estimate type. */
 (function () {
   var el = document.getElementById("vSlider");
-  if (!el || document.getElementById("vCombined").hidden) return;
-  var slider = zbValueSlider(el, {
-    anchors: [
-      { value: 312000, label: "Quick cash close" },
-      { value: 345000, label: "Cash+" },
-      { value: 355000, label: "Cash+ with repairs" },
-      { value: 371000, label: "Estimated market value" }
-    ],
-    ariaLabel: "Explore your selling range"
+  var combinedOn = el && !document.getElementById("vCombined").hidden;
+  var rangesMode = /[?&]ranges=(1|on|yes|true)\b/.test(location.search) && combinedOn;
+
+  if (!rangesMode) {
+    zbEstimateTray({ demo: { seconds: [3, 7, 25] } });
+    if (!combinedOn) return;
+    var slider = zbValueSlider(el, {
+      anchors: [
+        { value: 312000, label: "Quick cash close" },
+        { value: 345000, label: "Cash+" },
+        { value: 355000, label: "Cash+ with repairs" },
+        { value: 371000, label: "Estimated market value" }
+      ],
+      ariaLabel: "Explore your selling range"
+    });
+    var qs = new URLSearchParams(location.search).get("snap");
+    if (qs !== null) slider.snapTo(parseInt(qs, 10));
+    return;
+  }
+
+  // the shared per-type map: tray badge color == slider line color
+  var EST = {
+    cash: { id: "cash", lo: 312000, hi: 335000, label: "Cash offer range", color: "#16408F" },
+    ai:   { id: "ai",   lo: 340000, hi: 358000, label: "AI estimate",      color: "#3BA4F4" },
+    avm:  { id: "avm",  lo: 352000, hi: 371000, label: "AVM estimate",     color: "#1D4FD7" }
+  };
+  var chart = zbValueSlider(el, {
+    domain: { lo: 312000, hi: 371000 }, // pin the scale so arrivals draw in place
+    ariaLabel: "Your estimate ranges"
   });
-  var qs = new URLSearchParams(location.search).get("snap");
-  if (qs !== null) slider.snapTo(parseInt(qs, 10));
+  zbEstimateTray({
+    items: [
+      { id: "ai",   label: "AI estimate",         icon: "ai",   color: EST.ai.color },
+      { id: "avm",  label: "AVM estimate",        icon: "avm",  color: EST.avm.color },
+      { id: "cash", label: "Cash offer estimate", icon: "cash", color: EST.cash.color }
+    ],
+    demo: { seconds: [3, 7, 25] },
+    onArrive: function (id) { if (EST[id]) chart.addRange(EST[id]); }
+  });
 })();
 </script>
 <div class="pmodal" id="phoneModal" hidden>

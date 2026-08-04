@@ -2139,3 +2139,31 @@ gained a "Repo status" section making that explicit — the source doc's closing
 line claims the manifests already embed the classifier, which is the target state,
 not this repo's. HANDOFF gains the bullet (with the verify-the-candidate-keys
 caveat front and center).
+
+**Lucas:** *(after a recall of the slider + estimate-tray work)* I'm considering
+this idea: take the three values and consider them value ranges — AI 130-150k,
+AVM 140-180k, Cash 100-120k — imagined as lines on the slider chart (limited by
+the shaded area), cash along the bottom then AI then AVM, lowest to highest.
+Should fit within the chart's existing shaded area, right? *(decisions via
+questions: ranges define the domain; terrace placement — each line at its own
+value height; both static ranges AND addRange arrivals; plus:)* color code the
+value types in coordination with the loading animations. make sure this is an
+alternate version accessible via querystring.
+
+**Claude:** Confirmed the geometry first: the curve maps value→x and value→height
+with the same monotone scale, so a line only has to clear the curve at its LEFT
+end — stacking lowest→highest and fitting under the curve are the same
+constraint (the lowest range rides the 8px floor band). Built: value-slider.js
+gains ranges (terrace lines at their own low-value height, colors defaulting
+navy/sky/primary), domain:{lo,hi} scale pinning, addRange() (in-place draw-in, or
+rebuild on a wider scale), optional anchors, and CHART MODE (<2 anchors: no
+handle/snapping, curve unfilled — the first screenshot proved the blue fill
+drowns blue-family lines). estimate-tray.js items take per-item color (icon +
+badge chase/fill). Report: ?ranges=1 alternate view (default untouched) with one
+shared EST map — Cash navy 312-335K, AI sky 340-358K, AVM primary 352-371K —
+slider pinned to 312-371K and tray onArrive → addRange, so each line draws in
+the moment its same-colored badge checks (3/7/25s). Verified at 2s (empty pinned
+chart, colored badges chasing), 10s (AI+AVM terraced in), 28s (all three + pill),
+and the no-param default is pixel-identical. Docs: value-slider-docs section 4
+with a static demo + replayable arrivals demo (sections renumbered), demo-page
+card, tray-docs color row, link-params ?ranges row.

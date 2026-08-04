@@ -69,6 +69,15 @@
   </div>
 
   <div class="card">
+    <h2>Estimate ranges — terrace lines inside the curve (chart mode)</h2>
+    <p class="note">Pass <code>ranges</code> (each <code>{ id, lo, hi, label, color }</code>) with
+    fewer than 2 anchors and the widget renders a static chart: colored range lines terraced
+    at the curve height of their own low value. <code>addRange()</code> draws new ones in —
+    pair it with the estimate tray's <code>onArrive</code>.</p>
+    <div id="sRanges"></div>
+  </div>
+
+  <div class="card">
     <h2>Usage</h2>
 <pre>&lt;div id="mySlider"&gt;&lt;/div&gt;
 &lt;script src="value-slider.js"&gt;&lt;/script&gt;
@@ -130,6 +139,13 @@
       { value: 4800, label: "Everything plan" }
     ],
     format: function (v) { return "$" + v.toLocaleString() + "/mo"; }
+  });
+  zbValueSlider(document.getElementById("sRanges"), {
+    ranges: [
+      { id: "cash", lo: 312000, hi: 335000, label: "Cash offer range", color: "#16408F" },
+      { id: "ai",   lo: 340000, hi: 358000, label: "AI estimate",      color: "#3BA4F4" },
+      { id: "avm",  lo: 352000, hi: 371000, label: "AVM estimate",     color: "#1D4FD7" }
+    ]
   });
   zbValueSlider(document.getElementById("sColors"), {
     anchors: [
