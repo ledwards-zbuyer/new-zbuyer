@@ -146,12 +146,21 @@
     <a href="range-scenarios.html">scenario gallery</a>.</p>
     <p><b>The handle snaps to the points.</b> With fewer than 2 anchors this is <b>chart mode</b>:
     the curve starts unfilled and the point values are the snap targets — the pill handle returns
-    with the first point (riding the latest arrival until the user grabs it), dragging snaps to
-    the nearest point, arrow keys step between them, and the fill — translucent here so the
-    colored lines stay readable inside it — follows the handle. On snap, the headline shows the
-    point value with <b>its range as the subtext</b> ("AI estimate · $340,000 – $358,000"); the
-    headline rows are fixed-height, so the number never shifts vertically between the initial
-    full-range state and snapped states.</p>
+    with the first point, dragging snaps to the nearest point, arrow keys step between them, and
+    the fill — translucent here so the colored lines stay readable inside it — follows the
+    handle. On snap, the headline shows the point value with <b>its range as the subtext</b>
+    ("AI estimate · $340,000 – $358,000"); the headline rows are fixed-height, so the number
+    never shifts vertically between the initial full-range state and snapped states.</p>
+    <p><b>The complete-range bar.</b> A labeled bar under the chart spans the <b>union of every
+    arrived value</b> — lowest low to highest high — growing as estimates land. Until the user
+    grabs the handle, it parks at the <b>center of that union</b> and the headline shows the
+    union range, so the resting state reads as "the complete home value range" before anyone
+    interacts.</p>
+    <p><b>Live while held.</b> The headline doesn't wait for release: as the handle is dragged it
+    <b>ticks the dollar value under the handle</b> (rounded sensibly), the subtext switches to
+    whichever estimate range the handle is inside (back to the range label outside them all),
+    that estimate's on-chart label <b>bolds</b>, and its dot pops as the handle glides over the
+    point itself. Release still snaps to the nearest point.</p>
     <p><b>Single values welcome:</b> a range passed as just <code>{ id, value, label }</code> —
     no <code>lo</code>/<code>hi</code> — synthesizes a <b>±10% range</b> around the value,
     rounded to a sensible increment for its magnitude (a $349,000 AI estimate becomes

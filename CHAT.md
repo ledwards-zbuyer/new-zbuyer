@@ -2241,3 +2241,27 @@ fixed-height (46px flex + 19px), so the number sits at the same y in the initial
 full-range state, every snap, and any auto-fit shrink — verified with a
 three-instance harness (initial vs snapped vs synthesized-snapped: identical
 card geometry). Docs section 4 + options row, widget header, HANDOFF updated.
+
+**Lucas:** add another bar across the graph (at the bottom possibly under)
+labeled "Complete home value range" — the slider defaults to the center of the
+complete range (which changes as values arrive, spanning the lowest of all
+values to the highest). this makes the original state make sense. also: can the
+values change while still HOLDING the handle (currently only on release)? make
+values change as the user slides into/out of a price range, and highlight
+(bold) the individual value as the slider glides over the point on the graph.
+
+**Claude:** All three. (1) A labeled complete-range bar renders under the chart
+spanning the union of arrived values, growing with each arrival; the untouched
+handle now parks at the union's CENTER (replacing ride-the-latest) and the
+untouched headline shows the union — resting state = the complete range,
+matching its own subtext. (2) Live-while-held: pointerdown/move now tick the
+headline with the dollar value under the handle (niceRound steps), and the
+subtext switches to whichever estimate range the handle is inside — back to
+"Complete home value range" outside them all; release still snaps. (3) The
+estimate under the handle bolds its chart label (.zvs-hot) and its dot pops
+(scale 1.35) when the handle glides within 2.5% of the point; the bold persists
+on the snapped estimate. Verified with a synthetic-drag harness (resting /
+held-off-point / held-on-point / released) and the report arrivals; found the
+union bar "not growing" in animated headless shots — it's the documented
+virtual-time transition freeze, proven by a reduced-motion shot showing the bar
+edge-to-edge (noted in HANDOFF).

@@ -429,6 +429,17 @@ load) while values and home stats remain static demo data. The old
   subtext ("AI estimate · $340,000 – $358,000"), and the headline + sub rows
   are FIXED-HEIGHT (46px/19px flex) so the number never jumps vertically
   between the initial full-range state, snaps, and auto-fit shrinks.
+  COMPLETE-RANGE BAR + LIVE DRAG (2026-08-04): a labeled bar under the chart
+  spans the UNION of arrived values (lowest lo → highest hi, growing per
+  arrival); the untouched handle parks at the union's CENTER with the headline
+  showing the union (replaces ride-the-latest-arrival — the resting state IS
+  the complete range). While HELD the headline ticks the value under the
+  handle live (niceRound), the subtext names whichever estimate range it's
+  inside (rangeLabel outside them all), that estimate's chart label BOLDS
+  (.zvs-hot) and its dot pops within 2.5% of the point; release still snaps.
+  HEADLESS NOTE: the bar's left/width transitions freeze at their from-state
+  under virtual time mid-run (same artifact genre as the CSS-animation note) —
+  verify bar growth with --force-prefers-reduced-motion; real browsers animate.
   SCENARIO GALLERY:
   `range-scenarios.html` — nine live circumstances (agreement / disparate /
   wide / narrow / AI=AVM tie / cash discount / one-uncertain / edge points

@@ -25,11 +25,20 @@
  *                                         // the curve (down at lo, up at hi).
  *                                         // With <2 anchors the points are the
  *                                         // handle's SNAP TARGETS: the handle
- *                                         // appears with the first point,
- *                                         // rides the latest arrival until
- *                                         // grabbed, the fill (translucent
- *                                         // here) follows it, and a snap shows
- *                                         // the point's RANGE under the value.
+ *                                         // appears with the first point and
+ *                                         // parks at the CENTER of the union
+ *                                         // of arrived values (a labeled
+ *                                         // complete-range bar under the chart
+ *                                         // tracks that union as it grows);
+ *                                         // the fill (translucent here)
+ *                                         // follows it. While HELD, the
+ *                                         // headline ticks the value under the
+ *                                         // handle live, the subtext names the
+ *                                         // estimate range it is inside, that
+ *                                         // label BOLDS, and the dot pops as
+ *                                         // the handle glides over the point.
+ *                                         // A snap shows the point's RANGE
+ *                                         // under the value.
  *                                         // lo/hi OPTIONAL when value is
  *                                         // present: a missing side becomes
  *                                         // ±10% of the value, rounded
@@ -156,7 +165,14 @@
     ".zvs-range{position:absolute;height:4px;border-radius:2px;pointer-events:none;z-index:1;box-shadow:0 0 0 1.5px rgba(255,255,255,.85);transition:width .55s cubic-bezier(.2,.7,.3,1)}" +
     ".zvs-rlabel{position:absolute;transform:translateY(-100%);font-size:10.5px;font-weight:700;letter-spacing:.01em;white-space:nowrap;pointer-events:none;z-index:1;text-shadow:0 1px 0 rgba(255,255,255,.7),0 -1px 0 rgba(255,255,255,.7)}" +
     /* the point estimate: a dot pinned to the curve edge at x(value) */
-    ".zvs-rdot{position:absolute;width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(14,27,51,.35);transform:translate(-50%,-50%);pointer-events:none;z-index:2;transition:opacity .3s ease .3s}" +
+    ".zvs-rdot{position:absolute;width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(14,27,51,.35);transform:translate(-50%,-50%);pointer-events:none;z-index:2;transition:opacity .3s ease .3s,transform .15s ease}" +
+    /* drag highlight: the estimate under the handle bolds, its dot pops */
+    ".zvs-rlabel.zvs-hot{font-weight:800}" +
+    ".zvs-rdot.zvs-hot{transform:translate(-50%,-50%) scale(1.35)}" +
+    /* the complete-range bar under the chart: the union of arrived values */
+    ".zvs-cwrap{position:relative;height:24px;margin:6px 2px 0}" +
+    ".zvs-crange{position:absolute;top:3px;height:5px;border-radius:3px;background:linear-gradient(90deg,#7FC4FF,#1D4FD7);opacity:.5;transition:left .5s cubic-bezier(.2,.7,.3,1),width .5s cubic-bezier(.2,.7,.3,1)}" +
+    ".zvs-clabel{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:600;color:var(--zvs-muted,#5C6B82);white-space:nowrap}" +
     /* dashed verticals projecting the range ends onto the curve */
     ".zvs-rcon{position:absolute;width:0;border-left:2px dashed;opacity:.55;pointer-events:none;z-index:1;transition:opacity .3s ease .3s}" +
     /* pending-offer wait state + animated arrival */
@@ -169,7 +185,7 @@
     "@keyframes zvsPulse{0%,100%{opacity:.4}50%{opacity:.95}}" +
     "@keyframes zvsIn{from{opacity:0}}" +
     "@keyframes zvsEndsIn{from{max-height:0;opacity:0}to{max-height:56px;opacity:1}}" +
-    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-rcon{transition:none}}";
+    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-rcon,.zvs-crange{transition:none}}";
 
   function injectCSS() {
     if (document.getElementById("zvs-style")) return;
@@ -358,8 +374,38 @@
       var sub = a.lo != null ? (a.label ? a.label + " · " : "") + fmt(a.lo) + " – " + fmt(a.hi)
                              : a.label;
       setHeadline(fmt(a.value), sub);
+      setHot(a.r || null, a.p);
       handle.setAttribute("aria-valuetext", fmt(a.value) + (sub ? " — " + sub : ""));
       if (typeof opts.onSelect === "function") opts.onSelect(a, idx);
+    }
+    // live feedback while the handle is HELD (chart mode): the headline
+    // ticks the value under the handle, the subtext names whichever
+    // estimate range it is inside, that estimate's label bolds, and its
+    // dot pops when the handle glides over the point itself
+    var drawn = []; // rendered ranges: { r, lab, dot }
+    function setHot(r, p) {
+      for (var i = 0; i < drawn.length; i++) {
+        var d2 = drawn[i], on = d2.r === r;
+        if (d2.lab) d2.lab.classList.toggle("zvs-hot", on);
+        if (d2.dot) d2.dot.classList.toggle("zvs-hot",
+          on && Math.abs(pOf(d2.r.value) - p) < 2.5);
+      }
+    }
+    function liveUpdate(p) {
+      if (!chartMode) return;
+      var v = vmin + (p - PAD) / (100 - 2 * PAD) * span;
+      var hot = null, bestD = 1e9;
+      for (var i = 0; i < drawn.length; i++) {
+        var q = drawn[i];
+        if (v >= q.r.lo && v <= q.r.hi) {
+          var d = q.r.value != null ? Math.abs(pOf(q.r.value) - p) : 50;
+          if (d < bestD) { bestD = d; hot = q; }
+        }
+      }
+      setHeadline(fmt(niceRound(v)),
+        hot ? (hot.r.label ? hot.r.label + " · " : "") + fmt(hot.r.lo) + " – " + fmt(hot.r.hi)
+            : rangeLabel);
+      setHot(hot ? hot.r : null, p);
     }
     var touched = false; // has the user grabbed the handle yet?
     function wireDrag() {
@@ -378,6 +424,7 @@
         var p0 = pctFromX(e.clientX);
         handle.style.left = p0 + "%";
         paintCurve(p0);
+        liveUpdate(p0);
         e.preventDefault();
       });
       slide.addEventListener("pointermove", function (e) {
@@ -385,6 +432,7 @@
         var p = pctFromX(e.clientX);
         handle.style.left = p + "%";
         paintCurve(p);
+        liveUpdate(p);
       });
       function endDrag(e) {
         if (!dragging) return;
@@ -406,17 +454,45 @@
     // chart mode: each range's point value becomes a snap target as it lands;
     // the handle (and the fill that rides it) returns with the first point
     function registerPoint(r) {
-      var p = pOf(r.value);
-      snaps.push({ value: r.value, label: r.label, p: p, lo: r.lo, hi: r.hi });
+      snaps.push({ value: r.value, label: r.label, p: pOf(r.value), lo: r.lo, hi: r.hi, r: r });
       snaps.sort(function (a, b) { return a.value - b.value; });
       if (!handle) {
         slide.classList.remove("zvs-static"); // points make it interactive
         buildHandle(false);
       }
-      if (!touched) { // until the user grabs it, ride the latest arrival
-        handle.classList.add("zvs-snap");
-        handle.style.left = p + "%";
-        paintCurve(p);
+    }
+
+    // the complete-range bar: the union of every arrived value, drawn under
+    // the chart and labeled. The untouched handle parks at the union's
+    // CENTER (re-centering as arrivals widen it) and the untouched headline
+    // shows the union — so the resting state IS the complete range.
+    var uLo = null, uHi = null, cBar = null, endsEl = null;
+    function updateUnion(r) {
+      if (!chartMode) return;
+      uLo = uLo === null ? r.lo : Math.min(uLo, r.lo);
+      uHi = uHi === null ? r.hi : Math.max(uHi, r.hi);
+      if (!cBar) {
+        var cw = document.createElement("div");
+        cw.className = "zvs-cwrap";
+        cBar = document.createElement("span");
+        cBar.className = "zvs-crange";
+        cw.appendChild(cBar);
+        var cl = document.createElement("span");
+        cl.className = "zvs-clabel";
+        cl.textContent = rangeLabel;
+        cw.appendChild(cl);
+        container.insertBefore(cw, endsEl);
+      }
+      cBar.style.left = pOf(uLo) + "%";
+      cBar.style.width = (pOf(uHi) - pOf(uLo)) + "%";
+      if (!touched) {
+        setHeadline(fmt(uLo) + " – " + fmt(uHi), rangeLabel);
+        if (handle) {
+          var mid = pOf((uLo + uHi) / 2);
+          handle.classList.add("zvs-snap");
+          handle.style.left = mid + "%";
+          paintCurve(mid);
+        }
       }
     }
 
@@ -450,6 +526,7 @@
     }
     if (!single && opts.endLabels !== false) {
       var ends = document.createElement("div");
+      endsEl = ends; // the complete-range bar inserts just above these
       ends.className = "zvs-ends";
       [{ value: vmin, label: labelAt(vmin, true) },
        { value: vmax, label: labelAt(vmax, false) }].forEach(function (a, i) {
@@ -617,6 +694,8 @@
       } else {
         line.style.width = w;
       }
+      drawn.push({ r: r, lab: lab, dot: dot });
+      updateUnion(r);
     }
     ranges.forEach(function (r) { drawRange(r, false); });
 
