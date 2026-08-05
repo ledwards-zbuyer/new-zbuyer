@@ -453,6 +453,22 @@ load) while values and home stats remain static demo data. The old
   "Cash offer estimate" everywhere (report EST, gallery, docs, demo, harnesses).
   Report passes expected (chips + tray + lines all color-synced); docs replay
   demo (exR2) passes it too.
+  FULL-TILES RANGES REPORT (2026-08-04): `report-ranges-classic-blue.html` — the
+  v3 mockup combining the ranges slider with production tile parity. Order:
+  masthead → EXPERT tile → concept #7 two-timelines card → concept #10 effort
+  ledger → the ranges slider (ALWAYS on — no ?ranges gate; tray + chips +
+  union bar all wired) → the complete convertaisms tile set with values synced
+  to the demo world (est $362K, bought Jun 2021 $268K CASH, ZIP 65802 54 DOM):
+  twopaths, confidence (3/3 checks), grid2(details + REFINE card — replaces the
+  old net-equity placeholder), walkaway ($336,660 net), comps (4, median
+  $358,500), appreciation (+35.1% / +6.0%yr, 1998→2012→2021→today chain),
+  velocity+tenure pair, radar stamps, badges grid3 (free&clear / no-rate-
+  handcuffs / Rooted Cash Owner), landlord+rentladder pair, buyerpool+taxgap
+  pair, interestsaved+tradeup pair, biography, dirtvalue+equityhuman pair,
+  assumable (with no-mortgage context flag), value history RESCALED to end at
+  $362K (y5 $240-370K axis, y10 $180-390K). Tile templates + rt-* CSS lifted
+  verbatim from the production report (fetched copy + extracts parked untracked
+  in shots/convert-*.{html,txt}). ?terms=maxsold still swaps the carousel.
   VALUE DISPLAY CONCEPTS (2026-08-04): `value-display-concepts.html` — jump page
   of TEN concepts in two rounds. ROUND ONE (1-5): structurally different ways to
   show the estimates designed around the member-relations brief (Steven's

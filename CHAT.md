@@ -2387,3 +2387,24 @@ solid lane-colored badges — 152px wide, 16px 900-weight white numerals (navy
 $312–335K after the cash lane, primary $348–371K at the listing finish). The
 payoff is now the loudest thing on each road. *(follow-up:)* the on-market
 segment's white in-bar label changed from "ZIP 65802 average" to "65802 avg 54d".
+
+**Lucas:** create a new report mockup with the slider like ?ranges=1 and all the
+additional report tiles like [the convertaisms production report]. put #7 and
+#10 above the selling range slider, and the your local expert tile above those.
+sync up the values.
+
+**Claude:** report-ranges-classic-blue.html — copied from the base report, then:
+ranges mode hardwired on (tray, chips, union bar, 3/7/10 arrivals all intact);
+order masthead → expert → #7 two-timelines card → #10 effort ledger → ranges
+slider. Below it, the ENTIRE production tile set rebuilt statically from the
+fetched convertaisms report (tileHtml templates + rt-* CSS lifted verbatim,
+media-query for rt-paths reconstructed since the regex extract flattened it):
+twopaths, confidence, details+refine grid, walkaway, comps, appreciation,
+velocity+tenure, radar, the three badges as a grid3 row, landlord+rentladder,
+buyerpool+taxgap, interestsaved+tradeup, biography, dirtvalue+equityhuman,
+assumable (kept with a no-mortgage context flag). Every number synced to one
+story: est $362K today, bought Jun 2021 $268K cash (free & clear), list
+$348–371K vs cash $312–335K, ZIP 65802 avg 54 DOM / ~109 days listing-to-keys,
+comps median $358,500, +6.0%/yr appreciation, $18,100/yr equity velocity, rent
+$2,150/mo at 7.1% yield — and the home-value-history chart rescaled to end at
+$362K. Verified in four full-page slices; the tray tucks to 3/3 at the end.
