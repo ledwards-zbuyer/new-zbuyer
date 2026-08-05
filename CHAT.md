@@ -2424,3 +2424,10 @@ the ratefree badge, and landlord removed — badges collapse to a grid2
 (free&clear + persona), rentladder re-pairs with taxgap, and tradeup stands
 alone full-width. Verified the two-bar arrivals mid/final and the regrouped
 tile flow end to end.
+
+**Lucas:** remove the dotted lines at the end of the Complete home value range bar
+
+**Claude:** The bar's dotted end-risers (.zvs-ccon) are gone from the widget —
+creation code, CSS, reduced-motion entry, plus the docs sentence and HANDOFF
+mention. The bar itself, its label, and its grow-with-arrivals behavior are
+unchanged. Verified on the v3 report.

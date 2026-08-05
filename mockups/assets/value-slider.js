@@ -173,9 +173,6 @@
     ".zvs-cwrap{position:relative;height:24px;margin:6px 2px 0}" +
     ".zvs-crange{position:absolute;top:3px;height:5px;border-radius:3px;background:linear-gradient(90deg,#7FC4FF,#1D4FD7);opacity:.5;transition:left .5s cubic-bezier(.2,.7,.3,1),width .5s cubic-bezier(.2,.7,.3,1)}" +
     ".zvs-clabel{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:600;color:var(--zvs-muted,#5C6B82);white-space:nowrap}" +
-    /* dotted risers from the bar's ends up to the chart's baseline
-       (bar top at +3, 6px wrap margin + 8px slide bottom gap above = 17px) */
-    ".zvs-ccon{position:absolute;top:-14px;width:0;height:17px;border-left:2px dotted;opacity:.5;transition:left .5s cubic-bezier(.2,.7,.3,1)}" +
     /* loading chips: one per EXPECTED estimate, tray-style chase checkbox +
        label across the top of the chart; checks + flies down on arrival */
     ".zvs-chips{position:absolute;top:2px;left:0;right:0;display:flex;justify-content:center;gap:18px;pointer-events:none;z-index:2}" +
@@ -194,7 +191,7 @@
     "@keyframes zvsPulse{0%,100%{opacity:.4}50%{opacity:.95}}" +
     "@keyframes zvsIn{from{opacity:0}}" +
     "@keyframes zvsEndsIn{from{max-height:0;opacity:0}to{max-height:56px;opacity:1}}" +
-    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse,.zvs-crun{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-crange,.zvs-ccon,.zvs-chip path{transition:none}}";
+    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse,.zvs-crun{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-crange,.zvs-chip path{transition:none}}";
 
   function injectCSS() {
     if (document.getElementById("zvs-style")) return;
@@ -475,7 +472,7 @@
     // the chart and labeled. The untouched handle parks at the union's
     // CENTER (re-centering as arrivals widen it) and the untouched headline
     // shows the union — so the resting state IS the complete range.
-    var uLo = null, uHi = null, cBar = null, cConL = null, cConR = null, endsEl = null;
+    var uLo = null, uHi = null, cBar = null, endsEl = null;
     function updateUnion(r) {
       if (!chartMode) return;
       uLo = uLo === null ? r.lo : Math.min(uLo, r.lo);
@@ -483,16 +480,6 @@
       if (!cBar) {
         var cw = document.createElement("div");
         cw.className = "zvs-cwrap";
-        // dotted risers: bar ends up to the chart baseline, tinted to match
-        // the bar gradient's ends
-        cConL = document.createElement("span");
-        cConL.className = "zvs-ccon";
-        cConL.style.borderColor = "#7FC4FF";
-        cw.appendChild(cConL);
-        cConR = document.createElement("span");
-        cConR.className = "zvs-ccon";
-        cConR.style.borderColor = "#1D4FD7";
-        cw.appendChild(cConR);
         cBar = document.createElement("span");
         cBar.className = "zvs-crange";
         cw.appendChild(cBar);
@@ -504,8 +491,6 @@
       }
       cBar.style.left = pOf(uLo) + "%";
       cBar.style.width = (pOf(uHi) - pOf(uLo)) + "%";
-      cConL.style.left = "calc(" + pOf(uLo) + "% - 1px)";
-      cConR.style.left = "calc(" + pOf(uHi) + "% - 1px)";
       if (!touched) {
         setHeadline(fmt(uLo) + " – " + fmt(uHi), rangeLabel);
         if (handle) {
