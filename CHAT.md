@@ -2515,3 +2515,10 @@ AND should be instant for reduced-motion users — added .val{transition:none} t
 the reduce block; and a direct 390px capture "overflowed" purely from the
 headless sub-474px viewport clamp — an iframe probe at a true 390px proved
 zero overflow (doc scrollWidth == clientWidth, no wide elements).
+
+**Lucas:** lets make month 2 start two days earlier
+
+**Claude:** Month 2 now opens on column 4 instead of 6; months 3 and 4 re-chain
+from it like a real calendar (4+30 → 6, 6+31 → 2), so the four sheets start on
+columns 3, 4, 6, 2. Explicit starts array in the builder with the rationale
+commented.
