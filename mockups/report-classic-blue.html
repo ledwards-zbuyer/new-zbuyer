@@ -537,7 +537,7 @@
   var rangesMode = /[?&]ranges=(1|on|yes|true)\b/.test(location.search) && combinedOn;
 
   if (!rangesMode) {
-    zbEstimateTray({ demo: { seconds: [3, 7, 10] } });
+    zbEstimateTray({ demo: { seconds: [1.2, 2, 9] } });
     if (!combinedOn) return;
     var slider = zbValueSlider(el, {
       anchors: [
@@ -578,7 +578,8 @@
       { id: "avm",  label: "AVM estimate",        icon: "avm",  color: EST.avm.color },
       { id: "cash", label: "Cash offer estimate", icon: "cash", color: EST.cash.color }
     ],
-    demo: { seconds: [3, 7, 10] },
+    // AI + AVM land within 2s; the cash offer follows 7s later
+    demo: { seconds: [1.2, 2, 9] },
     onArrive: function (id) { if (EST[id]) chart.addRange(EST[id]); }
   });
 })();

@@ -483,7 +483,10 @@ load) while values and home stats remain static demo data. The old
   estimate $312-335K (pt 322, navy) + MARKET VALUE estimate $348-371K (pt 360,
   primary) — AI+AVM combined into one market range, weighted to match the
   page's list range so every tile tells the same story; tray/chips run the
-  same two items (cash 4s, market 9s demo). Below: the convertaisms tile set
+  same two items (market 2s, cash 9s demo — the AI+AVM market value lands
+  fast, the cash offer follows 7s later; flipped 2026-08-05, was cash-first;
+  the v2 page's ai/avm/cash demos run [1.2, 2, 9] to match). Below: the
+  convertaisms tile set
   with values synced to the demo world (est $362K, bought Jun 2021 $268K CASH,
   ZIP 65802 54 DOM): twopaths, confidence (3/3 checks), grid2(details + REFINE
   card — replaces the old net-equity placeholder), walkaway ($336,660 net),
@@ -501,7 +504,7 @@ load) while values and home stats remain static demo data. The old
   and renders as a shimmering skeleton (.val.pending — text transparent,
   gradient behind, placeholder is exactly the eventual number's size, nothing
   shifts on reveal) until the tray's onArrive reveals that estimate's values
-  page-wide (cash 4s, market 9s demo). Gated: timeline chips, ledger headers,
+  page-wide (market 2s, cash 9s demo). Gated: timeline chips, ledger headers,
   twopaths pnums, walkaway net/costs/est-value, appreciation est/total/
   annualized + today row, velocity, taxgap market rung + ratio/rate,
   dirtvalue split, tradeup, equityhuman, assumable premium. EXTENDED

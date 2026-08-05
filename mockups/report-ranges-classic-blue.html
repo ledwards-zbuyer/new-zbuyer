@@ -899,7 +899,7 @@
   var rangesMode = combinedOn; // this mockup: the ranges view is THE view
 
   if (!rangesMode) {
-    zbEstimateTray({ demo: { seconds: [3, 7, 10] } });
+    zbEstimateTray({ demo: { seconds: [1.2, 2, 9] } });
     if (!combinedOn) return;
     var slider = zbValueSlider(el, {
       anchors: [
@@ -956,7 +956,8 @@
       { id: "cash",   label: "Cash offer estimate",   icon: "cash", color: EST.cash.color },
       { id: "market", label: "Market value estimate", icon: "avm",  color: EST.market.color }
     ],
-    demo: { seconds: [4, 9] },
+    // market (AI+AVM) lands fast, the cash offer follows 7s later
+    demo: { seconds: [9, 2] },
     onArrive: function (id) {
       if (EST[id]) chart.addRange(EST[id]);
       reveal(id);

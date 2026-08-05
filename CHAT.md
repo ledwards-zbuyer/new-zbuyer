@@ -2654,3 +2654,16 @@ arrivals, and lists every element whose right edge crosses the frame. Before
 the fix it flagged the ledger chain at 445px; after, zero offenders at both
 390px and 360px with page scrollWidth exactly equal to the viewport. The
 nowrap-vs-long-span rule and the probe recipe are in HANDOFF.
+
+**Lucas:** make the ai/avm values come in within 2 seconds and make the cash
+values come in 7 seconds after that
+
+**Claude:** Flipped the demo clock: on the v3 report the market value
+(AI+AVM) now lands at 2s and the cash offer follows at 9s — so the page
+fills with market data almost immediately (calendars, details, comps,
+history, the market range on the chart with the right-hand $371,000 corner)
+while the cash slots keep waiting, and the left corner + cash chip resolve
+at 9s. The mirror of the old order, and the piece-by-piece end-label rule
+handles it automatically. The v2 page's three-item demos (ai/avm/cash) run
+[1.2, 2, 9] to match. The fully-loaded state is byte-identical to before —
+only the arrival order changed.
