@@ -95,20 +95,29 @@
   .calp-cap{font-size:11px;color:var(--muted);margin-top:9px;line-height:1.55}
   .calp-cap b{color:var(--lane)}
 
-  /* ---- value gating: every [data-val] renders as a shimmering skeleton
-     until its estimate (cash | market) arrives — the text itself goes
-     transparent so the placeholder is exactly the size the number will be,
-     and nothing in the layout moves on reveal ---- */
+  /* ---- value gating: while an estimate (cash | market) is on its way, the
+     waiting container shows a SMALL Z-SPHERE LOADING LOOP instead of its
+     content — the eventual text/children stay in the layout (transparent /
+     opacity 0) so every container is exactly the size it will be once the
+     data lands, and nothing moves on reveal. Cash-gated values spin the navy
+     sphere, market the primary one (same coding as the tray + slider). ---- */
   .val{transition:color .45s ease;border-radius:6px;white-space:nowrap}
-  .val.pending{color:transparent !important;background:linear-gradient(90deg,#E4EAF3 25%,#F1F5FB 50%,#E4EAF3 75%) !important;background-size:200% 100% !important;animation:valShimmer 1.3s linear infinite;user-select:none;box-shadow:none}
-  @keyframes valShimmer{to{background-position:-200% 0}}
+  .val.pending{color:transparent !important;background:url(assets/z-sphere-primary.webp) center / auto 1em no-repeat !important;user-select:none;box-shadow:none}
+  [data-val="cash"].val.pending{background-image:url(assets/z-sphere-navy.webp) !important}
   /* nested styled spans inside a pending value must hide too */
   .val.pending *{color:transparent !important}
   /* block-level gating: whole content regions (property facts, comps, price
-     history, the DOM-driven calendar) blur out until their data arrives */
-  .valblock{transition:filter .5s ease,opacity .5s ease}
-  .valblock.pending{filter:blur(5px) saturate(.85);opacity:.5;pointer-events:none;user-select:none}
-  @media (prefers-reduced-motion:reduce){.val,.valblock{transition:none}.val.pending{animation:none}}
+     history, the DOM-driven calendar) empty down to one centered sphere
+     until their data arrives — children keep their box (opacity), so the
+     region holds its loaded size */
+  .valblock > *{transition:opacity .45s ease}
+  .valblock.pending{pointer-events:none;user-select:none;background:url(assets/z-sphere-primary.webp) center / auto min(48px,100%) no-repeat}
+  .valblock.pending > *{opacity:0}
+  @media (prefers-reduced-motion:reduce){
+    .val,.valblock > *{transition:none}
+    .val.pending{background:#E4EAF3 !important}
+    .valblock.pending{background:#F4F8FD}
+  }
 
   /* ---- production tile set (rt-*) + concept-card helpers ---- */
   .verify{display:flex;align-items:center;gap:8px;justify-content:center;font-size:11.5px;color:var(--muted);margin-top:16px;text-align:center}
@@ -415,7 +424,7 @@
         <div class="calp-head"><b>List with an agent</b><span data-val="market">~109 days</span></div>
         <div class="cal-sheets" id="calList" data-valblock="market"></div>
         <div class="calp-chip" data-val="market">$348&ndash;371K</div>
-        <p class="calp-cap" data-valblock="market">prep &amp; photos 15d &middot; on the market <b>average 54d in 65802</b> &middot; financed close ~40d</p>
+        <p class="calp-cap" data-val="market" style="white-space:normal">prep &amp; photos 15d &middot; on the market <b>average 54d in 65802</b> &middot; financed close ~40d</p>
       </div>
     </div>
     <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
@@ -886,6 +895,7 @@
   };
   var chart = zbValueSlider(el, {
     domain: { lo: 312000, hi: 371000 }, // pin the scale so arrivals draw in place
+    loadingImage: "assets/z-sphere-primary.webp", // sphere loop in the pre-arrival skeletons
     // loading chips across the chart top: each checks + flies down to its
     // range as the estimate lands (color-synced with the tray badges)
     expected: [

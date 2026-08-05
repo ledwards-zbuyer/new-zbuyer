@@ -64,6 +64,11 @@
  *                                         // the union REACHES that end), so a
  *                                         // pinned domain never leaks its
  *                                         // extremes before the data exists.
+ *       loadingImage: "z-sphere.webp",    // OPTIONAL: the skeletons show this
+ *                                         // small looping image (sized to the
+ *                                         // text, centered) instead of the
+ *                                         // gray shimmer; reduced motion falls
+ *                                         // back to a static gray pill.
  *       format:   function (v) { ... },   // optional; default $1,234,567
  *       headline: true,                   // big number/range above the track
  *       rangeLabel: "Complete home value range", // sub-label while the headline
@@ -202,7 +207,7 @@
     "@keyframes zvsPulse{0%,100%{opacity:.4}50%{opacity:.95}}" +
     "@keyframes zvsIn{from{opacity:0}}" +
     "@keyframes zvsEndsIn{from{max-height:0;opacity:0}to{max-height:56px;opacity:1}}" +
-    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse,.zvs-crun,.zvs-pend{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-crange,.zvs-chip path,.zvs-handle.zvs-snap{transition:none}}";
+    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse,.zvs-crun,.zvs-pend{animation:none !important}.zvs-pend{background:#E4EAF3 !important}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-crange,.zvs-chip path,.zvs-handle.zvs-snap{transition:none}}";
 
   function injectCSS() {
     if (document.getElementById("zvs-style")) return;
@@ -257,6 +262,23 @@
     // sub-label under the untouched full-range headline (anchor labels take
     // over once the user snaps somewhere)
     var rangeLabel = opts.rangeLabel !== undefined ? opts.rangeLabel : "Complete home value range";
+    // optional loading visual for the pre-arrival skeletons: a small looping
+    // image (e.g. the Z-sphere webp) centered where the number will be,
+    // instead of the default gray shimmer
+    var loadingImage = opts.loadingImage || null;
+    function pendify(el) {
+      el.classList.add("zvs-pend");
+      if (loadingImage) {
+        el.style.background = "url('" + loadingImage + "') center / auto 1em no-repeat";
+        el.style.animation = "none";
+      }
+      return el;
+    }
+    function unpend(el) {
+      el.classList.remove("zvs-pend");
+      el.style.background = "";
+      el.style.animation = "";
+    }
     // the value domain spans everything supplied: anchors + range endpoints
     // (+ the optional explicit domain pin)
     var vals = anchors.map(function (a) { return a.value; });
@@ -505,9 +527,9 @@
       // arrivals reveal the complete range piece by piece: the headline on
       // first arrival, each end label only once the union reaches that end
       // (so a pinned domain never leaks its extremes before the data lands)
-      if (pendHead) { pendHead.classList.remove("zvs-pend"); pendHead = null; }
-      if (pendEnds[0] && uLo <= vmin) { pendEnds[0].classList.remove("zvs-pend"); pendEnds[0] = null; }
-      if (pendEnds[1] && uHi >= vmax) { pendEnds[1].classList.remove("zvs-pend"); pendEnds[1] = null; }
+      if (pendHead) { unpend(pendHead); pendHead = null; }
+      if (pendEnds[0] && uLo <= vmin) { unpend(pendEnds[0]); pendEnds[0] = null; }
+      if (pendEnds[1] && uHi >= vmax) { unpend(pendEnds[1]); pendEnds[1] = null; }
       if (!touched) {
         setHeadline(fmt(uLo) + " – " + fmt(uHi), rangeLabel);
         if (handle) {
@@ -778,10 +800,9 @@
     // range (headline + end labels) hides behind skeletons until the first
     // range lands — the range only exists once values do
     if (chartMode && uLo === null) {
-      if (headlineEl) { headlineEl.classList.add("zvs-pend"); pendHead = headlineEl; }
+      if (headlineEl) pendHead = pendify(headlineEl);
       container.querySelectorAll(".zvs-end b").forEach(function (b, bi) {
-        b.classList.add("zvs-pend");
-        pendEnds[bi] = b;
+        pendEnds[bi] = pendify(b);
       });
     }
 

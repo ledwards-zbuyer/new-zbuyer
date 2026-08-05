@@ -2578,3 +2578,25 @@ to the ball, 256px). The three report pages that pointed their tab icon at
 the full wordmark now use it, and every other top-level mockup page plus the
 root index got the same link tag, so the whole project shows the Z ball in
 the tab instead of a squeezed wordmark.
+
+**Lucas:** instead of hiding and/or shading over values or ai/avm info while
+we wait for it, lets make the container (at the lowest level) just show the
+sphere loading animation within that container (small version). try to keep
+the containers the same size as they will be with the data loads.
+
+**Claude:** The waiting state is now the Z-sphere everywhere. Inline values
+keep their eventual text in the layout (transparent, so the spot is exactly
+final-size) and spin a text-height sphere centered where the number will
+land — cash-gated values spin the navy sphere, market the primary one, same
+color coding as the tray and slider lines. Block regions (property facts,
+comps, price history, biography, the value-history chart, the listing
+calendar) drop their children to opacity 0 — boxes stay in the layout, so
+the region holds its loaded size — and show one sphere centered on the
+container, up to 48px. The blur treatment is gone; the timeline caption
+switched from block to inline gating so its text hides properly. The slider
+widget grew a loadingImage option (both report pages pass the primary sphere
+webp) so its pre-arrival headline and end labels spin the ball instead of
+the gray shimmer — shimmer stays the dependency-free default, and reduced
+motion falls back to static pills/washes on all of it since a webp loop
+can't be paused from CSS. Verified pre / cash / market states headless;
+nothing shifts on reveal.
