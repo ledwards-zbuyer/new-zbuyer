@@ -2408,3 +2408,19 @@ $348–371K vs cash $312–335K, ZIP 65802 avg 54 DOM / ~109 days listing-to-key
 comps median $358,500, +6.0%/yr appreciation, $18,100/yr equity velocity, rent
 $2,150/mo at 7.1% yield — and the home-value-history chart rescaled to end at
 $362K. Verified in four full-page slices; the tray tucks to 3/3 at the end.
+
+**Lucas:** lets change up the slider to just have two bars. Cash Offer and
+Market Value. the info from AI and AVM can be combined to form one market value
+*(mid-turn:)* remove report tiles: The interest you never paid / Buyer pool
+depth / No rate handcuffs / Keep it as a rental
+
+**Claude:** On the v3 report only (the base report's ?ranges=1 keeps three):
+the slider now runs TWO bars — Cash offer estimate $312–335K (pt $322K, navy)
+and Market value estimate $348–371K (pt $360K, primary), the AI+AVM blend
+weighted to match the page's list range so twopaths/#7/#10 all quote the same
+numbers. Tray and chips run the same two items (cash at 4s, market at 9s);
+union headline still lands $312,000–$371,000. Tiles: interestsaved, buyerpool,
+the ratefree badge, and landlord removed — badges collapse to a grid2
+(free&clear + persona), rentladder re-pairs with taxgap, and tradeup stands
+alone full-width. Verified the two-bar arrivals mid/final and the regrouped
+tile flow end to end.

@@ -457,16 +457,21 @@ load) while values and home stats remain static demo data. The old
   v3 mockup combining the ranges slider with production tile parity. Order:
   masthead → EXPERT tile → concept #7 two-timelines card → concept #10 effort
   ledger → the ranges slider (ALWAYS on — no ?ranges gate; tray + chips +
-  union bar all wired) → the complete convertaisms tile set with values synced
-  to the demo world (est $362K, bought Jun 2021 $268K CASH, ZIP 65802 54 DOM):
-  twopaths, confidence (3/3 checks), grid2(details + REFINE card — replaces the
-  old net-equity placeholder), walkaway ($336,660 net), comps (4, median
-  $358,500), appreciation (+35.1% / +6.0%yr, 1998→2012→2021→today chain),
-  velocity+tenure pair, radar stamps, badges grid3 (free&clear / no-rate-
-  handcuffs / Rooted Cash Owner), landlord+rentladder pair, buyerpool+taxgap
-  pair, interestsaved+tradeup pair, biography, dirtvalue+equityhuman pair,
-  assumable (with no-mortgage context flag), value history RESCALED to end at
-  $362K (y5 $240-370K axis, y10 $180-390K). Tile templates + rt-* CSS lifted
+  union bar all wired). SLIDER = TWO BARS on this page (same day): Cash offer
+  estimate $312-335K (pt 322, navy) + MARKET VALUE estimate $348-371K (pt 360,
+  primary) — AI+AVM combined into one market range, weighted to match the
+  page's list range so every tile tells the same story; tray/chips run the
+  same two items (cash 4s, market 9s demo). Below: the convertaisms tile set
+  with values synced to the demo world (est $362K, bought Jun 2021 $268K CASH,
+  ZIP 65802 54 DOM): twopaths, confidence (3/3 checks), grid2(details + REFINE
+  card — replaces the old net-equity placeholder), walkaway ($336,660 net),
+  comps (4, median $358,500), appreciation (+35.1% / +6.0%yr,
+  1998→2012→2021→today chain), velocity+tenure pair, radar stamps, badges
+  grid2 (free&clear / Rooted Cash Owner), rentladder+taxgap pair, tradeup,
+  biography, dirtvalue+equityhuman pair, assumable (with no-mortgage context
+  flag), value history RESCALED to end at $362K (y5 $240-370K axis, y10
+  $180-390K). REMOVED per Lucas (2026-08-04): interestsaved, buyerpool,
+  ratefree badge, landlord (keep-as-rental). Tile templates + rt-* CSS lifted
   verbatim from the production report (fetched copy + extracts parked untracked
   in shots/convert-*.{html,txt}). ?terms=maxsold still swaps the carousel.
   VALUE DISPLAY CONCEPTS (2026-08-04): `value-display-concepts.html` — jump page

@@ -614,21 +614,12 @@
     </div>
   </section>
 
-  <div class="grid3">
+  <div class="grid2">
     <section class="card" data-rt="freeclear"><div class="rt-badge"><span class="bic">&#128737;</span><div><h3>Free and clear</h3><p>No mortgage on record — this home is 100% yours.</p></div></div></section>
-    <section class="card" data-rt="ratefree"><div class="rt-badge"><span class="bic">&#128275;</span><div><h3>No rate handcuffs</h3><p>No loan means no rate lock-in — moving costs you nothing in interest.</p></div></div></section>
     <section class="card" data-rt="persona"><div class="rt-badge"><span class="bic">&#127968;</span><div><h3>Rooted Cash Owner</h3><p>Owner-occupied, bought with cash, five years in — you sell on your schedule, not a lender's.</p></div></div></section>
   </div>
 
   <div class="grid2">
-    <section class="card" data-rt="landlord">
-      <h2 class="sec">Keep it as a rental</h2>
-      <p class="rt-sub">What the numbers say about holding instead of selling.</p>
-      <div class="rt-statline"><span>Estimated market rent</span><b>$2,150/mo</b></div>
-      <div class="rt-statline"><span>Gross annual rent</span><b>$25,800</b></div>
-      <div class="rt-statline"><span>Gross yield on value</span><b>7.1%</b></div>
-      <div class="rt-statline"><span>Gross rent multiplier</span><b>14.0</b></div>
-    </section>
     <section class="card" data-rt="rentladder">
       <h2 class="sec">The rent ladder</h2>
       <p class="rt-sub">HUD fair-market rents by size.</p>
@@ -638,16 +629,6 @@
         <div class="rt-rung hot"><span class="rl">3 bedroom &larr;</span><div class="rbar" style="width:86%"></div><span class="rv">$1,390</span></div>
         <div class="rt-rung"><span class="rl">4 bedroom</span><div class="rbar" style="width:100%"></div><span class="rv">$1,615</span></div>
       </div>
-    </section>
-  </div>
-
-  <div class="grid2">
-    <section class="card" data-rt="buyerpool">
-      <h2 class="sec">Buyer pool depth</h2>
-      <p class="rt-sub">Local incomes vs. this home's price.</p>
-      <div class="rt-statline"><span>Median household income (area)</span><b>$64,800</b></div>
-      <div class="rt-statline"><span>Est. purchasing power</span><b>&asymp;$380,000</b></div>
-      <div class="rt-statline"><span>This home's value</span><b>$362,000</b></div>
     </section>
     <section class="card" data-rt="taxgap">
       <h2 class="sec">The tax gap</h2>
@@ -660,20 +641,12 @@
     </section>
   </div>
 
-  <div class="grid2">
-    <section class="card" data-rt="interestsaved">
-      <h2 class="sec">The interest you never paid</h2>
-      <p class="rt-sub">What paying cash saved versus financing the purchase at that year's rates.</p>
-      <div class="rt-bignum" style="font-size:32px">$138,700</div>
-      <div class="rt-foot">Versus financing the full $268,000 purchase over 30 years. Cash did not just avoid a payment, it avoided a second house worth of interest.</div>
-    </section>
-    <section class="card" data-rt="tradeup">
-      <h2 class="sec">Your trade-up power</h2>
-      <p class="rt-sub">What your equity unlocks as a 20% down payment.</p>
-      <div class="rt-bignum" style="font-size:32px">$1,810,000</div>
-      <div class="rt-foot">Your $362,000 in equity is a full 20% down payment on a $1,810,000 home. Selling here is not an exit, it is a launchpad.</div>
-    </section>
-  </div>
+  <section class="card" data-rt="tradeup">
+    <h2 class="sec">Your trade-up power</h2>
+    <p class="rt-sub">What your equity unlocks as a 20% down payment.</p>
+    <div class="rt-bignum" style="font-size:32px">$1,810,000</div>
+    <div class="rt-foot">Your $362,000 in equity is a full 20% down payment on a $1,810,000 home. Selling here is not an exit, it is a launchpad.</div>
+  </section>
 
   <section class="card" data-rt="biography">
     <h2 class="sec">Your home's financial biography</h2>
@@ -872,29 +845,29 @@
 
   // the shared per-type map: tray badge color == slider line color.
   // value = the single point estimate (the dot riding each range line)
+  // TWO bars on this mockup: the cash offer, and one MARKET VALUE range that
+  // blends the AI + AVM estimates (their union weighted to the page's list
+  // range, so every tile tells the same $348-371K market story)
   var EST = {
-    cash: { id: "cash", lo: 312000, hi: 335000, value: 322000, label: "Cash offer estimate", color: "#16408F" },
-    ai:   { id: "ai",   lo: 340000, hi: 358000, value: 349000, label: "AI estimate",         color: "#3BA4F4" },
-    avm:  { id: "avm",  lo: 352000, hi: 371000, value: 362000, label: "AVM estimate",        color: "#1D4FD7" }
+    cash:   { id: "cash",   lo: 312000, hi: 335000, value: 322000, label: "Cash offer estimate",   color: "#16408F" },
+    market: { id: "market", lo: 348000, hi: 371000, value: 360000, label: "Market value estimate", color: "#1D4FD7" }
   };
   var chart = zbValueSlider(el, {
     domain: { lo: 312000, hi: 371000 }, // pin the scale so arrivals draw in place
     // loading chips across the chart top: each checks + flies down to its
     // range as the estimate lands (color-synced with the tray badges)
     expected: [
-      { id: "cash", label: EST.cash.label, color: EST.cash.color },
-      { id: "ai",   label: EST.ai.label,   color: EST.ai.color },
-      { id: "avm",  label: EST.avm.label,  color: EST.avm.color }
+      { id: "cash",   label: EST.cash.label,   color: EST.cash.color },
+      { id: "market", label: EST.market.label, color: EST.market.color }
     ],
     ariaLabel: "Your estimate ranges"
   });
   zbEstimateTray({
     items: [
-      { id: "ai",   label: "AI estimate",         icon: "ai",   color: EST.ai.color },
-      { id: "avm",  label: "AVM estimate",        icon: "avm",  color: EST.avm.color },
-      { id: "cash", label: "Cash offer estimate", icon: "cash", color: EST.cash.color }
+      { id: "cash",   label: "Cash offer estimate",   icon: "cash", color: EST.cash.color },
+      { id: "market", label: "Market value estimate", icon: "avm",  color: EST.market.color }
     ],
-    demo: { seconds: [3, 7, 10] },
+    demo: { seconds: [4, 9] },
     onArrive: function (id) { if (EST[id]) chart.addRange(EST[id]); }
   });
 })();
