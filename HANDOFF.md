@@ -505,18 +505,26 @@ load) while values and home stats remain static demo data. The old
   head, the calendar caption, ledger "~109 (avg 54…)" cell, twopaths "~109
   days here…" li (cash ~14s stay — product promise, not data).
   `.val.pending *{color:transparent}` so styled child spans hide too.
-  PENDING VISUAL = Z-SPHERE (Lucas 2026-08-05, replaced the first-cut shimmer
-  pills + blur): a pending [data-val] keeps its text transparent (exact-size
-  placeholder) and shows the sphere webp loop centered at 1em — cash-gated
-  values spin z-sphere-navy, market z-sphere-primary (same coding as tray +
-  slider); a pending [data-valblock] sets children opacity:0 (box preserved =
-  region holds its loaded size) with ONE sphere centered on the container
-  (auto min(48px,100%)). Reduced motion: static gray pill / #F4F8FD wash, no
-  loops. WIDGET (value-slider.js): chartMode + domain with nothing arrived
-  skeletons the headline AND end labels (.zvs-pend — domain text transparent
-  underneath = exact-size placeholder; default gray shimmer, or pass
-  `loadingImage: url` to center a small loop sized to the text — both report
-  pages pass z-sphere-primary.webp); first updateUnion reveals the headline,
+  PENDING VISUAL = ONE Z-SPHERE PER CONTAINER, ALL 40px (Lucas 2026-08-05;
+  iteration: first shimmer pills + blur, then spheres at every value, now
+  exactly ONE per container, identical size everywhere): a pending
+  [data-valblock] sets children opacity:0 (boxes preserved = region holds its
+  loaded size) and centers ONE 40px sphere overlay (::after, z-sphere-primary
+  webp); pending [data-val] slots inside/elsewhere are QUIET STATIC PILLS
+  (#E9EEF6, text transparent = exact-size placeholder, no animation). The
+  money-centric tiles' bodies are wrapped as valblocks so each waits as one
+  sphere: walkaway, velocity, taxgap, tradeup, dirtvalue, equityhuman,
+  assumable (sentence only — the no-mortgage geoflag stays visible) + the
+  original details/comps/appreciation/biography/chart/calendar-sheet blocks.
+  Containers whose gated bits are inline-only (ledger, twopaths pnums,
+  timeline chips/captions, slider end labels) show pills, no sphere.
+  Reduced motion: static pills / #F4F8FD wash, no loops. WIDGET
+  (value-slider.js): chartMode + domain with nothing arrived skeletons the
+  headline AND end labels (.zvs-pend — domain text transparent underneath =
+  exact-size placeholder; default gray shimmer, or pass `loadingImage: url`
+  for ONE loop centered in the headline at `loadingSize` px (default 40) with
+  the end labels as quiet pills — both report pages pass
+  z-sphere-primary.webp); first updateUnion reveals the headline,
   each END label only reveals once the union REACHES that end (right end
   stays hidden until market lands — a pinned domain never leaks its
   extremes). .zvs-handle.zvs-snap added to the reduced-motion no-transition

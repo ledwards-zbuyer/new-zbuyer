@@ -95,28 +95,27 @@
   .calp-cap{font-size:11px;color:var(--muted);margin-top:9px;line-height:1.55}
   .calp-cap b{color:var(--lane)}
 
-  /* ---- value gating: while an estimate (cash | market) is on its way, the
-     waiting container shows a SMALL Z-SPHERE LOADING LOOP instead of its
-     content — the eventual text/children stay in the layout (transparent /
-     opacity 0) so every container is exactly the size it will be once the
-     data lands, and nothing moves on reveal. Cash-gated values spin the navy
-     sphere, market the primary one (same coding as the tray + slider). ---- */
+  /* ---- value gating: while an estimate (cash | market) is on its way, each
+     waiting CONTAINER shows exactly ONE Z-sphere loading loop — the same
+     40px sphere in every container — centered over the region (a gated
+     block's children hold their box at opacity 0, so the container is
+     exactly the size it will be once the data lands, and nothing moves on
+     reveal). Individual value slots inside are quiet static pills (their
+     eventual text transparent = exact-size placeholder). ---- */
   .val{transition:color .45s ease;border-radius:6px;white-space:nowrap}
-  .val.pending{color:transparent !important;background:url(assets/z-sphere-primary.webp) center / auto 1em no-repeat !important;user-select:none;box-shadow:none}
-  [data-val="cash"].val.pending{background-image:url(assets/z-sphere-navy.webp) !important}
+  .val.pending{color:transparent !important;background:#E9EEF6 !important;user-select:none;box-shadow:none}
   /* nested styled spans inside a pending value must hide too */
   .val.pending *{color:transparent !important}
-  /* block-level gating: whole content regions (property facts, comps, price
-     history, the DOM-driven calendar) empty down to one centered sphere
-     until their data arrives — children keep their box (opacity), so the
-     region holds its loaded size */
+  .valblock{position:relative}
   .valblock > *{transition:opacity .45s ease}
-  .valblock.pending{pointer-events:none;user-select:none;background:url(assets/z-sphere-primary.webp) center / auto min(48px,100%) no-repeat}
+  .valblock.pending{pointer-events:none;user-select:none}
   .valblock.pending > *{opacity:0}
+  .valblock.pending::after{content:"";position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;background:url(assets/z-sphere-primary.webp) center/contain no-repeat}
   @media (prefers-reduced-motion:reduce){
     .val,.valblock > *{transition:none}
     .val.pending{background:#E4EAF3 !important}
     .valblock.pending{background:#F4F8FD}
+    .valblock.pending::after{background:none}
   }
 
   /* ---- production tile set (rt-*) + concept-card helpers ---- */
@@ -592,10 +591,12 @@
   <section class="card" data-rt="walkaway">
     <h2 class="sec">If you sold today</h2>
     <p class="rt-sub">Estimated proceeds after typical selling costs, before any mortgage payoff.</p>
-    <div class="rt-bignum" data-val="market">$336,660</div>
+    <div data-valblock="market">
+    <div class="rt-bignum">$336,660</div>
     <div class="rt-settle"><div class="net" style="width:93%"></div><div class="costs" style="width:7%"></div></div>
-    <div class="rt-key"><span>Net to you <b data-val="market">$336,660</b></span><span>Est. selling costs (~7%) <b data-val="market">$25,340</b></span></div>
-    <div class="rt-foot">Estimated value <span data-val="market">$362,000</span> &middot; Mortgage payoff $0 &middot; Equity 100%</div>
+    <div class="rt-key"><span>Net to you <b>$336,660</b></span><span>Est. selling costs (~7%) <b>$25,340</b></span></div>
+    <div class="rt-foot">Estimated value <span>$362,000</span> &middot; Mortgage payoff $0 &middot; Equity 100%</div>
+    </div>
   </section>
 
   <section class="card" data-rt="comps">
@@ -632,8 +633,10 @@
   <section class="card" data-rt="velocity">
     <h2 class="sec">Equity velocity</h2>
     <p class="rt-sub">Equity accumulated per year of ownership.</p>
-    <div class="rt-bignum" style="font-size:32px" data-val="market">$18,100/yr</div>
-    <div class="rt-foot"><span data-val="market">$94,000</span> equity &divide; 5.2 years. This was an all-cash purchase, so the figure reflects capital invested plus market movement, not mortgage paydown.</div>
+    <div data-valblock="market">
+    <div class="rt-bignum" style="font-size:32px">$18,100/yr</div>
+    <div class="rt-foot"><span>$94,000</span> equity &divide; 5.2 years. This was an all-cash purchase, so the figure reflects capital invested plus market movement, not mortgage paydown.</div>
+    </div>
   </section>
 
   <section class="card" data-rt="tenure">
@@ -674,18 +677,22 @@
   <section class="card" data-rt="taxgap">
     <h2 class="sec">The tax gap</h2>
     <p class="rt-sub">Assessed value versus market estimate, the spread your taxes do not see.</p>
+    <div data-valblock="market">
     <div class="rt-ladder">
-      <div class="rt-rung hot"><span class="rl">Market estimate</span><div class="rbar" style="width:100%"></div><span class="rv" data-val="market">$362,000</span></div>
+      <div class="rt-rung hot"><span class="rl">Market estimate</span><div class="rbar" style="width:100%"></div><span class="rv">$362,000</span></div>
       <div class="rt-rung"><span class="rl">Assessed value</span><div class="rbar" style="width:63%"></div><span class="rv">$228,060</span></div>
     </div>
-    <div class="rt-foot">Assessment ratio <b data-val="market">63%</b> &middot; effective rate <b data-val="market">2.46%</b>. A sale can trigger reassessment for the buyer.</div>
+    <div class="rt-foot">Assessment ratio <b>63%</b> &middot; effective rate <b>2.46%</b>. A sale can trigger reassessment for the buyer.</div>
+    </div>
   </section>
 
   <section class="card" data-rt="tradeup">
     <h2 class="sec">Your trade-up power</h2>
     <p class="rt-sub">What your equity unlocks as a 20% down payment.</p>
-    <div class="rt-bignum" style="font-size:32px" data-val="market">$1,810,000</div>
-    <div class="rt-foot">Your <span data-val="market">$362,000</span> in equity is a full 20% down payment on a <span data-val="market">$1,810,000</span> home. Selling here is not an exit, it is a launchpad.</div>
+    <div data-valblock="market">
+    <div class="rt-bignum" style="font-size:32px">$1,810,000</div>
+    <div class="rt-foot">Your <span>$362,000</span> in equity is a full 20% down payment on a <span>$1,810,000</span> home. Selling here is not an exit, it is a launchpad.</div>
+    </div>
   </section>
 
   <section class="card" data-rt="biography">
@@ -704,19 +711,25 @@
   <section class="card" data-rt="dirtvalue">
     <h2 class="sec">Dirt vs. house</h2>
     <p class="rt-sub">How much of your value is the land under it.</p>
+    <div data-valblock="market">
     <div class="rt-settle"><div style="width:22%;background:var(--c1)"></div><div style="width:78%;background:var(--tint)"></div></div>
-    <div class="rt-key"><span>Land <b data-val="market">$79,640</b></span><span>Structure <b data-val="market">$282,360</b></span></div>
+    <div class="rt-key"><span>Land <b>$79,640</b></span><span>Structure <b>$282,360</b></span></div>
     <div class="rt-foot">The assessor's land and improvement split, projected onto today's market estimate.</div>
+    </div>
   </section>
 
   <section class="card" data-rt="equityhuman">
     <h2 class="sec">Equity in human terms</h2>
-    <div class="rt-sent">Your equity equals <b data-val="market">5.6 years</b> of the area's median household income, and <b data-val="market">1.9&times;</b> the entire net worth of the typical American household.</div>
+    <div data-valblock="market">
+    <div class="rt-sent">Your equity equals <b>5.6 years</b> of the area's median household income, and <b>1.9&times;</b> the entire net worth of the typical American household.</div>
+    </div>
   </section>
 
   <section class="card" data-rt="assumable">
     <h2 class="sec">The assumable-loan premium</h2>
-    <div class="rt-sent">If this home carried an assumable FHA or VA loan at 3%, that mortgage alone would be worth roughly <b data-val="market">$55,000</b> to the right buyer, a premium most sellers never surface.</div>
+    <div data-valblock="market">
+    <div class="rt-sent">If this home carried an assumable FHA or VA loan at 3%, that mortgage alone would be worth roughly <b>$55,000</b> to the right buyer, a premium most sellers never surface.</div>
+    </div>
     <div class="rt-geoflag">&#9888; This home carries no mortgage — shown for context.</div>
   </section>
 

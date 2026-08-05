@@ -64,11 +64,14 @@
  *                                         // the union REACHES that end), so a
  *                                         // pinned domain never leaks its
  *                                         // extremes before the data exists.
- *       loadingImage: "z-sphere.webp",    // OPTIONAL: the skeletons show this
- *                                         // small looping image (sized to the
- *                                         // text, centered) instead of the
- *                                         // gray shimmer; reduced motion falls
- *                                         // back to a static gray pill.
+ *       loadingImage: "z-sphere.webp",    // OPTIONAL: ONE small looping image
+ *                                         // centered in the pending headline
+ *                                         // (one sphere per container); the
+ *                                         // end labels wait as quiet static
+ *                                         // pills. loadingSize (default 40)
+ *                                         // sets its px height — match it
+ *                                         // across the page. Reduced motion
+ *                                         // falls back to static pills.
  *       format:   function (v) { ... },   // optional; default $1,234,567
  *       headline: true,                   // big number/range above the track
  *       rangeLabel: "Complete home value range", // sub-label while the headline
@@ -262,15 +265,19 @@
     // sub-label under the untouched full-range headline (anchor labels take
     // over once the user snaps somewhere)
     var rangeLabel = opts.rangeLabel !== undefined ? opts.rangeLabel : "Complete home value range";
-    // optional loading visual for the pre-arrival skeletons: a small looping
-    // image (e.g. the Z-sphere webp) centered where the number will be,
-    // instead of the default gray shimmer
+    // optional loading visual for the pre-arrival skeletons: ONE small
+    // looping image (e.g. the Z-sphere webp) centered in the headline —
+    // one sphere per container — while the end labels wait as quiet static
+    // pills. Without it, everything gets the default gray shimmer.
     var loadingImage = opts.loadingImage || null;
-    function pendify(el) {
+    var loadingSize = opts.loadingSize || 40; // px, match it across the page
+    function pendify(el, isHead) {
       el.classList.add("zvs-pend");
       if (loadingImage) {
-        el.style.background = "url('" + loadingImage + "') center / auto 1em no-repeat";
         el.style.animation = "none";
+        el.style.background = isHead
+          ? "url('" + loadingImage + "') center / auto " + loadingSize + "px no-repeat"
+          : "#E4EAF3";
       }
       return el;
     }
@@ -800,9 +807,9 @@
     // range (headline + end labels) hides behind skeletons until the first
     // range lands — the range only exists once values do
     if (chartMode && uLo === null) {
-      if (headlineEl) pendHead = pendify(headlineEl);
+      if (headlineEl) pendHead = pendify(headlineEl, true);
       container.querySelectorAll(".zvs-end b").forEach(function (b, bi) {
-        pendEnds[bi] = pendify(b);
+        pendEnds[bi] = pendify(b, false);
       });
     }
 

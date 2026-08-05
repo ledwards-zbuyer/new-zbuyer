@@ -225,10 +225,11 @@ zbEstimateTray({
           the union reaches that end), so a pinned domain never leaks its extremes before
           the data exists.</td></tr>
       <tr><td><code>loadingImage</code></td><td>url</td>
-          <td>Swaps the pre-arrival skeletons' gray shimmer for a small centered loading
-          image sized to the text (the report passes the Z-sphere webp loop, so a tiny
-          spinning Z marks each spot a number will land). Reduced motion falls back to a
-          static gray pill.</td></tr>
+          <td>Shows ONE small looping image centered in the pending headline — one sphere
+          per container — while the end labels wait as quiet static pills (the report
+          passes the Z-sphere webp loop). <code>loadingSize</code> (default 40) sets its
+          px height; keep it consistent across the page. Reduced motion falls back to
+          static pills.</td></tr>
       <tr><td><code>expected</code></td><td>array</td>
           <td>Chart mode: the roster of estimates on their way — <code>{ id, label, color }</code>
           each. Renders a loading chip per pending estimate (chase checkbox + label, color

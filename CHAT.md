@@ -2600,3 +2600,20 @@ the gray shimmer — shimmer stays the dependency-free default, and reduced
 motion falls back to static pills/washes on all of it since a webp loop
 can't be paused from CSS. Verified pre / cash / market states headless;
 nothing shifts on reveal.
+
+**Lucas:** only one sphere per container. all the same size from container
+to container
+
+**Claude:** Consolidated: every waiting container now shows exactly one
+sphere, and it's the same 40px ball everywhere — a centered overlay on the
+gated block, so it never affects layout. To get the money tiles down to one
+sphere each, their bodies (walkaway, equity velocity, tax gap, trade-up,
+dirt-vs-house, equity-in-human-terms, the assumable sentence) are now
+wrapped as gated blocks like details/comps/history already were — heading
+and subtitle stay, the body waits as one sphere, sized as it will load.
+Individual value slots (ledger cells, timeline chips, two-ways numbers,
+slider end labels) went back to quiet static pills — no animation, the
+sphere carries the loading signal. The slider shows its one sphere in the
+headline (new loadingSize option, default 40, so pages can keep it uniform).
+The full-reveal state is byte-identical to the previously verified shot, so
+nothing about the loaded report changed.
