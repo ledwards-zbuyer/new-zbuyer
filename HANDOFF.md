@@ -539,6 +539,17 @@ load) while values and home stats remain static demo data. The old
   list (also makes headless shots truthful). NOT gated (records/stats):
   assessed value, HUD rents, record-check flags, tenure, masthead facts line
   (identity stays visible).
+  MOBILE OVERFLOW RULE (2026-08-05, iPhone screenshot: ledger text ran past
+  the card bg): `.val` is white-space:nowrap BY DESIGN for money tokens —
+  any LONG gated span (sentence-ish, e.g. "~109 (avg 54 on market in
+  65802)") must carry inline `style="white-space:normal"` or it forces its
+  table/card wider than the viewport (ledger days cell, twopaths li, and
+  calp-cap all carry it now). Verify with the local iframe probe
+  `shots/t-ovf2.html?w=390|360` (gitignored scratch; run headless with
+  --allow-file-access-from-files + reduced-motion + 14s budget — it lists
+  every element whose right edge crosses the true-mobile viewport after
+  both arrivals, dodging the ~474px headless layout clamp). Clean = page
+  scrollWidth == viewport, "no offenders".
   REMOVED per Lucas (2026-08-04): interestsaved, buyerpool,
   ratefree badge, landlord (keep-as-rental). Tile templates + rt-* CSS lifted
   verbatim from the production report (fetched copy + extracts parked untracked

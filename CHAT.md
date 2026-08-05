@@ -2637,3 +2637,20 @@ day counts moved out of the title line onto their own row, 21px heavy in
 each panel's lane color — the loudest number in the panel. Gating untouched:
 the list side still waits as one sphere over the pages with a pill where
 "~109 days" will land.
+
+**Lucas:** [iPhone screenshot: the ledger's "~109 (avg 54 on market in
+658..." running past the card background] the text extends past the
+container bg. make sure this does not happen anywhere
+
+**Claude:** Root cause: `.val` deliberately sets white-space:nowrap so money
+tokens like "$312-335K" never break mid-number — but the ledger's long days
+cell ("~109 (avg 54 on market in 65802)") inherited that nowrap and dragged
+the whole table to 445px on a 390px screen. That span and the matching
+two-ways bullet now carry white-space:normal (the calendar caption already
+did), so the parenthetical wraps inside the card. To make sure it happens
+nowhere else, I rebuilt the 390px iframe probe (shots/t-ovf2.html, local
+scratch) — it loads the report at a true mobile viewport, waits past both
+arrivals, and lists every element whose right edge crosses the frame. Before
+the fix it flagged the ledger chain at 445px; after, zero offenders at both
+390px and 360px with page scrollWidth exactly equal to the viewport. The
+nowrap-vs-long-span rule and the probe recipe are in HANDOFF.
