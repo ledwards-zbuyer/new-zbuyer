@@ -5,3 +5,9 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Scratch parked in mockups/shots: production-report extracts and throwaway
+# test harnesses stay local (git pathspec globs match across slashes — a
+# `mockups/*.html` add once swept these in)
+mockups/shots/convert-*
+mockups/shots/t-*.html
