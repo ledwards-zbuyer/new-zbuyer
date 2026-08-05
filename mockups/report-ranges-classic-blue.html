@@ -74,23 +74,28 @@
   .pm-x{position:absolute;top:10px;right:14px;border:none;background:none;font-size:24px;color:#9aa7bd;cursor:pointer}
 
   /* ---- two-timelines card: two MIRRORED calendar panels. Each path shows
-     the same four month-sheets of day dots (7-day columns); filled dots are
-     days spent selling. Identical structure both sides = the value chip and
+     the same four REAL wall-calendar pages (current month + next three):
+     month name up top, weekday initials, square day cells on a fixed 6-week
+     grid aligned to each month's true first weekday. Filled cells are days
+     spent selling. Identical structure both sides = the value chip and
      captions sit in the same place always, desktop and mobile alike. */
   .cal2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
   @media (max-width:700px){.cal2{grid-template-columns:1fr;gap:20px}}
   .calp{border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;text-align:center;background:var(--soft)}
-  .calp-head{display:flex;justify-content:center;gap:9px;align-items:baseline;margin-bottom:12px}
+  .calp-head{display:flex;justify-content:center;gap:9px;align-items:baseline;margin-bottom:3px}
   .calp-head b{font-size:12.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--lane)}
-  .calp-head span{font-size:11.5px;font-weight:700;color:var(--muted)}
+  /* the day count: its own row under the title, the panel's loudest number */
+  .calp-days{font-size:21px;font-weight:900;letter-spacing:-.02em;color:var(--lane);margin-bottom:12px}
   .cal-sheets{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-  .cal-mo{display:flex;flex-direction:column}
-  .cal-mo .cal-m{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;align-content:start}
-  .cal-m i{display:block;width:100%;aspect-ratio:1;border-radius:50%;border:1.5px solid #C9D4E4;background:#fff;box-sizing:border-box}
+  .cal-mo{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 6px 7px;box-shadow:0 4px 12px -9px rgba(14,27,51,.35)}
+  .cal-mname{font-size:8.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);padding-bottom:4px;border-bottom:1px solid var(--line);margin-bottom:4px}
+  .cal-wd{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:2px}
+  .cal-wd i{font-style:normal;font-size:6.5px;font-weight:700;color:#9AA7BD}
+  .cal-mo .cal-m{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;align-content:start}
+  .cal-m i{display:block;width:100%;aspect-ratio:1;border-radius:2.5px;border:1px solid #CBD6E6;background:#fff;box-sizing:border-box}
   .cal-m i.on{background:var(--lane);border-color:var(--lane)}
-  .cal-m i.pad{visibility:hidden} /* leading weekday offset, like a real month */
+  .cal-m i.pad{visibility:hidden} /* true weekday offset + 6-week padding */
   .cal-mo.ghost{opacity:.4}
-  .cal-mlab{font-size:8.5px;font-weight:800;letter-spacing:.06em;color:#8296B9;margin-top:auto;padding-top:6px}
   .calp-chip{display:inline-block;margin-top:14px;background:var(--lane);color:#fff;font-size:15.5px;font-weight:900;padding:9px 18px;border-radius:10px;box-shadow:0 8px 20px -10px rgba(14,27,51,.5)}
   .calp-cap{font-size:11px;color:var(--muted);margin-top:9px;line-height:1.55}
   .calp-cap b{color:var(--lane)}
@@ -414,13 +419,15 @@
     <p class="rt-sub">The same start date, two very different calendars — every filled day is a day spent selling.</p>
     <div class="cal2">
       <div class="calp" style="--lane:#16408F">
-        <div class="calp-head"><b>Cash offer</b><span>~14 days</span></div>
+        <div class="calp-head"><b>Cash offer</b></div>
+        <div class="calp-days">~14 days</div>
         <div class="cal-sheets" id="calCash"></div>
         <div class="calp-chip" data-val="cash">$312&ndash;335K</div>
         <p class="calp-cap">accept &middot; inspect &middot; close — <b>done by day 14</b>, the rest of the calendar is yours</p>
       </div>
       <div class="calp" style="--lane:#1D4FD7">
-        <div class="calp-head"><b>List with an agent</b><span data-val="market">~109 days</span></div>
+        <div class="calp-head"><b>List with an agent</b></div>
+        <div class="calp-days" data-val="market">~109 days</div>
         <div class="cal-sheets" id="calList" data-valblock="market"></div>
         <div class="calp-chip" data-val="market">$348&ndash;371K</div>
         <p class="calp-cap" data-val="market" style="white-space:normal">prep &amp; photos 15d &middot; on the market <b>average 54d in 65802</b> &middot; financed close ~40d</p>
@@ -429,38 +436,49 @@
     <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
     Timelines are ZIP averages, ranges are estimates — both firm up after verification and inspection.</p>
     <script>
-    // the calendar sheets: four months of day dots per path (7-day columns,
-    // alternating 31/30), filled = a day spent selling. Each month starts on
-    // the weekday after the last one ends — like real calendar pages, not a
-    // dot matrix. Cash fills 14 of the first sheet; listing fills all 109.
+    // the calendar pages: four REAL months per path starting with the
+    // current one — name up top, S-M-T-W-T-F-S row, and a fixed 6-week grid
+    // (42 cells, hidden pads outside the month) aligned to each month's true
+    // first weekday, so all four pages hang at the same size like a wall
+    // calendar. Filled cells are days spent selling: cash fills 14, listing
+    // fills all ~109 from day 1 of this month. (Any four consecutive months
+    // hold at least 120 days, so 109 always fits.)
     (function () {
+      var NAMES = ["January","February","March","April","May","June","July",
+                   "August","September","October","November","December"];
+      var WD = ["S","M","T","W","T","F","S"];
+      var today = new Date();
       function build(id, fill) {
-        var host = document.getElementById(id), months = [31, 30, 31, 30];
-        // month start weekdays, art-directed (not strictly chained) so no
-        // month opens with a lonely near-empty first week
-        var starts = [3, 4, 2, 1], left = fill;
-        months.forEach(function (n, mi) {
+        var host = document.getElementById(id), left = fill;
+        for (var mi = 0; mi < 4; mi++) {
+          var first = new Date(today.getFullYear(), today.getMonth() + mi, 1);
+          var days = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
+          var start = first.getDay();
           var mo = document.createElement("div");
           mo.className = "cal-mo" + (left <= 0 ? " ghost" : "");
+          var nm = document.createElement("div");
+          nm.className = "cal-mname";
+          nm.textContent = NAMES[first.getMonth()];
+          mo.appendChild(nm);
+          var wd = document.createElement("div");
+          wd.className = "cal-wd";
+          WD.forEach(function (w) {
+            var wi = document.createElement("i");
+            wi.textContent = w;
+            wd.appendChild(wi);
+          });
+          mo.appendChild(wd);
           var m = document.createElement("div");
           m.className = "cal-m";
-          for (var p = 0; p < starts[mi]; p++) {
-            var pad = document.createElement("i");
-            pad.className = "pad";
-            m.appendChild(pad);
-          }
-          for (var d = 0; d < n; d++) {
+          for (var c = 0; c < 42; c++) {
             var i = document.createElement("i");
-            if (left > 0) { i.className = "on"; left--; }
+            if (c < start || c >= start + days) i.className = "pad";
+            else if (left > 0) { i.className = "on"; left--; }
             m.appendChild(i);
           }
           mo.appendChild(m);
-          var lab = document.createElement("div");
-          lab.className = "cal-mlab";
-          lab.textContent = "MONTH " + (mi + 1);
-          mo.appendChild(lab);
           host.appendChild(mo);
-        });
+        }
       }
       build("calCash", 14);
       build("calList", 109);

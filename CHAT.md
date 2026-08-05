@@ -2617,3 +2617,23 @@ sphere carries the loading signal. The slider shows its one sphere in the
 headline (new loadingSize option, default 40, so pages can keep it uniform).
 The full-reveal state is byte-identical to the previously verified shot, so
 nothing about the loaded report changed.
+
+**Lucas:** lets make the dot-matix version of a the calendar look more like
+an actual calendar with the current and following actual months as the top
+(remove Month 1,2,3,4 at the bottom) and make it more like a grid like a
+calendar that would be up on the wall. *(mid-turn:)* also put "~14 days"/
+"~109 days" on their own row below the title and make it more prominent
+
+**Claude:** The sheets are real wall-calendar pages now. The builder reads
+today's date and renders the current month plus the next three — August
+through November as of this writing — each as a white bordered page with a
+soft shadow: month name up top, an S-M-T-W-T-F-S initials row, and square
+day cells on a fixed six-week grid aligned to the month's true first
+weekday (August 2026 genuinely opens on a Saturday), so all four pages hang
+at the same size. MONTH 1-4 footers are gone. The fill logic is unchanged —
+cash marks 14 days, listing marks ~109 from day 1 of the current month, and
+any four consecutive months hold at least 120 days so it always fits. The
+day counts moved out of the title line onto their own row, 21px heavy in
+each panel's lane color — the loudest number in the panel. Gating untouched:
+the list side still waits as one sphere over the pages with a pill where
+"~109 days" will land.

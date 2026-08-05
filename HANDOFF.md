@@ -464,14 +464,22 @@ load) while values and home stats remain static demo data. The old
   union bar all wired). TWO-TIMELINES v3 = CALENDAR PANELS (2026-08-05,
   replacing the 08-04 SVG + vertical-twin split whose chip/label positions
   drifted between layouts): two MIRRORED panels (side by side desktop, stacked
-  ≤700px), each showing the SAME four month-sheets of day dots (7-day columns,
-  alternating 31/30, JS-built in-page) — filled dot = a day spent selling.
-  Cash fills 14 of sheet 1 (untouched trailing sheets ghost at .4 opacity,
-  caption "done by day 14, the rest of the calendar is yours"); listing fills
-  all 109 across the four sheets (avg 54d in 65802 in its caption). The value
-  chip and caption sit in the IDENTICAL centered spot in both panels at every
-  width — consistency by construction (Lucas's complaint with the old
-  version). Lane color via a --lane CSS var per panel. SLIDER = TWO BARS on this page (same day): Cash offer
+  ≤700px), each showing the SAME four REAL WALL-CALENDAR PAGES (2026-08-05
+  later pass, replacing the abstract dot-matrix sheets + art-directed starts
+  + MONTH 1-4 footers): JS builds the CURRENT month + next three from
+  `new Date()` — month name up top, S-M-T-W-T-F-S initials row, square day
+  cells on a FIXED 6-WEEK grid (42 cells, hidden pads) aligned to each
+  month's TRUE first weekday, white bordered pages with a soft shadow so
+  they hang like calendar sheets on the tinted panel. Filled cell = a day
+  spent selling. Cash fills 14 (untouched trailing pages ghost at .4,
+  caption "done by day 14, the rest of the calendar is yours"); listing
+  fills all 109 from day 1 of the current month (any 4 consecutive months
+  hold ≥120 days, so it always fits; avg 54d in 65802 in its caption). The
+  DAY COUNT ("~14 days"/"~109 days") sits on its OWN prominent row (21px/900
+  lane color) under each panel title. The value chip and caption sit in the
+  IDENTICAL centered spot in both panels at every width — consistency by
+  construction (Lucas's complaint with the old version). Lane color via a
+  --lane CSS var per panel. SLIDER = TWO BARS on this page (same day): Cash offer
   estimate $312-335K (pt 322, navy) + MARKET VALUE estimate $348-371K (pt 360,
   primary) — AI+AVM combined into one market range, weighted to match the
   page's list range so every tile tells the same story; tray/chips run the
