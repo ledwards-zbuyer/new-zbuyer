@@ -2445,3 +2445,23 @@ close") with its $312–335K chip right below and the empty remainder captioned
 prep → on-the-market (65802 avg 54d) → financed close with its chip at day
 109. Verified at 500px (readable, story intact) and 1200px (desktop SVG
 unchanged).
+
+**Lucas:** lets work on this some more. on both desktop and mobile i dislike how
+the values are not in stable consistent positions — sometimes on the bar,
+sometimes above it, sometimes inside, sometimes outside. make it consistent
+(both should mirror each other). maybe (not sure it would look good) try a
+small graphic representing a calendar month — 30-31 unfilled dots in 7-day
+columns, with 14 filled showing ~half the sheet; the other showing four months
+alternating 30-31 dots with all 109 filled.
+
+**Claude:** Tried it — it looks great, and it solves the consistency problem
+structurally. The card is now two MIRRORED panels (side by side on desktop,
+stacked on mobile): each shows the same four month-sheets of day dots (7-day
+columns, alternating 31/30, built by a tiny in-page script), where a filled dot
+is a day spent selling. Cash fills 14 dots of month one and the three untouched
+sheets ghost to 40% ("done by day 14, the rest of the calendar is yours");
+listing floods all 109 across the four sheets (avg 54d in 65802 in the
+caption). The value chip and caption sit in the identical centered position in
+both panels at every width — nothing left to drift. Replaces both the desktop
+SVG and the vertical mobile twin with one responsive layout; verified at 1200px
+and 500px.

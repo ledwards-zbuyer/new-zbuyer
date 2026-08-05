@@ -73,30 +73,25 @@
   .pm-card .btn{width:100%;margin-top:12px}
   .pm-x{position:absolute;top:10px;right:14px;border:none;background:none;font-size:24px;color:#9aa7bd;cursor:pointer}
 
-  /* ---- two-timelines card: horizontal SVG on desktop, a vertical twin on
-     mobile (the SVG scales with the viewport and turns illegible on phones) */
-  .tl-desk{display:block}
-  .tl-mob{display:none}
-  @media (max-width:700px){
-    .tl-desk{display:none}
-    .tl-mob{display:block}
-  }
-  .tlm-heads{display:grid;grid-template-columns:34px 1fr 1fr;gap:0 10px;margin-top:6px}
-  .tlm-heads b{font-size:12px;font-weight:800;letter-spacing:-.01em}
-  .tlm-heads b span{display:block;font-weight:700;color:var(--muted);font-size:10.5px;margin-top:1px}
-  .tlm-body{position:relative;margin-top:8px}
-  .tlm-bands{position:absolute;top:0;bottom:0;left:44px;right:0;z-index:0}
-  .tlm-band{position:absolute;left:0;right:0;border-radius:6px}
-  .tlm-band span{position:absolute;top:4px;right:6px;font-size:8.5px;font-weight:800;letter-spacing:.06em;color:#8296B9}
-  .tlm-grid{position:relative;z-index:1;display:grid;grid-template-columns:34px 1fr 1fr;gap:0 10px}
-  .tlm-mcol{position:relative;height:371px;font-size:9.5px;font-weight:700;color:var(--muted)}
-  .tlm-mcol i{position:absolute;left:0;font-style:normal;transform:translateY(-50%)}
-  .tlm-track{position:relative;height:371px}
-  .tlm-seg{position:absolute;left:0;right:0;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center}
-  .tlm-seg span{font-size:10.5px;line-height:1.4;font-weight:600;color:var(--ink);padding:3px}
-  .tlm-cap{position:absolute;left:0;right:0;text-align:center;font-size:9.5px;color:var(--muted)}
-  .tlm-chip{position:absolute;left:50%;transform:translateX(-50%);color:#fff;font-size:14.5px;font-weight:900;padding:9px 14px;border-radius:10px;white-space:nowrap;box-shadow:0 8px 20px -10px rgba(14,27,51,.5)}
-  .tlm-free{position:absolute;top:170px;left:2px;right:2px;text-align:center;font-size:10.5px;color:var(--muted);line-height:1.55}
+  /* ---- two-timelines card: two MIRRORED calendar panels. Each path shows
+     the same four month-sheets of day dots (7-day columns); filled dots are
+     days spent selling. Identical structure both sides = the value chip and
+     captions sit in the same place always, desktop and mobile alike. */
+  .cal2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+  @media (max-width:700px){.cal2{grid-template-columns:1fr;gap:20px}}
+  .calp{border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;text-align:center;background:var(--soft)}
+  .calp-head{display:flex;justify-content:center;gap:9px;align-items:baseline;margin-bottom:12px}
+  .calp-head b{font-size:12.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--lane)}
+  .calp-head span{font-size:11.5px;font-weight:700;color:var(--muted)}
+  .cal-sheets{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .cal-mo .cal-m{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;align-content:start}
+  .cal-m i{display:block;width:100%;aspect-ratio:1;border-radius:50%;border:1.5px solid #C9D4E4;background:#fff;box-sizing:border-box}
+  .cal-m i.on{background:var(--lane);border-color:var(--lane)}
+  .cal-mo.ghost{opacity:.4}
+  .cal-mlab{font-size:8.5px;font-weight:800;letter-spacing:.06em;color:#8296B9;margin-top:6px}
+  .calp-chip{display:inline-block;margin-top:14px;background:var(--lane);color:#fff;font-size:15.5px;font-weight:900;padding:9px 18px;border-radius:10px;box-shadow:0 8px 20px -10px rgba(14,27,51,.5)}
+  .calp-cap{font-size:11px;color:var(--muted);margin-top:9px;line-height:1.55}
+  .calp-cap b{color:var(--lane)}
 
   /* ---- production tile set (rt-*) + concept-card helpers ---- */
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -391,99 +386,52 @@
   <!-- concept #7: the two timelines, calendar-backed (ZIP DOM stat) -->
   <section class="card">
     <h2 class="sec">If you accepted today &middot; two timelines</h2>
-    <p class="rt-sub">The same start date, two very different calendars — the trade is time.</p>
-    <div class="tl-desk">
-    <svg viewBox="0 0 720 235" style="width:100%;display:block" aria-hidden="true" font-family="Inter,sans-serif">
-      <g>
-        <rect x="20" y="24" width="187" height="166" fill="#F4F8FD"/>
-        <rect x="207" y="24" width="187" height="166" fill="#fff"/>
-        <rect x="394" y="24" width="187" height="166" fill="#F4F8FD"/>
-        <rect x="581" y="24" width="119" height="166" fill="#fff"/>
-      </g>
-      <g font-size="9" font-weight="800" fill="#8296B9" letter-spacing=".08em">
-        <text x="113" y="187" text-anchor="middle">MONTH 1</text>
-        <text x="300" y="187" text-anchor="middle">MONTH 2</text>
-        <text x="487" y="187" text-anchor="middle">MONTH 3</text>
-        <text x="640" y="187" text-anchor="middle">MONTH 4</text>
-      </g>
-      <g stroke="#E4EAF3" stroke-width="1">
-        <line x1="63.7" y1="44" x2="63.7" y2="178"/><line x1="107.3" y1="44" x2="107.3" y2="178"/>
-        <line x1="151" y1="44" x2="151" y2="178"/><line x1="194.7" y1="44" x2="194.7" y2="178"/>
-        <line x1="238.4" y1="44" x2="238.4" y2="178"/><line x1="282" y1="44" x2="282" y2="178"/>
-        <line x1="325.7" y1="44" x2="325.7" y2="178"/><line x1="369.4" y1="44" x2="369.4" y2="178"/>
-        <line x1="413.1" y1="44" x2="413.1" y2="178"/><line x1="456.7" y1="44" x2="456.7" y2="178"/>
-        <line x1="500.4" y1="44" x2="500.4" y2="178"/><line x1="544.1" y1="44" x2="544.1" y2="178"/>
-        <line x1="587.7" y1="44" x2="587.7" y2="178"/><line x1="631.4" y1="44" x2="631.4" y2="178"/>
-        <line x1="675.1" y1="44" x2="675.1" y2="178"/>
-      </g>
-      <line x1="20" y1="196" x2="700" y2="196" stroke="#E4EAF3" stroke-width="2"/>
-      <g font-size="10.5" font-weight="700" fill="#5C6B82">
-        <text x="20" y="214">day 0</text>
-        <text x="207" y="214" text-anchor="middle">30</text>
-        <text x="394" y="214" text-anchor="middle">60</text>
-        <text x="581" y="214" text-anchor="middle">90</text>
-        <text x="700" y="214" text-anchor="end">109</text>
-      </g>
-      <text x="700" y="232" font-size="9" font-weight="600" fill="#8296B9" text-anchor="end">thin lines = weeks &middot; shaded bands = months</text>
-      <text x="20" y="38" font-size="11.5" font-weight="800" fill="#16408F">CASH OFFER &middot; ~14 days</text>
-      <rect x="20" y="46" width="12" height="24" rx="5" fill="#16408F"/>
-      <rect x="36" y="46" width="44" height="24" rx="5" fill="#16408F" opacity=".75"/>
-      <rect x="84" y="46" width="43" height="24" rx="5" fill="#16408F" opacity=".5"/>
-      <text x="20" y="84" font-size="9.5" font-weight="600" fill="#5C6B82">accept &rarr; inspection &rarr; close</text>
-      <rect x="135" y="40" width="152" height="36" rx="11" fill="#16408F"/>
-      <text x="211" y="64" font-size="16" font-weight="900" fill="#fff" text-anchor="middle">$312&ndash;335K</text>
-      <text x="20" y="128" font-size="11.5" font-weight="800" fill="#1D4FD7">LIST WITH AN AGENT &middot; ~109 days</text>
-      <rect x="20" y="136" width="93" height="24" rx="5" fill="#1D4FD7" opacity=".35"/>
-      <rect x="117" y="136" width="337" height="24" rx="5" fill="#1D4FD7" opacity=".75"/>
-      <rect x="458" y="136" width="242" height="24" rx="5" fill="#1D4FD7" opacity=".5"/>
-      <g font-size="9.5" font-weight="600" fill="#5C6B82">
-        <text x="20" y="174">prep &amp; photos &middot; 15d</text>
-        <text x="285" y="174" text-anchor="middle">on the market &middot; avg 54d &middot; showings &amp; weekends</text>
-        <text x="579" y="174" text-anchor="middle">financed close &middot; ~40d</text>
-      </g>
-      <text x="285" y="152" font-size="9.5" font-weight="800" fill="#fff" text-anchor="middle">65802 avg 54d</text>
-      <rect x="548" y="96" width="152" height="36" rx="11" fill="#1D4FD7"/>
-      <text x="624" y="120" font-size="16" font-weight="900" fill="#fff" text-anchor="middle">$348&ndash;371K</text>
-    </svg>
-    </div>
-    <!-- mobile: the same story rotated vertical — time flows down, full-size text -->
-    <div class="tl-mob">
-      <div class="tlm-heads">
-        <span></span>
-        <b style="color:#16408F">Cash offer<span>~14 days</span></b>
-        <b style="color:#1D4FD7">List with an agent<span>~109 days</span></b>
+    <p class="rt-sub">The same start date, two very different calendars — every filled day is a day spent selling.</p>
+    <div class="cal2">
+      <div class="calp" style="--lane:#16408F">
+        <div class="calp-head"><b>Cash offer</b><span>~14 days</span></div>
+        <div class="cal-sheets" id="calCash"></div>
+        <div class="calp-chip">$312&ndash;335K</div>
+        <p class="calp-cap">accept &middot; inspect &middot; close — <b>done by day 14</b>, the rest of the calendar is yours</p>
       </div>
-      <div class="tlm-body">
-        <div class="tlm-bands">
-          <div class="tlm-band" style="top:0;height:102px;background:#F4F8FD"><span>MONTH 1</span></div>
-          <div class="tlm-band" style="top:102px;height:102px;background:#fff"><span>MONTH 2</span></div>
-          <div class="tlm-band" style="top:204px;height:102px;background:#F4F8FD"><span>MONTH 3</span></div>
-          <div class="tlm-band" style="top:306px;height:65px;background:#fff"><span>MONTH 4</span></div>
-        </div>
-        <div class="tlm-grid">
-          <div class="tlm-mcol">
-            <i style="top:5px">day 0</i>
-            <i style="top:102px">30</i>
-            <i style="top:204px">60</i>
-            <i style="top:306px">90</i>
-            <i style="top:366px">109</i>
-          </div>
-          <div class="tlm-track">
-            <div class="tlm-seg" style="top:0;height:48px;background:#16408F"><span style="color:#fff">accept &middot; inspect &middot; close</span></div>
-            <div class="tlm-chip" style="top:60px;background:#16408F">$312&ndash;335K</div>
-            <p class="tlm-free">done by day 14 — no showings, no repairs, no waiting</p>
-          </div>
-          <div class="tlm-track">
-            <div class="tlm-seg" style="top:0;height:51px;background:rgba(29,79,215,.32)"><span>prep &amp; photos<br>15d</span></div>
-            <div class="tlm-seg" style="top:53px;height:181px;background:rgba(29,79,215,.8)"><span style="color:#fff">on the market<br><b>65802 avg 54d</b><br>showings &amp; weekends</span></div>
-            <div class="tlm-seg" style="top:236px;height:135px;background:rgba(29,79,215,.5)"><span>financed close<br>~40d</span></div>
-            <div class="tlm-chip" style="bottom:0;background:#1D4FD7">$348&ndash;371K</div>
-          </div>
-        </div>
+      <div class="calp" style="--lane:#1D4FD7">
+        <div class="calp-head"><b>List with an agent</b><span>~109 days</span></div>
+        <div class="cal-sheets" id="calList"></div>
+        <div class="calp-chip">$348&ndash;371K</div>
+        <p class="calp-cap">prep &amp; photos 15d &middot; on the market <b>avg 54d in 65802</b> &middot; financed close ~40d</p>
       </div>
     </div>
     <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
     Timelines are ZIP averages, ranges are estimates — both firm up after verification and inspection.</p>
+    <script>
+    // the calendar sheets: four months of day dots per path (7-day columns,
+    // alternating 31/30), filled = a day spent selling. Cash fills 14 of the
+    // first sheet; listing fills all 109. Untouched trailing sheets ghost.
+    (function () {
+      function build(id, fill) {
+        var host = document.getElementById(id), months = [31, 30, 31, 30], left = fill;
+        months.forEach(function (n, mi) {
+          var mo = document.createElement("div");
+          mo.className = "cal-mo" + (left <= 0 ? " ghost" : "");
+          var m = document.createElement("div");
+          m.className = "cal-m";
+          for (var d = 0; d < n; d++) {
+            var i = document.createElement("i");
+            if (left > 0) { i.className = "on"; left--; }
+            m.appendChild(i);
+          }
+          mo.appendChild(m);
+          var lab = document.createElement("div");
+          lab.className = "cal-mlab";
+          lab.textContent = "MONTH " + (mi + 1);
+          mo.appendChild(lab);
+          host.appendChild(mo);
+        });
+      }
+      build("calCash", 14);
+      build("calList", 109);
+    })();
+    </script>
   </section>
 
   <!-- concept #10: the effort ledger -->
