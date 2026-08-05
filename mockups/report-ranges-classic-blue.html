@@ -117,12 +117,14 @@
   .rt-key b{color:var(--ink);font-variant-numeric:tabular-nums}
   .rt-paths{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
   @media (max-width:700px){.rt-paths{grid-template-columns:1fr}}
+  /* both paths get the SAME card treatment — the old tinted cash card read
+     like a pre-selected option. Only the number colors carry the page's
+     per-type identity. */
   .rt-path{border:1.5px solid var(--line);border-radius:14px;padding:18px}
-  .rt-path.cash{border-color:var(--c1);background:var(--tint)}
   .rt-path .pname{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .rt-path.cash .pname{color:var(--c1)}
   .rt-path .pnum{font-size:23px;font-weight:800;letter-spacing:-.02em;margin:6px 0 2px;font-variant-numeric:tabular-nums;color:var(--ink)}
-  .rt-path.cash .pnum{color:var(--c1)}
+  .rt-path .pnum[data-val="cash"]{color:#16408F}
+  .rt-path .pnum[data-val="market"]{color:#1D4FD7}
   .rt-path ul{list-style:none;margin-top:10px;padding:0}
   .rt-path li{font-size:12.5px;color:var(--muted);padding:4px 0;border-top:1px dashed var(--line)}
   .rt-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
@@ -407,7 +409,7 @@
         <div class="calp-head"><b>List with an agent</b><span>~109 days</span></div>
         <div class="cal-sheets" id="calList"></div>
         <div class="calp-chip" data-val="market">$348&ndash;371K</div>
-        <p class="calp-cap">prep &amp; photos 15d &middot; on the market <b>avg 54d in 65802</b> &middot; financed close ~40d</p>
+        <p class="calp-cap">prep &amp; photos 15d &middot; on the market <b>average 54d in 65802</b> &middot; financed close ~40d</p>
       </div>
     </div>
     <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
@@ -420,10 +422,9 @@
     (function () {
       function build(id, fill) {
         var host = document.getElementById(id), months = [31, 30, 31, 30];
-        // month start weekdays, art-directed so no month opens with a
-        // lonely 1-day first week (looks odd): 3, 4, 2, then month 4
-        // chains from month 3 like a real calendar (2+31 -> 5)
-        var starts = [3, 4, 2, 5], left = fill;
+        // month start weekdays, art-directed (not strictly chained) so no
+        // month opens with a lonely near-empty first week
+        var starts = [3, 4, 2, 1], left = fill;
         months.forEach(function (n, mi) {
           var mo = document.createElement("div");
           mo.className = "cal-mo" + (left <= 0 ? " ghost" : "");

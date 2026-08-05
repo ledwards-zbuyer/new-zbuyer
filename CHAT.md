@@ -2529,3 +2529,15 @@ the month with 1 day in the first week. it looks funny
 **Claude:** Starts are now 3, 4, 2, 5 — month 3 opens on column 2 and month 4
 re-chains from it (2+31 → 5). No sheet opens with a lonely one-dot first week
 anymore, and the comment in the builder now records the art-direction rule.
+
+**Lucas:** month 4 should start 4 days earlier *(mid-turn:)* also change "avg
+54d in 65802" to "average 54d in 65802" *(and:)* on Two ways to sell, make it
+look less like Instant cash offer is a pre-selected option
+
+**Claude:** Month starts land at 3, 4, 2, 1 (art-directed, chain rule
+retired — the comment says so). Caption now reads "average 54d in 65802". And
+the Two-ways cards are equals: the cash card's tinted background and blue
+border (which read as a selected radio option) are gone — both paths get the
+identical white card with muted uppercase names, and only the numbers carry
+the per-type colors (navy cash, primary market) via their existing data-val
+attributes.
