@@ -2684,3 +2684,16 @@ one sphere — exact loaded size, card label and CTA visible — until cash AND
 market have both arrived (market alone at 2s doesn't reveal it; everything
 appears when cash lands at 9s). ?snap=N still presets an anchor for
 testing.
+
+**Lucas:** the two timelines - cash offer sections should not show until we
+recieve the cash offer amount. (technically we do know the static 14 day
+number, but want it all to run concurrently with the cash offer value
+
+**Claude:** The cash panel now mirrors the list panel's gating exactly:
+"~14 days" waits as a pill, the August-November calendar pages wait behind
+one sphere, and the caption waits too — all keyed to the cash arrival, so
+the whole panel lands together with the $312-335K chip at 9s. Until then
+only the CASH OFFER title shows. At 4.5s the card reads: list side fully
+live (market landed at 2s), cash side one sphere — then everything cash
+resolves at once. The static ~14 rows elsewhere (ledger, two-ways bullets)
+stay visible since you scoped this to the timelines card.

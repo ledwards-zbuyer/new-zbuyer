@@ -518,7 +518,10 @@ load) while values and home stats remain static demo data. The old
   facts grid, comps table+foot, appreciation statlines + sale-history table,
   biography table, value-history chart; inline market gates on "~109 days"
   head, the calendar caption, ledger "~109 (avg 54…)" cell, twopaths "~109
-  days here…" li (cash ~14s stay — product promise, not data).
+  days here…" li. The TIMELINES CASH PANEL gates on cash too (2026-08-05:
+  day-count row, calendar sheets valblock, caption — the ~14d number is
+  static product knowledge but Lucas wants it landing WITH the cash offer
+  value; ledger/twopaths ~14 rows elsewhere stay visible).
   `.val.pending *{color:transparent}` so styled child spans hide too.
   PENDING VISUAL = ONE Z-SPHERE PER CONTAINER, ALL 40px (Lucas 2026-08-05;
   iteration: first shimmer pills + blur, then spheres at every value, now
