@@ -2498,3 +2498,20 @@ premium. Deliberately NOT gated (records and stats, not estimates): purchase
 history, comps, assessed value, HUD rents, ZIP day counts, property facts.
 Verified at 1.5s (skeletons everywhere sensible), 6s (all cash numbers live,
 market still shimmering), 12s (fully revealed).
+
+**Lucas:** on the month dot calendar, make sure the months start on a different
+day of the week like an actual calendar, so it looks more like a calendar and
+less like a dot matrix *(mid-turn, iPhone screenshot:)* make sure the value
+numbers don't line-break like "$312–335K" does in this instance
+
+**Claude:** The sheets now carry a running weekday offset — month 1 opens
+midweek (column 3) and each month starts wherever the last one ended (3, 6, 1,
+4), with hidden leading pads making partial first rows exactly like calendar
+pages. Labels bottom-align across the uneven sheets. The line-break: all 26
+gated values got white-space:nowrap, so "$312–335K" holds one line in the
+ledger header (and everywhere else). Chasing the verification exposed two rig
+artifacts, one real fix: the reveal's color transition froze in headless shots
+AND should be instant for reduced-motion users — added .val{transition:none} to
+the reduce block; and a direct 390px capture "overflowed" purely from the
+headless sub-474px viewport clamp — an iframe probe at a true 390px proved
+zero overflow (doc scrollWidth == clientWidth, no wide elements).
