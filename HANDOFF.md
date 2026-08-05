@@ -479,13 +479,17 @@ load) while values and home stats remain static demo data. The old
   lane color) under each panel title. The value chip and caption sit in the
   IDENTICAL centered spot in both panels at every width — consistency by
   construction (Lucas's complaint with the old version). Lane color via a
-  --lane CSS var per panel. SLIDER = TWO BARS on this page (same day): Cash offer
-  estimate $312-335K (pt 322, navy) + MARKET VALUE estimate $348-371K (pt 360,
-  primary) — AI+AVM combined into one market range, weighted to match the
-  page's list range so every tile tells the same story; tray/chips run the
-  same two items (market 2s, cash 9s demo — the AI+AVM market value lands
-  fast, the cash offer follows 7s later; flipped 2026-08-05, was cash-first;
-  the v2 page's ai/avm/cash demos run [1.2, 2, 9] to match). Below: the
+  --lane CSS var per panel. SLIDER = CLASSIC FOUR-ANCHOR MODE on this page
+  (2026-08-05, ranges RETIRED here after two-bar iteration — the range
+  machinery lives on at report-classic-blue.html?ranges=1): anchors Cash
+  Offer $322K / Buy Now Sell Later $336K / Cash+ (Repairs) $347K / Market
+  Value $362K (?snap=N presets, N 0-3). The anchors derive from BOTH
+  estimates, so the slider is built at load but the #vSlider region waits as
+  a manual valblock (children hidden = exact loaded size, one sphere) until
+  cash AND market have BOTH arrived — the card label/footnote/CTA stay
+  visible. Tray runs the same two items (market 2s, cash 9s demo — the
+  AI+AVM market value lands fast, the cash offer follows 7s later; the v2
+  page's ai/avm/cash demos run [1.2, 2, 9] to match). Below: the
   convertaisms tile set
   with values synced to the demo world (est $362K, bought Jun 2021 $268K CASH,
   ZIP 65802 54 DOM): twopaths, confidence (3/3 checks), grid2(details + REFINE

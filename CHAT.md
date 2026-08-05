@@ -2667,3 +2667,20 @@ at 9s. The mirror of the old order, and the piece-by-piece end-label rule
 handles it automatically. The v2 page's three-item demos (ai/avm/cash) run
 [1.2, 2, 9] to match. The fully-loaded state is byte-identical to before —
 only the arrival order changed.
+
+**Lucas:** switch back to the slider without the ranges. and include Cash
+Offer, Buy Now Sell Later, Cash+ (Repairs), Market Value -- with reasonable
+values
+
+**Claude:** The v3 report is back on the classic anchor slider — four snap
+points: Cash Offer $322,000 (the cash point), Buy Now Sell Later $336,000,
+Cash+ (Repairs) $347,000, Market Value $362,000 (the page's estimated value
+today), so the untouched headline reads $322,000 – $362,000 over "Complete
+home value range" with end labels Cash Offer / Market Value. The two-bar
+ranges machinery is retired from this page (still demoable at
+report-classic-blue.html?ranges=1). Gating still holds: the anchors derive
+from both estimates, so the slider is built at load but its region waits as
+one sphere — exact loaded size, card label and CTA visible — until cash AND
+market have both arrived (market alone at 2s doesn't reveal it; everything
+appears when cash lands at 9s). ?snap=N still presets an anchor for
+testing.

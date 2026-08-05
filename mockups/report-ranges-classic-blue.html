@@ -885,71 +885,52 @@
 <script src="assets/value-slider.js"></script>
 <script>
 /* Estimate tray + value module wiring.
- * DEFAULT: the four-anchor selling-path slider, and the tray demo (AI 3s,
- * AVM 7s, Cash offer 10s) with the theme-blue badges. ?snap=N (0-3)
- * presets the snapped anchor (testing).
- * ?ranges=1 — ALTERNATE view under evaluation: the slider renders as a
- * static chart pinned to the full domain, and each estimate is a value
- * RANGE terraced inside the shaded curve — the line draws in, in its
- * color, the moment the same-colored tray badge checks. One EST map keeps
- * tray badge color == slider line color per estimate type. */
+ * The slider is the classic FOUR-ANCHOR selling-path view (ranges retired
+ * from this mockup 2026-08-05 — the range machinery lives on at
+ * report-classic-blue.html?ranges=1): Cash Offer / Buy Now Sell Later /
+ * Cash+ (Repairs) / Market Value as snap points, values synced to the page
+ * story (cash pt $322K … est market $362K). The anchors derive from BOTH
+ * estimates, so the whole card waits as one sphere (built at load, children
+ * hidden = exact loaded size) until cash AND market have arrived.
+ * ?snap=N (0-3) presets the snapped anchor (testing). */
 (function () {
   var el = document.getElementById("vSlider");
-  var combinedOn = el && !document.getElementById("vCombined").hidden;
-  var rangesMode = combinedOn; // this mockup: the ranges view is THE view
+  if (!el || document.getElementById("vCombined").hidden) return;
 
-  if (!rangesMode) {
-    zbEstimateTray({ demo: { seconds: [1.2, 2, 9] } });
-    if (!combinedOn) return;
-    var slider = zbValueSlider(el, {
-      anchors: [
-        { value: 312000, label: "Quick cash close" },
-        { value: 345000, label: "Cash+" },
-        { value: 355000, label: "Cash+ with repairs" },
-        { value: 371000, label: "Estimated market value" }
-      ],
-      ariaLabel: "Explore your selling range"
-    });
-    var qs = new URLSearchParams(location.search).get("snap");
-    if (qs !== null) slider.snapTo(parseInt(qs, 10));
-    return;
-  }
-
-  // the shared per-type map: tray badge color == slider line color.
-  // value = the single point estimate (the dot riding each range line)
-  // TWO bars on this mockup: the cash offer, and one MARKET VALUE range that
-  // blends the AI + AVM estimates (their union weighted to the page's list
-  // range, so every tile tells the same $348-371K market story)
+  // tray badge colors per estimate type (same coding as the tiles)
   var EST = {
-    cash:   { id: "cash",   lo: 312000, hi: 335000, value: 322000, label: "Cash offer estimate",   color: "#16408F" },
-    market: { id: "market", lo: 348000, hi: 371000, value: 360000, label: "Market value estimate", color: "#1D4FD7" }
+    cash:   { color: "#16408F" },
+    market: { color: "#1D4FD7" }
   };
-  var chart = zbValueSlider(el, {
-    domain: { lo: 312000, hi: 371000 }, // pin the scale so arrivals draw in place
-    loadingImage: "assets/z-sphere-primary.webp", // sphere loop in the pre-arrival skeletons
-    // loading chips across the chart top: each checks + flies down to its
-    // range as the estimate lands (color-synced with the tray badges)
-    expected: [
-      { id: "cash",   label: EST.cash.label,   color: EST.cash.color },
-      { id: "market", label: EST.market.label, color: EST.market.color }
+  var slider = zbValueSlider(el, {
+    anchors: [
+      { value: 322000, label: "Cash Offer" },
+      { value: 336000, label: "Buy Now Sell Later" },
+      { value: 347000, label: "Cash+ (Repairs)" },
+      { value: 362000, label: "Market Value" }
     ],
-    ariaLabel: "Your estimate ranges"
+    ariaLabel: "Explore your selling range"
   });
-  // value gating: every [data-val] on the page shimmers as a skeleton until
+  // value gating: every [data-val] on the page renders as a quiet pill until
   // its estimate arrives — text goes transparent so the placeholder is
   // exactly the size of the eventual number and nothing shifts on reveal
-  document.querySelectorAll("[data-val]").forEach(function (el) {
-    el.classList.add("val", "pending");
+  document.querySelectorAll("[data-val]").forEach(function (n) {
+    n.classList.add("val", "pending");
   });
   // whole content regions that ride along with the market data (property
-  // facts, comps, price history, the listing calendar) blur until it lands
-  document.querySelectorAll("[data-valblock]").forEach(function (el) {
-    el.classList.add("valblock", "pending");
+  // facts, comps, price history, the listing calendar) wait as one sphere
+  document.querySelectorAll("[data-valblock]").forEach(function (n) {
+    n.classList.add("valblock", "pending");
   });
+  // the slider card too: it needs BOTH estimates, so it reveals on the later
+  var got = { cash: false, market: false };
+  el.classList.add("valblock", "pending");
   function reveal(id) {
-    document.querySelectorAll('[data-val="' + id + '"], [data-valblock="' + id + '"]').forEach(function (el) {
-      el.classList.remove("pending");
+    document.querySelectorAll('[data-val="' + id + '"], [data-valblock="' + id + '"]').forEach(function (n) {
+      n.classList.remove("pending");
     });
+    if (got[id] !== undefined) got[id] = true;
+    if (got.cash && got.market) el.classList.remove("pending");
   }
   zbEstimateTray({
     items: [
@@ -958,11 +939,10 @@
     ],
     // market (AI+AVM) lands fast, the cash offer follows 7s later
     demo: { seconds: [9, 2] },
-    onArrive: function (id) {
-      if (EST[id]) chart.addRange(EST[id]);
-      reveal(id);
-    }
+    onArrive: reveal
   });
+  var qs = new URLSearchParams(location.search).get("snap");
+  if (qs !== null) slider.snapTo(parseInt(qs, 10));
 })();
 </script>
 <div class="pmodal" id="phoneModal" hidden>
