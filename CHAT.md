@@ -2567,3 +2567,14 @@ reduced-motion opt-out (which is also what makes headless shots truthful).
 Verified at 1.5s / 6s / 12s: pre-arrival shows skeletons everywhere and both
 corners hidden; cash state reveals only cash things; market state reveals the
 rest, blur lifting in place.
+
+**Lucas:** can you fix the icon the shows in google tabs. its trying to
+squeeze "zbuyer". it just needs the Z logo portion like a snapshot begining
+of the new sphere
+
+**Claude:** Done — new `assets/favicon-z.png`: the Z-beat sphere's opening
+frame (bare primary colorway at t=0, captured square and transparent, cropped
+to the ball, 256px). The three report pages that pointed their tab icon at
+the full wordmark now use it, and every other top-level mockup page plus the
+root index got the same link tag, so the whole project shows the Z ball in
+the tab instead of a squeezed wordmark.

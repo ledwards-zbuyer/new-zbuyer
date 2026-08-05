@@ -21,6 +21,11 @@ Working redesign of the public **zbuyer.com** seller funnel. Chosen concept: **#
   BRAND RULE (Lucas 2026-07-07): the legacy olive-arrow logo `zbuyer-white.png` is retired —
   the Z's arrows are only ever white/transparent or sky blue #3BA4F4; use `logo-blue-dark.png`
   on dark. All pages that used the olive asset were swapped.
+  FAVICON (Lucas 2026-08-05): `assets/favicon-z.png` — the Z-beat sphere's opening frame
+  (256px, transparent, captured from z-beat-tap.html?bare=1&pal=primary&t=0), because the
+  full wordmark squeezed into a tab icon is illegible. Every top-level mockups/*.html +
+  root index.html carries `<link rel="icon" type="image/png" ...>`; new pages should too
+  (the three report pages previously pointed rel=icon at the wordmark — replaced).
 - GitHub Pages serves `main`; every push is live in ~1 minute. A `.nojekyll` file at the
   repo root makes Pages deploy the raw files (the default Jekyll build started failing
   flakily 2026-07-02 with no content cause; we never needed it). Browsers cache pages for
