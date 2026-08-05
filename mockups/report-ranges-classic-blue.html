@@ -93,6 +93,15 @@
   .calp-cap{font-size:11px;color:var(--muted);margin-top:9px;line-height:1.55}
   .calp-cap b{color:var(--lane)}
 
+  /* ---- value gating: every [data-val] renders as a shimmering skeleton
+     until its estimate (cash | market) arrives — the text itself goes
+     transparent so the placeholder is exactly the size the number will be,
+     and nothing in the layout moves on reveal ---- */
+  .val{transition:color .45s ease;border-radius:6px}
+  .val.pending{color:transparent !important;background:linear-gradient(90deg,#E4EAF3 25%,#F1F5FB 50%,#E4EAF3 75%) !important;background-size:200% 100% !important;animation:valShimmer 1.3s linear infinite;user-select:none;box-shadow:none}
+  @keyframes valShimmer{to{background-position:-200% 0}}
+  @media (prefers-reduced-motion:reduce){.val.pending{animation:none}}
+
   /* ---- production tile set (rt-*) + concept-card helpers ---- */
   .verify{display:flex;align-items:center;gap:8px;justify-content:center;font-size:11.5px;color:var(--muted);margin-top:16px;text-align:center}
   .verify svg{flex:none}
@@ -383,19 +392,19 @@
 
   <!-- concept #7: the two timelines, calendar-backed (ZIP DOM stat) -->
   <section class="card">
-    <h2 class="sec">If you accepted today &middot; two timelines</h2>
+    <h2 class="sec">Two timelines &middot; two prices</h2>
     <p class="rt-sub">The same start date, two very different calendars — every filled day is a day spent selling.</p>
     <div class="cal2">
       <div class="calp" style="--lane:#16408F">
         <div class="calp-head"><b>Cash offer</b><span>~14 days</span></div>
         <div class="cal-sheets" id="calCash"></div>
-        <div class="calp-chip">$312&ndash;335K</div>
+        <div class="calp-chip" data-val="cash">$312&ndash;335K</div>
         <p class="calp-cap">accept &middot; inspect &middot; close — <b>done by day 14</b>, the rest of the calendar is yours</p>
       </div>
       <div class="calp" style="--lane:#1D4FD7">
         <div class="calp-head"><b>List with an agent</b><span>~109 days</span></div>
         <div class="cal-sheets" id="calList"></div>
-        <div class="calp-chip">$348&ndash;371K</div>
+        <div class="calp-chip" data-val="market">$348&ndash;371K</div>
         <p class="calp-cap">prep &amp; photos 15d &middot; on the market <b>avg 54d in 65802</b> &middot; financed close ~40d</p>
       </div>
     </div>
@@ -438,8 +447,8 @@
     <table style="width:100%;border-collapse:collapse;font-size:13px">
       <tr>
         <th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)"></th>
-        <th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--line)"><span style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#16408F">Cash offer</span><br><b style="font-size:14.5px">$312&ndash;335K</b></th>
-        <th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--line)"><span style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#1D4FD7">List &amp; sell</span><br><b style="font-size:14.5px">$348&ndash;371K</b></th>
+        <th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--line)"><span style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#16408F">Cash offer</span><br><b style="font-size:14.5px" data-val="cash">$312&ndash;335K</b></th>
+        <th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--line)"><span style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#1D4FD7">List &amp; sell</span><br><b style="font-size:14.5px" data-val="market">$348&ndash;371K</b></th>
       </tr>
       <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Days to keys</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>~14</b></td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>~109</b> <span style="color:var(--muted)">(avg 54 on market in 65802)</span></td></tr>
       <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Showings &amp; open houses</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>None</b></td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)">~15&ndash;25 walkthroughs</td></tr>
@@ -521,9 +530,9 @@
     <h2 class="sec">Two ways to sell</h2>
     <p class="rt-sub">Both are real options — the trade is time and certainty vs. top-line price.</p>
     <div class="rt-paths">
-      <div class="rt-path cash"><div class="pname">Instant cash offer</div><div class="pnum">$312&ndash;335K</div>
+      <div class="rt-path cash"><div class="pname">Instant cash offer</div><div class="pnum" data-val="cash">$312&ndash;335K</div>
         <ul><li>Close in as few as 14 days</li><li>No showings, no repairs, no contingencies</li><li>Pick your move-out date</li></ul></div>
-      <div class="rt-path"><div class="pname">List with an agent</div><div class="pnum">$348&ndash;371K</div>
+      <div class="rt-path"><div class="pname">List with an agent</div><div class="pnum" data-val="market">$348&ndash;371K</div>
         <ul><li>~109 days here (avg 54 on market in 65802)</li><li>Showings, inspection, appraisal</li><li>Top-line price before costs</li></ul></div>
     </div>
   </section>
@@ -555,10 +564,10 @@
   <section class="card" data-rt="walkaway">
     <h2 class="sec">If you sold today</h2>
     <p class="rt-sub">Estimated proceeds after typical selling costs, before any mortgage payoff.</p>
-    <div class="rt-bignum">$336,660</div>
+    <div class="rt-bignum" data-val="market">$336,660</div>
     <div class="rt-settle"><div class="net" style="width:93%"></div><div class="costs" style="width:7%"></div></div>
-    <div class="rt-key"><span>Net to you <b>$336,660</b></span><span>Est. selling costs (~7%) <b>$25,340</b></span></div>
-    <div class="rt-foot">Estimated value $362,000 &middot; Mortgage payoff $0 &middot; Equity 100%</div>
+    <div class="rt-key"><span>Net to you <b data-val="market">$336,660</b></span><span>Est. selling costs (~7%) <b data-val="market">$25,340</b></span></div>
+    <div class="rt-foot">Estimated value <span data-val="market">$362,000</span> &middot; Mortgage payoff $0 &middot; Equity 100%</div>
   </section>
 
   <section class="card" data-rt="comps">
@@ -577,22 +586,22 @@
     <h2 class="sec">Appreciation &amp; price history</h2>
     <p class="rt-sub">How this home's value has moved, and every recorded sale.</p>
     <div class="rt-statline"><span>Purchased Jun 2021</span><b>$268,000</b></div>
-    <div class="rt-statline"><span>Estimated value today</span><b>$362,000</b></div>
-    <div class="rt-statline"><span>Total change (5.2 years)</span><b>+35.1%</b></div>
-    <div class="rt-statline"><span>Annualized</span><b>+6.0%/yr</b></div>
+    <div class="rt-statline"><span>Estimated value today</span><b data-val="market">$362,000</b></div>
+    <div class="rt-statline"><span>Total change (5.2 years)</span><b data-val="market">+35.1%</b></div>
+    <div class="rt-statline"><span>Annualized</span><b data-val="market">+6.0%/yr</b></div>
     <table class="rt-table" style="margin-top:14px"><tbody><tr><th>Date</th><th class="hl">Price</th><th>Change</th></tr>
       <tr><td>Mar 1998</td><td class="hl">$112,000</td><td>&mdash;</td></tr>
       <tr><td>Aug 2012</td><td class="hl">$148,500</td><td>+32.6%</td></tr>
       <tr><td>Jun 2021 <span style="color:#8a97ab">(you)</span></td><td class="hl">$268,000</td><td>+80.5%</td></tr>
-      <tr><td>Today <span style="color:#8a97ab">(estimate)</span></td><td class="hl">$362,000</td><td>+35.1%</td></tr>
+      <tr><td>Today <span style="color:#8a97ab">(estimate)</span></td><td class="hl"><span data-val="market">$362,000</span></td><td><span data-val="market">+35.1%</span></td></tr>
     </tbody></table>
   </section>
 
   <section class="card" data-rt="velocity">
     <h2 class="sec">Equity velocity</h2>
     <p class="rt-sub">Equity accumulated per year of ownership.</p>
-    <div class="rt-bignum" style="font-size:32px">$18,100/yr</div>
-    <div class="rt-foot">$94,000 equity &divide; 5.2 years. This was an all-cash purchase, so the figure reflects capital invested plus market movement, not mortgage paydown.</div>
+    <div class="rt-bignum" style="font-size:32px" data-val="market">$18,100/yr</div>
+    <div class="rt-foot"><span data-val="market">$94,000</span> equity &divide; 5.2 years. This was an all-cash purchase, so the figure reflects capital invested plus market movement, not mortgage paydown.</div>
   </section>
 
   <section class="card" data-rt="tenure">
@@ -634,17 +643,17 @@
     <h2 class="sec">The tax gap</h2>
     <p class="rt-sub">Assessed value versus market estimate, the spread your taxes do not see.</p>
     <div class="rt-ladder">
-      <div class="rt-rung hot"><span class="rl">Market estimate</span><div class="rbar" style="width:100%"></div><span class="rv">$362,000</span></div>
+      <div class="rt-rung hot"><span class="rl">Market estimate</span><div class="rbar" style="width:100%"></div><span class="rv" data-val="market">$362,000</span></div>
       <div class="rt-rung"><span class="rl">Assessed value</span><div class="rbar" style="width:63%"></div><span class="rv">$228,060</span></div>
     </div>
-    <div class="rt-foot">Assessment ratio <b>63%</b> &middot; effective rate <b>2.46%</b>. A sale can trigger reassessment for the buyer.</div>
+    <div class="rt-foot">Assessment ratio <b data-val="market">63%</b> &middot; effective rate <b data-val="market">2.46%</b>. A sale can trigger reassessment for the buyer.</div>
   </section>
 
   <section class="card" data-rt="tradeup">
     <h2 class="sec">Your trade-up power</h2>
     <p class="rt-sub">What your equity unlocks as a 20% down payment.</p>
-    <div class="rt-bignum" style="font-size:32px">$1,810,000</div>
-    <div class="rt-foot">Your $362,000 in equity is a full 20% down payment on a $1,810,000 home. Selling here is not an exit, it is a launchpad.</div>
+    <div class="rt-bignum" style="font-size:32px" data-val="market">$1,810,000</div>
+    <div class="rt-foot">Your <span data-val="market">$362,000</span> in equity is a full 20% down payment on a <span data-val="market">$1,810,000</span> home. Selling here is not an exit, it is a launchpad.</div>
   </section>
 
   <section class="card" data-rt="biography">
@@ -662,18 +671,18 @@
     <h2 class="sec">Dirt vs. house</h2>
     <p class="rt-sub">How much of your value is the land under it.</p>
     <div class="rt-settle"><div style="width:22%;background:var(--c1)"></div><div style="width:78%;background:var(--tint)"></div></div>
-    <div class="rt-key"><span>Land <b>$79,640</b></span><span>Structure <b>$282,360</b></span></div>
+    <div class="rt-key"><span>Land <b data-val="market">$79,640</b></span><span>Structure <b data-val="market">$282,360</b></span></div>
     <div class="rt-foot">The assessor's land and improvement split, projected onto today's market estimate.</div>
   </section>
 
   <section class="card" data-rt="equityhuman">
     <h2 class="sec">Equity in human terms</h2>
-    <div class="rt-sent">Your equity equals <b>5.6 years</b> of the area's median household income, and <b>1.9&times;</b> the entire net worth of the typical American household.</div>
+    <div class="rt-sent">Your equity equals <b data-val="market">5.6 years</b> of the area's median household income, and <b data-val="market">1.9&times;</b> the entire net worth of the typical American household.</div>
   </section>
 
   <section class="card" data-rt="assumable">
     <h2 class="sec">The assumable-loan premium</h2>
-    <div class="rt-sent">If this home carried an assumable FHA or VA loan at 3%, that mortgage alone would be worth roughly <b>$55,000</b> to the right buyer, a premium most sellers never surface.</div>
+    <div class="rt-sent">If this home carried an assumable FHA or VA loan at 3%, that mortgage alone would be worth roughly <b data-val="market">$55,000</b> to the right buyer, a premium most sellers never surface.</div>
     <div class="rt-geoflag">&#9888; This home carries no mortgage — shown for context.</div>
   </section>
 
@@ -711,12 +720,6 @@
     <h2 class="sec">Refine your home value</h2>
     <p>Answer a few quick questions about your home and we'll tighten your estimate to a narrower range.</p>
     <button class="btn btn-line" type="button">Refine my value</button>
-  </section>
-
-  <section class="card" style="text-align:center">
-    <span class="eyebrow">Go deeper</span>
-    <p style="margin-top:8px;font-size:14px;color:var(--muted)">The full property-record work-up behind these numbers — equity, record checks, rental math, and how much to trust it all.</p>
-    <a class="vask" href="report-intel-classic-blue.html">Open your Property Intelligence Report &rarr;</a>
   </section>
 
 </div></main>
@@ -866,13 +869,27 @@
     ],
     ariaLabel: "Your estimate ranges"
   });
+  // value gating: every [data-val] on the page shimmers as a skeleton until
+  // its estimate arrives — text goes transparent so the placeholder is
+  // exactly the size of the eventual number and nothing shifts on reveal
+  document.querySelectorAll("[data-val]").forEach(function (el) {
+    el.classList.add("val", "pending");
+  });
+  function reveal(id) {
+    document.querySelectorAll('[data-val="' + id + '"]').forEach(function (el) {
+      el.classList.remove("pending");
+    });
+  }
   zbEstimateTray({
     items: [
       { id: "cash",   label: "Cash offer estimate",   icon: "cash", color: EST.cash.color },
       { id: "market", label: "Market value estimate", icon: "avm",  color: EST.market.color }
     ],
     demo: { seconds: [4, 9] },
-    onArrive: function (id) { if (EST[id]) chart.addRange(EST[id]); }
+    onArrive: function (id) {
+      if (EST[id]) chart.addRange(EST[id]);
+      reveal(id);
+    }
   });
 })();
 </script>

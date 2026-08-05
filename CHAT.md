@@ -2477,3 +2477,24 @@ house, and equity-in-human-terms each stretch full width now, stacked in the
 same order. Refine your home value moved to the bottom of the report, after
 the home-value-history chart and just above Go deeper. The unused grid3 CSS
 came out with it. Verified the full stacked flow end to end at 1200px.
+
+**Lucas:** replace the title "If you accepted today · two timelines" with "Two
+timelines · two prices". also remove the "Go deeper" tile entirely. *(mid-turn:)*
+Also wire up the whole report so that the values don't show until they have
+arrived. also make sure there is something that makes sense when no value is
+there
+
+**Claude:** Title swapped and Go deeper gone (the report now ends at Refine).
+Value gating: every estimate-derived dollar on the page carries data-val=
+"cash|market" and starts as a shimmering skeleton — the text itself goes
+transparent with a gradient behind it, so the placeholder is exactly the size
+of the eventual number and nothing shifts on reveal. The tray's onArrive
+reveals that estimate's values everywhere at once (cash at 4s, market at 9s),
+in sync with the slider's ranges drawing in. Gated: the timeline chips, ledger
+column headers, twopaths prices, walkaway net/costs/value, appreciation's
+estimate rows, velocity, taxgap's market rung and derived ratio/rate, the
+dirt/structure split, trade-up, equity-in-human-terms, and the assumable
+premium. Deliberately NOT gated (records and stats, not estimates): purchase
+history, comps, assessed value, HUD rents, ZIP day counts, property facts.
+Verified at 1.5s (skeletons everywhere sensible), 6s (all cash numbers live,
+market still shimmering), 12s (fully revealed).

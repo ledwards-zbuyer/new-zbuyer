@@ -479,9 +479,22 @@ load) while values and home stats remain static demo data. The old
   Rooted Cash Owner badges, rentladder, taxgap, tradeup, biography, dirtvalue,
   equityhuman, assumable (with no-mortgage context flag), value history
   RESCALED to end at $362K (y5 $240-370K axis, y10 $180-390K), then REFINE
-  moved to the BOTTOM (above Go deeper). SINGLE-COLUMN RULE (2026-08-05):
+  moved to the BOTTOM (now the LAST card — the Go deeper tile was removed
+  entirely 2026-08-05). SINGLE-COLUMN RULE (2026-08-05):
   no two-column tile rows on this report — every tile stretches full width,
-  stacked (all grid2 wrappers unwrapped; grid3 CSS removed). REMOVED per Lucas (2026-08-04): interestsaved, buyerpool,
+  stacked (all grid2 wrappers unwrapped; grid3 CSS removed). Timelines card
+  retitled "Two timelines · two prices" (2026-08-05). VALUE GATING
+  (2026-08-05): every estimate-derived dollar carries data-val="cash|market"
+  and renders as a shimmering skeleton (.val.pending — text transparent,
+  gradient behind, placeholder is exactly the eventual number's size, nothing
+  shifts on reveal) until the tray's onArrive reveals that estimate's values
+  page-wide (cash 4s, market 9s demo). Gated: timeline chips, ledger headers,
+  twopaths pnums, walkaway net/costs/est-value, appreciation est/total/
+  annualized + today row, velocity, taxgap market rung + ratio/rate,
+  dirtvalue split, tradeup, equityhuman, assumable premium. NOT gated
+  (records/stats, not estimates): purchase history, comps, assessed value,
+  HUD rents, ZIP DOM day counts, property facts.
+  REMOVED per Lucas (2026-08-04): interestsaved, buyerpool,
   ratefree badge, landlord (keep-as-rental). Tile templates + rt-* CSS lifted
   verbatim from the production report (fetched copy + extracts parked untracked
   in shots/convert-*.{html,txt}). ?terms=maxsold still swaps the carousel.
