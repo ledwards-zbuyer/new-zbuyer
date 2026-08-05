@@ -73,6 +73,31 @@
   .pm-card .btn{width:100%;margin-top:12px}
   .pm-x{position:absolute;top:10px;right:14px;border:none;background:none;font-size:24px;color:#9aa7bd;cursor:pointer}
 
+  /* ---- two-timelines card: horizontal SVG on desktop, a vertical twin on
+     mobile (the SVG scales with the viewport and turns illegible on phones) */
+  .tl-desk{display:block}
+  .tl-mob{display:none}
+  @media (max-width:700px){
+    .tl-desk{display:none}
+    .tl-mob{display:block}
+  }
+  .tlm-heads{display:grid;grid-template-columns:34px 1fr 1fr;gap:0 10px;margin-top:6px}
+  .tlm-heads b{font-size:12px;font-weight:800;letter-spacing:-.01em}
+  .tlm-heads b span{display:block;font-weight:700;color:var(--muted);font-size:10.5px;margin-top:1px}
+  .tlm-body{position:relative;margin-top:8px}
+  .tlm-bands{position:absolute;top:0;bottom:0;left:44px;right:0;z-index:0}
+  .tlm-band{position:absolute;left:0;right:0;border-radius:6px}
+  .tlm-band span{position:absolute;top:4px;right:6px;font-size:8.5px;font-weight:800;letter-spacing:.06em;color:#8296B9}
+  .tlm-grid{position:relative;z-index:1;display:grid;grid-template-columns:34px 1fr 1fr;gap:0 10px}
+  .tlm-mcol{position:relative;height:371px;font-size:9.5px;font-weight:700;color:var(--muted)}
+  .tlm-mcol i{position:absolute;left:0;font-style:normal;transform:translateY(-50%)}
+  .tlm-track{position:relative;height:371px}
+  .tlm-seg{position:absolute;left:0;right:0;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center}
+  .tlm-seg span{font-size:10.5px;line-height:1.4;font-weight:600;color:var(--ink);padding:3px}
+  .tlm-cap{position:absolute;left:0;right:0;text-align:center;font-size:9.5px;color:var(--muted)}
+  .tlm-chip{position:absolute;left:50%;transform:translateX(-50%);color:#fff;font-size:14.5px;font-weight:900;padding:9px 14px;border-radius:10px;white-space:nowrap;box-shadow:0 8px 20px -10px rgba(14,27,51,.5)}
+  .tlm-free{position:absolute;top:170px;left:2px;right:2px;text-align:center;font-size:10.5px;color:var(--muted);line-height:1.55}
+
   /* ---- production tile set (rt-*) + concept-card helpers ---- */
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   @media (max-width:840px){.grid3{grid-template-columns:1fr}}
@@ -367,6 +392,7 @@
   <section class="card">
     <h2 class="sec">If you accepted today &middot; two timelines</h2>
     <p class="rt-sub">The same start date, two very different calendars — the trade is time.</p>
+    <div class="tl-desk">
     <svg viewBox="0 0 720 235" style="width:100%;display:block" aria-hidden="true" font-family="Inter,sans-serif">
       <g>
         <rect x="20" y="24" width="187" height="166" fill="#F4F8FD"/>
@@ -419,6 +445,43 @@
       <rect x="548" y="96" width="152" height="36" rx="11" fill="#1D4FD7"/>
       <text x="624" y="120" font-size="16" font-weight="900" fill="#fff" text-anchor="middle">$348&ndash;371K</text>
     </svg>
+    </div>
+    <!-- mobile: the same story rotated vertical — time flows down, full-size text -->
+    <div class="tl-mob">
+      <div class="tlm-heads">
+        <span></span>
+        <b style="color:#16408F">Cash offer<span>~14 days</span></b>
+        <b style="color:#1D4FD7">List with an agent<span>~109 days</span></b>
+      </div>
+      <div class="tlm-body">
+        <div class="tlm-bands">
+          <div class="tlm-band" style="top:0;height:102px;background:#F4F8FD"><span>MONTH 1</span></div>
+          <div class="tlm-band" style="top:102px;height:102px;background:#fff"><span>MONTH 2</span></div>
+          <div class="tlm-band" style="top:204px;height:102px;background:#F4F8FD"><span>MONTH 3</span></div>
+          <div class="tlm-band" style="top:306px;height:65px;background:#fff"><span>MONTH 4</span></div>
+        </div>
+        <div class="tlm-grid">
+          <div class="tlm-mcol">
+            <i style="top:5px">day 0</i>
+            <i style="top:102px">30</i>
+            <i style="top:204px">60</i>
+            <i style="top:306px">90</i>
+            <i style="top:366px">109</i>
+          </div>
+          <div class="tlm-track">
+            <div class="tlm-seg" style="top:0;height:48px;background:#16408F"><span style="color:#fff">accept &middot; inspect &middot; close</span></div>
+            <div class="tlm-chip" style="top:60px;background:#16408F">$312&ndash;335K</div>
+            <p class="tlm-free">done by day 14 — no showings, no repairs, no waiting</p>
+          </div>
+          <div class="tlm-track">
+            <div class="tlm-seg" style="top:0;height:51px;background:rgba(29,79,215,.32)"><span>prep &amp; photos<br>15d</span></div>
+            <div class="tlm-seg" style="top:53px;height:181px;background:rgba(29,79,215,.8)"><span style="color:#fff">on the market<br><b>65802 avg 54d</b><br>showings &amp; weekends</span></div>
+            <div class="tlm-seg" style="top:236px;height:135px;background:rgba(29,79,215,.5)"><span>financed close<br>~40d</span></div>
+            <div class="tlm-chip" style="bottom:0;background:#1D4FD7">$348&ndash;371K</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
     Timelines are ZIP averages, ranges are estimates — both firm up after verification and inspection.</p>
   </section>

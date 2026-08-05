@@ -2431,3 +2431,17 @@ tile flow end to end.
 creation code, CSS, reduced-motion entry, plus the docs sentence and HANDOFF
 mention. The bar itself, its label, and its grow-with-arrivals behavior are
 unchanged. Verified on the v3 report.
+
+**Lucas:** We need to rethink the two timelines report. I love it on desktop,
+but it's way too small on mobile. *(iPhone screenshot: the SVG at half scale)*
+
+**Claude:** Kept desktop exactly as-is and gave mobile its own vertical twin —
+at ≤700px the horizontal SVG (.tl-desk) swaps for .tl-mob: time flows DOWN at
+3.4px/day, the two lanes sit side by side with the month bands as horizontal
+stripes and day ticks (0/30/60/90/109) in a left rail, every label at full
+mobile-readable size. The cash lane is a short navy block ("accept · inspect ·
+close") with its $312–335K chip right below and the empty remainder captioned
+"done by day 14 — no showings, no repairs, no waiting"; the list lane flows
+prep → on-the-market (65802 avg 54d) → financed close with its chip at day
+109. Verified at 500px (readable, story intact) and 1200px (desktop SVG
+unchanged).

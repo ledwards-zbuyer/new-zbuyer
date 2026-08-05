@@ -456,7 +456,13 @@ load) while values and home stats remain static demo data. The old
   v3 mockup combining the ranges slider with production tile parity. Order:
   masthead → EXPERT tile → concept #7 two-timelines card → concept #10 effort
   ledger → the ranges slider (ALWAYS on — no ?ranges gate; tray + chips +
-  union bar all wired). SLIDER = TWO BARS on this page (same day): Cash offer
+  union bar all wired). TWO-TIMELINES RESPONSIVE SPLIT (2026-08-04): the
+  horizontal calendar SVG scales with the viewport and turns illegible on
+  phones, so ≤700px swaps in a VERTICAL twin (.tl-mob — time flows down, two
+  lanes side by side, month bands as horizontal stripes at 3.4px/day, day
+  ticks 0/30/60/90/109, full-size text, chips at each journey's end, the cash
+  lane's empty tail captioned "done by day 14"); desktop keeps the SVG
+  (.tl-desk) untouched. SLIDER = TWO BARS on this page (same day): Cash offer
   estimate $312-335K (pt 322, navy) + MARKET VALUE estimate $348-371K (pt 360,
   primary) — AI+AVM combined into one market range, weighted to match the
   page's list range so every tile tells the same story; tray/chips run the
