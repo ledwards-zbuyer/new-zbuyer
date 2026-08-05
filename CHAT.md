@@ -2465,3 +2465,15 @@ caption). The value chip and caption sit in the identical centered position in
 both panels at every width — nothing left to drift. Replaces both the desktop
 SVG and the vertical mobile twin with one responsive layout; verified at 1200px
 and 500px.
+
+**Lucas:** also, on the report. move "Refine your home value" tile to the
+bottom. also we decided to not have the two column tiles on the report (like
+property details and Refine your home value were) so make each tile stretch the
+whole width and stack them
+
+**Claude:** All five grid2 rows on the v3 report unwrapped — property details,
+equity velocity, tenure clock, both badges, rent ladder, tax gap, dirt vs.
+house, and equity-in-human-terms each stretch full width now, stacked in the
+same order. Refine your home value moved to the bottom of the report, after
+the home-value-history chart and just above Go deeper. The unused grid3 CSS
+came out with it. Verified the full stacked flow end to end at 1200px.

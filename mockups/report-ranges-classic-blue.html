@@ -94,8 +94,6 @@
   .calp-cap b{color:var(--lane)}
 
   /* ---- production tile set (rt-*) + concept-card helpers ---- */
-  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  @media (max-width:840px){.grid3{grid-template-columns:1fr}}
   .verify{display:flex;align-items:center;gap:8px;justify-content:center;font-size:11.5px;color:var(--muted);margin-top:16px;text-align:center}
   .verify svg{flex:none}
   .rt-sub{color:var(--muted);font-size:14px;margin:-2px 0 14px}
@@ -539,8 +537,8 @@
     <div class="rt-foot">Overall confidence: <b>High</b>. For the most accurate numbers, talk to your local expert.</div>
   </section>
 
-  <!-- supporting modules -->
-  <div class="grid2">
+  <!-- supporting modules: every tile full-width, stacked (no two-column
+       rows on this report, per 2026-08-05 call) -->
     <section class="card">
       <h2 class="sec">Property details</h2>
       <div class="facts-grid">
@@ -553,13 +551,6 @@
       </div>
       <p class="hint">Something look off? <a href="tel:1234567890">Your expert can correct it</a> — better facts mean better numbers.</p>
     </section>
-
-    <section class="card equity">
-      <h2 class="sec">Refine your home value</h2>
-      <p>Answer a few quick questions about your home and we'll tighten your estimate to a narrower range.</p>
-      <button class="btn btn-line" type="button">Refine my value</button>
-    </section>
-  </div>
 
   <section class="card" data-rt="walkaway">
     <h2 class="sec">If you sold today</h2>
@@ -597,20 +588,19 @@
     </tbody></table>
   </section>
 
-  <div class="grid2">
-    <section class="card" data-rt="velocity">
-      <h2 class="sec">Equity velocity</h2>
-      <p class="rt-sub">Equity accumulated per year of ownership.</p>
-      <div class="rt-bignum" style="font-size:32px">$18,100/yr</div>
-      <div class="rt-foot">$94,000 equity &divide; 5.2 years. This was an all-cash purchase, so the figure reflects capital invested plus market movement, not mortgage paydown.</div>
-    </section>
-    <section class="card" data-rt="tenure">
-      <h2 class="sec">Tenure clock</h2>
-      <p class="rt-sub">5.2 years in the home vs. the ~8-year typical hold.</p>
-      <div class="rt-dial"><div class="fill" style="width:65%"></div></div>
-      <div class="rt-key"><span>Purchased Jun 2021</span><span>Typical move window</span></div>
-    </section>
-  </div>
+  <section class="card" data-rt="velocity">
+    <h2 class="sec">Equity velocity</h2>
+    <p class="rt-sub">Equity accumulated per year of ownership.</p>
+    <div class="rt-bignum" style="font-size:32px">$18,100/yr</div>
+    <div class="rt-foot">$94,000 equity &divide; 5.2 years. This was an all-cash purchase, so the figure reflects capital invested plus market movement, not mortgage paydown.</div>
+  </section>
+
+  <section class="card" data-rt="tenure">
+    <h2 class="sec">Tenure clock</h2>
+    <p class="rt-sub">5.2 years in the home vs. the ~8-year typical hold.</p>
+    <div class="rt-dial"><div class="fill" style="width:65%"></div></div>
+    <div class="rt-key"><span>Purchased Jun 2021</span><span>Typical move window</span></div>
+  </section>
 
   <section class="card" data-rt="radar">
     <h2 class="sec">Record check</h2>
@@ -625,32 +615,30 @@
     </div>
   </section>
 
-  <div class="grid2">
-    <section class="card" data-rt="freeclear"><div class="rt-badge"><span class="bic">&#128737;</span><div><h3>Free and clear</h3><p>No mortgage on record — this home is 100% yours.</p></div></div></section>
-    <section class="card" data-rt="persona"><div class="rt-badge"><span class="bic">&#127968;</span><div><h3>Rooted Cash Owner</h3><p>Owner-occupied, bought with cash, five years in — you sell on your schedule, not a lender's.</p></div></div></section>
-  </div>
+  <section class="card" data-rt="freeclear"><div class="rt-badge"><span class="bic">&#128737;</span><div><h3>Free and clear</h3><p>No mortgage on record — this home is 100% yours.</p></div></div></section>
 
-  <div class="grid2">
-    <section class="card" data-rt="rentladder">
-      <h2 class="sec">The rent ladder</h2>
-      <p class="rt-sub">HUD fair-market rents by size.</p>
-      <div class="rt-ladder">
-        <div class="rt-rung"><span class="rl">1 bedroom</span><div class="rbar" style="width:52%"></div><span class="rv">$845</span></div>
-        <div class="rt-rung"><span class="rl">2 bedroom</span><div class="rbar" style="width:66%"></div><span class="rv">$1,065</span></div>
-        <div class="rt-rung hot"><span class="rl">3 bedroom &larr;</span><div class="rbar" style="width:86%"></div><span class="rv">$1,390</span></div>
-        <div class="rt-rung"><span class="rl">4 bedroom</span><div class="rbar" style="width:100%"></div><span class="rv">$1,615</span></div>
-      </div>
-    </section>
-    <section class="card" data-rt="taxgap">
-      <h2 class="sec">The tax gap</h2>
-      <p class="rt-sub">Assessed value versus market estimate, the spread your taxes do not see.</p>
-      <div class="rt-ladder">
-        <div class="rt-rung hot"><span class="rl">Market estimate</span><div class="rbar" style="width:100%"></div><span class="rv">$362,000</span></div>
-        <div class="rt-rung"><span class="rl">Assessed value</span><div class="rbar" style="width:63%"></div><span class="rv">$228,060</span></div>
-      </div>
-      <div class="rt-foot">Assessment ratio <b>63%</b> &middot; effective rate <b>2.46%</b>. A sale can trigger reassessment for the buyer.</div>
-    </section>
-  </div>
+  <section class="card" data-rt="persona"><div class="rt-badge"><span class="bic">&#127968;</span><div><h3>Rooted Cash Owner</h3><p>Owner-occupied, bought with cash, five years in — you sell on your schedule, not a lender's.</p></div></div></section>
+
+  <section class="card" data-rt="rentladder">
+    <h2 class="sec">The rent ladder</h2>
+    <p class="rt-sub">HUD fair-market rents by size.</p>
+    <div class="rt-ladder">
+      <div class="rt-rung"><span class="rl">1 bedroom</span><div class="rbar" style="width:52%"></div><span class="rv">$845</span></div>
+      <div class="rt-rung"><span class="rl">2 bedroom</span><div class="rbar" style="width:66%"></div><span class="rv">$1,065</span></div>
+      <div class="rt-rung hot"><span class="rl">3 bedroom &larr;</span><div class="rbar" style="width:86%"></div><span class="rv">$1,390</span></div>
+      <div class="rt-rung"><span class="rl">4 bedroom</span><div class="rbar" style="width:100%"></div><span class="rv">$1,615</span></div>
+    </div>
+  </section>
+
+  <section class="card" data-rt="taxgap">
+    <h2 class="sec">The tax gap</h2>
+    <p class="rt-sub">Assessed value versus market estimate, the spread your taxes do not see.</p>
+    <div class="rt-ladder">
+      <div class="rt-rung hot"><span class="rl">Market estimate</span><div class="rbar" style="width:100%"></div><span class="rv">$362,000</span></div>
+      <div class="rt-rung"><span class="rl">Assessed value</span><div class="rbar" style="width:63%"></div><span class="rv">$228,060</span></div>
+    </div>
+    <div class="rt-foot">Assessment ratio <b>63%</b> &middot; effective rate <b>2.46%</b>. A sale can trigger reassessment for the buyer.</div>
+  </section>
 
   <section class="card" data-rt="tradeup">
     <h2 class="sec">Your trade-up power</h2>
@@ -670,19 +658,18 @@
     <div class="rt-foot">The 2012 buyer caught the recovery run — your stretch is nearly matching it.</div>
   </section>
 
-  <div class="grid2">
-    <section class="card" data-rt="dirtvalue">
-      <h2 class="sec">Dirt vs. house</h2>
-      <p class="rt-sub">How much of your value is the land under it.</p>
-      <div class="rt-settle"><div style="width:22%;background:var(--c1)"></div><div style="width:78%;background:var(--tint)"></div></div>
-      <div class="rt-key"><span>Land <b>$79,640</b></span><span>Structure <b>$282,360</b></span></div>
-      <div class="rt-foot">The assessor's land and improvement split, projected onto today's market estimate.</div>
-    </section>
-    <section class="card" data-rt="equityhuman">
-      <h2 class="sec">Equity in human terms</h2>
-      <div class="rt-sent">Your equity equals <b>5.6 years</b> of the area's median household income, and <b>1.9&times;</b> the entire net worth of the typical American household.</div>
-    </section>
-  </div>
+  <section class="card" data-rt="dirtvalue">
+    <h2 class="sec">Dirt vs. house</h2>
+    <p class="rt-sub">How much of your value is the land under it.</p>
+    <div class="rt-settle"><div style="width:22%;background:var(--c1)"></div><div style="width:78%;background:var(--tint)"></div></div>
+    <div class="rt-key"><span>Land <b>$79,640</b></span><span>Structure <b>$282,360</b></span></div>
+    <div class="rt-foot">The assessor's land and improvement split, projected onto today's market estimate.</div>
+  </section>
+
+  <section class="card" data-rt="equityhuman">
+    <h2 class="sec">Equity in human terms</h2>
+    <div class="rt-sent">Your equity equals <b>5.6 years</b> of the area's median household income, and <b>1.9&times;</b> the entire net worth of the typical American household.</div>
+  </section>
 
   <section class="card" data-rt="assumable">
     <h2 class="sec">The assumable-loan premium</h2>
@@ -718,6 +705,12 @@
         </g>
       </svg>
     </div>
+  </section>
+
+  <section class="card equity">
+    <h2 class="sec">Refine your home value</h2>
+    <p>Answer a few quick questions about your home and we'll tighten your estimate to a narrower range.</p>
+    <button class="btn btn-line" type="button">Refine my value</button>
   </section>
 
   <section class="card" style="text-align:center">
