@@ -219,7 +219,10 @@ zbEstimateTray({
       <tr><td><code>domain</code></td><td><code>{ lo, hi }</code></td>
           <td>Pins the value scale with no visuals, so later <code>addRange()</code> arrivals
           draw in place instead of rescaling. Alone (no anchors/ranges) it renders the empty
-          static chart, ready for arrivals.</td></tr>
+          static chart, ready for arrivals — and the headline + end labels sit behind
+          shimmering skeletons until the first range lands (each end label reveals only once
+          the union reaches that end), so a pinned domain never leaks its extremes before
+          the data exists.</td></tr>
       <tr><td><code>expected</code></td><td>array</td>
           <td>Chart mode: the roster of estimates on their way — <code>{ id, label, color }</code>
           each. Renders a loading chip per pending estimate (chase checkbox + label, color

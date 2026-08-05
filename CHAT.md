@@ -2541,3 +2541,29 @@ border (which read as a selected radio option) are gone — both paths get the
 identical white card with muted uppercase names, and only the numbers carry
 the per-type colors (navy cash, primary market) via their existing data-val
 attributes.
+
+**Lucas:** the Complete home value range will only be available after the
+values arrive. also includes the avg days on market numbers and property
+details. those come with the AI and AVM values. along with nearby sales and
+price history info
+
+**Claude:** Gating extended to everything that rides in with the data. The
+widget itself now skeletons the complete range: chart mode with a pinned
+domain renders the headline and both end labels as shimmering placeholders
+(domain text transparent underneath, so they're exactly final-size); the
+first arrival reveals the headline, and each end label only reveals once the
+union actually reaches that end — after cash you see $312,000 – $335,000 with
+the left corner real and the right corner still shimmering; $371,000 only
+appears when the market range lands. On the report, new block-level gating
+(data-valblock="market", blur + fade + pointer-events off) covers the
+list-side calendar sheets and caption, the property facts grid, the comps
+table, the appreciation statlines + recorded-sale table, the financial
+biography, and the home-value-history chart; inline market gates were added
+to the "~109 days" figures (panel head, ledger cell, twopaths bullet). The
+cash ~14-day figures stay visible — that's the product's promise, not
+arriving data. Also fixed while verifying: nested styled spans inside a
+pending value now hide too, and the handle's snap transition joined the
+reduced-motion opt-out (which is also what makes headless shots truthful).
+Verified at 1.5s / 6s / 12s: pre-arrival shows skeletons everywhere and both
+corners hidden; cash state reveals only cash things; market state reveals the
+rest, blur lifting in place.

@@ -491,9 +491,24 @@ load) while values and home stats remain static demo data. The old
   page-wide (cash 4s, market 9s demo). Gated: timeline chips, ledger headers,
   twopaths pnums, walkaway net/costs/est-value, appreciation est/total/
   annualized + today row, velocity, taxgap market rung + ratio/rate,
-  dirtvalue split, tradeup, equityhuman, assumable premium. NOT gated
-  (records/stats, not estimates): purchase history, comps, assessed value,
-  HUD rents, ZIP DOM day counts, property facts.
+  dirtvalue split, tradeup, equityhuman, assumable premium. EXTENDED
+  (2026-08-05, per Lucas: DOM stats/property details/comps/price history
+  "come with the AI and AVM values"): data-valblock="market" BLOCK gating
+  (.valblock.pending — blur(5px) + fade, pointer-events off, reveal() clears
+  both attrs) on the list-side calendar sheets + caption, property facts grid,
+  comps table+foot, appreciation statlines + sale-history table, biography
+  table, value-history chart; inline market gates added to "~109 days" head,
+  ledger "~109 (avg 54…)" cell, twopaths "~109 days here…" li (cash ~14s stay —
+  product promise, not data). `.val.pending *{color:transparent}` so styled
+  child spans hide too. WIDGET (value-slider.js): chartMode + domain with
+  nothing arrived skeletons the headline AND end labels (.zvs-pend shimmer,
+  domain text transparent underneath = exact-size placeholder); first
+  updateUnion reveals the headline, each END label only reveals once the union
+  REACHES that end (right end stays hidden until market lands — a pinned
+  domain never leaks its extremes). .zvs-handle.zvs-snap added to the
+  reduced-motion no-transition list (also makes headless shots truthful).
+  NOT gated (records/stats): assessed value, HUD rents, record-check flags,
+  tenure, masthead facts line (identity stays visible).
   REMOVED per Lucas (2026-08-04): interestsaved, buyerpool,
   ratefree badge, landlord (keep-as-rental). Tile templates + rt-* CSS lifted
   verbatim from the production report (fetched copy + extracts parked untracked

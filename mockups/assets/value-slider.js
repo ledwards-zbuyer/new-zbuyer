@@ -57,7 +57,13 @@
  *                                         // addRange() arrivals draw in place
  *                                         // instead of rescaling. domain alone
  *                                         // (no anchors/ranges) renders the
- *                                         // static chart, empty, ready.
+ *                                         // static chart, empty, ready — with
+ *                                         // the headline + end labels behind
+ *                                         // shimmering skeletons until ranges
+ *                                         // land (each end label reveals once
+ *                                         // the union REACHES that end), so a
+ *                                         // pinned domain never leaks its
+ *                                         // extremes before the data exists.
  *       format:   function (v) { ... },   // optional; default $1,234,567
  *       headline: true,                   // big number/range above the track
  *       rangeLabel: "Complete home value range", // sub-label while the headline
@@ -145,6 +151,11 @@
     /* fixed-height headline + sub rows: the number never jumps vertically
        when auto-fit changes its font size or the subtext changes */
     ".zvs-headline{height:46px;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:800;letter-spacing:-.03em;text-align:center;color:var(--zvs-ink,#14233D);margin:0 0 2px;white-space:nowrap}" +
+    /* chart mode, nothing arrived yet: the complete range renders as a
+       shimmering skeleton (domain text transparent underneath, so the
+       placeholder is the exact final size) until the first range lands */
+    ".zvs-pend{color:transparent !important;background:linear-gradient(90deg,#E4EAF3 25%,#F1F5FB 50%,#E4EAF3 75%);background-size:200% 100%;animation:zvsPendS 1.3s linear infinite;border-radius:10px;user-select:none}" +
+    "@keyframes zvsPendS{to{background-position:-200% 0}}" +
     ".zvs-sub{height:19px;line-height:19px;font-size:13.5px;font-weight:600;text-align:center;color:var(--zvs-muted,#5C6B82);margin:0 0 2px;white-space:nowrap}" +
     ".zvs-slide{position:relative;height:" + SLIDE_H + "px;margin:14px 2px 2px;cursor:pointer;touch-action:none}" +
     ".zvs-slide.zvs-static{cursor:default}" +
@@ -191,7 +202,7 @@
     "@keyframes zvsPulse{0%,100%{opacity:.4}50%{opacity:.95}}" +
     "@keyframes zvsIn{from{opacity:0}}" +
     "@keyframes zvsEndsIn{from{max-height:0;opacity:0}to{max-height:56px;opacity:1}}" +
-    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse,.zvs-crun{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-crange,.zvs-chip path{transition:none}}";
+    "@media (prefers-reduced-motion:reduce){.zvs-march,.zvs-gpulse,.zvs-crun,.zvs-pend{animation:none}.zvs-range,.zvs-rlabel,.zvs-rdot,.zvs-crange,.zvs-chip path,.zvs-handle.zvs-snap{transition:none}}";
 
   function injectCSS() {
     if (document.getElementById("zvs-style")) return;
@@ -472,7 +483,7 @@
     // the chart and labeled. The untouched handle parks at the union's
     // CENTER (re-centering as arrivals widen it) and the untouched headline
     // shows the union — so the resting state IS the complete range.
-    var uLo = null, uHi = null, cBar = null, endsEl = null;
+    var uLo = null, uHi = null, cBar = null, endsEl = null, pendHead = null, pendEnds = [];
     function updateUnion(r) {
       if (!chartMode) return;
       uLo = uLo === null ? r.lo : Math.min(uLo, r.lo);
@@ -491,6 +502,12 @@
       }
       cBar.style.left = pOf(uLo) + "%";
       cBar.style.width = (pOf(uHi) - pOf(uLo)) + "%";
+      // arrivals reveal the complete range piece by piece: the headline on
+      // first arrival, each end label only once the union reaches that end
+      // (so a pinned domain never leaks its extremes before the data lands)
+      if (pendHead) { pendHead.classList.remove("zvs-pend"); pendHead = null; }
+      if (pendEnds[0] && uLo <= vmin) { pendEnds[0].classList.remove("zvs-pend"); pendEnds[0] = null; }
+      if (pendEnds[1] && uHi >= vmax) { pendEnds[1].classList.remove("zvs-pend"); pendEnds[1] = null; }
       if (!touched) {
         setHeadline(fmt(uLo) + " – " + fmt(uHi), rangeLabel);
         if (handle) {
@@ -757,6 +774,16 @@
       retireChip(r, x0, top);
     }
     ranges.forEach(function (r) { drawRange(r, false); });
+    // chart mode with a pinned domain but nothing arrived yet: the complete
+    // range (headline + end labels) hides behind skeletons until the first
+    // range lands — the range only exists once values do
+    if (chartMode && uLo === null) {
+      if (headlineEl) { headlineEl.classList.add("zvs-pend"); pendHead = headlineEl; }
+      container.querySelectorAll(".zvs-end b").forEach(function (b, bi) {
+        b.classList.add("zvs-pend");
+        pendEnds[bi] = b;
+      });
+    }
 
     // estimate-arrival wiring (e.g. the estimate tray's onArrive): draw the
     // new line in place when it fits the current scale; a range outside the

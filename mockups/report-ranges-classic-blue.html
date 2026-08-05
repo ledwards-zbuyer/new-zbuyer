@@ -102,7 +102,13 @@
   .val{transition:color .45s ease;border-radius:6px;white-space:nowrap}
   .val.pending{color:transparent !important;background:linear-gradient(90deg,#E4EAF3 25%,#F1F5FB 50%,#E4EAF3 75%) !important;background-size:200% 100% !important;animation:valShimmer 1.3s linear infinite;user-select:none;box-shadow:none}
   @keyframes valShimmer{to{background-position:-200% 0}}
-  @media (prefers-reduced-motion:reduce){.val{transition:none}.val.pending{animation:none}}
+  /* nested styled spans inside a pending value must hide too */
+  .val.pending *{color:transparent !important}
+  /* block-level gating: whole content regions (property facts, comps, price
+     history, the DOM-driven calendar) blur out until their data arrives */
+  .valblock{transition:filter .5s ease,opacity .5s ease}
+  .valblock.pending{filter:blur(5px) saturate(.85);opacity:.5;pointer-events:none;user-select:none}
+  @media (prefers-reduced-motion:reduce){.val,.valblock{transition:none}.val.pending{animation:none}}
 
   /* ---- production tile set (rt-*) + concept-card helpers ---- */
   .verify{display:flex;align-items:center;gap:8px;justify-content:center;font-size:11.5px;color:var(--muted);margin-top:16px;text-align:center}
@@ -406,10 +412,10 @@
         <p class="calp-cap">accept &middot; inspect &middot; close — <b>done by day 14</b>, the rest of the calendar is yours</p>
       </div>
       <div class="calp" style="--lane:#1D4FD7">
-        <div class="calp-head"><b>List with an agent</b><span>~109 days</span></div>
-        <div class="cal-sheets" id="calList"></div>
+        <div class="calp-head"><b>List with an agent</b><span data-val="market">~109 days</span></div>
+        <div class="cal-sheets" id="calList" data-valblock="market"></div>
         <div class="calp-chip" data-val="market">$348&ndash;371K</div>
-        <p class="calp-cap">prep &amp; photos 15d &middot; on the market <b>average 54d in 65802</b> &middot; financed close ~40d</p>
+        <p class="calp-cap" data-valblock="market">prep &amp; photos 15d &middot; on the market <b>average 54d in 65802</b> &middot; financed close ~40d</p>
       </div>
     </div>
     <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
@@ -463,7 +469,7 @@
         <th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--line)"><span style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#16408F">Cash offer</span><br><b style="font-size:14.5px" data-val="cash">$312&ndash;335K</b></th>
         <th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--line)"><span style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#1D4FD7">List &amp; sell</span><br><b style="font-size:14.5px" data-val="market">$348&ndash;371K</b></th>
       </tr>
-      <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Days to keys</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>~14</b></td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>~109</b> <span style="color:var(--muted)">(avg 54 on market in 65802)</span></td></tr>
+      <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Days to keys</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>~14</b></td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><span data-val="market"><b>~109</b> <span style="color:var(--muted)">(avg 54 on market in 65802)</span></span></td></tr>
       <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Showings &amp; open houses</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>None</b></td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)">~15&ndash;25 walkthroughs</td></tr>
       <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Repairs before sale</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>Sold as-is</b></td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)">Often negotiated after inspection</td></tr>
       <tr><td style="padding:9px 10px;border-bottom:1px solid var(--soft);color:var(--muted);font-weight:600">Deal risk</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)"><b>Minimal</b> — no financing</td><td style="padding:9px 10px;border-bottom:1px solid var(--soft)">Buyer financing can fall through</td></tr>
@@ -546,7 +552,7 @@
       <div class="rt-path cash"><div class="pname">Instant cash offer</div><div class="pnum" data-val="cash">$312&ndash;335K</div>
         <ul><li>Close in as few as 14 days</li><li>No showings, no repairs, no contingencies</li><li>Pick your move-out date</li></ul></div>
       <div class="rt-path"><div class="pname">List with an agent</div><div class="pnum" data-val="market">$348&ndash;371K</div>
-        <ul><li>~109 days here (avg 54 on market in 65802)</li><li>Showings, inspection, appraisal</li><li>Top-line price before costs</li></ul></div>
+        <ul><li><span data-val="market">~109 days here (avg 54 on market in 65802)</span></li><li>Showings, inspection, appraisal</li><li>Top-line price before costs</li></ul></div>
     </div>
   </section>
 
@@ -563,7 +569,7 @@
        rows on this report, per 2026-08-05 call) -->
     <section class="card">
       <h2 class="sec">Property details</h2>
-      <div class="facts-grid">
+      <div class="facts-grid" data-valblock="market">
         <div class="fact"><span>Beds</span><b>3</b></div>
         <div class="fact"><span>Baths</span><b>2</b></div>
         <div class="fact"><span>Square feet</span><b>1,752</b></div>
@@ -586,6 +592,7 @@
   <section class="card" data-rt="comps">
     <h2 class="sec">Nearby homes sold</h2>
     <p class="rt-sub">Recent sales within about a mile and 25% of this home's size.</p>
+    <div data-valblock="market">
     <table class="rt-table"><tbody><tr><th>Address</th><th>Sold</th><th class="hl">Price</th><th>$/sqft</th></tr>
       <tr><td>118 Maple Ct &middot; 0.3 mi</td><td>May 2026</td><td class="hl">$351,000</td><td>$199</td></tr>
       <tr><td>427 Birchwood Ln &middot; 0.5 mi</td><td>Apr 2026</td><td class="hl">$356,000</td><td>$204</td></tr>
@@ -593,11 +600,13 @@
       <tr><td>2204 Alder St &middot; 0.9 mi</td><td>Mar 2026</td><td class="hl">$366,500</td><td>$210</td></tr>
     </tbody></table>
     <div class="rt-foot">Median of the set: <b>$358,500</b> &middot; $205/sqft</div>
+    </div>
   </section>
 
   <section class="card" data-rt="appreciation">
     <h2 class="sec">Appreciation &amp; price history</h2>
     <p class="rt-sub">How this home's value has moved, and every recorded sale.</p>
+    <div data-valblock="market">
     <div class="rt-statline"><span>Purchased Jun 2021</span><b>$268,000</b></div>
     <div class="rt-statline"><span>Estimated value today</span><b data-val="market">$362,000</b></div>
     <div class="rt-statline"><span>Total change (5.2 years)</span><b data-val="market">+35.1%</b></div>
@@ -608,6 +617,7 @@
       <tr><td>Jun 2021 <span style="color:#8a97ab">(you)</span></td><td class="hl">$268,000</td><td>+80.5%</td></tr>
       <tr><td>Today <span style="color:#8a97ab">(estimate)</span></td><td class="hl"><span data-val="market">$362,000</span></td><td><span data-val="market">+35.1%</span></td></tr>
     </tbody></table>
+    </div>
   </section>
 
   <section class="card" data-rt="velocity">
@@ -672,12 +682,14 @@
   <section class="card" data-rt="biography">
     <h2 class="sec">Your home's financial biography</h2>
     <p class="rt-sub">Same house, three different markets.</p>
+    <div data-valblock="market">
     <table class="rt-table"><tbody><tr><th>Owner</th><th>Held</th><th class="hl">Annual return</th></tr>
       <tr><td>1998 &ndash; 2012</td><td>14.4 yrs</td><td>+2.0%/yr</td></tr>
       <tr><td>2012 &ndash; 2021</td><td>8.8 yrs</td><td>+6.9%/yr</td></tr>
       <tr><td class="hl">You, 2021 &ndash; today</td><td class="hl">5.2 yrs</td><td class="hl">+6.0%/yr</td></tr>
     </tbody></table>
     <div class="rt-foot">The 2012 buyer caught the recovery run — your stretch is nearly matching it.</div>
+    </div>
   </section>
 
   <section class="card" data-rt="dirtvalue">
@@ -707,7 +719,7 @@
         <button id="h10" type="button">Last 10 years</button>
       </div>
     </div>
-    <div class="chart">
+    <div class="chart" data-valblock="market">
       <svg viewBox="0 0 620 232" aria-label="Home value history chart">
         <line class="gl" x1="40" y1="20"  x2="580" y2="20"/>
         <line class="gl" x1="40" y1="110" x2="580" y2="110"/>
@@ -888,8 +900,13 @@
   document.querySelectorAll("[data-val]").forEach(function (el) {
     el.classList.add("val", "pending");
   });
+  // whole content regions that ride along with the market data (property
+  // facts, comps, price history, the listing calendar) blur until it lands
+  document.querySelectorAll("[data-valblock]").forEach(function (el) {
+    el.classList.add("valblock", "pending");
+  });
   function reveal(id) {
-    document.querySelectorAll('[data-val="' + id + '"]').forEach(function (el) {
+    document.querySelectorAll('[data-val="' + id + '"], [data-valblock="' + id + '"]').forEach(function (el) {
       el.classList.remove("pending");
     });
   }
