@@ -2522,3 +2522,10 @@ zero overflow (doc scrollWidth == clientWidth, no wide elements).
 from it like a real calendar (4+30 → 6, 6+31 → 2), so the four sheets start on
 columns 3, 4, 6, 2. Explicit starts array in the builder with the rationale
 commented.
+
+**Lucas:** now make month 3 start 4 days earlier. i'm trying to avoid starting
+the month with 1 day in the first week. it looks funny
+
+**Claude:** Starts are now 3, 4, 2, 5 — month 3 opens on column 2 and month 4
+re-chains from it (2+31 → 5). No sheet opens with a lonely one-dot first week
+anymore, and the comment in the builder now records the art-direction rule.

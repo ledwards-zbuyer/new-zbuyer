@@ -420,10 +420,10 @@
     (function () {
       function build(id, fill) {
         var host = document.getElementById(id), months = [31, 30, 31, 30];
-        // month start weekdays: month 1 opens midweek; month 2 pulled two
-        // days earlier per design (2026-08-05); months 3-4 chain from it
-        // like a real calendar (4+30 -> 6, 6+31 -> 2)
-        var starts = [3, 4, 6, 2], left = fill;
+        // month start weekdays, art-directed so no month opens with a
+        // lonely 1-day first week (looks odd): 3, 4, 2, then month 4
+        // chains from month 3 like a real calendar (2+31 -> 5)
+        var starts = [3, 4, 2, 5], left = fill;
         months.forEach(function (n, mi) {
           var mo = document.createElement("div");
           mo.className = "cal-mo" + (left <= 0 ? " ghost" : "");
