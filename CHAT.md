@@ -2715,3 +2715,8 @@ consistency — the rungs are ZIP data but the highlight isn't), and the tax
 gap tile is gone entirely. The flow now runs Rent ladder -> Trade-up power
 -> Financial biography. HUD rents moved off the not-gated list in HANDOFF
 and taxgap joined the removed-tiles list.
+
+**Lucas:** remove the Rooted Cash Owner persona badge tile
+
+**Claude:** Removed. The flow now runs Tenure clock -> Record check -> Free
+and clear -> Rent ladder. HANDOFF's roster and removed-tiles list updated.

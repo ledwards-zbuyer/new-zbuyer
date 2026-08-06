@@ -495,8 +495,8 @@ load) while values and home stats remain static demo data. The old
   ZIP 65802 54 DOM): twopaths, confidence (3/3 checks), grid2(details + REFINE
   card — replaces the old net-equity placeholder), walkaway ($336,660 net),
   comps (4, median $358,500), appreciation (+35.1% / +6.0%yr,
-  1998→2012→2021→today chain), velocity, tenure, radar stamps, free&clear +
-  Rooted Cash Owner badges, rentladder, tradeup, biography, dirtvalue,
+  1998→2012→2021→today chain), velocity, tenure, radar stamps, free&clear
+  badge, rentladder, tradeup, biography, dirtvalue,
   equityhuman, assumable (with no-mortgage context flag), value history
   RESCALED to end at $362K (y5 $240-370K axis, y10 $180-390K), then REFINE
   moved to the BOTTOM (now the LAST card — the Go deeper tile was removed
@@ -564,7 +564,8 @@ load) while values and home stats remain static demo data. The old
   both arrivals, dodging the ~474px headless layout clamp). Clean = page
   scrollWidth == viewport, "no offenders".
   REMOVED per Lucas (2026-08-04): interestsaved, buyerpool,
-  ratefree badge, landlord (keep-as-rental); (2026-08-05): taxgap. Tile templates + rt-* CSS lifted
+  ratefree badge, landlord (keep-as-rental); (2026-08-05): taxgap,
+  persona badge (Rooted Cash Owner). Tile templates + rt-* CSS lifted
   verbatim from the production report (fetched copy + extracts parked untracked
   in shots/convert-*.{html,txt}). ?terms=maxsold still swaps the carousel.
   VALUE DISPLAY CONCEPTS (2026-08-04): `value-display-concepts.html` — jump page
