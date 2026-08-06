@@ -532,8 +532,10 @@ load) while values and home stats remain static demo data. The old
   one per container scaled to it): a pending
   [data-valblock] sets children opacity:0 (boxes preserved = region holds its
   loaded size) and centers ONE sphere overlay sized
-  `clamp(40px, 60%, 200px)` per axis (::after square fit via center/contain =
-  60% of the container's SMALLER dimension, 40px floor / 200px cap;
+  `clamp(40px, 85%, 320px)` per axis (::after square fit via center/contain =
+  85% of the container's SMALLER dimension, 40px floor / 320px cap = the
+  webp's native size, no upscale blur; first pass was 60%/200px — Lucas:
+  still too small;
   z-sphere-primary webp); pending [data-val] slots inside/elsewhere are QUIET STATIC PILLS
   (#E9EEF6, text transparent = exact-size placeholder, no animation). The
   money-centric tiles' bodies are wrapped as valblocks so each waits as one

@@ -2820,3 +2820,14 @@ hold at 40px. The "remove the hidden placeholders" concession was NOT needed:
 the opacity-0 children still hold each region at its loaded size (no shift on
 reveal) and nothing collides with the bigger spheres, so the exact-size
 placeholder system stays intact.
+
+---
+
+**Lucas:** the spheres still look too small
+
+**Claude:** Bumped the pending-sphere proportion from 60% to 85% of the
+container smaller dimension and raised the cap from 200px to 320px (the
+z-sphere webp native size, so no upscale blur); 40px floor unchanged.
+Re-verified pending state at 1200px and 500px — selling-range card sphere is
+now ~215px, appreciation chart ~260px+, calendar panes fill most of their
+height, and nothing overflows or collides with the placeholder pills.
