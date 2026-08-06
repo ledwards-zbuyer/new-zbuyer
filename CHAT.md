@@ -2831,3 +2831,17 @@ z-sphere webp native size, so no upscale blur); 40px floor unchanged.
 Re-verified pending state at 1200px and 500px — selling-range card sphere is
 now ~215px, appreciation chart ~260px+, calendar panes fill most of their
 height, and nothing overflows or collides with the placeholder pills.
+
+---
+
+**Lucas:** we do not know the Tenure clock, Record check, or Free and Clear
+badge until we receive the AI/AVM response
+
+**Claude:** Gated all three on the market arrival (they were in the
+records-stay-visible bucket): Tenure clock wraps its sub + dial + purchase
+key as a market valblock (the sub carries the 5.2-year figure, so it hides
+too; only the headline stays), Record check gates the .rt-radar stamp grid
+under its generic sub-line, and the Free and clear card gates the entire
+.rt-badge since the badge itself is the unknown — that card waits as a bare
+sphere. Verified pending (three new spheres, proportionally sized) and
+revealed (dial, six stamps, badge all restore) states headlessly.

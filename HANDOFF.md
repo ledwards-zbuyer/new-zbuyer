@@ -542,6 +542,11 @@ load) while values and home stats remain static demo data. The old
   sphere: walkaway, velocity, tradeup, dirtvalue, equityhuman,
   assumable (sentence only — the no-mortgage geoflag stays visible) + the
   original details/comps/appreciation/biography/chart/calendar-sheet blocks.
+  2026-08-06 (Lucas): TENURE CLOCK (sub+dial+key — the sub carries the 5.2yr
+  figure so it gates too, headline stays), RECORD CHECK (.rt-radar stamp
+  grid) and the FREE-AND-CLEAR badge (whole .rt-badge — the badge itself is
+  the unknown) also gate on market; record data isn't known until the
+  AI/AVM response returns.
   Containers whose gated bits are inline-only (ledger, twopaths pnums,
   timeline chips/captions, slider end labels) show pills, no sphere.
   Reduced motion: static pills / #F4F8FD wash, no loops. WIDGET
@@ -554,9 +559,9 @@ load) while values and home stats remain static demo data. The old
   each END label only reveals once the union REACHES that end (right end
   stays hidden until market lands — a pinned domain never leaks its
   extremes). .zvs-handle.zvs-snap added to the reduced-motion no-transition
-  list (also makes headless shots truthful). NOT gated (records/stats):
-  assessed value, record-check flags, tenure, masthead facts line
-  (identity stays visible).
+  list (also makes headless shots truthful). NOT gated: assessed value,
+  masthead facts line (identity stays visible) — record-check/tenure/
+  free-and-clear moved to gated 2026-08-06, see above.
   MOBILE OVERFLOW RULE (2026-08-05, iPhone screenshot: ledger text ran past
   the card bg): `.val` is white-space:nowrap BY DESIGN for money tokens —
   any LONG gated span (sentence-ish, e.g. "~109 (avg 54 on market in
