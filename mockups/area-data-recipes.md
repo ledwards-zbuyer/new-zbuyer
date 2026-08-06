@@ -21,8 +21,19 @@ notes, including the zero-AI alternatives.
 
 ## Paste this into the property/area prompt
 
-Replace nothing except providing `{ZIP}` and `{HUD_TOKEN}` at request-build
-time (your code substitutes them before the prompt is sent).
+Your code substitutes every `{PLACEHOLDER}` before the prompt is sent — the
+model never builds or transforms a string. Build these from the subject
+property's address:
+
+| Placeholder | Rule | Example |
+|---|---|---|
+| `{ZIP}` | 5-digit ZIP | `65802` |
+| `{CITY_URL}` | city, Title-Case, spaces → hyphens | `San-Francisco` |
+| `{ST}` | 2-letter state, UPPER | `MO` |
+| `{st}` | 2-letter state, lower | `mo` |
+| `{city_url}` | city, lowercase, spaces → hyphens | `san-francisco` |
+| `{STATE_URL}` | full state name, Title-Case, spaces → hyphens | `New-York` |
+| `{HUD_TOKEN}` | HUD USER API token (setup below) | — |
 
 ```
 === AREA DATA (3 fields) — follow these steps exactly, do not improvise ===
@@ -37,20 +48,42 @@ GLOBAL RULES
   A number that fails the check = that step failed.
 - Strip "$" and "," from numbers before output.
 
-FIELD 1: zip_avg_dom — average days on market in ZIP {ZIP}
-1. Fetch: https://www.redfin.com/zipcode/{ZIP}/housing-market
-2. In the page text, find the first occurrence of the phrase
-   "days on market". Take the whole number right before or right after
-   that phrase. Example: "homes sell after 54 days on the market" -> 54.
-3. FALLBACK A: fetch
-   https://www.realtor.com/realestateandhomes-search/{ZIP}/overview
-   and find "Median days on market"; take the number next to it.
-4. FALLBACK B: web-search:  median days on market {ZIP}
-   Accept a number ONLY if the result is from redfin.com, realtor.com, or
-   rockethomes.com.
-5. SANITY CHECK: whole number between 5 and 365.
-6. Also record: the domain the number came from, and the month it
-   describes if the page shows one (format YYYY-MM).
+FIELD 1: zip_avg_dom — average days on market near ZIP {ZIP}
+Work through the LEVELS in order. STOP at the first level that gives you a
+number passing the SANITY CHECK, and record which level it was. This field
+must end with a number — the last level is the whole country.
+
+HOW TO READ A PAGE (same at every level): in the page text, find the first
+occurrence of the phrase "days on market". Take the whole number right
+before or right after that phrase. Example: "homes sell after 54 days on
+the market" -> 54.
+
+LEVEL 1 — ZIP:
+  a. Fetch: https://www.redfin.com/zipcode/{ZIP}/housing-market
+  b. If a failed: fetch
+     https://www.realtor.com/realestateandhomes-search/{ZIP}/overview
+     and find "Median days on market"; take the number next to it.
+  c. If b failed: web-search:  median days on market {ZIP}
+     Accept a number ONLY from redfin.com, realtor.com, or rockethomes.com.
+LEVEL 2 — CITY (only if every Level 1 step failed):
+  a. Fetch: https://www.realtor.com/realestateandhomes-search/{CITY_URL}_{ST}/overview
+     and find "Median days on market"; take the number next to it.
+  b. If a failed: fetch https://www.rockethomes.com/real-estate-trends/{city_url}-{st}
+  c. If b failed: web-search:  median days on market {CITY_URL} {ST}
+     (same three allowed domains).
+LEVEL 3 — STATE (only if every Level 2 step failed):
+  a. Fetch: https://www.redfin.com/state/{STATE_URL}/housing-market
+  b. If a failed: web-search:  median days on market {STATE_URL} state
+     (same three allowed domains).
+LEVEL 4 — NATIONAL (only if every Level 3 step failed):
+  a. Fetch: https://www.redfin.com/us-housing-market
+  b. If a failed: web-search:  median days on market united states
+     (same three allowed domains).
+
+SANITY CHECK (every level): whole number between 5 and 365.
+Record: the number, the level it came from ("zip", "city", "state" or
+"national"), the domain, and the month the page describes if shown
+(format YYYY-MM).
 
 FIELD 2: hud_fmr — HUD Fair Market Rents by bedroom for ZIP {ZIP}
 1. Fetch (GET): https://www.huduser.gov/hudapi/public/usps?type=2&query={ZIP}
@@ -85,7 +118,8 @@ FIELD 3: median_household_income — for ZIP {ZIP}
 
 OUTPUT — add exactly this object to your JSON answer:
 "area_data": {
-  "zip_avg_dom": { "days": <number|null>, "source": "<domain|null>", "as_of": "<YYYY-MM|null>" },
+  "zip_avg_dom": { "days": <number|null>, "geo": "<zip|city|state|national|null>",
+                   "source": "<domain|null>", "as_of": "<YYYY-MM|null>" },
   "hud_fmr": { "efficiency": <number|null>, "br1": <number|null>, "br2": <number|null>,
                "br3": <number|null>, "br4": <number|null>, "fy": "<year|null>" },
   "median_household_income": { "dollars": <number|null>, "geo": "<'ZCTA {ZIP}' or county NAME>",
@@ -111,12 +145,22 @@ OUTPUT — add exactly this object to your JSON answer:
 
 - **Field 1 has no official free API.** Redfin/Realtor market pages carry the
   number in plain page text, which is why the recipe is fetch-and-read with a
-  domain-restricted search as last resort. Mind their terms of service.
+  domain-restricted search as last resort — and a ZIP → city → state →
+  national ladder so it always lands on a number. Mind their terms of
+  service. If you want a guaranteed answer even with every fetch down, add a
+  dev-owned constant as a final step (e.g. `days: 55, geo: "national",
+  source: "default"`).
+  **Display note:** the report's captions say "average 54d in 65802" — only
+  say "in {ZIP}" when `geo` is `zip`; for city/state/national numbers the
+  copy should name what the number actually describes (e.g. "average 51d in
+  Springfield" / "…statewide" / "…nationally").
   **Most reliable alternative (zero tokens):** Realtor.com Research publishes
-  a monthly ZIP-level CSV — `RDC_Inventory_Core_Metrics_Zip.csv` from
-  https://www.realtor.com/research/data/ — with columns `postal_code` and
-  `median_days_on_market`. Download monthly in code, index by ZIP, and pass
-  the number INTO the prompt instead (then delete FIELD 1 from the block).
+  monthly CSVs at every rung of the same ladder — ZIP, county, metro, state,
+  national (`RDC_Inventory_Core_Metrics_Zip.csv` etc. from
+  https://www.realtor.com/research/data/ — columns `postal_code` /
+  `median_days_on_market`). Download monthly in code, look up ZIP first and
+  walk up the same ladder, and pass the number INTO the prompt instead
+  (then delete FIELD 1 from the block).
 - **Fields 2 and 3 are deterministic GETs** — they don't need a model at all.
   The prompt versions exist to keep everything inside the one AI request; if
   you'd rather, call them from the backend and pass the values in.

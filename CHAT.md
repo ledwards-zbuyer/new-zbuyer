@@ -2741,3 +2741,20 @@ Global rules: never invent a number, sanity bounds per field, null on
 failure, fixed area_data output schema. One-time setup: free HUD token,
 optional Census key, bump the ACS vintage each December, cache per ZIP
 (DOM monthly, FMR/income yearly).
+
+**Lucas:** lets include alternative backup-backups for days on market. if
+the zip does not work, go to the city level, if that does not work, got to
+the state level. there will be a number at some point. worst case, use the
+national level
+
+**Claude:** The days-on-market recipe is now a four-level ladder: ZIP
+(Redfin zipcode page -> Realtor ZIP overview -> restricted search), CITY
+(Realtor city overview -> Rocket Homes trends -> search), STATE (Redfin
+state housing-market page -> search), NATIONAL (Redfin us-housing-market ->
+search) — stop at the first number that passes the 5-365 sanity check. All
+URL tokens ({CITY_URL}, {city_url}, {ST}/{st}, {STATE_URL}) are pre-built
+by the dev's code so the low-level model never transforms a string, and
+the output now records which level answered (geo: zip|city|state|national).
+Two dev notes added: captions should only say "in 65802" when geo=zip
+(name the city/state/nation otherwise), and the zero-token RDC CSVs exist
+at every rung of the same ladder if they'd rather resolve it in code.

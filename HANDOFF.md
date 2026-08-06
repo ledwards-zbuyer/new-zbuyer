@@ -669,9 +669,12 @@ load) while values and home stats remain static demo data. The old
 - **Area-data recipes (2026-08-05):** `mockups/area-data-recipes.md` — for the
   token-free pipeline (one REAPI AVM pull + ONE AI property/area request):
   paste-ready prompt block teaching a LOW-LEVEL model to fetch the three
-  non-property-record fields — ZIP avg days-on-market (Redfin/Realtor page
-  read + domain-restricted search fallback; no official API — or the
-  zero-token RDC monthly ZIP CSV), HUD FMR by bedroom (usps crosswalk
+  non-property-record fields — avg days-on-market via a ZIP → CITY → STATE
+  → NATIONAL fallback ladder (2026-08-05: always lands on a number; output
+  carries geo level so captions only say "in {ZIP}" when geo=zip; URL tokens
+  like {CITY_URL}/{STATE_URL} are pre-built by code, the model never
+  transforms strings; no official API — or the zero-token RDC monthly CSVs
+  which exist at every rung), HUD FMR by bedroom (usps crosswalk
   type=2 → geoid+99999 → /fmr/data, Bearer {HUD_TOKEN}, SAFMR list-vs-object
   branch), median household income (Census ACS5 B19013_001E by ZCTA, county
   fallback via the same geoid). Literal URLs/JSON paths, sanity bounds,
