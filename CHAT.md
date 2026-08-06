@@ -2845,3 +2845,27 @@ under its generic sub-line, and the Free and clear card gates the entire
 .rt-badge since the badge itself is the unknown — that card waits as a bare
 sphere. Verified pending (three new spheres, proportionally sized) and
 revealed (dial, six stamps, badge all restore) states headlessly.
+
+---
+
+**Lucas:** on the Two timelines tile, remove the "hidden" blanks so all the
+user sees is the container with a title and loading animation
+
+**Claude:** Restructured both timeline panels so everything under the lane
+title (day-count row, calendar sheets, value chip, caption) is ONE valblock
+(cash panel gates on cash, list panel on market) and dropped the per-slot
+data-val attributes those rows carried — pending now shows only CASH OFFER /
+LIST WITH AN AGENT over one large sphere, no pill blanks. The calp-cap
+white-space:normal inline patch went with the data-val (nowrap came from
+.val); HANDOFF mobile-overflow note updated.
+
+---
+
+**Lucas:** also make the values more prominent on Two timelines. but make
+sure they don't look like a button
+
+**Claude:** The value chip was literally button-styled (filled lane-color
+pill, white text, shadow, rounded) — replaced with a bare stat figure: 30px
+weight-900 lane-colored text with tabular-nums, no background or border. It
+is now the loudest element in each panel (day count is 21px). Verified
+revealed state at 1200px and 500px, no overflow.

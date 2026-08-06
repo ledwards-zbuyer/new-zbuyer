@@ -96,7 +96,9 @@
   .cal-m i.on{background:var(--lane);border-color:var(--lane)}
   .cal-m i.pad{visibility:hidden} /* true weekday offset + 6-week padding */
   .cal-mo.ghost{opacity:.4}
-  .calp-chip{display:inline-block;margin-top:14px;background:var(--lane);color:#fff;font-size:15.5px;font-weight:900;padding:9px 18px;border-radius:10px;box-shadow:0 8px 20px -10px rgba(14,27,51,.5)}
+  /* the value: the panel's loudest element — a big stat figure in the lane
+     color, deliberately NOT a filled pill (read as a button, 2026-08-06) */
+  .calp-chip{margin-top:12px;font-size:30px;font-weight:900;letter-spacing:-.02em;color:var(--lane);font-variant-numeric:tabular-nums;line-height:1}
   .calp-cap{font-size:11px;color:var(--muted);margin-top:9px;line-height:1.55}
   .calp-cap b{color:var(--lane)}
 
@@ -419,19 +421,25 @@
     <h2 class="sec">Two timelines &middot; two prices</h2>
     <p class="rt-sub">The same start date, two very different calendars — every filled day is a day spent selling.</p>
     <div class="cal2">
+      <!-- everything under each title waits as ONE valblock (2026-08-06:
+           no pill blanks here — pending shows just the title + the sphere) -->
       <div class="calp" style="--lane:#16408F">
         <div class="calp-head"><b>Cash offer</b></div>
-        <div class="calp-days" data-val="cash">~14 days</div>
-        <div class="cal-sheets" id="calCash" data-valblock="cash"></div>
-        <div class="calp-chip" data-val="cash">$312&ndash;335K</div>
-        <p class="calp-cap" data-val="cash" style="white-space:normal">accept &middot; inspect &middot; close — <b>done by day 14</b>, the rest of the calendar is yours</p>
+        <div data-valblock="cash">
+        <div class="calp-days">~14 days</div>
+        <div class="cal-sheets" id="calCash"></div>
+        <div class="calp-chip">$312&ndash;335K</div>
+        <p class="calp-cap">accept &middot; inspect &middot; close — <b>done by day 14</b>, the rest of the calendar is yours</p>
+        </div>
       </div>
       <div class="calp" style="--lane:#1D4FD7">
         <div class="calp-head"><b>List with an agent</b></div>
-        <div class="calp-days" data-val="market">~109 days</div>
-        <div class="cal-sheets" id="calList" data-valblock="market"></div>
-        <div class="calp-chip" data-val="market">$348&ndash;371K</div>
-        <p class="calp-cap" data-val="market" style="white-space:normal">prep &amp; photos 15d &middot; on the market <b>average 54d in 65802</b> &middot; financed close ~40d</p>
+        <div data-valblock="market">
+        <div class="calp-days">~109 days</div>
+        <div class="cal-sheets" id="calList"></div>
+        <div class="calp-chip">$348&ndash;371K</div>
+        <p class="calp-cap">prep &amp; photos 15d &middot; on the market <b>average 54d in 65802</b> &middot; financed close ~40d</p>
+        </div>
       </div>
     </div>
     <p class="verify"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5C6B82" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>

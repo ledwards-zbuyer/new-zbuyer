@@ -519,12 +519,18 @@ load) while values and home stats remain static demo data. The old
   biography table, value-history chart, rent-ladder rungs (2026-08-05 —
   HUD FMRs are ZIP-keyed public data, but the 3-bedroom highlight leans on
   the bed count that arrives with market, so the tile waits with the rest);
-  inline market gates on "~109 days"
-  head, the calendar caption, ledger "~109 (avg 54…)" cell, twopaths "~109
-  days here…" li. The TIMELINES CASH PANEL gates on cash too (2026-08-05:
-  day-count row, calendar sheets valblock, caption — the ~14d number is
+  inline market gates on the ledger "~109 (avg 54…)" cell and twopaths "~109
+  days here…" li. TIMELINES PANELS (2026-08-06, Lucas: no pill blanks —
+  pending = title + sphere ONLY): each panel's entire body under the
+  calp-head title (day-count row + calendar sheets + value chip + caption)
+  is ONE valblock — cash panel on cash, list panel on market; the per-slot
+  data-val pills those rows used to carry are gone, so nothing shows but the
+  lane title and one big sphere. Value chip restyled same day (Lucas: more
+  prominent, but not button-like): .calp-chip dropped its filled
+  pill/shadow (it read as a button) for a bare 30px/900 lane-color stat
+  figure, tabular-nums — now the panel's loudest element. (2026-08-05 history: the ~14d number is
   static product knowledge but Lucas wants it landing WITH the cash offer
-  value; ledger/twopaths ~14 rows elsewhere stay visible).
+  value; ledger/twopaths ~14 rows elsewhere stay visible.)
   `.val.pending *{color:transparent}` so styled child spans hide too.
   PENDING VISUAL = ONE Z-SPHERE PER CONTAINER, PROPORTIONAL (Lucas 2026-08-05
   uniform 40px → 2026-08-06 sized to the container; iteration: first shimmer
@@ -566,8 +572,9 @@ load) while values and home stats remain static demo data. The old
   the card bg): `.val` is white-space:nowrap BY DESIGN for money tokens —
   any LONG gated span (sentence-ish, e.g. "~109 (avg 54 on market in
   65802)") must carry inline `style="white-space:normal"` or it forces its
-  table/card wider than the viewport (ledger days cell, twopaths li, and
-  calp-cap all carry it now). Verify with the local iframe probe
+  table/card wider than the viewport (ledger days cell + twopaths li carry
+  it; calp-cap no longer needs it — the timeline captions lost their
+  data-val 2026-08-06 when the panels went whole-body valblock). Verify with the local iframe probe
   `shots/t-ovf2.html?w=390|360` (gitignored scratch; run headless with
   --allow-file-access-from-files + reduced-motion + 14s budget — it lists
   every element whose right edge crosses the true-mobile viewport after
