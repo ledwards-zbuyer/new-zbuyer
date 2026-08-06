@@ -2758,3 +2758,19 @@ the output now records which level answered (geo: zip|city|state|national).
 Two dev notes added: captions should only say "in 65802" when geo=zip
 (name the city/state/nation otherwise), and the zero-token RDC CSVs exist
 at every rung of the same ladder if they'd rather resolve it in code.
+
+**Lucas:** we create around 2k requests per day. does "Census call needs no
+key at our volume." make sense? assuming not, add the necessary info to the
+md file *(mid-turn:)* create a new draft
+
+**Claude:** It didn't make sense — the Census API's unkeyed allowance is
+~500 requests/day per IP, and 2k/day blows through that. The recipes doc
+now requires the free Census key: {CENSUS_KEY} joined the placeholder
+table, both Census URLs carry &key={CENSUS_KEY}, the setup section explains
+the 500/day/IP limit (keyed access has no published hard cap), and the
+cache-by-ZIP bullet was upgraded from advice to the volume plan — a
+zip -> {dom, fmr, income, fetched_at} table checked BEFORE the AI request,
+with the model fetching only missing/stale ZIPs; without it, 2k leads/day
+means ~2k Census + ~4k HUD calls daily for values that change monthly or
+yearly. Recreated the Besi draft with the corrected setup note (both
+registrations one-time and free, cache plan mentioned).

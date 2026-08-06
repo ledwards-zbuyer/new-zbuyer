@@ -34,6 +34,7 @@ property's address:
 | `{city_url}` | city, lowercase, spaces → hyphens | `san-francisco` |
 | `{STATE_URL}` | full state name, Title-Case, spaces → hyphens | `New-York` |
 | `{HUD_TOKEN}` | HUD USER API token (setup below) | — |
+| `{CENSUS_KEY}` | Census API key (setup below — required at our volume) | — |
 
 ```
 === AREA DATA (3 fields) — follow these steps exactly, do not improvise ===
@@ -105,14 +106,14 @@ FIELD 2: hud_fmr — HUD Fair Market Rents by bedroom for ZIP {ZIP}
 
 FIELD 3: median_household_income — for ZIP {ZIP}
 1. Fetch (GET):
-   https://api.census.gov/data/2023/acs/acs5?get=NAME,B19013_001E&for=zip%20code%20tabulation%20area:{ZIP}
+   https://api.census.gov/data/2023/acs/acs5?get=NAME,B19013_001E&for=zip%20code%20tabulation%20area:{ZIP}&key={CENSUS_KEY}
 2. The reply is a JSON list with exactly 2 rows (a header row, then a data
    row). In the SECOND row, take the SECOND item. It is a string like
    "58917". Convert it to a whole number.
 3. FALLBACK (use if step 1 errored or the number is negative): take the
    geoid you copied in FIELD 2 step 2. Its first 2 digits are the state
    code, its last 3 digits are the county code. Fetch:
-   https://api.census.gov/data/2023/acs/acs5?get=NAME,B19013_001E&for=county:LAST3&in=state:FIRST2
+   https://api.census.gov/data/2023/acs/acs5?get=NAME,B19013_001E&for=county:LAST3&in=state:FIRST2&key={CENSUS_KEY}
    (substitute LAST3 and FIRST2). Read the reply the same way as step 2.
 4. SANITY CHECK: between 15000 and 300000.
 
@@ -134,9 +135,13 @@ OUTPUT — add exactly this object to your JSON answer:
 - **HUD token** (fields 2's two calls): free. Register at
   https://www.huduser.gov/hudapi/public/register — create an access token in
   the account page. Tokens are long-lived JWTs; inject as `{HUD_TOKEN}`.
-- **Census key**: not required at low volume (~500 calls/day/IP). If rate
-  limited, get a free key at https://api.census.gov/data/key_signup.html and
-  append `&key=...` to both Census URLs.
+- **Census key — REQUIRED at our volume**: the Census API allows only ~500
+  unkeyed requests per day per IP, and we generate ~2,000 requests/day.
+  Register a free key at https://api.census.gov/data/key_signup.html
+  (instant, one-time) and inject it as `{CENSUS_KEY}` — the URLs above
+  already carry the parameter. Keyed access has no published hard cap
+  (reasonable use expected — the ZIP cache below keeps us far under any
+  radar).
 - **Vintage bumps**: change `2023/acs/acs5` to the newest vintage each
   December (2024 5-year released Dec 2025, etc.). HUD FMRs roll each federal
   fiscal year (Oct 1) — the API's default year tracks this automatically.
@@ -169,5 +174,12 @@ OUTPUT — add exactly this object to your JSON answer:
   that applies to every ZIP in it. The branch handles both.
 - **ZCTA caveat** (field 3): Census ZCTAs approximate USPS ZIPs; a few
   PO-box-only ZIPs have no ZCTA — that's what the county fallback is for.
-- **Cache by ZIP**: days-on-market monthly, FMR yearly, income yearly.
-  Repeat leads in the same ZIP then cost nothing.
+- **Cache by ZIP — this is the volume plan, not a nice-to-have**: at ~2,000
+  leads/day, hitting these sources per-lead means ~2k Census calls and ~4k
+  HUD calls a day (field 2 is two GETs per uncached lead), plus per-token
+  rate limiting on HUD's side. All three values change slowly — days on
+  market monthly, FMR and income yearly — so keep a `zip → {dom, fmr,
+  income, fetched_at}` table, look it up BEFORE the AI request, and only let
+  the model fetch when the ZIP is missing or stale (then write back).
+  After warm-up, nearly every lead is a cache hit and the outside APIs see
+  only first-time-ZIP traffic. Throttle any backfill/burst gently.

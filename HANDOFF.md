@@ -678,8 +678,12 @@ load) while values and home stats remain static demo data. The old
   type=2 → geoid+99999 → /fmr/data, Bearer {HUD_TOKEN}, SAFMR list-vs-object
   branch), median household income (Census ACS5 B19013_001E by ZCTA, county
   fallback via the same geoid). Literal URLs/JSON paths, sanity bounds,
-  null-on-failure, fixed output schema; one-time setup (free HUD token,
-  optional Census key, December vintage bumps) + cache-by-ZIP advice.
+  null-on-failure, fixed output schema; one-time setup (free HUD token;
+  free Census key REQUIRED — unkeyed cap is 500/day/IP vs ~2k leads/day,
+  {CENSUS_KEY} baked into the URLs; December vintage bumps). Cache-by-ZIP
+  is the stated volume plan: lookup table zip→{dom,fmr,income,fetched_at}
+  BEFORE the AI request, model fetches only missing/stale ZIPs (else ~2k
+  Census + ~4k HUD calls/day for slowly-changing values).
 - **Mortgage Status Classifier (2026-08-03):** `mortgage-status-classifier.md` —
   spec + dependency-free reference implementation for reading REAPI mortgage
   truth from the ARRAYS instead of the modeled `openMortgageBalance` scalar
