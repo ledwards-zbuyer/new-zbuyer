@@ -496,7 +496,7 @@ load) while values and home stats remain static demo data. The old
   card — replaces the old net-equity placeholder), walkaway ($336,660 net),
   comps (4, median $358,500), appreciation (+35.1% / +6.0%yr,
   1998→2012→2021→today chain), velocity, tenure, radar stamps, free&clear +
-  Rooted Cash Owner badges, rentladder, taxgap, tradeup, biography, dirtvalue,
+  Rooted Cash Owner badges, rentladder, tradeup, biography, dirtvalue,
   equityhuman, assumable (with no-mortgage context flag), value history
   RESCALED to end at $362K (y5 $240-370K axis, y10 $180-390K), then REFINE
   moved to the BOTTOM (now the LAST card — the Go deeper tile was removed
@@ -510,13 +510,16 @@ load) while values and home stats remain static demo data. The old
   shifts on reveal) until the tray's onArrive reveals that estimate's values
   page-wide (market 2s, cash 9s demo). Gated: timeline chips, ledger headers,
   twopaths pnums, walkaway net/costs/est-value, appreciation est/total/
-  annualized + today row, velocity, taxgap market rung + ratio/rate,
+  annualized + today row, velocity,
   dirtvalue split, tradeup, equityhuman, assumable premium. EXTENDED
   (2026-08-05, per Lucas: DOM stats/property details/comps/price history
   "come with the AI and AVM values"): data-valblock="market" BLOCK gating
   (reveal() clears both attrs) on the list-side calendar sheets, property
   facts grid, comps table+foot, appreciation statlines + sale-history table,
-  biography table, value-history chart; inline market gates on "~109 days"
+  biography table, value-history chart, rent-ladder rungs (2026-08-05 —
+  HUD FMRs are ZIP-keyed public data, but the 3-bedroom highlight leans on
+  the bed count that arrives with market, so the tile waits with the rest);
+  inline market gates on "~109 days"
   head, the calendar caption, ledger "~109 (avg 54…)" cell, twopaths "~109
   days here…" li. The TIMELINES CASH PANEL gates on cash too (2026-08-05:
   day-count row, calendar sheets valblock, caption — the ~14d number is
@@ -531,7 +534,7 @@ load) while values and home stats remain static demo data. The old
   webp); pending [data-val] slots inside/elsewhere are QUIET STATIC PILLS
   (#E9EEF6, text transparent = exact-size placeholder, no animation). The
   money-centric tiles' bodies are wrapped as valblocks so each waits as one
-  sphere: walkaway, velocity, taxgap, tradeup, dirtvalue, equityhuman,
+  sphere: walkaway, velocity, tradeup, dirtvalue, equityhuman,
   assumable (sentence only — the no-mortgage geoflag stays visible) + the
   original details/comps/appreciation/biography/chart/calendar-sheet blocks.
   Containers whose gated bits are inline-only (ledger, twopaths pnums,
@@ -541,13 +544,13 @@ load) while values and home stats remain static demo data. The old
   headline AND end labels (.zvs-pend — domain text transparent underneath =
   exact-size placeholder; default gray shimmer, or pass `loadingImage: url`
   for ONE loop centered in the headline at `loadingSize` px (default 40) with
-  the end labels as quiet pills — both report pages pass
+  the end labels as quiet pills — the v2 ranges page passes
   z-sphere-primary.webp); first updateUnion reveals the headline,
   each END label only reveals once the union REACHES that end (right end
   stays hidden until market lands — a pinned domain never leaks its
   extremes). .zvs-handle.zvs-snap added to the reduced-motion no-transition
   list (also makes headless shots truthful). NOT gated (records/stats):
-  assessed value, HUD rents, record-check flags, tenure, masthead facts line
+  assessed value, record-check flags, tenure, masthead facts line
   (identity stays visible).
   MOBILE OVERFLOW RULE (2026-08-05, iPhone screenshot: ledger text ran past
   the card bg): `.val` is white-space:nowrap BY DESIGN for money tokens —
@@ -561,7 +564,7 @@ load) while values and home stats remain static demo data. The old
   both arrivals, dodging the ~474px headless layout clamp). Clean = page
   scrollWidth == viewport, "no offenders".
   REMOVED per Lucas (2026-08-04): interestsaved, buyerpool,
-  ratefree badge, landlord (keep-as-rental). Tile templates + rt-* CSS lifted
+  ratefree badge, landlord (keep-as-rental); (2026-08-05): taxgap. Tile templates + rt-* CSS lifted
   verbatim from the production report (fetched copy + extracts parked untracked
   in shots/convert-*.{html,txt}). ?terms=maxsold still swaps the carousel.
   VALUE DISPLAY CONCEPTS (2026-08-04): `value-display-concepts.html` — jump page

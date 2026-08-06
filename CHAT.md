@@ -2697,3 +2697,21 @@ only the CASH OFFER title shows. At 4.5s the card reads: list side fully
 live (market landed at 2s), cash side one sphere — then everything cash
 resolves at once. The static ~14 rows elsewhere (ledger, two-ways bullets)
 stay visible since you scoped this to the timelines card.
+
+**Lucas:** is the "The rent ladder" tile based on zip code? why is it
+showing before we have recieved any info from ai/avm/cash?
+
+**Claude:** Yes — those are HUD Fair Market Rents, published per ZIP
+(Small Area FMRs), public data you can look up from the address alone,
+which is why it sat in the records bucket with assessed value and the
+record-check flags. The wrinkle: the "3 bedroom <-" highlight leans on the
+home's bed count, which in this page's story arrives with the market data.
+
+**Lucas:** also, remove the tax gap tile
+
+**Claude:** Done both ways: the rent ladder now waits as one sphere and
+reveals with the market arrival (strict "nothing derived shows early"
+consistency — the rungs are ZIP data but the highlight isn't), and the tax
+gap tile is gone entirely. The flow now runs Rent ladder -> Trade-up power
+-> Financial biography. HUD rents moved off the not-gated list in HANDOFF
+and taxgap joined the removed-tiles list.
