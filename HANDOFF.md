@@ -666,6 +666,17 @@ load) while values and home stats remain static demo data. The old
   and "The Price Story" (the '98 $112K → '12 $148.5K → '21 $350K chain + today's
   estimate row) were added 2026-07-28, both preselected; the export manifest notes
   the comps are mocks (original sample returned 0 — build the empty state).
+- **Area-data recipes (2026-08-05):** `mockups/area-data-recipes.md` — for the
+  token-free pipeline (one REAPI AVM pull + ONE AI property/area request):
+  paste-ready prompt block teaching a LOW-LEVEL model to fetch the three
+  non-property-record fields — ZIP avg days-on-market (Redfin/Realtor page
+  read + domain-restricted search fallback; no official API — or the
+  zero-token RDC monthly ZIP CSV), HUD FMR by bedroom (usps crosswalk
+  type=2 → geoid+99999 → /fmr/data, Bearer {HUD_TOKEN}, SAFMR list-vs-object
+  branch), median household income (Census ACS5 B19013_001E by ZCTA, county
+  fallback via the same geoid). Literal URLs/JSON paths, sanity bounds,
+  null-on-failure, fixed output schema; one-time setup (free HUD token,
+  optional Census key, December vintage bumps) + cache-by-ZIP advice.
 - **Mortgage Status Classifier (2026-08-03):** `mortgage-status-classifier.md` —
   spec + dependency-free reference implementation for reading REAPI mortgage
   truth from the ARRAYS instead of the modeled `openMortgageBalance` scalar

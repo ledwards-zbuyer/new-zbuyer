@@ -2720,3 +2720,24 @@ and taxgap joined the removed-tiles list.
 
 **Claude:** Removed. The flow now runs Tenure clock -> Record check -> Free
 and clear -> Rent ladder. HANDOFF's roster and removed-tiles list updated.
+
+**Lucas:** regarding the checklist, explain to my dev how to get those
+values (#6,#7,#10) in a way that will make a much lower level model
+understand precisely what to do (within the original prompt)
+
+**Claude:** Wrote mockups/area-data-recipes.md — a paste-ready prompt block
+plus dev notes. The design principle: #7 (HUD FMR) and #10 (median income)
+have real government APIs, so the block gives the small model literal URLs
+and exact JSON paths with zero judgment: HUD usps crosswalk (type=2, pick
+largest tot_ratio, copy geoid) -> /fmr/data/{geoid}99999 with the Bearer
+token -> read Efficiency/One-Bedroom/... (with the SAFMR list-vs-object
+branch spelled out); Census ACS5 B19013_001E by ZCTA with a county fallback
+reusing the same geoid digits. #6 (ZIP days on market) has no official API,
+so it's a fetch-and-read recipe: Redfin zipcode housing-market page, then
+Realtor overview, then a search restricted to three named domains — and a
+zero-token alternative for the dev (Realtor Research's monthly ZIP CSV,
+median_days_on_market column, cached in code and passed into the prompt).
+Global rules: never invent a number, sanity bounds per field, null on
+failure, fixed area_data output schema. One-time setup: free HUD token,
+optional Census key, bump the ACS vintage each December, cache per ZIP
+(DOM monthly, FMR/income yearly).
