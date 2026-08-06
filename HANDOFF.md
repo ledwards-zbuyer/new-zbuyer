@@ -526,12 +526,15 @@ load) while values and home stats remain static demo data. The old
   static product knowledge but Lucas wants it landing WITH the cash offer
   value; ledger/twopaths ~14 rows elsewhere stay visible).
   `.val.pending *{color:transparent}` so styled child spans hide too.
-  PENDING VISUAL = ONE Z-SPHERE PER CONTAINER, ALL 40px (Lucas 2026-08-05;
-  iteration: first shimmer pills + blur, then spheres at every value, now
-  exactly ONE per container, identical size everywhere): a pending
+  PENDING VISUAL = ONE Z-SPHERE PER CONTAINER, PROPORTIONAL (Lucas 2026-08-05
+  uniform 40px → 2026-08-06 sized to the container; iteration: first shimmer
+  pills + blur, then spheres at every value, then one 40px per container, now
+  one per container scaled to it): a pending
   [data-valblock] sets children opacity:0 (boxes preserved = region holds its
-  loaded size) and centers ONE 40px sphere overlay (::after, z-sphere-primary
-  webp); pending [data-val] slots inside/elsewhere are QUIET STATIC PILLS
+  loaded size) and centers ONE sphere overlay sized
+  `clamp(40px, 60%, 200px)` per axis (::after square fit via center/contain =
+  60% of the container's SMALLER dimension, 40px floor / 200px cap;
+  z-sphere-primary webp); pending [data-val] slots inside/elsewhere are QUIET STATIC PILLS
   (#E9EEF6, text transparent = exact-size placeholder, no animation). The
   money-centric tiles' bodies are wrapped as valblocks so each waits as one
   sphere: walkaway, velocity, tradeup, dirtvalue, equityhuman,

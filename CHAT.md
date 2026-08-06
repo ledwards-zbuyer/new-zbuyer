@@ -2802,3 +2802,21 @@ both sides (the email AND the machine's ground truth from months of
 sessions), so translation = diffing his script against reality, not
 restating it. All of it recorded in HANDOFF under ConvertAI repo
 onboarding.
+
+---
+
+**Lucas:** on the homeowner report, increase the size of the sphere loading
+animation to match proportionally to the size of the container — even if that
+means removing the "hidden" text placeholders
+
+**Claude:** Made the pending Z-sphere on report-ranges-classic-blue.html scale
+with the container it waits over instead of the uniform 40px: the
+.valblock.pending::after overlay is now clamp(40px, 60%, 200px) per axis with
+center/contain, so the sphere renders at 60% of the container's smaller
+dimension, never below the old 40px, capped at 200px so the tallest panels
+(appreciation chart) stay sane. Verified pending-state at 1200px and 500px —
+calendar panes get ~100px spheres, the selling-range card ~160px, small blocks
+hold at 40px. The "remove the hidden placeholders" concession was NOT needed:
+the opacity-0 children still hold each region at its loaded size (no shift on
+reveal) and nothing collides with the bigger spheres, so the exact-size
+placeholder system stays intact.

@@ -101,12 +101,13 @@
   .calp-cap b{color:var(--lane)}
 
   /* ---- value gating: while an estimate (cash | market) is on its way, each
-     waiting CONTAINER shows exactly ONE Z-sphere loading loop — the same
-     40px sphere in every container — centered over the region (a gated
-     block's children hold their box at opacity 0, so the container is
-     exactly the size it will be once the data lands, and nothing moves on
-     reveal). Individual value slots inside are quiet static pills (their
-     eventual text transparent = exact-size placeholder). ---- */
+     waiting CONTAINER shows exactly ONE Z-sphere loading loop — sized to the
+     region it waits for (60% of the container's smaller dimension, 40px floor,
+     200px cap) and centered over it (a gated block's children hold their box
+     at opacity 0, so the container is exactly the size it will be once the
+     data lands, and nothing moves on reveal). Individual value slots inside
+     are quiet static pills (their eventual text transparent = exact-size
+     placeholder). ---- */
   .val{transition:color .45s ease;border-radius:6px;white-space:nowrap}
   .val.pending{color:transparent !important;background:#E9EEF6 !important;user-select:none;box-shadow:none}
   /* nested styled spans inside a pending value must hide too */
@@ -115,7 +116,7 @@
   .valblock > *{transition:opacity .45s ease}
   .valblock.pending{pointer-events:none;user-select:none}
   .valblock.pending > *{opacity:0}
-  .valblock.pending::after{content:"";position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;background:url(assets/z-sphere-primary.webp) center/contain no-repeat}
+  .valblock.pending::after{content:"";position:absolute;left:50%;top:50%;width:clamp(40px,60%,200px);height:clamp(40px,60%,200px);transform:translate(-50%,-50%);background:url(assets/z-sphere-primary.webp) center/contain no-repeat}
   @media (prefers-reduced-motion:reduce){
     .val,.valblock > *{transition:none}
     .val.pending{background:#E4EAF3 !important}
