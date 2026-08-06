@@ -2774,3 +2774,31 @@ with the model fetching only missing/stale ZIPs; without it, 2k leads/day
 means ~2k Census + ~4k HUD calls daily for values that change monthly or
 yearly. Recreated the Besi draft with the corrected setup note (both
 registrations one-time and free, cache plan mentioned).
+
+**Lucas:** look at my latest unread email from besi "ConvertAI SMS
+Codebase..." and explain step by step what i need to do. then after that,
+explain to me why i cannot understand his directions, but you can make me
+understand so well
+
+**Claude:** Translated Besi's broadcast email onto Lucas's actual machine
+state and then executed the setup: accepted the zBuyer-ai org invite via
+the gh CLI (Lucas landed as org admin), cloned the private
+zBuyer-ai/convertaisms repo to C:\repo\convertaisms, and pulled out the
+onboarding essentials — the kickoff prompt lives in README-DEV-PROMPT.txt,
+their CLAUDE.md demands a feature branch always (human-readable hyphenated
+names), EMPTY commit messages with no AI attribution, no em dashes, no
+commit/push without Besi's approval, and browser/test verification; the
+docs/ folder their prompt references doesn't exist yet; localhost needs a
+demo DB + .env from Besi. Key corrections his email couldn't know: "git
+pull" is really "git clone" for Lucas (no local copy existed), the gh CLI
+was already linked, and the server one-liner needs sudo -u besi on the git
+and pm2 parts because the real PM2 daemon lives under besi — plus a flag
+that /var/www/convertaisms is production, so branch previews might belong
+on convertaismstesting instead. The why-it-was-hard explanation: broadcast
+instructions assume a generic starting state (some steps already done, one
+impossible as written, one wrong for lucas specifically), hop between four
+places without labeling them, and use ambiguous referents — Claude holds
+both sides (the email AND the machine's ground truth from months of
+sessions), so translation = diffing his script against reality, not
+restating it. All of it recorded in HANDOFF under ConvertAI repo
+onboarding.

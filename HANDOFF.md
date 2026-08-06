@@ -666,6 +666,30 @@ load) while values and home stats remain static demo data. The old
   and "The Price Story" (the '98 $112K → '12 $148.5K → '21 $350K chain + today's
   estimate row) were added 2026-07-28, both preselected; the export manifest notes
   the comps are mocks (original sample returned 0 — build the empty state).
+- **ConvertAI repo onboarding (2026-08-05):** Besi moved the ConvertAI SMS
+  codebase to the **zBuyer-ai** GitHub org. Invite accepted via
+  `gh api --method PATCH /user/memberships/orgs/zBuyer-ai -f state=active`
+  (Lucas = org ADMIN). Repo `github.com/zBuyer-ai/convertaisms` (private)
+  cloned to **C:\repo\convertaisms** (server.js ~830KB monolith, database.js,
+  public/, templates/, plus `new-zbuyer-main/` = a snapshot COPY of this
+  mockups repo so work "picks up where you left off" there). THEIR RULES
+  (their CLAUDE.md §0/§2 — follow those in that repo, not ours): always a
+  feature branch, never main; short human-readable hyphenated names
+  (`tile-addition-<tilename>`); **EMPTY commit messages, no AI attribution**
+  (differs from this repo's Co-Authored-By convention); no em dashes; never
+  commit/push without Besi's explicit approval; verify in browser/tests;
+  restate understanding before building. Kickoff prompt to paste at session
+  start: `README-DEV-PROMPT.txt` (also CLAUDE.md §0). Their docs reference a
+  `docs/` folder that DOESN'T EXIST yet — not an error. `main` is protected
+  (PR + manual approval to merge). Localhost needs PostgreSQL + demo DB +
+  .env from Besi (offered in README — ask him). SERVER PREVIEW of a pushed
+  branch, corrected for the `lucas` account (PM2 + files live under `besi`;
+  Besi's emailed one-liner fails as-written for lucas):
+  `cd /var/www/convertaisms && sudo -u besi git fetch origin && sudo -u besi
+  git checkout BRANCH && sudo -u besi git pull && sudo -u besi pm2 restart
+  convertaisms && sudo -u besi pm2 logs convertaisms` — ⚠ that dir is
+  PRODUCTION (port 3001); the box also has `convertaismstesting` (staging).
+  Confirm with Besi whether branch previews should target staging instead.
 - **Area-data recipes (2026-08-05):** `mockups/area-data-recipes.md` — for the
   token-free pipeline (one REAPI AVM pull + ONE AI property/area request):
   paste-ready prompt block teaching a LOW-LEVEL model to fetch the three
